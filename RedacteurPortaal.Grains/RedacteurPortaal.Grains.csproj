@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -6,6 +6,12 @@
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageProjectUrl>https://github.com/Redactie-Portaal/backend-actor-model</PackageProjectUrl>
+	  <RepositoryUrl>https://github.com/Redactie-Portaal/backend-actor-model</RepositoryUrl>
+	  <PackageId>RedacteurPortaal.Grains</PackageId>
+	  <Version>1.0.0</Version>
+	  <Authors>Joep van Diessen</Authors>
+	  <Company>AutheurPortaal</Company>
+	  <PackageDescription>Grains package.</PackageDescription>
   </PropertyGroup>
 
 	<ItemGroup>
