@@ -2,3 +2,4 @@
 
 [![.NET](https://github.com/Redactie-Portaal/backend-actor-model/actions/workflows/dotnet.yml/badge.svg?branch=main)](https://github.com/Redactie-Portaal/backend-actor-model/actions/workflows/dotnet.yml)
 [![NuGet Generation](https://github.com/Redactie-Portaal/backend-actor-model/actions/workflows/NugetGen.yml/badge.svg?branch=main)](https://github.com/Redactie-Portaal/backend-actor-model/actions/workflows/NugetGen.yml)
+[![Docker Image CI](https://github.com/Redactie-Portaal/backend-actor-model/actions/workflows/docker-image.yml/badge.svg?branch=main)](https://github.com/Redactie-Portaal/backend-actor-model/actions/workflows/docker-image.yml)
