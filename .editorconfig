@@ -2,3 +2,49 @@
 
 # CS8618: Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 dotnet_diagnostic.CS8618.severity = silent
+csharp_using_directive_placement=outside_namespace:warning
+csharp_style_unused_value_assignment_preference=discard_variable:warning
+csharp_style_allow_blank_lines_between_consecutive_braces_experimental=true:warning
+csharp_style_allow_blank_line_after_colon_in_constructor_initializer_experimental=true:warning
+csharp_style_prefer_switch_expression=true:warning
+csharp_style_prefer_pattern_matching=true:warning
+csharp_style_var_for_built_in_types=true:warning
+csharp_style_var_when_type_is_apparent=true:warning
+csharp_style_var_elsewhere=true:warning
+dotnet_diagnostic.CA1507.severity=warning
+dotnet_naming_style.pascal_case.capitalization = camel_case:error
+
+
+# CS0219: Variable is assigned but its value is never used
+dotnet_diagnostic.CS0219.severity = warning
+
+[*.{cs,vb}]
+dotnet_style_prefer_simplified_boolean_expressions=true:warning
+dotnet_style_explicit_tuple_names=true:warning
+dotnet_style_namespace_match_folder=true:warning
+dotnet_style_require_accessibility_modifiers=always:silent
+dotnet_style_allow_multiple_blank_lines_experimental=true:warning
+dotnet_style_allow_statement_immediately_after_block_experimental=true:warning
+dotnet_code_quality_unused_parameters=all:warning
+dotnet_diagnostic.CA1021.severity=warning
+dotnet_diagnostic.CA1304.severity=warning
+dotnet_diagnostic.CA1712.severity=warning
+dotnet_diagnostic.CA1727.severity=warning
+dotnet_diagnostic.CA1827.severity=error
+dotnet_diagnostic.CA1828.severity=error
+dotnet_diagnostic.CA1829.severity=warning
+dotnet_diagnostic.CA1830.severity=warning
+dotnet_diagnostic.CA1836.severity=warning
+dotnet_diagnostic.CA1842.severity=warning
+dotnet_diagnostic.CA1843.severity=warning
+dotnet_diagnostic.CA2201.severity=warning
+dotnet_diagnostic.IDE0005.severity=warning
+dotnet_diagnostic.IDE0035.severity=warning
+dotnet_diagnostic.IDE0060.severity=warning
+dotnet_diagnostic.IDE0073.severity=warning
+dotnet_diagnostic.CA1024.severity=warning
+dotnet_diagnostic.CA1040.severity=warning
+dotnet_diagnostic.CA1069.severity=error
+dotnet_diagnostic.CA1707.severity=error
+dotnet_diagnostic.CA1724.severity=error
+

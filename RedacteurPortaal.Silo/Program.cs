@@ -1,20 +1,16 @@
 ﻿using Orleans.Clustering.Kubernetes;
 using Orleans.Configuration;
 using Orleans.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RedacteurPortaal.Silo
 {
     class Program
     {
-        public static async Task Main(string[] args)
+        public static async Task Main()
         {
             try
             {
+                Console.WriteLine("Starting silo...");
                 var host = await StartSilo();
                 Console.WriteLine("Press Enter to terminate...");
                 Console.ReadLine();
