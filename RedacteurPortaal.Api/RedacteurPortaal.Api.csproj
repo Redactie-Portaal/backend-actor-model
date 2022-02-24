@@ -4,6 +4,8 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>80c0e188-fdf6-439f-8f36-6fe5a08d2c76</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,13 +19,11 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.Orleans.Hosting.Kubernetes" Version="3.6.0" />
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
 		<PackageReference Include="Orleans.Clustering.Kubernetes" Version="2.1.0" />
 		<PackageReference Include="Polly" Version="7.2.3" />
+		<PackageReference Include="RedacteurPortaal.Grains" Version="1.0.9" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <ProjectReference Include="..\RedacteurPortaal.Grains\RedacteurPortaal.Grains.csproj" />
 	</ItemGroup>
 	
 </Project>

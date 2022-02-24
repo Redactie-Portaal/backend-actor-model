@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "RedacteurPortaal.Silo": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}
