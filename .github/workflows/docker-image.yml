@@ -15,14 +15,14 @@ jobs:
         docker build . --file ./RedacteurPortaal.Api/Dockerfile --tag redacteurportaalapi:$(date +%s)
         echo $CR_PAT | docker login ghcr.io -u joepvand -p ${{secrets.GITHUB_TOKEN}}
         cd RedacteurPortaal.Api
-        docker push ghcr.io/Redactie-Portaal/RedacteurPortaalApi:latest
+        docker push ghcr.io/Redactie-Portaal/redacteurportaalapi:latest
   build_silo:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
       run: |
-        docker build . --file RedacteurPortaal.Api/Dockerfile --tag RedacteurPortaalApi:$(date +%s)
+        docker build . --file RedacteurPortaal.Api/Dockerfile --tag redacteurportaalapi:$(date +%s)
         echo $CR_PAT | docker login ghcr.io -u joepvand -p ${{secrets.GITHUB_TOKEN}}
         cd RedacteurPortaal.Silo
         docker push ghcr.io/Redactie-Portaal/redacteurportaalsilo:latest
