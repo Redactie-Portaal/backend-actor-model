@@ -26,4 +26,6 @@ jobs:
           dotnet build -c Release
           dotnet pack -c Release -o out -p:PackageVersion=1.0.${{ github.run_number }} 
       - name: Push generated package to GitHub registry
-        run: dotnet nuget push ./RedacteurPortaal.Grains/out/*.nupkg --skip-duplicate --no-symbols true --api-key ${{secrets.GITHUB_TOKEN}}       
+        run: |
+          cd RedacteurPortaal.Grains
+          dotnet nuget push ./RedacteurPortaal.Grains/out/*.nupkg --skip-duplicate --no-symbols true --api-key ${{secrets.GITHUB_TOKEN}}       
