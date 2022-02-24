@@ -28,4 +28,4 @@ jobs:
       - name: Push generated package to GitHub registry
         run: |
           cd RedacteurPortaal.Grains
-          dotnet nuget push ./RedacteurPortaal.Grains/out/*.nupkg --skip-duplicate --no-symbols true --api-key ${{secrets.GITHUB_TOKEN}}       
+          dotnet nuget push ./out/*.nupkg --skip-duplicate --no-symbols true --api-key ${{secrets.GITHUB_TOKEN}}       
