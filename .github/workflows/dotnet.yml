@@ -16,7 +16,9 @@ jobs:
       with:
         dotnet-version: 6.0.x
     - name: Restore dependencies
-      run: dotnet restore
+      run: |
+        dotnet nuget add source --username joepvand --password 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 --store-password-in-clear-text --name github "https://nuget.pkg.github.com/Redactie-Portaal/index.json"
+        dotnet restore
     - name: Build
       run: dotnet build --no-restore -warnaserror
     - name: Test
