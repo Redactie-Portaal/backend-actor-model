@@ -1,0 +1,20 @@
+version: "3.9"
+services:
+  silo:
+    hostname: silo
+    build:
+      dockerfile: ./RedacteurPortaal.Silo/Dockerfile
+    ports:
+      - "30000:30000"
+      - "4002:4002"
+    network_mode: host
+
+  api:
+    hostname: api
+    build:
+      dockerfile: ./RedacteurPortaal.Api/Dockerfile
+    ports:
+      - "80:80"
+    environment:
+      - ASPNETCORE_URLS=http://+:80
+    network_mode: host
