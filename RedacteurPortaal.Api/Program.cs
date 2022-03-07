@@ -1,13 +1,14 @@
 using Orleans;
-using Orleans.Clustering.Kubernetes;
 using Orleans.Configuration;
 using Polly;
 using RedacteurPortaal.Grains;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddSingleton(p => OrleansClient.ClusterClient);
+builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
-
+// Setup orleans client to use.
 OrleansClient.ClusterClient = Policy<IClusterClient>.Handle<Exception>()
      .WaitAndRetry(new[]
      {
@@ -21,9 +22,9 @@ OrleansClient.ClusterClient = Policy<IClusterClient>.Handle<Exception>()
          .Configure<ClusterOptions>(c =>
          {
              c.ClusterId = "Test";
-             c.ServiceId = "TestService";
+             c.ServiceId = "Test";
          })
-         .UseKubeGatewayListProvider()
+         .UseLocalhostClustering()
          .ConfigureLogging(logging => logging.AddConsole());
 
          var client = builder.Build();
@@ -31,7 +32,11 @@ OrleansClient.ClusterClient = Policy<IClusterClient>.Handle<Exception>()
          return client;
      });
 
-builder.Services.AddSingleton(p => OrleansClient.ClusterClient);
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 app.MapGet("/", () => "Hello World!");
 
