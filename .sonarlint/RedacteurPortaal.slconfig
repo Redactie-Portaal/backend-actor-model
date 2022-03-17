@@ -1,0 +1,12 @@
+{
+  "ServerUri": "http://jopescsgohack.tk:9000/",
+  "Organization": null,
+  "ProjectKey": "Redactie-Portaal_backend-actor-model",
+  "ProjectName": "backend-actor-model",
+  "Profiles": {
+    "CSharp": {
+      "ProfileKey": "AX9kPJxlkO_vjrgNCVx3",
+      "ProfileTimestamp": "2022-03-07T11:56:08Z"
+    }
+  }
+}
