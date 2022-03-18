@@ -17,9 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ActorModelApi\ActorModelApi.csproj" />
     <ProjectReference Include="..\ClassLibrary\ClassLibrary.csproj" />
-    <ProjectReference Include="..\GrainInterfaces\GrainInterfaces.csproj" />
-    <ProjectReference Include="..\WebApplication3\WebApplication3.csproj" />
   </ItemGroup>
 
 </Project>

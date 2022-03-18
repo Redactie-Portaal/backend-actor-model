@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "WebApplication3": {
+    "ActorModelApi": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",

@@ -2,37 +2,22 @@
 using Microsoft.AspNetCore.Mvc;
 using Orleans;
 
-namespace WebApplication3.Controllers
+namespace ActorModelApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class GuidController : Controller
+    public class NewsItemController : Controller
     {
         private IClusterClient _client;
         private ILogger _logger;
 
-        public GuidController(IClusterClient client, ILogger<GuidController> logger)
-        {
-            _client = client;
-            _logger = logger;
-        }
-
-        [Route("/guid")]
-        [HttpGet]
-        public async Task<IActionResult> GetHello(string greeting)
-        {
-            Guid guid = Guid.NewGuid();
-            var grain = _client.GetGrain<IGuidGrain1>(guid);
-            var response = grain.DoGrain(greeting, guid);
-            //_logger.LogInformation(guid.ToString());
-            return Ok("");
-        }
+        public NewsItemController(IClusterClient client) => _client = client;
 
         [Route("/newsitem")]
         [HttpPost]
         public async Task<IActionResult> SaveNewsItem(string newsitemname)
         {
-            Guid newGuid = Guid.NewGuid();
+            var newGuid = Guid.NewGuid();
             var grain = _client.GetGrain<INewsItemGrain>(newGuid);
             var response = grain.AddNewsItem(newsitemname, newGuid);
             return Ok(newGuid);
@@ -46,5 +31,6 @@ namespace WebApplication3.Controllers
             var response = await grain.GetNewsItem();
             return Ok($"The guid was:{response.Id}, while the name is {response.Name}");
         }
+
     }
 }

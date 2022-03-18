@@ -40,7 +40,12 @@ public class Program
                 options.ServiceId = "OrleansBasics";
             })
             .ConfigureLogging(logging => logging.AddConsole())
-            .AddMemoryGrainStorage("newsitemstore")
+            .AddAdoNetGrainStorage("OrleansStorage", options =>
+            {
+                options.UseJsonFormat = true;
+                options.ConnectionString = "Data Source=localhost;Initial Catalog=RedactiePortal;Persist Security Info=True;User ID=SA;Password=yourStrong(!)Password";
+            })
+            //.AddMemoryGrainStorage("OrleansStorage")
             .UseDashboard();
 
         var host = builder.Build();

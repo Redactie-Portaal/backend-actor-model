@@ -3,7 +3,6 @@ using GrainInterfaces;
 using Microsoft.Extensions.Logging;
 using Orleans;
 using Orleans.Runtime;
-using WebApplication3;
 
 namespace Grains
 {
@@ -17,7 +16,7 @@ namespace Grains
 
 
         public NewsItemGrain(ILogger<NewsItemGrain> logger, IClusterClient client,
-            [PersistentState("newsitem", "newsitemstore")] IPersistentState<NewsItem> newsItem)
+            [PersistentState("newsitem", "OrleansStorage")] IPersistentState<NewsItem> newsItem)
         {
             this.logger = logger;
             _client = client;
