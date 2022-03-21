@@ -2,11 +2,13 @@ using Orleans;
 using Orleans.Configuration;
 using Polly;
 using RedacteurPortaal.Grains;
+using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton(p => OrleansClient.ClusterClient);
-builder.Services.AddSwaggerGen();
 var app = builder.Build();
+var env = Environment.GetEnvironmentVariable("HostIP");
+IPAddress.TryParse(env.Trim(), out var ip);
 
 // Setup orleans client to use.
 OrleansClient.ClusterClient = Policy<IClusterClient>.Handle<Exception>()
@@ -24,7 +26,7 @@ OrleansClient.ClusterClient = Policy<IClusterClient>.Handle<Exception>()
              c.ClusterId = "Test";
              c.ServiceId = "Test";
          })
-         .UseLocalhostClustering()
+         .UseStaticClustering(new IPEndPoint(ip, 30000))
          .ConfigureLogging(logging => logging.AddConsole());
 
          var client = builder.Build();

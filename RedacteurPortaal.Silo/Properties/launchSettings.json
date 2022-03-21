@@ -1,7 +1,10 @@
 {
   "profiles": {
     "RedacteurPortaal.Silo": {
-      "commandName": "Project"
+      "commandName": "Project",
+      "environmentVariables": {
+        "HostIP":"127.0.0.1"
+      }
     },
     "Docker": {
       "commandName": "Docker"
