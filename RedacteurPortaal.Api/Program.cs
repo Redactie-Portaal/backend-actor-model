@@ -6,6 +6,10 @@ using RedacteurPortaal.Grains;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton(p => OrleansClient.ClusterClient);
+builder.Services.AddControllers();
+builder.Services.AddLogging(); 
+builder.Services.AddSwaggerGen();
+builder.Services.AddEndpointsApiExplorer();
 var app = builder.Build();
 
 // Setup orleans client to use.
@@ -52,6 +56,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapGet("/", () => "Hello World!");
+app.UseAuthorization();
+
+app.UseHttpsRedirection();
+
+app.MapControllers();
 
 app.Run();

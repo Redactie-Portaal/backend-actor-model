@@ -34,5 +34,10 @@
 		<PackageReference Include="RedacteurPortaal.Grains" Version="1.0.9" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\RedacteurPortaal.ClassLibrary\RedacteurPortaal.ClassLibrary.csproj" />
+	  <ProjectReference Include="..\RedacteurPortaal.Grains\RedacteurPortaal.Grains.csproj" />
+	</ItemGroup>
 	
 </Project>

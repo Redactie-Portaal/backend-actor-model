@@ -39,7 +39,15 @@ namespace RedacteurPortaal.Silo
                        options.ServiceId = serviceId;
                    })
                    .ConfigureLogging(logging => logging.AddConsole())
-                   .ConfigureLogging(logging => logging.SetMinimumLevel(LogLevel.Warning));
+                   .ConfigureLogging(logging => logging.SetMinimumLevel(LogLevel.Warning))
+                   .AddAdoNetGrainStorage("OrleansStorage", options =>
+                   {
+                       options.Invariant = "Npgsql";
+                       options.UseJsonFormat = true;
+                       options.ConnectionString =
+                       "Server=localhost:5432;User Id=postgres;Password=MyStrongPassword;Database=RedactiePortal";
+                   })
+                   .UseDashboard();
 
                 var host = builder.Build();
                 await host.StartAsync();
@@ -58,7 +66,7 @@ namespace RedacteurPortaal.Silo
                 await host.StartAsync();
                 return host;
             }
-            
+
         }
 
         public static bool IsDebug()

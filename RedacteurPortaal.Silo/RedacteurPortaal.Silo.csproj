@@ -21,11 +21,15 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.Orleans.OrleansProviders" Version="3.6.0" />
+		<PackageReference Include="Microsoft.Orleans.Persistence.AdoNet" Version="3.6.0" />
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
+		<PackageReference Include="Npgsql" Version="6.0.3" />
 		<PackageReference Include="Orleans.Clustering.Kubernetes" Version="2.1.0" />
-		<PackageReference Include="RedacteurPortaal.Grains" Version="1.0.9">
-		  <TreatAsUsed>true</TreatAsUsed>
-		</PackageReference>
+		<PackageReference Include="OrleansDashboard" Version="3.6.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\RedacteurPortaal.Grains\RedacteurPortaal.Grains.csproj" />
 	</ItemGroup>
 	<ItemGroup>
 		<Reference Include="Microsoft.Extensions.Logging.Console">
