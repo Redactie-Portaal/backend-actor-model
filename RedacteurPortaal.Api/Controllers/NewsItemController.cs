@@ -1,5 +1,4 @@
-﻿
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Orleans;
 using RedacteurPortaal.ClassLibrary;
 using RedacteurPortaal.Grains.GrainInterfaces;

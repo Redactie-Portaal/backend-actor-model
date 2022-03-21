@@ -2,7 +2,7 @@ using Orleans;
 using Orleans.Clustering.Kubernetes;
 using Orleans.Configuration;
 using Polly;
-using RedacteurPortaal.Grains;
+using RedacteurPortaal.Api;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton(p => OrleansClient.ClusterClient);

@@ -1,6 +1,6 @@
 ﻿using Orleans;
 
-namespace RedacteurPortaal.Grains
+namespace RedacteurPortaal.Api
 {
     public static class OrleansClient
     {
