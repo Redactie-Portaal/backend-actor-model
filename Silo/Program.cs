@@ -42,8 +42,10 @@ public class Program
             .ConfigureLogging(logging => logging.AddConsole())
             .AddAdoNetGrainStorage("OrleansStorage", options =>
             {
+                options.Invariant = "Npgsql";
                 options.UseJsonFormat = true;
-                options.ConnectionString = "Data Source=localhost;Initial Catalog=RedactiePortal;Persist Security Info=True;User ID=SA;Password=yourStrong(!)Password";
+                options.ConnectionString =
+                "Server=localhost:5432;User Id=postgres;Password=MyStrongPassword;Database=RedactiePortal";
             })
             //.AddMemoryGrainStorage("OrleansStorage")
             .UseDashboard();
