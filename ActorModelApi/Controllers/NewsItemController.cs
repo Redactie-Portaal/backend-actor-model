@@ -1,6 +1,7 @@
 ﻿using GrainInterfaces;
 using Microsoft.AspNetCore.Mvc;
 using Orleans;
+using ClassLibrary;
 
 namespace ActorModelApi.Controllers
 {
@@ -19,13 +20,12 @@ namespace ActorModelApi.Controllers
 
         [Route("/newsitem")]
         [HttpPost]
-        public IActionResult SaveNewsItem(string newsitemname)
+        public IActionResult SaveNewsItem([FromBody] NewsItem newsitem)
         {
-            var newGuid = Guid.NewGuid();
-            var grain = _client.GetGrain<INewsItemGrain>(newGuid);
-            grain.AddNewsItem(newsitemname, newGuid);
+            var grain = _client.GetGrain<INewsItemGrain>(newsitem.Id);
+            grain.AddNewsItem(newsitem);
             _logger.LogInformation("News Item Created");
-            return Ok(newGuid);
+            return Ok(newsitem.Id);
         }
 
         [Route("/newsitem")]
