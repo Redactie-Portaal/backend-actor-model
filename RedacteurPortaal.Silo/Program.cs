@@ -2,7 +2,6 @@
 using Orleans.Clustering.Kubernetes;
 using Orleans.Configuration;
 using Orleans.Hosting;
-using System.Net;
 
 namespace RedacteurPortaal.Silo
 {
@@ -27,13 +26,28 @@ namespace RedacteurPortaal.Silo
 
         private static async Task<ISiloHost> StartSilo()
         {
-
             var clusterId = "test";
             var serviceId = "test";
+            if (IsDebug())
+            {
+                var builder = new SiloHostBuilder()
+                   .UseLocalhostClustering()
+                   .Configure<ClusterOptions>(options =>
+                   {
+                       options.ClusterId = clusterId;
+                       options.ServiceId = serviceId;
+                   })
+                   .ConfigureLogging(logging => logging.AddConsole())
+                   .ConfigureLogging(logging => logging.SetMinimumLevel(LogLevel.Warning));
 
-            IPAddress.TryParse(Environment.GetEnvironmentVariable("HostIP"), out var ip);
-            var builder = new SiloHostBuilder()
-                    .UseLocalhostClustering()
+                var host = builder.Build();
+                await host.StartAsync();
+                return host;
+            }
+            else
+            {
+                var builder = new SiloHostBuilder()
+                            .UseKubeMembership()
                             .Configure<ClusterOptions>(options =>
                             {
                                 options.ClusterId = clusterId;
@@ -42,9 +56,20 @@ namespace RedacteurPortaal.Silo
                             .ConfigureLogging(logging => logging.AddConsole())
                             .ConfigureLogging(logging => logging.SetMinimumLevel(LogLevel.Warning));
 
-            var host = builder.Build();
-            await host.StartAsync();
-            return host;
+                var host = builder.Build();
+                await host.StartAsync();
+                return host;
+            }
+            
+        }
+
+        public static bool IsDebug()
+        {
+#if DEBUG
+            return true;
+#else
+        return false;
+#endif
         }
     }
 }

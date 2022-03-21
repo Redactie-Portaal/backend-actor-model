@@ -15,17 +15,16 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
-		<PackageReference Include="Microsoft.Orleans.Hosting.Kubernetes" Version="3.6.0" />
-		<PackageReference Include="Microsoft.Orleans.Server" Version="3.6.0" />
 		<PackageReference Include="Microsoft.Orleans.CodeGenerator.MSBuild" Version="3.6.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
 		<PackageReference Include="Orleans.Clustering.Kubernetes" Version="2.1.0" />
-		<PackageReference Include="RedacteurPortaal.Grains" Version="1.0.9" />
+		<PackageReference Include="RedacteurPortaal.Grains" Version="1.0.9">
+		  <TreatAsUsed>true</TreatAsUsed>
+		</PackageReference>
 	</ItemGroup>
 	<ItemGroup>
 		<Reference Include="Microsoft.Extensions.Logging.Console">

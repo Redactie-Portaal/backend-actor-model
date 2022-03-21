@@ -1,11 +1,11 @@
 using Orleans;
+using Orleans.Clustering.Kubernetes;
 using Orleans.Configuration;
 using Polly;
 using RedacteurPortaal.Grains;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton(p => OrleansClient.ClusterClient);
-builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 // Setup orleans client to use.
@@ -18,18 +18,37 @@ OrleansClient.ClusterClient = Policy<IClusterClient>.Handle<Exception>()
      })
      .Execute(() =>
      {
-         var builder = new ClientBuilder()
-         .Configure<ClusterOptions>(c =>
+         if (app.Environment.IsDevelopment())
          {
-             c.ClusterId = "Test";
-             c.ServiceId = "Test";
-         })
-         .UseLocalhostClustering()
-         .ConfigureLogging(logging => logging.AddConsole());
+             var builder = new ClientBuilder()
+        .Configure<ClusterOptions>(c =>
+        {
+            c.ClusterId = "Test";
+            c.ServiceId = "Test";
+        })
+        .UseLocalhostClustering()
+        .ConfigureLogging(logging => logging.AddConsole());
 
-         var client = builder.Build();
-         client.Connect().Wait();
-         return client;
+             var client = builder.Build();
+             client.Connect().Wait();
+             return client;
+         }
+         else
+         {
+             var builder = new ClientBuilder()
+        .Configure<ClusterOptions>(c =>
+        {
+            c.ClusterId = "Test";
+            c.ServiceId = "Test";
+        })
+        .UseKubeGatewayListProvider()
+        .ConfigureLogging(logging => logging.AddConsole());
+
+             var client = builder.Build();
+             client.Connect().Wait();
+             return client;
+         }
+        
      });
 
 if (app.Environment.IsDevelopment())
