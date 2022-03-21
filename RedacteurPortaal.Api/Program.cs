@@ -36,11 +36,6 @@ OrleansClient.ClusterClient = Policy<IClusterClient>.Handle<Exception>()
          else
          {
              var builder = new ClientBuilder()
-        .Configure<ClusterOptions>(c =>
-        {
-            c.ClusterId = "Test";
-            c.ServiceId = "Test";
-        })
         .UseKubeGatewayListProvider()
         .ConfigureLogging(logging => logging.AddConsole());
 

@@ -48,11 +48,6 @@ namespace RedacteurPortaal.Silo
             else
             {
                 var builder = new SiloHostBuilder()
-                            .Configure<ClusterOptions>(options =>
-                            {
-                                options.ClusterId = clusterId;
-                                options.ServiceId = serviceId;
-                            })
                             .ConfigureEndpoints(new Random(1).Next(30001, 30100), new Random(1).Next(20001, 20100), listenOnAnyHostAddress: false)
                             .UseKubeMembership()
                             .AddMemoryGrainStorageAsDefault()
