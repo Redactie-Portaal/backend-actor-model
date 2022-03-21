@@ -10,8 +10,8 @@ export default function () {
         //['GET', 'https://localhost:7236/bye',  null ],
         //['GET', 'https://localhost:7236/test',  null ]
         //['GET', 'https://localhost:7236/guid?greeting=gg',  null ]
-        ['GET', 'https://localhost:7236/newsitem?guid=274fef19-f20f-472a-88a4-9384893c197f',  null ],
-        ['GET', 'https://localhost:7236/newsitem?guid=10dd4ca5-8cae-4e54-882f-bb2760c38b78',  null ]
+        ['GET', 'https://localhost:7236/newsitem?guid=7dc3ec28-6fe6-44a5-b18b-43fa5f7412c0',  null ]
+        //['GET', 'https://localhost:7236/newsitem?guid=7dc3ec28-6fe6-44a5-b18b-43fa5f7412c0',  null ]
 
     ])
     //http.get('https://localhost:7236/hello');
