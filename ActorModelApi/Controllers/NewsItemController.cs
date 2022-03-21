@@ -11,7 +11,11 @@ namespace ActorModelApi.Controllers
         private IClusterClient _client;
         private ILogger _logger;
 
-        public NewsItemController(IClusterClient client) => _client = client;
+        public NewsItemController(IClusterClient client, ILogger logger)
+        {
+            _client = client;
+            _logger = logger;
+        }
 
         [Route("/newsitem")]
         [HttpPost]
@@ -20,6 +24,7 @@ namespace ActorModelApi.Controllers
             var newGuid = Guid.NewGuid();
             var grain = _client.GetGrain<INewsItemGrain>(newGuid);
             grain.AddNewsItem(newsitemname, newGuid);
+            _logger.LogInformation("News Item Created");
             return Ok(newGuid);
         }
 

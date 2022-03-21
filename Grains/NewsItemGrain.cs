@@ -35,8 +35,6 @@ namespace Grains
 
         public async Task DeleteNewsItem(Guid guid)
         {
-            //_newsItem.State.Id = guid;
-            _newsItem.Etag = null;
             await _newsItem.ClearStateAsync();
         }
     }
