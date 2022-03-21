@@ -10,16 +10,14 @@ namespace Grains
     {
         private readonly ILogger logger;
 
-        private IClusterClient _client;
 
         private readonly IPersistentState<NewsItem> _newsItem;
 
 
-        public NewsItemGrain(ILogger<NewsItemGrain> logger, IClusterClient client,
+        public NewsItemGrain(ILogger<NewsItemGrain> logger,
             [PersistentState("newsitem", "OrleansStorage")] IPersistentState<NewsItem> newsItem)
         {
             this.logger = logger;
-            _client = client;
             _newsItem = newsItem;
         }
 
@@ -30,14 +28,15 @@ namespace Grains
 
         public async Task AddNewsItem(string name, Guid guid)
         {
-            _newsItem.State.Name = name;
+            _newsItem.State.Title = name;
             _newsItem.State.Id = guid;
             await _newsItem.WriteStateAsync();
         }
 
         public async Task DeleteNewsItem(Guid guid)
         {
-            _newsItem.State.Id = guid;
+            //_newsItem.State.Id = guid;
+            _newsItem.Etag = null;
             await _newsItem.ClearStateAsync();
         }
     }

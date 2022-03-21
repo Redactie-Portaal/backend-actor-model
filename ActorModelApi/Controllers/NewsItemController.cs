@@ -15,11 +15,11 @@ namespace ActorModelApi.Controllers
 
         [Route("/newsitem")]
         [HttpPost]
-        public async Task<IActionResult> SaveNewsItem(string newsitemname)
+        public IActionResult SaveNewsItem(string newsitemname)
         {
             var newGuid = Guid.NewGuid();
             var grain = _client.GetGrain<INewsItemGrain>(newGuid);
-            var response = grain.AddNewsItem(newsitemname, newGuid);
+            grain.AddNewsItem(newsitemname, newGuid);
             return Ok(newGuid);
         }
 
@@ -29,12 +29,12 @@ namespace ActorModelApi.Controllers
         {
             var grain = _client.GetGrain<INewsItemGrain>(guid);
             var response = await grain.GetNewsItem();
-            return Ok($"The guid was:{response.Id}, while the name is {response.Name}");
+            return Ok($"The guid was:{response.Id}, while the name is {response.Title}");
         }
 
         [Route("/newsitem")]
         [HttpDelete]
-        public async Task<IActionResult> DeleteNewsItem(Guid guid)
+        public IActionResult DeleteNewsItem(Guid guid)
         {
             var grain = _client.GetGrain<INewsItemGrain>(guid);
             var response = grain.DeleteNewsItem(guid);
