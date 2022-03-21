@@ -73,6 +73,7 @@ namespace ActorModelApi.Controllers
             {
                 var grain = _client.GetGrain<INewsItemGrain>(guid);
                 await grain.DeleteNewsItem(guid);
+                _logger.LogInformation("News item deleted successfully");
                 return StatusCode(204, "News item deleted");
             }
             catch(Exception ex) {
@@ -89,6 +90,7 @@ namespace ActorModelApi.Controllers
             {
                 var grain = _client.GetGrain<INewsItemGrain>(guid);
                 await grain.UpdateNewsItem(name, guid);
+                _logger.LogInformation("News item updated successfully");
                 return StatusCode(204, "News item updated");
             }
             catch (Exception ex)
