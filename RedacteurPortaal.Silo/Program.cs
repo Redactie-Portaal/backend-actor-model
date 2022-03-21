@@ -2,7 +2,6 @@
 using Orleans.Clustering.Kubernetes;
 using Orleans.Configuration;
 using Orleans.Hosting;
-using System.Net;
 
 namespace RedacteurPortaal.Silo
 {
