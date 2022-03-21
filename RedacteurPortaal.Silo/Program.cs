@@ -31,14 +31,14 @@ namespace RedacteurPortaal.Silo
             if (IsDebug())
             {
                 var builder = new SiloHostBuilder()
-                            .UseLocalhostClustering()
-                            .Configure<ClusterOptions>(options =>
-                            {
-                                options.ClusterId = clusterId;
-                                options.ServiceId = serviceId;
-                            })
-                            .ConfigureLogging(logging => logging.AddConsole())
-                            .ConfigureLogging(logging => logging.SetMinimumLevel(LogLevel.Warning));
+                   .UseLocalhostClustering()
+                   .Configure<ClusterOptions>(options =>
+                   {
+                       options.ClusterId = clusterId;
+                       options.ServiceId = serviceId;
+                   })
+                   .ConfigureLogging(logging => logging.AddConsole())
+                   .ConfigureLogging(logging => logging.SetMinimumLevel(LogLevel.Warning));
 
                 var host = builder.Build();
                 await host.StartAsync();
