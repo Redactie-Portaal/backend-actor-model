@@ -27,8 +27,8 @@ namespace RedacteurPortaal.Silo
 
         private static async Task<ISiloHost> StartSilo()
         {
-            var clusterId = "test";
-            var serviceId = "test";
+            var clusterId = "Test";
+            var serviceId = "Test";
             if (IsDebug())
             {
                 var builder = new SiloHostBuilder()
