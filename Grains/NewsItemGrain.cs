@@ -37,5 +37,12 @@ namespace Grains
         {
             await _newsItem.ClearStateAsync();
         }
+
+        public async Task UpdateNewsItem(string name, Guid guid)
+        {
+            _newsItem.State.Title = name;
+            _newsItem.State.Id = guid;
+            await _newsItem.WriteStateAsync();
+        }
     }
 }

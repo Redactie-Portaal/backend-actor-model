@@ -9,7 +9,7 @@ namespace ActorModelApi.Controllers
     public class NewsItemController : Controller
     {
         private IClusterClient _client;
-        private readonly ILogger _logger;
+        private ILogger _logger;
 
         public NewsItemController(IClusterClient client, ILogger<NewsItemController> logger)
         {
@@ -44,6 +44,15 @@ namespace ActorModelApi.Controllers
             var grain = _client.GetGrain<INewsItemGrain>(guid);
             var response = grain.DeleteNewsItem(guid);
             return Ok($"Item with id: {response.Id} was deleted from the datastore");
+        }
+
+        [Route("/newsitem")]
+        [HttpPut]
+        public IActionResult UpdateNewsItem(string name, Guid guid)
+        {
+            var grain = _client.GetGrain<INewsItemGrain>(guid);
+            var response = grain.UpdateNewsItem(name, guid);
+            return Ok($"Item with id: {response.Id} was updated");
         }
 
     }
