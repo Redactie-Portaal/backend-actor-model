@@ -7,5 +7,7 @@ namespace GrainInterfaces
     {
         Task<NewsItem> GetNewsItem();
         Task AddNewsItem(string name, Guid guid);
+
+        Task DeleteNewsItem(Guid guid);
     }
 }

@@ -32,5 +32,14 @@ namespace ActorModelApi.Controllers
             return Ok($"The guid was:{response.Id}, while the name is {response.Name}");
         }
 
+        [Route("/newsitem")]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteNewsItem(Guid guid)
+        {
+            var grain = _client.GetGrain<INewsItemGrain>(guid);
+            var response = grain.DeleteNewsItem(guid);
+            return Ok($"Item with id: {response.Id} was deleted from the datastore");
+        }
+
     }
 }

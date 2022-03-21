@@ -34,5 +34,11 @@ namespace Grains
             _newsItem.State.Id = guid;
             await _newsItem.WriteStateAsync();
         }
+
+        public async Task DeleteNewsItem(Guid guid)
+        {
+            _newsItem.State.Id = guid;
+            await _newsItem.ClearStateAsync();
+        }
     }
 }
