@@ -23,7 +23,7 @@ namespace Grains
 
         public async Task<NewsItem> GetNewsItem()
         {
-           return await Task.FromResult(_newsItem.State);
+            return await Task.FromResult(_newsItem.State);
         }
 
         public async Task AddNewsItem(NewsItem newsitem)
@@ -31,6 +31,8 @@ namespace Grains
             _newsItem.State = newsitem;
             await _newsItem.WriteStateAsync();
         }
+
+
 
         public async Task DeleteNewsItem(Guid guid)
         {
