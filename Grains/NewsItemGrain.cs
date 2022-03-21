@@ -23,15 +23,16 @@ namespace Grains
 
         public async Task<NewsItem> GetNewsItem()
         {
-           return await Task.FromResult(_newsItem.State);
+            return await Task.FromResult(_newsItem.State);
         }
 
-        public async Task AddNewsItem(string name, Guid guid)
+        public async Task AddNewsItem(NewsItem newsitem)
         {
-            _newsItem.State.Title = name;
-            _newsItem.State.Id = guid;
+            _newsItem.State = newsitem;
             await _newsItem.WriteStateAsync();
         }
+
+
 
         public async Task DeleteNewsItem(Guid guid)
         {
