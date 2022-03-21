@@ -45,7 +45,7 @@ namespace ActorModelApi.Controllers
             {
                 var grain = _client.GetGrain<INewsItemGrain>(guid);
                 var response = await grain.GetNewsItem();
-                if(response is not null)
+                if(response.Title is not null)
                 {
                     _logger.LogInformation("News item fetched successfully");
                     return Ok(response);
