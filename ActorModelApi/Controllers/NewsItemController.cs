@@ -19,40 +19,84 @@ namespace ActorModelApi.Controllers
 
         [Route("/newsitem")]
         [HttpPost]
-        public IActionResult SaveNewsItem(string newsitemname)
+        public async Task<IActionResult> SaveNewsItem(string newsitemname)
         {
-            var newGuid = Guid.NewGuid();
-            var grain = _client.GetGrain<INewsItemGrain>(newGuid);
-            grain.AddNewsItem(newsitemname, newGuid);
-            _logger.LogInformation("News Item Created");
-            return Ok(newGuid);
+            try
+            {
+                var successMessage = "News item was created";
+                var newGuid = Guid.NewGuid();
+                var grain = _client.GetGrain<INewsItemGrain>(newGuid);
+                await grain.AddNewsItem(newsitemname, newGuid);
+                _logger.LogInformation(successMessage);
+                return StatusCode(201, successMessage);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(500, "An internal server error has occured");
+            }
         }
 
         [Route("/newsitem")]
         [HttpGet]
         public async Task<IActionResult> GetNewsItem(Guid guid)
         {
-            var grain = _client.GetGrain<INewsItemGrain>(guid);
-            var response = await grain.GetNewsItem();
-            return Ok($"The guid was:{response.Id}, while the name is {response.Title}");
+            try
+            {
+                var grain = _client.GetGrain<INewsItemGrain>(guid);
+                var response = await grain.GetNewsItem();
+                if(response is not null)
+                {
+                    _logger.LogInformation("News item fetched successfully");
+                    return Ok(response);
+                }
+                else
+                {
+                    _logger.LogInformation("News item not found");
+                    return StatusCode(400, "News item not found");
+                }
+                
+            }
+            catch(Exception ex)
+            {
+                _logger?.LogError(ex.Message);
+                return StatusCode(500, "An internal server error has occured");
+            }
+  
         }
 
         [Route("/newsitem")]
         [HttpDelete]
-        public IActionResult DeleteNewsItem(Guid guid)
+        public async Task<IActionResult> DeleteNewsItem(Guid guid)
         {
-            var grain = _client.GetGrain<INewsItemGrain>(guid);
-            var response = grain.DeleteNewsItem(guid);
-            return Ok($"Item with id: {response.Id} was deleted from the datastore");
+            try
+            {
+                var grain = _client.GetGrain<INewsItemGrain>(guid);
+                await grain.DeleteNewsItem(guid);
+                return StatusCode(204, "News item deleted");
+            }
+            catch(Exception ex) {
+                _logger?.LogError(ex.Message);
+                return StatusCode(500, "An internal server error has occured");
+            }
         }
 
         [Route("/newsitem")]
         [HttpPut]
-        public IActionResult UpdateNewsItem(string name, Guid guid)
+        public async Task<IActionResult> UpdateNewsItem(string name, Guid guid)
         {
-            var grain = _client.GetGrain<INewsItemGrain>(guid);
-            var response = grain.UpdateNewsItem(name, guid);
-            return Ok($"Item with id: {response.Id} was updated");
+            try
+            {
+                var grain = _client.GetGrain<INewsItemGrain>(guid);
+                await grain.UpdateNewsItem(name, guid);
+                return StatusCode(204, "News item updated");
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError(ex.Message);
+                return StatusCode(500, "An internal server error has occured");
+            }
+  
         }
 
     }
