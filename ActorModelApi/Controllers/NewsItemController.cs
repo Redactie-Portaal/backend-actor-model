@@ -9,9 +9,9 @@ namespace ActorModelApi.Controllers
     public class NewsItemController : Controller
     {
         private IClusterClient _client;
-        private ILogger _logger;
+        private readonly ILogger _logger;
 
-        public NewsItemController(IClusterClient client, ILogger logger)
+        public NewsItemController(IClusterClient client, ILogger<NewsItemController> logger)
         {
             _client = client;
             _logger = logger;
