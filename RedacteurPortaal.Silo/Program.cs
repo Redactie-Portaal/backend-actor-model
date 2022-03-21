@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Orleans;
 using Orleans.Clustering.Kubernetes;
 using Orleans.Configuration;
 using Orleans.Hosting;
@@ -47,12 +48,13 @@ namespace RedacteurPortaal.Silo
             else
             {
                 var builder = new SiloHostBuilder()
-                            .UseKubeMembership()
                             .Configure<ClusterOptions>(options =>
                             {
                                 options.ClusterId = clusterId;
                                 options.ServiceId = serviceId;
                             })
+                            .UseKubeMembership()
+                            .AddMemoryGrainStorageAsDefault()
                             .ConfigureLogging(logging => logging.AddConsole())
                             .ConfigureLogging(logging => logging.SetMinimumLevel(LogLevel.Warning));
 
