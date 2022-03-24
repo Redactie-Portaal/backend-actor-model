@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Orleans;
 using Orleans.Clustering.Kubernetes;
 using Orleans.Configuration;
@@ -25,34 +26,39 @@ namespace RedacteurPortaal.Silo
             }
         }
 
-        private static async Task<ISiloHost> StartSilo()
+        private static async Task<IHost> StartSilo()
         {
             var clusterId = "Test";
             var serviceId = "Test";
             if (IsDebug())
             {
-                var builder = new SiloHostBuilder()
-                   .UseLocalhostClustering()
-                   .Configure<ClusterOptions>(options =>
-                   {
-                       options.ClusterId = clusterId;
-                       options.ServiceId = serviceId;
-                   })
-                   .ConfigureLogging(logging => logging.AddConsole())
-                   .ConfigureLogging(logging => logging.SetMinimumLevel(LogLevel.Warning));
-
+                var builder = new HostBuilder()
+                    .UseOrleans(builder =>
+                    {
+                        builder.UseLocalhostClustering()
+                            .Configure<ClusterOptions>(options =>
+                            {
+                                options.ClusterId = clusterId;
+                                options.ServiceId = serviceId;
+                            })
+                            .ConfigureLogging(logging => logging.AddConsole())
+                            .ConfigureLogging(logging => logging.SetMinimumLevel(LogLevel.Warning));
+                    });
                 var host = builder.Build();
                 await host.StartAsync();
                 return host;
             }
             else
             {
-                var builder = new SiloHostBuilder()
-                            .ConfigureEndpoints(new Random(1).Next(30001, 30100), new Random(1).Next(20001, 20100), listenOnAnyHostAddress: false)
-                            .UseKubeMembership()
+                var builder = new HostBuilder()
+                    .UseOrleans(builder =>
+                    {
+                        builder.UseKubernetesHosting()
                             .AddMemoryGrainStorageAsDefault()
                             .ConfigureLogging(logging => logging.AddConsole())
                             .ConfigureLogging(logging => logging.SetMinimumLevel(LogLevel.Warning));
+                    });
+
 
                 var host = builder.Build();
                 await host.StartAsync();
