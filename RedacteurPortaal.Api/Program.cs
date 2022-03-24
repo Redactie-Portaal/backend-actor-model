@@ -1,4 +1,5 @@
 using Orleans.Hosting;
+using RedacteurPortaal.Grains;
 
 await Host.CreateDefaultBuilder(args)
     .UseOrleans((ctx, siloBuilder) =>
