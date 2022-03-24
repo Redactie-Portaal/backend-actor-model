@@ -1,4 +1,4 @@
-﻿namespace RedacteurPortaal.ClassLibrary
+﻿namespace RedacteurPortaal.ClassLibrary.NewsItem
 {
     public enum CategoryEnum
     {

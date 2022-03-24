@@ -1,11 +1,16 @@
-﻿namespace RedacteurPortaal.ClassLibrary
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace RedacteurPortaal.ClassLibrary.NewsItem
 {
-    [Serializable]
-    public class NewsItem
+    public class NewsItemRequest
     {
         public Guid Id { get; set; } = Guid.NewGuid();
         public string Title { get; set; }
-        public string Description { get; set; }
+        public Description Description { get; set; }
         public string Idea { get; set; }
         public string ContactDetails { get; set; }
         //public ? LocationDetails { get; set; }
@@ -15,6 +20,5 @@
         public RegionEnum Region { get; set; }
         public string Location { get; set; }
         //public ? SourceDetails { get; set; }
-
     }
 }

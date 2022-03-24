@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Orleans;
-using RedacteurPortaal.ClassLibrary;
+using RedacteurPortaal.ClassLibrary.NewsItem;
 using RedacteurPortaal.Grains.GrainInterfaces;
 
 namespace RedacteurPortaal.Api.Controllers
@@ -20,7 +20,7 @@ namespace RedacteurPortaal.Api.Controllers
 
         [Route("/newsitem")]
         [HttpPost]
-        public async Task<IActionResult> SaveNewsItem([FromBody] NewsItem newsitem)
+        public async Task<IActionResult> SaveNewsItem([FromBody] NewsItemRequest newsitem)
         {
             try
             {
@@ -44,7 +44,7 @@ namespace RedacteurPortaal.Api.Controllers
             try
             {
                 var grain = _client.GetGrain<INewsItemGrain>(guid);
-                var response = await grain.GetNewsItem();
+                var response = await grain.GetNewsItem(guid);
                 if (response is not null)
                 {
                     _logger.LogInformation("News item fetched successfully");

@@ -1,12 +1,12 @@
 ﻿using Orleans;
-using RedacteurPortaal.ClassLibrary;
+using RedacteurPortaal.ClassLibrary.NewsItem;
 
 namespace RedacteurPortaal.Grains.GrainInterfaces
 {
     public interface INewsItemGrain : IGrainWithGuidKey
     {
-        Task<NewsItem> GetNewsItem();
-        Task AddNewsItem(NewsItem newsitem);
+        Task<NewsItemRequest> GetNewsItem(Guid guid);
+        Task AddNewsItem(NewsItemRequest newsitem);
 
         Task DeleteNewsItem(Guid guid);
 
