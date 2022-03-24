@@ -1,57 +1,52 @@
-using Orleans;
-using Orleans.Clustering.Kubernetes;
-using Orleans.Configuration;
-using Polly;
-using RedacteurPortaal.Grains;
+using Orleans.Hosting;
 
-var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddSingleton(p => OrleansClient.ClusterClient);
-var app = builder.Build();
-
-// Setup orleans client to use.
-OrleansClient.ClusterClient = Policy<IClusterClient>.Handle<Exception>()
-     .WaitAndRetry(new[]
-     {
-         TimeSpan.FromSeconds(1),
-         TimeSpan.FromSeconds(2),
-         TimeSpan.FromSeconds(3)
-     })
-     .Execute(() =>
-     {
-         if (app.Environment.IsDevelopment())
-         {
-             var builder = new ClientBuilder()
-        .Configure<ClusterOptions>(c =>
+await Host.CreateDefaultBuilder(args)
+    .UseOrleans((ctx, siloBuilder) =>
+    {
+        if (ctx.HostingEnvironment.IsDevelopment())
         {
-            c.ClusterId = "Test";
-            c.ServiceId = "Test";
-        })
-        .UseLocalhostClustering()
-        .ConfigureLogging(logging => logging.AddConsole());
+            siloBuilder.UseLocalhostClustering();
+            siloBuilder.AddMemoryGrainStorage("definitions");
+        }
+        else
+        {
+            // In Kubernetes, we use environment variables and the pod manifest
+            siloBuilder.UseKubernetesHosting();
 
-             var client = builder.Build();
-             client.Connect().Wait();
-             return client;
-         }
-         else
-         {
-             var builder = new ClientBuilder()
-        .UseKubeGatewayListProvider()
-        .ConfigureLogging(logging => logging.AddConsole());
+            // Use Redis for clustering & persistence
+            var redisConnectionString = Environment.GetEnvironmentVariable("REDIS");
+            var postgresqlConnString = Environment.GetEnvironmentVariable("POSTGRESQL");
+            siloBuilder.UseRedisClustering(options => options.ConnectionString = redisConnectionString);
+            siloBuilder.AddAdoNetGrainStorage("OrleansStorage", options =>
+            {
+                options.Invariant = "Npgsql";
+                options.UseJsonFormat = true;
+                options.ConnectionString = postgresqlConnString;
+            });
+        }
+    })
+    .ConfigureWebHostDefaults(webBuilder =>
+    {
+        webBuilder.ConfigureServices(services => services.AddControllers());
+        webBuilder.Configure((ctx, app) =>
+        {
+            if (ctx.HostingEnvironment.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
 
-             var client = builder.Build();
-             client.Connect().Wait();
-             return client;
-         }
-        
-     });
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+            app.UseRouting();
+            app.UseAuthorization();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
+        });
+    })
+    .ConfigureServices(services =>
+    {
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-app.MapGet("/", () => "Hello World!");
-
-app.Run();
+    })
+    .RunConsoleAsync();
