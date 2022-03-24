@@ -8,14 +8,14 @@ namespace RedacteurPortaal.Grains.Grains
 {
     public class NewsItemDescriptionGrain : Grain, INewsItemDescriptionGrain
     {
-        private readonly ILogger logger;
+        private readonly ILogger _logger;
 
         private readonly IPersistentState<Description> _description;
 
         public NewsItemDescriptionGrain(ILogger<NewsItemDescriptionGrain> logger,
            [PersistentState("newsitem", "OrleansStorage")] IPersistentState<Description> description)
         {
-            this.logger = logger;
+            _logger = logger;
             _description = description;
         }
 
@@ -29,7 +29,13 @@ namespace RedacteurPortaal.Grains.Grains
 
         public async Task<Description> GetDescription()
         {
+            _logger.LogInformation($"Got description from {_description.State.guid}");
             return await Task.FromResult(_description.State);
+        }
+
+        public async Task DeleteDescription()
+        {
+            await _description.ClearStateAsync();
         }
     }
 }

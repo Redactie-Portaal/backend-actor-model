@@ -7,5 +7,6 @@ namespace RedacteurPortaal.Grains.GrainInterfaces
     {
         Task<Description> GetDescription();
         Task AddDescription(Guid guid, Description des);
+        Task DeleteDescription();
     }
 }

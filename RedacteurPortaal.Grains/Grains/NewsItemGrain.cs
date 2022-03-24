@@ -20,7 +20,6 @@ namespace RedacteurPortaal.Grains.Grains
             _newsItem = newsItem;
         }
 
-
         public async Task<NewsItemRequest> GetNewsItem(Guid guid)
         {
             var grain = GrainFactory.GetGrain<INewsItemDescriptionGrain>(guid);
@@ -46,6 +45,7 @@ namespace RedacteurPortaal.Grains.Grains
         {
             var grain = GrainFactory.GetGrain<INewsItemDescriptionGrain>(newsitem.Id);
             await grain.AddDescription(newsitem.Id, newsitem.Description);
+            
             _newsItem.State.Id = newsitem.Id;
             _newsItem.State.EndDate = newsitem.EndDate;
             _newsItem.State.ProdutionDate = newsitem.ProdutionDate;
@@ -60,6 +60,8 @@ namespace RedacteurPortaal.Grains.Grains
 
         public async Task DeleteNewsItem(Guid guid)
         {
+            var grain = GrainFactory.GetGrain<INewsItemDescriptionGrain>(guid);
+            await grain.DeleteDescription();
             await _newsItem.ClearStateAsync();
         }
 
