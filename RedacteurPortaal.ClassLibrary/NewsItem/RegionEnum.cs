@@ -2,7 +2,7 @@
 {
     public enum RegionEnum
     {
-        Province,
-        Local
+        PROVINCE,
+        LOCAL
     }
 }

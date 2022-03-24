@@ -2,8 +2,8 @@
 {
     public enum CategoryEnum
     {
-        News,
-        Story,
-        Programme
+        NEWS,
+        STORY,
+        PROGRAMME
     }
 }

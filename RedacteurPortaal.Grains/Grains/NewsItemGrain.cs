@@ -35,7 +35,7 @@ namespace RedacteurPortaal.Grains.Grains
                 EndDate = item.EndDate, 
                 Idea = item.Idea,   
                 ProdutionDate = item.ProdutionDate, 
-                Location = item.Location,
+                Location = item.LocationDetails,
                 Region = item.Region,
                 Title = item.Title
             };
