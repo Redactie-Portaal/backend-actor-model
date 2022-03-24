@@ -16,7 +16,6 @@ await Host.CreateDefaultBuilder(args)
             // Use Redis for clustering & persistence
             var redisConnectionString = Environment.GetEnvironmentVariable("REDIS");
             var postgresqlConnString = Environment.GetEnvironmentVariable("POSTGRESQL");
-            siloBuilder.UseRedisClustering(options => options.ConnectionString = redisConnectionString);
             siloBuilder.AddAdoNetGrainStorage("OrleansStorage", options =>
             {
                 options.Invariant = "Npgsql";
