@@ -1,8 +1,8 @@
-﻿namespace RedacteurPortaal.ClassLibrary
+﻿namespace RedacteurPortaal.ClassLibrary.NewsItem
 {
     public enum RegionEnum
     {
-        Province,
-        Local
+        PROVINCE,
+        LOCAL
     }
 }
