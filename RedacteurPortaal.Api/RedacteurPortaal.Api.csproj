@@ -27,6 +27,7 @@
 		<PackageReference Include="Microsoft.Orleans.Hosting.Kubernetes" Version="3.6.0" />
 		<PackageReference Include="Microsoft.Orleans.Persistence.AdoNet" Version="3.6.0" />
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.15.0" />
+		<PackageReference Include="Npgsql" Version="6.0.3" />
 		<PackageReference Include="Orleans.Clustering.Kubernetes" Version="2.1.0" />
 		<PackageReference Include="Orleans.Clustering.Redis" Version="3.2.1" />
 		<PackageReference Include="Polly" Version="7.2.3" />
