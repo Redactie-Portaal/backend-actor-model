@@ -54,7 +54,7 @@ namespace RedacteurPortaal.Grains.Grains
             _newsItem.State.Idea = newsitem.Idea;
             _newsItem.State.Category = newsitem.Category;
             _newsItem.State.Region = newsitem.Region;
-            _newsItem.State.Location = newsitem.Location;
+            _newsItem.State.LocationDetails = newsitem.Location;
             await _newsItem.WriteStateAsync();
         }
 
