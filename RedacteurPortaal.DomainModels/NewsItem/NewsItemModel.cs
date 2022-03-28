@@ -1,4 +1,4 @@
-﻿using RedacteurPortaal.DomainModels.NewsItem.Media;
+﻿using RedacteurPortaal.DomainModels.Media;
 
 namespace RedacteurPortaal.DomainModels.NewsItem
 {

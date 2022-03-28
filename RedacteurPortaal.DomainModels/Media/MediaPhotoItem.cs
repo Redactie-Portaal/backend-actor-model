@@ -1,4 +1,4 @@
-﻿namespace RedacteurPortaal.DomainModels.NewsItem.Media
+﻿namespace RedacteurPortaal.DomainModels.Media
 {
     public class MediaPhotoItem : MediaItem
     {
