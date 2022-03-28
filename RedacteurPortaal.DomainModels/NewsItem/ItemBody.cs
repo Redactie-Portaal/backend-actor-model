@@ -4,7 +4,7 @@
     public class ItemBody
     {
         public Guid Guid { get;set; }
-        public string Des { get; set; }
-        public string Short { get; set; }
+        public string Description { get; set; }
+        public string ShortDescription { get; set; }
     }
 }

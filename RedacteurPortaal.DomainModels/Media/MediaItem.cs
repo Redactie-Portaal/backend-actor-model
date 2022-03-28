@@ -1,6 +1,6 @@
 ﻿namespace RedacteurPortaal.DomainModels.Media
 {
-    public class MediaItem
+    public abstract class MediaItem
     {
         Guid Guid { get; set; }
         string Title { get; set; }

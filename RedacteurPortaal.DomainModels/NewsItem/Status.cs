@@ -1,6 +1,6 @@
 ﻿namespace RedacteurPortaal.DomainModels.NewsItem
 {
-    public enum StatusEnum
+    public enum Status
     {
         DELETE,
         INPRODUCTION,

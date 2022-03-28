@@ -1,6 +1,6 @@
 ﻿namespace RedacteurPortaal.DomainModels.NewsItem
 {
-    public enum RegionEnum
+    public enum Region
     {
         PROVINCE,
         LOCAL

@@ -1,6 +1,6 @@
 ﻿namespace RedacteurPortaal.DomainModels.NewsItem
 {
-    public enum CategoryEnum
+    public enum Category
     {
         NEWS,
         STORY,
