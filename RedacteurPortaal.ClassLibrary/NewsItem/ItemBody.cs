@@ -1,7 +1,7 @@
 ﻿namespace RedacteurPortaal.ClassLibrary.NewsItem
 {
     [Serializable]
-    public class Description
+    public class ItemBody
     {
         public Guid guid { get;set; }
 

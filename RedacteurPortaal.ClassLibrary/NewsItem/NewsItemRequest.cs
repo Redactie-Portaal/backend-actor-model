@@ -4,7 +4,7 @@
     {
         public Guid Id { get; set; } = Guid.NewGuid();
         public string Title { get; set; }
-        public Description Description { get; set; }
+        public ItemBody Description { get; set; }
         public string Idea { get; set; }
         public string ContactDetails { get; set; }
         //public ? LocationDetails { get; set; }
