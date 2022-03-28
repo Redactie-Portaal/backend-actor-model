@@ -3,19 +3,17 @@
 public class MediaAudioItem : MediaItem
 {
     public MediaAudioItem(
+        Guid guid, string title, string folder, DateTime republishDate, string rights, string camera, string lastWords, string proxyFile, string presentation, Location location, string format,
         TimeSpan duration,
         Weather weather,
-        Location location,
         string firstWords,
-        string programName,
-        string presentation)
+        string programName)
+        : base(guid, title, folder, republishDate, rights, camera, lastWords, proxyFile, presentation, location, format)
     {
         this.Duration = duration;
         this.Weather = weather;
-        this.Location = location ?? throw new ArgumentNullException(nameof(location));
         this.FirstWords = firstWords ?? throw new ArgumentNullException(nameof(firstWords));
         this.ProgramName = programName ?? throw new ArgumentNullException(nameof(programName));
-        this.Presentation = presentation ?? throw new ArgumentNullException(nameof(presentation));
     }
 
     // Delete deze comments als je deze class wilt gebruiken.
@@ -24,13 +22,9 @@ public class MediaAudioItem : MediaItem
 
     public Weather Weather { get; }
 
-    public Location Location { get; }
-
     public string FirstWords { get; }
 
     public string ProgramName { get; }
-
-    public string Presentation { get; }
 
     // ReSharper restore UnusedAutoPropertyAccessor.Global
 }

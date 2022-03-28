@@ -19,7 +19,7 @@ public class MediaPhotoGrain : Grain, IMediaPhotoGrain
 
     public void PlaceHolder()
     {
-        _ = photoItem;
+        _ = this.photoItem;
         throw new NotImplementedException();
     }
 }

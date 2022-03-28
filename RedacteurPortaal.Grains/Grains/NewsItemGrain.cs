@@ -20,8 +20,9 @@ public class NewsItemGrain : Grain, INewsItemGrain
     {
         var grain = this.GrainFactory.GetGrain<INewsItemDescriptionGrain>(guid);
         var description = await grain.GetDescription();
-        var item = await Task.FromResult(newsItem.State);
-        item.Body = description;
+        var item = await Task.FromResult(this.newsItem.State);
+
+        // item.Body = description;
         return item;
     }
 
@@ -29,21 +30,21 @@ public class NewsItemGrain : Grain, INewsItemGrain
     {
         var grain = this.GrainFactory.GetGrain<INewsItemDescriptionGrain>(newsitem.Id);
         await grain.AddDescription(newsitem.Id, newsitem.Body);
-        newsItem.State = newsitem;
-        await newsItem.WriteStateAsync();
+        this.newsItem.State = newsitem;
+        await this.newsItem.WriteStateAsync();
     }
 
     public async Task DeleteNewsItem(Guid guid)
     {
-        var grain = GrainFactory.GetGrain<INewsItemDescriptionGrain>(guid);
+        var grain = this.GrainFactory.GetGrain<INewsItemDescriptionGrain>(guid);
         await grain.DeleteDescription();
-        await newsItem.ClearStateAsync();
+        await this.newsItem.ClearStateAsync();
     }
 
     public async Task UpdateNewsItem(string name, Guid guid)
     {
-        newsItem.State.Title = name;
-        newsItem.State.Id = guid;
+        // this.newsItem.State.Title = name;
+        this.newsItem.State.Id = guid;
         await newsItem.WriteStateAsync();
     }
 }

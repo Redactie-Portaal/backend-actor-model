@@ -8,21 +8,18 @@ namespace RedacteurPortaal.Grains.Grains;
 
 public class MediaVideoGrain : Grain, IMediaVideoGrain
 {
-    private readonly ILogger logger;
-
     private readonly IPersistentState<MediaVideoItem> videoItem;
 
     public MediaVideoGrain(
-        ILogger logger,
         [PersistentState("videoItem", "OrleansStorage")]
         IPersistentState<MediaVideoItem> videoItem)
     {
-        this.logger = logger;
         this.videoItem = videoItem;
     }
 
     public void PlaceHolder()
     {
+        _ = this.videoItem;
         throw new NotImplementedException();
     }
 }

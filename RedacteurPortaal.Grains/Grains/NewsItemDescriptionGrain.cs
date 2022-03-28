@@ -26,11 +26,11 @@ public class NewsItemDescriptionGrain : Grain, INewsItemDescriptionGrain
 
     public async Task<ItemBody> GetDescription()
     {
-        return await Task.FromResult(description.State);
+        return await Task.FromResult(this.description.State);
     }
 
     public async Task DeleteDescription()
     {
-        await description.ClearStateAsync();
+        await this.description.ClearStateAsync();
     }
 }
