@@ -6,7 +6,7 @@ using RedacteurPortaal.Grains.GrainInterfaces;
 namespace RedacteurPortaal.Api.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/newsitem")]
     public class NewsItemController : Controller
     {
         private IClusterClient _client;
@@ -18,7 +18,6 @@ namespace RedacteurPortaal.Api.Controllers
             _logger = logger;
         }
 
-        [Route("/newsitem")]
         [HttpPost]
         public async Task<IActionResult> SaveNewsItem([FromBody] NewsItemModel newsitem)
         {
@@ -39,8 +38,8 @@ namespace RedacteurPortaal.Api.Controllers
             }
         }
 
-        [Route("/newsitem")]
         [HttpGet]
+        [Route("{guid}")]
         public async Task<IActionResult> GetNewsItem(Guid guid)
         {
             try
@@ -67,7 +66,6 @@ namespace RedacteurPortaal.Api.Controllers
 
         }
 
-        [Route("/newsitem")]
         [HttpDelete]
         public async Task<IActionResult> DeleteNewsItem(Guid guid)
         {
@@ -85,7 +83,6 @@ namespace RedacteurPortaal.Api.Controllers
             }
         }
 
-        [Route("/newsitem")]
         [HttpPut]
         public async Task<IActionResult> UpdateNewsItem(string name, Guid guid)
         {
