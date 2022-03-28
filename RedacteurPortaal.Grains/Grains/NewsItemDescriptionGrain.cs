@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Orleans;
 using Orleans.Runtime;
-using RedacteurPortaal.ClassLibrary.NewsItem;
+using RedacteurPortaal.DomainModels.NewsItem;
 using RedacteurPortaal.Grains.GrainInterfaces;
 
 namespace RedacteurPortaal.Grains.Grains

@@ -1,5 +1,5 @@
 ﻿
-namespace RedacteurPortaal.ClassLibrary.NewsItem.Media
+namespace RedacteurPortaal.DomainModels.NewsItem.Media
 {
     public class MediaAudioItem : MediaItem
     {
