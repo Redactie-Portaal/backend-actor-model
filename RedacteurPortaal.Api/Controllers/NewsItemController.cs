@@ -20,10 +20,12 @@ namespace RedacteurPortaal.Api.Controllers
 
         [Route("/newsitem")]
         [HttpPost]
-        public async Task<IActionResult> SaveNewsItem([FromBody] NewsItemRequest newsitem)
+        public async Task<IActionResult> SaveNewsItem([FromBody] NewsItemModel newsitem)
         {
             try
             {
+                var newguid = Guid.NewGuid();
+                newsitem.Id = newguid;
                 var successMessage = "News item was created";
                 var grain = _client.GetGrain<INewsItemGrain>(newsitem.Id);
                 await grain.AddNewsItem(newsitem);
