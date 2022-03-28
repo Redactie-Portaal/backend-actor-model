@@ -1,4 +1,6 @@
-﻿namespace RedacteurPortaal.ClassLibrary.NewsItem
+﻿using RedacteurPortaal.ClassLibrary.NewsItem.Media;
+
+namespace RedacteurPortaal.ClassLibrary.NewsItem
 {
     [Serializable]
     public class NewsItemModel
@@ -13,7 +15,11 @@
         public DateTime EndDate { get; set; }
         public CategoryEnum Category { get; set; }
         public RegionEnum Region { get; set; }
-        public StatusEnum Status { get; set; }  
+        public StatusEnum Status { get; set; }
+
+        MediaVideoItem Video { get; set; }
+        MediaAudioItem Audio { get; set; }
+        MediaPhotoItem Photo { get; set; }
         //public ? SourceDetails { get; set; }
 
     }
