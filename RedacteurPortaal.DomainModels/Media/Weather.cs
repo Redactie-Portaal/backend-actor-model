@@ -1,6 +1,5 @@
-﻿namespace RedacteurPortaal.DomainModels.Media
+﻿namespace RedacteurPortaal.DomainModels.Media;
+
+public enum Weather
 {
-    public enum Weather
-    {
-    }
 }

@@ -1,7 +1,5 @@
-﻿namespace RedacteurPortaal.DomainModels.NewsItem
-{
-    public class FeedSource
-    {
+﻿namespace RedacteurPortaal.DomainModels.NewsItem;
 
-    }
+public class FeedSource
+{
 }

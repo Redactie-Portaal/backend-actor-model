@@ -1,53 +1,36 @@
-﻿namespace RedacteurPortaal.DomainModels.Media
-{
-    public class MediaAudioItem : MediaItem
-    {
-        TimeSpan Duration { get; }
-        Weather Weather { get; }
-        Location Location { get; }
-        string FirstWords { get; }
-        string ProgramName { get; }
-        string Presentation { get; }
+﻿namespace RedacteurPortaal.DomainModels.Media;
 
-        public MediaAudioItem(
-            Guid guid,
-            Guid newsItemGuid,
-            string title,
-            string folder,
-            DateTime republishDate,
-            string rights,
-            string camera,
-            string lastWords,
-            string proxyFile,
-            string presentation,
-            Location location,
-            string format,
-            TimeSpan duration,
-            Weather weather,
-            string firstWords,
-            string programName
-            )
-            : base(
-               guid,
-               newsItemGuid,
-               title,
-               folder,
-               republishDate,
-               rights,
-               camera,
-               lastWords,
-               proxyFile,
-               presentation,
-               location,
-               format
-               )
-        {
-            Duration = duration;
-            Weather = weather;
-            Location = location;
-            FirstWords = firstWords;
-            ProgramName = programName;
-            Presentation = presentation;
-        }
+public class MediaAudioItem : MediaItem
+{
+    public MediaAudioItem(
+        TimeSpan duration,
+        Weather weather,
+        Location location,
+        string firstWords,
+        string programName,
+        string presentation)
+    {
+        this.Duration = duration;
+        this.Weather = weather;
+        this.Location = location ?? throw new ArgumentNullException(nameof(location));
+        this.FirstWords = firstWords ?? throw new ArgumentNullException(nameof(firstWords));
+        this.ProgramName = programName ?? throw new ArgumentNullException(nameof(programName));
+        this.Presentation = presentation ?? throw new ArgumentNullException(nameof(presentation));
     }
+
+    // Delete deze comments als je deze class wilt gebruiken.
+    // ReSharper disable UnusedAutoPropertyAccessor.Global
+    public TimeSpan Duration { get; }
+
+    public Weather Weather { get; }
+
+    public Location Location { get; }
+
+    public string FirstWords { get; }
+
+    public string ProgramName { get; }
+
+    public string Presentation { get; }
+
+    // ReSharper restore UnusedAutoPropertyAccessor.Global
 }

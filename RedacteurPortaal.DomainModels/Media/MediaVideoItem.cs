@@ -1,4 +1,6 @@
-﻿namespace RedacteurPortaal.DomainModels.Media
+﻿namespace RedacteurPortaal.DomainModels.Media;
+
+public class MediaVideoItem : MediaItem
 {
     public class MediaVideoItem : MediaItem
     {

@@ -1,40 +1,6 @@
-﻿namespace RedacteurPortaal.DomainModels.Media
-{
-    public class MediaPhotoItem : MediaItem
-    {
-        string Image { get; }
+﻿namespace RedacteurPortaal.DomainModels.Media;
 
-        public MediaPhotoItem(
-            Guid guid,
-            Guid newsItemGuid,
-            string title,
-            string folder,
-            DateTime republishDate,
-            string rights,
-            string camera,
-            string lastWords,
-            string proxyFile,
-            string presentation,
-            Location location,
-            string format,
-            string image
-            )
-            : base(
-               guid,
-               newsItemGuid,
-               title,
-               folder,
-               republishDate,
-               rights,
-               camera,
-               lastWords,
-               proxyFile,
-               presentation,
-               location,
-               format
-             )
-        {
-            Image = image;
-        }
-    }
+public class MediaPhotoItem : MediaItem
+{
+    private string Image { get; set; }
 }

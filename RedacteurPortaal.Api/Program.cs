@@ -44,14 +44,11 @@ await Host.CreateDefaultBuilder(args)
             app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthorization();
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         });
     })
     .ConfigureServices(services =>
     {
-
+        // Add services here
     })
     .RunConsoleAsync();
