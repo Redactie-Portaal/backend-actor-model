@@ -21,7 +21,7 @@ namespace RedacteurPortaal.Grains.Grains
 
         public async Task AddDescription(Guid guid, ItemBody des)
         {
-            _description.State.guid = guid;
+            _description.State.Guid = guid;
             _description.State.Des = des.Des;
             _description.State.Short = des.Short;
             await _description.WriteStateAsync();
@@ -29,7 +29,7 @@ namespace RedacteurPortaal.Grains.Grains
 
         public async Task<ItemBody> GetDescription()
         {
-            _logger.LogInformation($"Got description from {_description.State.guid}");
+            _logger.LogInformation($"Got description from {_description.State.Guid}");
             return await Task.FromResult(_description.State);
         }
 

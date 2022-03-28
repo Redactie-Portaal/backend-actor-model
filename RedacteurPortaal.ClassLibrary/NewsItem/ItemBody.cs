@@ -3,8 +3,7 @@
     [Serializable]
     public class ItemBody
     {
-        public Guid guid { get;set; }
-
+        public Guid Guid { get;set; }
         public string Des { get; set; }
         public string Short { get; set; }
     }
