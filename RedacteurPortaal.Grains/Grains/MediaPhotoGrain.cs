@@ -18,5 +18,10 @@ namespace RedacteurPortaal.Grains.Grains
             this.logger = logger;
             _photoItem = photoItem;
         }
+
+        public void PlaceHolder()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

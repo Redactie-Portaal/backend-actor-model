@@ -19,5 +19,10 @@ namespace RedacteurPortaal.Grains.Grains
             this.logger = logger;
             _audioItem = audioItem;
         }
+
+        public void PlaceHolder()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
