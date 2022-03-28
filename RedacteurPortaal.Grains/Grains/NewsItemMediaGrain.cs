@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Orleans.Runtime;
-using RedacteurPortaal.ClassLibrary.NewsItem.Media;
+using RedacteurPortaal.DomainModels.NewsItem.Media;
 
 namespace RedacteurPortaal.Grains.Grains
 {

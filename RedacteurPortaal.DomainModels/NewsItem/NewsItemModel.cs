@@ -1,6 +1,6 @@
-﻿using RedacteurPortaal.ClassLibrary.NewsItem.Media;
+﻿using RedacteurPortaal.DomainModels.NewsItem.Media;
 
-namespace RedacteurPortaal.ClassLibrary.NewsItem
+namespace RedacteurPortaal.DomainModels.NewsItem
 {
     [Serializable]
     public class NewsItemModel

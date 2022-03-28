@@ -1,5 +1,5 @@
 ﻿using Orleans;
-using RedacteurPortaal.ClassLibrary.NewsItem;
+using RedacteurPortaal.DomainModels.NewsItem;
 
 namespace RedacteurPortaal.Grains.GrainInterfaces
 {
