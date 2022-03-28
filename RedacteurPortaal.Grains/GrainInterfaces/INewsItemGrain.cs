@@ -5,8 +5,8 @@ namespace RedacteurPortaal.Grains.GrainInterfaces
 {
     public interface INewsItemGrain : IGrainWithGuidKey
     {
-        Task<NewsItemRequest> GetNewsItem(Guid guid);
-        Task AddNewsItem(NewsItemRequest newsitem);
+        Task<NewsItemModel> GetNewsItem(Guid guid);
+        Task AddNewsItem(NewsItemModel newsitem);
 
         Task DeleteNewsItem(Guid guid);
 

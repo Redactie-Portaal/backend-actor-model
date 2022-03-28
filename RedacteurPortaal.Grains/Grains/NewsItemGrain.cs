@@ -8,7 +8,7 @@ namespace RedacteurPortaal.Grains.Grains
 {
     public class NewsItemGrain : Grain, INewsItemGrain
     {
-        private readonly ILogger logger;
+        private readonly ILogger _logger;
 
 
         private readonly IPersistentState<NewsItemModel> _newsItem;
@@ -16,50 +16,33 @@ namespace RedacteurPortaal.Grains.Grains
         public NewsItemGrain(ILogger<NewsItemGrain> logger,
             [PersistentState("newsitem", "OrleansStorage")] IPersistentState<NewsItemModel> newsItem)
         {
-            this.logger = logger;
+            _logger = logger;
             _newsItem = newsItem;
         }
 
-
-        public async Task<NewsItemRequest> GetNewsItem(Guid guid)
+        public async Task<NewsItemModel> GetNewsItem(Guid guid)
         {
             var grain = GrainFactory.GetGrain<INewsItemDescriptionGrain>(guid);
             var description = await grain.GetDescription();
             var item = await Task.FromResult(_newsItem.State);
-            var newsItem = new NewsItemRequest()
-            {
-                Id = item.Id,
-                Description = description,
-                Category = item.Category,
-                ContactDetails = item.ContactDetails,
-                EndDate = item.EndDate, 
-                Idea = item.Idea,   
-                ProdutionDate = item.ProdutionDate, 
-                Location = item.LocationDetails,
-                Region = item.Region,
-                Title = item.Title
-            };
-            return newsItem;
+            item.Body = description;
+            _logger.LogInformation("Retrieved News Item");
+            return item;
         }
 
-        public async Task AddNewsItem(NewsItemRequest newsitem)
+        public async Task AddNewsItem(NewsItemModel newsitem)
         {
             var grain = GrainFactory.GetGrain<INewsItemDescriptionGrain>(newsitem.Id);
-            await grain.AddDescription(newsitem.Id, newsitem.Description);
-            _newsItem.State.Id = newsitem.Id;
-            _newsItem.State.EndDate = newsitem.EndDate;
-            _newsItem.State.ProdutionDate = newsitem.ProdutionDate;
-            _newsItem.State.ContactDetails = newsitem.ContactDetails;
-            _newsItem.State.Title = newsitem.Title;
-            _newsItem.State.Idea = newsitem.Idea;
-            _newsItem.State.Category = newsitem.Category;
-            _newsItem.State.Region = newsitem.Region;
-            _newsItem.State.LocationDetails = newsitem.Location;
+            await grain.AddDescription(newsitem.Id, newsitem.Body);
+            
+            _newsItem.State = newsitem;
             await _newsItem.WriteStateAsync();
         }
 
         public async Task DeleteNewsItem(Guid guid)
         {
+            var grain = GrainFactory.GetGrain<INewsItemDescriptionGrain>(guid);
+            await grain.DeleteDescription();
             await _newsItem.ClearStateAsync();
         }
 

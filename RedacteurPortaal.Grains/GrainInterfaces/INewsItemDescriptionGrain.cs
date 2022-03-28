@@ -5,7 +5,8 @@ namespace RedacteurPortaal.Grains.GrainInterfaces
 {
     public interface INewsItemDescriptionGrain : IGrainWithGuidKey
     {
-        Task<Description> GetDescription();
-        Task AddDescription(Guid guid, Description des);
+        Task<ItemBody> GetDescription();
+        Task AddDescription(Guid guid, ItemBody des);
+        Task DeleteDescription();
     }
 }

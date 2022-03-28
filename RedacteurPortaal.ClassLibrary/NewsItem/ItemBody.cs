@@ -1,10 +1,9 @@
 ﻿namespace RedacteurPortaal.ClassLibrary.NewsItem
 {
     [Serializable]
-    public class Description
+    public class ItemBody
     {
-        public Guid guid { get;set; }
-
+        public Guid Guid { get;set; }
         public string Des { get; set; }
         public string Short { get; set; }
     }
