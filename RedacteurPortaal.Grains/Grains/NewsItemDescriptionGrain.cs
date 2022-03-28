@@ -19,17 +19,16 @@ namespace RedacteurPortaal.Grains.Grains
             _description = description;
         }
 
-        public async Task AddDescription(Guid guid, ItemBody des)
+        public async Task AddDescription(Guid guid, ItemBody description)
         {
             _description.State.Guid = guid;
-            _description.State.Description = des.Description;
-            _description.State.ShortDescription = des.ShortDescription;
+            _description.State.Description = description.Description;
+            _description.State.ShortDescription = description.ShortDescription;
             await _description.WriteStateAsync();
         }
 
         public async Task<ItemBody> GetDescription()
         {
-            _logger.LogInformation($"Got description from {_description.State}");
             return await Task.FromResult(_description.State);
         }
 

@@ -26,7 +26,6 @@ namespace RedacteurPortaal.Grains.Grains
             var description = await grain.GetDescription();
             var item = await Task.FromResult(_newsItem.State);
             item.Body = description;
-            _logger.LogInformation("Retrieved News Item");
             return item;
         }
 
@@ -34,7 +33,6 @@ namespace RedacteurPortaal.Grains.Grains
         {
             var grain = GrainFactory.GetGrain<INewsItemDescriptionGrain>(newsitem.Id);
             await grain.AddDescription(newsitem.Id, newsitem.Body);
-            
             _newsItem.State = newsitem;
             await _newsItem.WriteStateAsync();
         }
