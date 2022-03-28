@@ -1,3 +1,4 @@
+using Orleans;
 using Orleans.Hosting;
 
 await Host.CreateDefaultBuilder(args)
@@ -23,6 +24,7 @@ await Host.CreateDefaultBuilder(args)
                 options.UseJsonFormat = true;
                 options.ConnectionString = postgresqlConnString;
             });
+            siloBuilder.ConfigureLogging(logging => logging.AddConsole());
         }
     })
     .ConfigureWebHostDefaults(webBuilder =>
