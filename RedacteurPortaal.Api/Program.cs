@@ -28,10 +28,13 @@ await Host.CreateDefaultBuilder(args)
     .ConfigureWebHostDefaults(webBuilder =>
     {
         webBuilder.ConfigureServices(services => services.AddControllers());
+        webBuilder.ConfigureServices(services => services.AddSwaggerGen());
         webBuilder.Configure((ctx, app) =>
         {
             if (ctx.HostingEnvironment.IsDevelopment())
             {
+                app.UseSwagger();
+                app.UseSwaggerUI();
                 app.UseDeveloperExceptionPage();
             }
 
