@@ -1,5 +1,10 @@
+using Export.Base;
 using Orleans;
 using Orleans.Hosting;
+using RedacteurPortaal.Api;
+using RedacteurPortaal.Grains.GrainInterfaces;
+using RedacteurPortaal.Grains.Grains;
+using System.Runtime.Loader;
 
 await Host.CreateDefaultBuilder(args)
     .UseOrleans((ctx, siloBuilder) =>
@@ -7,7 +12,7 @@ await Host.CreateDefaultBuilder(args)
         if (ctx.HostingEnvironment.IsDevelopment())
         {
             siloBuilder.UseLocalhostClustering();
-            siloBuilder.AddMemoryGrainStorage("definitions");
+            siloBuilder.AddMemoryGrainStorage("OrleansStorage");
         }
         else
         {
@@ -49,6 +54,6 @@ await Host.CreateDefaultBuilder(args)
     })
     .ConfigureServices(services =>
     {
-        // Add services here
+        services.AddSingleton<IExportPluginService, ExportPluginService>();
     })
     .RunConsoleAsync();

@@ -5,7 +5,12 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<CodeAnalysisRuleSet>..\.sonarlint\redactie-portaal_backend-actor-modelcsharp.ruleset</CodeAnalysisRuleSet>
     </PropertyGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="..\.sonarlint\redactie-portaal_backend-actor-model\CSharp\SonarLint.xml" Link="SonarLint.xml" />
+    </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
