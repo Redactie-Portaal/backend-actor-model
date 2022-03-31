@@ -1,3 +1,4 @@
+using Orleans;
 using Orleans.Hosting;
 
 await Host.CreateDefaultBuilder(args)
@@ -23,15 +24,19 @@ await Host.CreateDefaultBuilder(args)
                 options.UseJsonFormat = true;
                 options.ConnectionString = postgresqlConnString;
             });
+            siloBuilder.ConfigureLogging(logging => logging.AddConsole());
         }
     })
     .ConfigureWebHostDefaults(webBuilder =>
     {
         webBuilder.ConfigureServices(services => services.AddControllers());
+        webBuilder.ConfigureServices(services => services.AddSwaggerGen());
         webBuilder.Configure((ctx, app) =>
         {
             if (ctx.HostingEnvironment.IsDevelopment())
             {
+                app.UseSwagger();
+                app.UseSwaggerUI();
                 app.UseDeveloperExceptionPage();
             }
 
@@ -39,14 +44,11 @@ await Host.CreateDefaultBuilder(args)
             app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthorization();
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         });
     })
     .ConfigureServices(services =>
     {
-
+        // Add services here
     })
     .RunConsoleAsync();
