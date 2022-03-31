@@ -22,7 +22,7 @@ public class NewsItemGrain : Grain, INewsItemGrain
         var description = await grain.GetDescription();
         var item = await Task.FromResult(this.newsItem.State);
 
-        // item.Body = description;
+        // TODO: Merge description
         return item;
     }
 
@@ -43,7 +43,7 @@ public class NewsItemGrain : Grain, INewsItemGrain
 
     public async Task UpdateNewsItem(string name, Guid guid)
     {
-        // this.newsItem.State.Title = name;
+        // TODO: Merge title.
         this.newsItem.State.Id = guid;
         await newsItem.WriteStateAsync();
     }

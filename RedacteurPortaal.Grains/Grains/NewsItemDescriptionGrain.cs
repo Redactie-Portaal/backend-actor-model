@@ -18,9 +18,9 @@ public class NewsItemDescriptionGrain : Grain, INewsItemDescriptionGrain
 
     public async Task AddDescription(Guid guid, ItemBody description)
     {
-        this.description.State.Guid = guid;
+       /* this.description.State.Guid = guid;
         this.description.State.Description = description.Description;
-        this.description.State.ShortDescription = description.ShortDescription;
+        this.description.State.ShortDescription = description.ShortDescription;*/
         await this.description.WriteStateAsync();
     }
 
