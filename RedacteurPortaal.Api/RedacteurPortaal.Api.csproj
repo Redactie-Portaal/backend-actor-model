@@ -8,6 +8,7 @@
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
         <CodeAnalysisRuleSet>..\.sonarlint\redactie-portaal_backend-actor-modelcsharp.ruleset</CodeAnalysisRuleSet>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>

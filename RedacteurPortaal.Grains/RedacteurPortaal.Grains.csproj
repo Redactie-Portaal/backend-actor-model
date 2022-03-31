@@ -10,6 +10,7 @@
         <PackageId>RedacteurPortaal.Grains</PackageId>
         <Version>1.0.0</Version>
         <Authors>Joep van Diessen</Authors>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
         <Company>AutheurPortaal</Company>
         <PackageDescription>Grains package.</PackageDescription>
         <CodeAnalysisRuleSet>..\.sonarlint\redactie-portaal_backend-actor-modelcsharp.ruleset</CodeAnalysisRuleSet>
