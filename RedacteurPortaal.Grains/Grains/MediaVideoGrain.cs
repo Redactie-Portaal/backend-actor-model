@@ -4,24 +4,22 @@ using Orleans.Runtime;
 using RedacteurPortaal.DomainModels.Media;
 using RedacteurPortaal.Grains.GrainInterfaces;
 
-namespace RedacteurPortaal.Grains.Grains
+namespace RedacteurPortaal.Grains.Grains;
+
+public class MediaVideoGrain : Grain, IMediaVideoGrain
 {
-    public class MediaVideoGrain : Grain, IMediaVideoGrain
+    private readonly IPersistentState<MediaVideoItem> videoItem;
+
+    public MediaVideoGrain(
+        [PersistentState("videoItem", "OrleansStorage")]
+        IPersistentState<MediaVideoItem> videoItem)
     {
-        private readonly ILogger logger;
+        this.videoItem = videoItem;
+    }
 
-        private readonly IPersistentState<MediaVideoItem> _videoItem;
-
-        public MediaVideoGrain(ILogger<MediaPhotoGrain> logger,
-            [PersistentState("videoItem", "OrleansStorage")] IPersistentState<MediaVideoItem> videoItem)
-        {
-            this.logger = logger;
-            _videoItem = videoItem;
-        }
-
-        public void PlaceHolder()
-        {
-            throw new NotImplementedException();
-        }
+    public void PlaceHolder()
+    {
+        _ = this.videoItem;
+        throw new NotImplementedException();
     }
 }

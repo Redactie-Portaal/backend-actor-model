@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.32126.317
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RedacteurPortaal.Api", "RedacteurPortaal.Api\RedacteurPortaal.Api.csproj", "{03CAB651-7E7E-4C00-AF1B-F4A20805A84C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedacteurPortaal.Grains", "RedacteurPortaal.Grains\RedacteurPortaal.Grains.csproj", "{8622F938-B467-4EC8-B04B-16EEF2EE47F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RedacteurPortaal.Grains", "RedacteurPortaal.Grains\RedacteurPortaal.Grains.csproj", "{8622F938-B467-4EC8-B04B-16EEF2EE47F6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{36B48007-0229-429A-A771-13C49B5FF9A6}"
 	ProjectSection(SolutionItems) = preProject
