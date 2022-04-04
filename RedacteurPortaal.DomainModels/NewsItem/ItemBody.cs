@@ -4,8 +4,8 @@ public class ItemBody
 {
     public ItemBody()
     {
-
     }
+
     public ItemBody(Guid guid, string description, string shortDescription)
     {
         Guid = guid;

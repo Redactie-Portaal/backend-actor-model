@@ -69,7 +69,8 @@ await Host.CreateDefaultBuilder(args)
         });
 
         // migrate ef.
-        using (var scope = services.BuildServiceProvider().CreateScope())
+        using (var scope = services.BuildServiceProvider()
+            .CreateScope())
         {
             var context = scope.ServiceProvider.GetService<DataContext>();
             _ = context ?? throw new Exception("Failed to retrieve Database context");
