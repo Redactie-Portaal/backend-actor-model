@@ -7,7 +7,7 @@ await Host.CreateDefaultBuilder(args)
         if (ctx.HostingEnvironment.IsDevelopment())
         {
             siloBuilder.UseLocalhostClustering();
-            siloBuilder.AddMemoryGrainStorage("definitions");
+            siloBuilder.AddMemoryGrainStorage("OrleansStorage");
         }
         else
         {
