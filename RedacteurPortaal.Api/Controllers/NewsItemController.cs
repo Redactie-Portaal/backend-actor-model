@@ -8,7 +8,7 @@ using RedacteurPortaal.Grains.GrainInterfaces;
 namespace RedacteurPortaal.Api.Controllers;
 
 [ApiController]
-[Route("api/newsitem")]
+[Route("api/NewsItem")]
 public class NewsItemController : Controller
 {
     private readonly IClusterClient client;
