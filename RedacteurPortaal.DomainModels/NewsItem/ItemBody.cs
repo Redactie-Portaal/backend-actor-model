@@ -4,8 +4,8 @@ public class ItemBody
 {
     public ItemBody()
     {
-
     }
+
     public ItemBody(Guid guid, string description, string shortDescription)
     {
         Guid = guid;
@@ -13,9 +13,9 @@ public class ItemBody
         ShortDescription = shortDescription ?? throw new ArgumentNullException(nameof(shortDescription));
     }
 
-    public Guid Guid { get; }
+    public Guid? Guid { get; }
 
-    public string Description { get; }
+    public string? Description { get; }
 
-    public string ShortDescription { get; }
+    public string? ShortDescription { get; }
 }

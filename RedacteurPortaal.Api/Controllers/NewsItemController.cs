@@ -31,12 +31,11 @@ public class NewsItemController : Controller
         try
         {
             var newguid = Guid.NewGuid();
-            //newsitem.Id = newguid;
 
             var tosave = newsitem.Adapt<NewsItemModel>();
             tosave.Id = newguid;
 
-            const string successMessage = "News item was created";
+            string successMessage = $"News item was created, the guid is {newguid}";
             var grain = this.client.GetGrain<INewsItemGrain>(tosave.Id);
             await grain.AddNewsItem(tosave);
             this.logger.LogInformation(successMessage);
