@@ -1,14 +1,5 @@
 version: "3.9"
 services:
-  silo:
-    hostname: silo
-    build:
-      dockerfile: ./RedacteurPortaal.Silo/Dockerfile
-    ports:
-      - "30000:30000"
-      - "4002:4002"
-    network_mode: host
-
   api:
     hostname: api
     build:
@@ -18,3 +9,22 @@ services:
     environment:
       - ASPNETCORE_URLS=http://+:80
     network_mode: host
+  portaal_db:
+    hostname: portaal_db
+    image: postgres:14.1-alpine
+    restart: always
+    container_name: portaal_db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=RedactiePortaal.Data
+    ports:
+      - "5433:5432"
+    expose:
+      - "5433:5432"
+    volumes: 
+      - portaal_db:/var/lib/postgresql/data
+# VOLUMES
+volumes:
+  portaal_db:
+    driver: local
