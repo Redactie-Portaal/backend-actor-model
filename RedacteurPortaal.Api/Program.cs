@@ -61,7 +61,7 @@ await Host.CreateDefaultBuilder(args)
     })
     .ConfigureServices((ctx, services) =>
     {
-        services.AddSingleton<IExportPluginService, ExportPluginService>();
+        services.AddScoped<IExportPluginService, ExportPluginService>();
         services.AddDbContext<DataContext>(options =>
         {
             var connString = ctx.Configuration.GetConnectionString("DefaultConnection");
@@ -69,12 +69,13 @@ await Host.CreateDefaultBuilder(args)
         });
 
         // migrate ef.
-        using (var scope = services.BuildServiceProvider()
-            .CreateScope())
+#pragma warning disable ASP0000 // Do not call 'IServiceCollection.BuildServiceProvider' in 'ConfigureServices'
+        using (var scope = services.BuildServiceProvider().CreateScope())
         {
             var context = scope.ServiceProvider.GetService<DataContext>();
             _ = context ?? throw new Exception("Failed to retrieve Database context");
             context.Database.Migrate();
         }
+#pragma warning restore ASP0000 // Do not call 'IServiceCollection.BuildServiceProvider' in 'ConfigureServices'
     })
     .RunConsoleAsync();
