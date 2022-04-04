@@ -18,7 +18,6 @@ public class ExportDestinationController : Controller
     /// <summary>
     ///     Initializes a new instance of the <see cref="NewsItemController" /> class.
     /// </summary>
-    /// <param name="logger">Logger to use.</param>
     public ExportDestinationController(IExportPluginService pluginService, IClusterClient clusterClient)
     {
         this.pluginService = pluginService;

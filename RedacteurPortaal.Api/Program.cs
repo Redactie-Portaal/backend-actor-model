@@ -2,6 +2,7 @@ using Export.Base;
 using Orleans;
 using Orleans.Hosting;
 using RedacteurPortaal.Api;
+using RedacteurPortaal.Api.Middleware;
 using RedacteurPortaal.Grains.GrainInterfaces;
 using RedacteurPortaal.Grains.Grains;
 using System.Runtime.Loader;
@@ -13,6 +14,7 @@ await Host.CreateDefaultBuilder(args)
         {
             siloBuilder.UseLocalhostClustering();
             siloBuilder.AddMemoryGrainStorage("OrleansStorage");
+
         }
         else
         {
@@ -49,6 +51,10 @@ await Host.CreateDefaultBuilder(args)
             app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthorization();
+
+            // global error handler
+            app.UseMiddleware<ExceptionHandelingMiddleware>();
+
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         });
     })

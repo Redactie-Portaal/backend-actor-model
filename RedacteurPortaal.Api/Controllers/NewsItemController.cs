@@ -26,8 +26,6 @@ public class NewsItemController : Controller
     [HttpPost]
     public async Task<IActionResult> SaveNewsItem([FromBody] NewsItemModel newsitem)
     {
-        try
-        {
             var newguid = Guid.NewGuid();
             newsitem.Id = newguid;
             const string successMessage = "News item was created";
@@ -35,64 +33,34 @@ public class NewsItemController : Controller
             await grain.AddNewsItem(newsitem);
             this.logger.LogInformation(successMessage);
             return this.StatusCode(201, successMessage);
-        }
-        catch (Exception ex)
-        {
-            this.logger.LogError(ex.Message);
-            return this.StatusCode(500, "An internal server error has occured");
-        }
     }
 
     [HttpGet]
     [Route(":id")]
     public async Task<IActionResult> GetNewsItem(Guid guid)
     {
-        try
-        {
             var grain = this.client.GetGrain<INewsItemGrain>(guid);
             var response = await grain.GetNewsItem(guid);
             this.logger.LogInformation("News item fetched successfully");
             return this.Ok(response);
-        }
-        catch (Exception ex)
-        {
-            this.logger.LogError(ex.Message);
-            return this.StatusCode(500, "An internal server error has occured");
-        }
     }
 
     [HttpDelete]
     [Route(":id")]
     public async Task<IActionResult> DeleteNewsItem(Guid guid)
     {
-        try
-        {
             var grain = this.client.GetGrain<INewsItemGrain>(guid);
             await grain.DeleteNewsItem(guid);
             this.logger.LogInformation("News item deleted successfully");
             return this.StatusCode(204, "News item deleted");
-        }
-        catch (Exception ex)
-        {
-            this.logger.LogError(ex.Message);
-            return this.StatusCode(500, "An internal server error has occured");
-        }
     }
 
     [HttpPut]
     public async Task<IActionResult> UpdateNewsItem(string name, Guid guid)
     {
-        try
-        {
             var grain = this.client.GetGrain<INewsItemGrain>(guid);
             await grain.UpdateNewsItem(name, guid);
             this.logger.LogInformation("News item updated successfully");
             return this.StatusCode(204, "News item updated");
-        }
-        catch (Exception ex)
-        {
-            this.logger.LogError(ex.Message);
-            return this.StatusCode(500, "An internal server error has occured");
-        }
     }
 }
