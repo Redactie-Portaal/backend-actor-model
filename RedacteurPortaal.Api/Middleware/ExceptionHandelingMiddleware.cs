@@ -17,7 +17,7 @@ namespace RedacteurPortaal.Api.Middleware
         {
             try
             {
-                await next(context);
+                await this.next(context);
             }
             catch (Exception error)
             {

@@ -87,26 +87,26 @@ public class MediaVideoItem : MediaItem
            format,
            mediaLocation)
     {
-        Reporter = reporter;
-        Sound = sound;
-        Editor = editor;
-        LastPicture = lastPicture;
-        Keywords = keywords;
-        VoiceOver = voiceOver;
-        Description = description;
-        ProgramDate = programDate;
-        ItemName = itemName;
-        EPG = ePG;
-        Presentation = presentation;
-        Duration = duration;
-        ArchiveMaterial = archiveMaterial;
-        Weather = weather;
-        Producer = producer;
-        Director = director;
-        Guests = guests;
-        FirstPicture = firstPicture;
-        LastWords = lastWords;
-        ProgramName = programName;
-        FirstWords = firstWords;
+        this.Reporter = reporter;
+        this.Sound = sound;
+        this.Editor = editor;
+        this.LastPicture = lastPicture;
+        this.Keywords = keywords;
+        this.VoiceOver = voiceOver;
+        this.Description = description;
+        this.ProgramDate = programDate;
+        this.ItemName = itemName;
+        this.EPG = ePG;
+        this.Presentation = presentation;
+        this.Duration = duration;
+        this.ArchiveMaterial = archiveMaterial;
+        this.Weather = weather;
+        this.Producer = producer;
+        this.Director = director;
+        this.Guests = guests;
+        this.FirstPicture = firstPicture;
+        this.LastWords = lastWords;
+        this.ProgramName = programName;
+        this.FirstWords = firstWords;
     }
 }

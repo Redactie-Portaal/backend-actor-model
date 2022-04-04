@@ -31,28 +31,28 @@ public class ExportDestinationController : Controller
     [HttpGet]
     public async Task<IActionResult> Get()
     {
-        var plugins = await pluginService.GetPlugins();
+        var plugins = await this.pluginService.GetPlugins();
 
-        return Ok(plugins);
+        return this.Ok(plugins);
     }
 
     [HttpGet("{guid}")]
     public async Task<IActionResult> GetById(Guid guid)
     {
-        var plugin = (await pluginService.GetPlugins())
+        var plugin = (await this.pluginService.GetPlugins())
             .Single(x => x.Id == guid);
 
-        return Ok(plugin);
+        return this.Ok(plugin);
     }
 
     [HttpPost("{guid}/Actions.Publish")]
     public async Task<IActionResult> Publish(Guid guid, [FromBody]PublishItemRequest request)
     {
-        var plugin = (await pluginService.GetPlugins())
+        var plugin = (await this.pluginService.GetPlugins())
            .Single(x => x.Id == guid);
         _ = plugin ?? throw new KeyNotFoundException();
 
-        var story = await clusterClient.GetGrain<INewsItemGrain>(request.StoryId).GetNewsItem(request.StoryId);
+        var story = await this.clusterClient.GetGrain<INewsItemGrain>(request.StoryId).GetNewsItem(request.StoryId);
         var apiKey = this.context.PluginSettings.Single(x => x.PluginId == guid).ApiKey;
 
         _ = apiKey ?? throw new KeyNotFoundException();
@@ -67,7 +67,7 @@ public class ExportDestinationController : Controller
             VideoUri = story.Video.MediaLocation
         }, apiKey);
 
-        return Ok();
+        return this.Ok();
     }
 
     [HttpPatch]
@@ -83,6 +83,6 @@ public class ExportDestinationController : Controller
         this.context.PluginSettings.Update(plugin);
         await this.context.SaveChangesAsync();
 
-        return Ok();
+        return this.Ok();
     }
 }

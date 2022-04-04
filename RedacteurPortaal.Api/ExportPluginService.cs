@@ -50,14 +50,14 @@ namespace RedacteurPortaal.Api
                 }
             }
 
-            SetupApiKeys();
+            this.SetupApiKeys();
             return pl;
         }
 
         private void SetupApiKeys()
         {
-            var dbPlguins = context.PluginSettings.ToList();
-            foreach (var plugin in plugins)
+            var dbPlguins = this.context.PluginSettings.ToList();
+            foreach (var plugin in this.plugins)
             {
                 if (!dbPlguins.Any(x => x.PluginId == plugin.Id))
                 {
@@ -69,7 +69,7 @@ namespace RedacteurPortaal.Api
                 }
             }
 
-            context.SaveChanges();
+            this.context.SaveChanges();
         }
     }
 }

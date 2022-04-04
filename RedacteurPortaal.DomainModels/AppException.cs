@@ -31,7 +31,7 @@ namespace RedacteurPortaal.DomainModels
         }
 
         public AppException(string message, HttpStatusCode statusCode, params object[] args)
-    : base(String.Format(CultureInfo.CurrentCulture, message, args))
+            : base(String.Format(CultureInfo.CurrentCulture, message, args))
         {
             this.StatusCode = statusCode;
         }
