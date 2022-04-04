@@ -25,9 +25,8 @@ namespace RedacteurPortaal.Grains.Grains
         {
             //control if guid is not empty
             //_adress.State.Id = guid;
-            var adress = await Task.FromResult(_adress.State);
-            _adress.State = adress;
-            return adress;
+            
+            return _adress.State;
         }
 
         public async Task AddAdress(AddressModel address)
@@ -39,7 +38,7 @@ namespace RedacteurPortaal.Grains.Grains
 
         public Task<List<AddressModel>> GetAdresses()
         {
-            var adresses = await Task.
+            //var adresses = await Task.FromResult();
             throw new NotImplementedException();
         }
 
