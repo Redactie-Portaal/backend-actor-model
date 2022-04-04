@@ -14,7 +14,6 @@ await Host.CreateDefaultBuilder(args)
         {
             siloBuilder.UseLocalhostClustering();
             siloBuilder.AddMemoryGrainStorage("OrleansStorage");
-
         }
         else
         {

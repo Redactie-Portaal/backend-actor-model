@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Mapster;
+using Microsoft.AspNetCore.Mvc;
 using Orleans;
+using RedacteurPortaal.Api.Models;
 using RedacteurPortaal.DomainModels.NewsItem;
 using RedacteurPortaal.Grains.GrainInterfaces;
 
@@ -17,20 +19,24 @@ public class NewsItemController : Controller
     /// </summary>
     /// <param name="client">Cluster client to use.</param>
     /// <param name="logger">Logger to use.</param>
-    public NewsItemController(IClusterClient client, ILogger logger)
+    public NewsItemController(IClusterClient client, ILogger<NewsItemController> logger)
     {
         this.client = client;
         this.logger = logger;
     }
 
     [HttpPost]
-    public async Task<IActionResult> SaveNewsItem([FromBody] NewsItemModel newsitem)
+    public async Task<IActionResult> SaveNewsItem([FromBody] NewsItemDetailDTO newsitem)
     {
             var newguid = Guid.NewGuid();
-            newsitem.Id = newguid;
+            //newsitem.Id = newguid;
+
+            var tosave = newsitem.Adapt<NewsItemModel>();
+            tosave.Id = newguid;
+
             const string successMessage = "News item was created";
-            var grain = this.client.GetGrain<INewsItemGrain>(newsitem.Id);
-            await grain.AddNewsItem(newsitem);
+            var grain = this.client.GetGrain<INewsItemGrain>(tosave.Id);
+            await grain.AddNewsItem(tosave);
             this.logger.LogInformation(successMessage);
             return this.StatusCode(201, successMessage);
     }
