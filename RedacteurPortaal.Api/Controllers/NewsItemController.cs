@@ -29,8 +29,6 @@ public class NewsItemController : Controller
     public async Task<IActionResult> SaveNewsItem([FromBody] NewsItemDetailDTO newsitem)
     {
             var newguid = Guid.NewGuid();
-            //newsitem.Id = newguid;
-
             var tosave = newsitem.Adapt<NewsItemModel>();
             tosave.Id = newguid;
 
@@ -38,7 +36,7 @@ public class NewsItemController : Controller
             var grain = this.client.GetGrain<INewsItemGrain>(tosave.Id);
             await grain.AddNewsItem(tosave);
             this.logger.LogInformation(successMessage);
-            return this.StatusCode(201, successMessage);
+        return this.StatusCode(201, newguid.ToString());
     }
 
     [HttpGet]

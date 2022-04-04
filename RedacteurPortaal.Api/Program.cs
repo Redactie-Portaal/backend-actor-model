@@ -1,8 +1,10 @@
 using Export.Base;
+using Microsoft.EntityFrameworkCore;
 using Orleans;
 using Orleans.Hosting;
 using RedacteurPortaal.Api;
 using RedacteurPortaal.Api.Middleware;
+using RedacteurPortaal.Data.Context;
 using RedacteurPortaal.Grains.GrainInterfaces;
 using RedacteurPortaal.Grains.Grains;
 using System.Runtime.Loader;
@@ -57,8 +59,21 @@ await Host.CreateDefaultBuilder(args)
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         });
     })
-    .ConfigureServices(services =>
+    .ConfigureServices((ctx, services) =>
     {
         services.AddSingleton<IExportPluginService, ExportPluginService>();
+        services.AddDbContext<DataContext>(options =>
+        {
+            var connString = ctx.Configuration.GetConnectionString("DefaultConnection");
+            options.UseNpgsql(connString);
+        });
+
+        // migrate ef.
+        using (var scope = services.BuildServiceProvider().CreateScope())
+        {
+            var context = scope.ServiceProvider.GetService<DataContext>();
+            _ = context ?? throw new Exception("Failed to retrieve Database context");
+            context.Database.Migrate();
+        }
     })
     .RunConsoleAsync();

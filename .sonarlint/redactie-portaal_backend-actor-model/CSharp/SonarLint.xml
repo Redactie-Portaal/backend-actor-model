@@ -24,7 +24,7 @@
       <Parameters>
         <Parameter>
           <Key>max</Key>
-          <Value>7</Value>
+          <Value>25</Value>
         </Parameter>
       </Parameters>
     </Rule>

@@ -36,6 +36,17 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.3">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.3" />
+		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.3" />
+
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.3">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
     </ItemGroup>
 
 	<ItemGroup>
@@ -58,6 +69,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\RedacteurPortaal.Data\RedacteurPortaal.Data.csproj" />
 	  <ProjectReference Include="..\RedacteurPortaal.Grains\RedacteurPortaal.Grains.csproj" />
 	  <ProjectReference Include="..\RedacteurPortaal.DomainModels\RedacteurPortaal.DomainModels.csproj" />
     </ItemGroup>

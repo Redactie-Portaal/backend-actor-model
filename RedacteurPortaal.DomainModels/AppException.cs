@@ -12,15 +12,18 @@ namespace RedacteurPortaal.DomainModels
     {
         public HttpStatusCode StatusCode { get; set; } = HttpStatusCode.BadRequest;
 
-        public AppException() : base() { }
+        public AppException() : base()
+        {
+        }
 
-        public AppException(string message) : base(message) { }
+        public AppException(string message) : base(message)
+        {
+        }
 
-        public AppException(string message, HttpStatusCode statuscode) : base(message) 
+        public AppException(string message, HttpStatusCode statuscode) : base(message)
         {
             this.StatusCode = statuscode;
         }
-
 
         public AppException(string message, params object[] args)
             : base(String.Format(CultureInfo.CurrentCulture, message, args))
@@ -31,7 +34,6 @@ namespace RedacteurPortaal.DomainModels
     : base(String.Format(CultureInfo.CurrentCulture, message, args))
         {
             this.StatusCode = statusCode;
-
         }
     }
 }

@@ -22,8 +22,6 @@ public class MediaVideoItem : MediaItem
 
     public string EPG { get; }
 
-    public string Presentation { get; }
-
     public TimeSpan Duration { get; }
 
     public string ArchiveMaterial { get; }
@@ -37,8 +35,6 @@ public class MediaVideoItem : MediaItem
     public List<string> Guests { get; }
 
     public string FirstPicture { get; }
-
-    public string LastWords { get; }
 
     public string ProgramName { get; }
 
@@ -75,7 +71,8 @@ public class MediaVideoItem : MediaItem
         List<string> guests,
         string firstPicture,
         string programName,
-        string firstWords)
+        string firstWords,
+        Uri mediaLocation)
      : base(
            newsItemGuid,
            title,
@@ -87,7 +84,8 @@ public class MediaVideoItem : MediaItem
            proxyFile,
            presentation,
            location,
-           format)
+           format,
+           mediaLocation)
     {
         Reporter = reporter;
         Sound = sound;
