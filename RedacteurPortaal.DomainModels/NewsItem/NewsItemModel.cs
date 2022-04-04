@@ -23,7 +23,7 @@ public class NewsItemModel
         Region region,
         MediaVideoItem video,
         MediaAudioItem audio,
-        MediaPhotoItem photo)
+        MediaPhotoItem[] photos)
     {
         this.Title = title ?? throw new ArgumentNullException(nameof(title));
         this.Status = status;
@@ -38,7 +38,7 @@ public class NewsItemModel
         this.Region = region;
         this.Video = video ?? throw new ArgumentNullException(nameof(video));
         this.Audio = audio ?? throw new ArgumentNullException(nameof(audio));
-        this.Photo = photo ?? throw new ArgumentNullException(nameof(photo));
+        this.Photos = photos ?? throw new ArgumentNullException(nameof(photos));
     }
 
     public Guid Id { get; set; } = Guid.NewGuid();
@@ -69,5 +69,5 @@ public class NewsItemModel
 
     public MediaAudioItem? Audio { get; private set; }
 
-    public MediaPhotoItem? Photo { get; private set; }
+    public MediaPhotoItem[] Photos { get; private set; }
 }

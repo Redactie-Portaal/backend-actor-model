@@ -10,11 +10,9 @@ namespace RedacteurPortaal.Api.Models;
 
 public class NewsItemDetailDTO
 {
-    public NewsItemDetailDTO()
-    {
-    }
-
     public string? Title { get; set; }
+
+    public string? Status { get; set; }
 
     public string? Author { get; set; }
 
@@ -26,17 +24,11 @@ public class NewsItemDetailDTO
 
     public string? LocationDetails { get; set; }
 
-    public DateTime? ProdutionDate { get; set; }
+    public DateTime ProdutionDate { get; set; }
 
-    public DateTime? EndDate { get; set; }
+    public string? Category { get; set; }
 
     public string? Category { get; set; }
 
     public string? Region { get; set; }
-
-    //public MediaVideoItem Video { get; set; }
-
-    //public MediaAudioItem Audio { get; set; }
-
-    //public MediaPhotoItem Photo { get; set; }
 }
