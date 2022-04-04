@@ -1,14 +1,30 @@
-﻿
-namespace RedacteurPortaal.DomainModels.Media
-{
-    public class MediaAudioItem : MediaItem
-    {
-        TimeSpan Duration { get; set; }
-        Weather Weather { get; set; }
-        Location Location { get; set; }
-        string FirstWords { get; set; }
-        string ProgramName { get; set; }
-        string Presentation { get; set; }
+﻿namespace RedacteurPortaal.DomainModels.Media;
 
+public class MediaAudioItem : MediaItem
+{
+    public MediaAudioItem(
+        Guid guid, string title, string folder, DateTime republishDate, string rights, string camera, string lastWords, string proxyFile, string presentation, Location location, string format,
+        TimeSpan duration,
+        Weather weather,
+        string firstWords,
+        string programName)
+        : base(guid, title, folder, republishDate, rights, camera, lastWords, proxyFile, presentation, location, format)
+    {
+        this.Duration = duration;
+        this.Weather = weather;
+        this.FirstWords = firstWords ?? throw new ArgumentNullException(nameof(firstWords));
+        this.ProgramName = programName ?? throw new ArgumentNullException(nameof(programName));
     }
+
+    // Delete deze comments als je deze class wilt gebruiken.
+    // ReSharper disable UnusedAutoPropertyAccessor.Global
+    public TimeSpan Duration { get; }
+
+    public Weather Weather { get; }
+
+    public string FirstWords { get; }
+
+    public string ProgramName { get; }
+
+    // ReSharper restore UnusedAutoPropertyAccessor.Global
 }
