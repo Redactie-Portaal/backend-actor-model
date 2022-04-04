@@ -23,7 +23,6 @@ jobs:
       - name: Build solution and generate NuGet package
         run: | 
           cd RedacteurPortaal.Grains
-          dotnet nuget add source --username joepvand --password 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 --store-password-in-clear-text --name github "https://nuget.pkg.github.com/Redactie-Portaal/index.json"
           dotnet build -c Release
           dotnet pack -c Release -o out -p:PackageVersion=1.0.${{ github.run_number }} 
       - name: Push generated package to GitHub registry
