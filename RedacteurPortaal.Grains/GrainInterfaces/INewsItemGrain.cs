@@ -1,5 +1,6 @@
 ﻿using Orleans;
 using RedacteurPortaal.DomainModels.NewsItem;
+using RedacteurPortaal.DomainModels.NewsItem.Requests;
 
 namespace RedacteurPortaal.Grains.GrainInterfaces;
 
@@ -11,5 +12,5 @@ public interface INewsItemGrain : IGrainWithGuidKey
 
     Task DeleteNewsItem(Guid guid);
 
-    Task UpdateNewsItem(string name, Guid guid);
+    Task UpdateNewsItem(Guid guid, UpdateNewsItemRequest request);
 }

@@ -1,6 +1,7 @@
 ﻿using Orleans;
 using Orleans.Runtime;
 using RedacteurPortaal.DomainModels.NewsItem;
+using RedacteurPortaal.DomainModels.NewsItem.Requests;
 using RedacteurPortaal.Grains.GrainInterfaces;
 
 namespace RedacteurPortaal.Grains.Grains;
@@ -41,7 +42,7 @@ public class NewsItemGrain : Grain, INewsItemGrain
         await this.newsItem.ClearStateAsync();
     }
 
-    public async Task UpdateNewsItem(string name, Guid guid)
+    public async Task UpdateNewsItem(Guid guid, UpdateNewsItemRequest request)
     {
         // TODO: Merge title.
         this.newsItem.State.Id = guid;

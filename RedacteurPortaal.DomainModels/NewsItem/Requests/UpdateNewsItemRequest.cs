@@ -1,14 +1,13 @@
 ﻿using RedacteurPortaal.DomainModels.Media;
-using RedacteurPortaal.DomainModels.NewsItem;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RedacteurPortaal.Api.Models;
+namespace RedacteurPortaal.DomainModels.NewsItem.Requests;
 
-public class NewsItemDetailDTO
+public class UpdateNewsItemRequest
 {
     public string? Title { get; set; }
 
@@ -24,7 +23,7 @@ public class NewsItemDetailDTO
 
     public string? LocationDetails { get; set; }
 
-    public DateTime ProdutionDate { get; set; }
+    public DateTime EndDate { get; set; }
 
     public string? Category { get; set; }
 
@@ -34,5 +33,5 @@ public class NewsItemDetailDTO
 
     public MediaAudioItem? Audio { get; private set; }
 
-    public MediaPhotoItem[] Photos { get; private set; }
+    public MediaPhotoItem[]? Photos { get; private set; }
 }

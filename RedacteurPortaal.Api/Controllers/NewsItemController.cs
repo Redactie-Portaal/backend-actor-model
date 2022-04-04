@@ -1,8 +1,11 @@
 ﻿using Mapster;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Orleans;
 using RedacteurPortaal.Api.Models;
+using RedacteurPortaal.Api.Models.Request;
 using RedacteurPortaal.DomainModels.NewsItem;
+using RedacteurPortaal.DomainModels.NewsItem.Requests;
 using RedacteurPortaal.Grains.GrainInterfaces;
 
 namespace RedacteurPortaal.Api.Controllers;
@@ -59,11 +62,13 @@ public class NewsItemController : Controller
             return this.StatusCode(204, "News item deleted");
     }
 
-    [HttpPut]
-    public async Task<IActionResult> UpdateNewsItem(string name, Guid guid)
+    [HttpPatch]
+    public async Task<IActionResult> UpdateNewsItem(Guid guid, [FromBody] UpdateNewsItemRequest request)
     {
             var grain = this.client.GetGrain<INewsItemGrain>(guid);
-            await grain.UpdateNewsItem(name, guid);
+            await grain.UpdateNewsItem(guid, request);
+            var item = await grain.GetNewsItem(guid);
+
             this.logger.LogInformation("News item updated successfully");
             return this.StatusCode(204, "News item updated");
     }
