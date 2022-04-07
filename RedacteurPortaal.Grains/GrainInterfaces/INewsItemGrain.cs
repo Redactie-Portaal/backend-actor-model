@@ -4,13 +4,15 @@ using RedacteurPortaal.DomainModels.NewsItem.Requests;
 
 namespace RedacteurPortaal.Grains.GrainInterfaces;
 
-public interface INewsItemGrain : IGrainWithGuidKey
+public interface INewsItemGrain : IManageableGrain<NewsItemModel>
 {
-    Task<NewsItemModel> GetNewsItem(Guid guid);
+    Task<NewsItemModel> Get();
 
     Task AddNewsItem(NewsItemModel newsitem);
 
-    Task DeleteNewsItem(Guid guid);
+    Task DeleteNewsItem(Guid guid)
 
-    Task UpdateNewsItem(UpdateNewsItemRequest request);
+    Task Delete();
+
+    Task Update(NewsItemUpdate update)
 }

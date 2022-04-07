@@ -10,7 +10,6 @@ public class MediaVideoItem : MediaItem
     }
 
     public MediaVideoItem(
-        Guid guid,
         Guid newsItemGuid,
         string title,
         string folder,

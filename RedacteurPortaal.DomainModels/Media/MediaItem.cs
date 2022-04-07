@@ -38,6 +38,8 @@ public abstract class MediaItem
         this.MediaLocation = mediaLocation ?? throw new ArgumentNullException(nameof(mediaLocation));
     }
 
+    private Guid Guid { get; set; }
+
     public string Title { get; set; }
 
     public string Folder { get; set; }
@@ -54,7 +56,7 @@ public abstract class MediaItem
 
     public string Presentation { get; set; }
 
-    public Location Location { get; set; }
+    public Location Location { get; }
 
     public string Format { get; set; }
 

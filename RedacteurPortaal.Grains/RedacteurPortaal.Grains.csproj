@@ -23,6 +23,7 @@
     <ItemGroup>
         <PackageReference Include="Export.Base" Version="1.0.19" />
         <PackageReference Include="Microsoft.Orleans.Core" Version="3.6.0" />
+        <PackageReference Include="Microsoft.Orleans.Core.Abstractions" Version="3.6.1" />
         <PackageReference Include="Microsoft.Orleans.EventSourcing" Version="3.6.0" />
         <PackageReference Include="Microsoft.Orleans.OrleansRuntime" Version="3.6.0" />
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
@@ -32,6 +33,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\RedacteurPortaal.Data\RedacteurPortaal.Data.csproj" />
         <ProjectReference Include="..\RedacteurPortaal.DomainModels\RedacteurPortaal.DomainModels.csproj" />
     </ItemGroup>
 </Project>
