@@ -26,13 +26,15 @@ public class LocationGrain : Grain, ILocationGrain
         return this.location.State;
     }
 
-    public async Task AddLocation(Location location)
+    public async Task AddLocation(Location item)
     {
+        this.location.State = item;
         await this.location.WriteStateAsync();
     }
 
-    public async Task UpdateLocation(Location location)
+    public async Task UpdateLocation(Location item)
     {
+        this.location.State = item;
         await this.location.WriteStateAsync();
     }
 
