@@ -14,10 +14,10 @@ public class ContactGrain : Grain, IContactGrain
         this.contactState = contact;
     }
 
-    public Contact GetContactDetails(Guid guid)
+    public Task GetContactDetails(Guid guid)
     {
         var grain = this.GrainFactory.GetGrain<IContactGrain>(guid);
-        return this.contactState.State;
+        return Task.FromResult(this.contactState.State);
     }
 
     public async Task AddContactDetails(Contact contact)

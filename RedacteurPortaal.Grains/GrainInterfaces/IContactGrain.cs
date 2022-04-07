@@ -5,7 +5,7 @@ namespace RedacteurPortaal.Grains.GrainInterfaces
 {
     public interface IContactGrain : IGrainWithGuidKey
     {
-        Contact GetContactDetails(Guid guid);
+        Task GetContactDetails(Guid guid);
 
         Task AddContactDetails(Contact contact);
 
