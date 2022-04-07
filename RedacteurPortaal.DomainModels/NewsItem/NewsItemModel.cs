@@ -1,8 +1,6 @@
-﻿using Mapster;
-using RedacteurPortaal.DomainModels.Media;
+﻿using RedacteurPortaal.DomainModels.Media;
 
 namespace RedacteurPortaal.DomainModels.NewsItem;
-[AdaptTo("[name]Dto"), GenerateMapper]
 public class NewsItemModel
 {
     public NewsItemModel()
@@ -16,7 +14,7 @@ public class NewsItemModel
         FeedSource source,
         ItemBody body,
         string contactDetails,
-        string locationDetails,
+        Location locationDetails,
         DateTime produtionDate,
         DateTime endDate,
         Category category,
@@ -55,7 +53,7 @@ public class NewsItemModel
 
     public string ContactDetails { get; private set; }
 
-    public string LocationDetails { get; private set; }
+    public Location LocationDetails { get; }
 
     public DateTime ProdutionDate { get; private set; }
 
