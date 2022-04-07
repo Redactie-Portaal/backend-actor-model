@@ -1,5 +1,6 @@
 ﻿namespace RedacteurPortaal.DomainModels.Media;
 
+[Serializable]
 public class MediaAudioItem : MediaItem
 {
     public MediaAudioItem()
@@ -7,12 +8,35 @@ public class MediaAudioItem : MediaItem
     }
 
     public MediaAudioItem(
-        Guid guid, string title, string folder, DateTime republishDate, string rights, string camera, string lastWords, string proxyFile, string presentation, Location location, string format, Uri audioUrl,
+        Guid guid,
+        string title,
+        string folder,
+        DateTime republishDate,
+        string rights,
+        string camera,
+        string lastWords,
+        string proxyFile,
+        string presentation,
+        Location location,
+        string format,
+        Uri audioUrl,
         TimeSpan duration,
         Weather weather,
         string firstWords,
         string programName)
-        : base(guid, title, folder, republishDate, rights, camera, lastWords, proxyFile, presentation, location, format, audioUrl)
+        : base(
+            guid,
+            title,
+            folder,
+            republishDate,
+            rights,
+            camera,
+            lastWords,
+            proxyFile,
+            presentation,
+            location,
+            format,
+            audioUrl)
     {
         this.Duration = duration;
         this.Weather = weather;

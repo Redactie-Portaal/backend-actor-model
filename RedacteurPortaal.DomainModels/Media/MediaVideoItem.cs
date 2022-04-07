@@ -1,45 +1,8 @@
 ﻿namespace RedacteurPortaal.DomainModels.Media;
 
+[Serializable]
 public class MediaVideoItem : MediaItem
 {
-    public string Reporter { get; }
-
-    public string Sound { get; }
-
-    public string Editor { get; }
-
-    public string LastPicture { get; }
-
-    public List<string> Keywords { get; }
-
-    public string VoiceOver { get; }
-
-    public string Description { get; }
-
-    public DateTime ProgramDate { get; }
-
-    public string ItemName { get; }
-
-    public string EPG { get; }
-
-    public TimeSpan Duration { get; }
-
-    public string ArchiveMaterial { get; }
-
-    public Weather Weather { get; }
-
-    public string Producer { get; }
-
-    public string Director { get; }
-
-    public List<string> Guests { get; }
-
-    public string FirstPicture { get; }
-
-    public string ProgramName { get; }
-
-    public string FirstWords { get; }
-
     public MediaVideoItem()
     {
     }
@@ -113,4 +76,42 @@ public class MediaVideoItem : MediaItem
         this.ProgramName = programName;
         this.FirstWords = firstWords;
     }
+
+    public string Reporter { get; }
+
+    public string Sound { get; }
+
+    public string Editor { get; }
+
+    public string LastPicture { get; }
+
+    public List<string> Keywords { get; }
+
+    public string VoiceOver { get; }
+
+    public string Description { get; }
+
+    public DateTime ProgramDate { get; }
+
+    public string ItemName { get; }
+
+    public string EPG { get; }
+
+    public TimeSpan Duration { get; }
+
+    public string ArchiveMaterial { get; }
+
+    public Weather Weather { get; }
+
+    public string Producer { get; }
+
+    public string Director { get; }
+
+    public List<string> Guests { get; }
+
+    public string FirstPicture { get; }
+
+    public string ProgramName { get; }
+
+    public string FirstWords { get; }
 }

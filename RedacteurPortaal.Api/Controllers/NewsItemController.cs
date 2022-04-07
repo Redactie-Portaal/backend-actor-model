@@ -52,7 +52,7 @@ public class NewsItemController : Controller
     }
 
     [HttpDelete]
-    [Route(":id")]
+    [Route("id")]
     public async Task<IActionResult> DeleteNewsItem(Guid guid)
     {
         var grain = this.client.GetGrain<INewsItemGrain>(guid);
@@ -62,6 +62,7 @@ public class NewsItemController : Controller
     }
 
     [HttpPatch]
+    [Route("id")]
     public async Task<IActionResult> UpdateNewsItem([FromBody] UpdateNewsItemRequest request)
     {
         var grain = this.client.GetGrain<INewsItemGrain>(request.Guid);

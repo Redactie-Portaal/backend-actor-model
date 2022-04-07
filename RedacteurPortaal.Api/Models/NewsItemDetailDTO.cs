@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace RedacteurPortaal.Api.Models;
 
+[Serializable]
 public class NewsItemDetailDTO
 {
     public string? Title { get; set; }
@@ -28,9 +29,9 @@ public class NewsItemDetailDTO
 
     public string? Region { get; set; }
 
-    public MediaVideoItem? Video { get; private set; }
+    public MediaVideoItem? Video { get; set; }
 
-    public MediaAudioItem? Audio { get; private set; }
+    public MediaAudioItem? Audio { get; set; }
 
-    public MediaPhotoItem[]? Photos { get; private set; }
+    public MediaPhotoItem[]? Photos { get; set; }
 }
