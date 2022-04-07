@@ -16,7 +16,6 @@ public class ContactGrain : Grain, IContactGrain
 
     public Task GetContactDetails(Guid guid)
     {
-        var grain = this.GrainFactory.GetGrain<IContactGrain>(guid);
         return Task.FromResult(this.contactState.State);
     }
 
@@ -28,7 +27,6 @@ public class ContactGrain : Grain, IContactGrain
 
     public async Task DeleteContactDetails(Guid guid)
     {
-        var grain = this.GrainFactory.GetGrain<IContactGrain>(guid);
         await this.contactState.ClearStateAsync();
     }
 
