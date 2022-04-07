@@ -57,6 +57,7 @@ public class ExportDestinationController : Controller
 
         _ = apiKey ?? throw new KeyNotFoundException();
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
         await plugin.Upload(new Export.Base.ExportItem()
         {
             AudioUri = story.Audio.MediaLocation,
@@ -66,6 +67,7 @@ public class ExportDestinationController : Controller
             TextContent = story.Body.Description,
             VideoUri = story.Video.MediaLocation
         }, apiKey);
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
         return this.Ok();
     }
