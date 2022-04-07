@@ -54,8 +54,6 @@ public class NewsItemModel : IBaseEntity
 
     public ItemBody? Body { get; private set; }
 
-    public string? ContactDetails { get; private set; }
-
     public List<Contact> ContactDetails { get; private set; }
 
     public Location LocationDetails { get; }

@@ -8,8 +8,6 @@ public abstract class MediaItem
     {
     }
 
-    private Guid Guid { get; set; }
-
     protected MediaItem(
         Guid guid,
         string title,

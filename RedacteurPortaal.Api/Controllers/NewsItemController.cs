@@ -41,6 +41,7 @@ public class NewsItemController : Controller
             this.logger.LogInformation(successMessage);
             return this.CreatedAtRoute("GetNewsItem", new { guid = newguid }, newsitem);
     }
+
 /*
     [HttpGet]
     [Route("id", Name ="GetNewsItem")]
@@ -53,6 +54,7 @@ public class NewsItemController : Controller
     } */
 
     [HttpGet]
+    [Route("id", Name = "GetNewsItem")]
     public async Task<IActionResult> GetNewsItems()
     {
         var grain = await this.grainService.GetGrains();
@@ -64,8 +66,8 @@ public class NewsItemController : Controller
     [Route("id")]
     public async Task<IActionResult> DeleteNewsItem(Guid guid)
     {
-        var grain = this.client.GetGrain<INewsItemGrain>(guid);
-        await grain.DeleteNewsItem(guid);
+        var grain = await this.grainService.GetGrain(guid);
+        await grain.Delete();
         this.logger.LogInformation("News item deleted successfully");
         return this.StatusCode(204, "News item deleted");
     }
