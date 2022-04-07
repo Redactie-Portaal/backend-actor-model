@@ -6,13 +6,13 @@ namespace RedacteurPortaal.Grains.GrainInterfaces;
 
 public interface IArchiveGrain : IGrainWithGuidKey
 {
-    Task RemoveArchive();
+    Task DeleteArchive(Guid guid);
 
-    Task AddVideoItem(MediaVideoItem videoItem);
+    Task AddVideoItem(ArchiveModel archive, MediaVideoItem videoItem);
 
-    Task AddPhotoItem(MediaPhotoItem photoItem);
+    Task AddPhotoItem(ArchiveModel archive, MediaPhotoItem photoItem);
 
-    Task AddAudioItem(MediaAudioItem audioItem);
+    Task AddAudioItem(ArchiveModel archive, MediaAudioItem audioItem);
 
     Task<ArchiveModel> GetArchive(Guid guid);
 }

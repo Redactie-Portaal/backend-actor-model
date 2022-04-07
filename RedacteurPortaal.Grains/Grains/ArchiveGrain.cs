@@ -12,30 +12,41 @@ public class ArchiveGrain : Grain, IArchiveGrain
     private readonly IPersistentState<ArchiveModel> archive;
 
     public ArchiveGrain(
-        [PersistentState("archiveModel", "OrleansStorage")]
+        [PersistentState("archive", "OrleansStorage")]
         IPersistentState<ArchiveModel> archive)
     {
         this.archive = archive;
     }
 
-    public Task RemoveArchive()
+    public async Task DeleteArchive(Guid guid)
     {
-        throw new NotImplementedException();
+        var grain = this.GrainFactory.GetGrain<IArchiveGrain>(guid);
+        await grain.DeleteArchive(guid);
+        await this.archive.ClearStateAsync();
     }
 
-    public Task AddVideoItem(MediaVideoItem videoItem)
+    public async Task AddVideoItem(ArchiveModel archive, MediaVideoItem videoItem)
     {
-        throw new NotImplementedException();
+        var grain = this.GrainFactory.GetGrain<IArchiveGrain>(archive.Guid);
+        await grain.AddVideoItem(archive, videoItem);
+        this.archive.State = archive;
+        await this.archive.WriteStateAsync();
     }
 
-    public Task AddPhotoItem(MediaPhotoItem photoItem)
+    public async Task AddPhotoItem(ArchiveModel archive, MediaPhotoItem photoItem)
     {
-        throw new NotImplementedException();
+        var grain = this.GrainFactory.GetGrain<IArchiveGrain>(archive.Guid);
+        await grain.AddPhotoItem(archive, photoItem);
+        this.archive.State = archive;
+        await this.archive.WriteStateAsync();
     }
 
-    public Task AddAudioItem(MediaAudioItem audioItem)
+    public async Task AddAudioItem(ArchiveModel archive, MediaAudioItem audioItem)
     {
-        throw new NotImplementedException();
+        var grain = this.GrainFactory.GetGrain<IArchiveGrain>(archive.Guid);
+        await grain.AddAudioItem(archive, audioItem);
+        this.archive.State = archive;
+        await this.archive.WriteStateAsync();
     }
 
     public async Task<ArchiveModel> GetArchive(Guid guid)
