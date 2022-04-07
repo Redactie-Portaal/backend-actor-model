@@ -22,8 +22,9 @@ public class MediaVideoGrain : Grain, IMediaVideoGrain
         return this.videoItem.State;
     }
 
-    public async Task AddMediaVideoItem(MediaVideoItem videoItem)
+    public async Task AddMediaVideoItem(MediaVideoItem item)
     {
+        this.videoItem.State = item;
         await this.videoItem.WriteStateAsync();
     }
 
@@ -32,8 +33,9 @@ public class MediaVideoGrain : Grain, IMediaVideoGrain
         await this.videoItem.ClearStateAsync();
     }
 
-    public async Task UpdateMediaVideoItem(MediaVideoItem videoItem)
+    public async Task UpdateMediaVideoItem(MediaVideoItem item)
     {
+        this.videoItem.State = item;
         await this.videoItem.WriteStateAsync();
     }
 }

@@ -22,8 +22,9 @@ public class MediaPhotoGrain : Grain, IMediaPhotoGrain
         return this.photoItem.State;
     }
 
-    public async Task AddMediaPhotoItem(MediaPhotoItem videoItem)
+    public async Task AddMediaPhotoItem(MediaPhotoItem item)
     {
+        this.photoItem.State = item;
         await this.photoItem.WriteStateAsync();
     }
 
@@ -32,8 +33,9 @@ public class MediaPhotoGrain : Grain, IMediaPhotoGrain
         await this.photoItem.ClearStateAsync();
     }
 
-    public async Task UpdateMediaPhotoItem(MediaPhotoItem videoItem)
+    public async Task UpdateMediaPhotoItem(MediaPhotoItem item)
     {
+        this.photoItem.State = item;
         await this.photoItem.WriteStateAsync();
     }
 }
