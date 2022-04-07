@@ -11,7 +11,7 @@ public class NewsItemModel
         FeedSource source,
         ItemBody body,
         string contactDetails,
-        string locationDetails,
+        Location locationDetails,
         DateTime produtionDate,
         DateTime endDate,
         Category category,
@@ -50,7 +50,7 @@ public class NewsItemModel
 
     public string ContactDetails { get; }
 
-    public string LocationDetails { get; }
+    public Location LocationDetails { get; }
 
     public DateTime ProdutionDate { get; }
 
