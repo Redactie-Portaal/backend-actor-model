@@ -68,8 +68,8 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\RedacteurPortaal.Data\RedacteurPortaal.Data.csproj" />
-	  <ProjectReference Include="..\RedacteurPortaal.Grains\RedacteurPortaal.Grains.csproj" />
 	  <ProjectReference Include="..\RedacteurPortaal.DomainModels\RedacteurPortaal.DomainModels.csproj" />
+	  <ProjectReference Include="..\RedacteurPortaal.Grains\RedacteurPortaal.Grains.csproj" />
     </ItemGroup>
 
 	<ItemGroup>
