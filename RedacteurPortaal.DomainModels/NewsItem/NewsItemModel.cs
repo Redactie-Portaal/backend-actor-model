@@ -1,4 +1,5 @@
-﻿using RedacteurPortaal.DomainModels.Media;
+﻿using System.Runtime.CompilerServices;
+using RedacteurPortaal.DomainModels.Media;
 
 namespace RedacteurPortaal.DomainModels.NewsItem;
 public class NewsItemModel
@@ -13,7 +14,7 @@ public class NewsItemModel
         string author,
         FeedSource source,
         ItemBody body,
-        string contactDetails,
+        List<Contact> contactDetails,
         Location locationDetails,
         DateTime produtionDate,
         DateTime endDate,
@@ -51,7 +52,7 @@ public class NewsItemModel
 
     public ItemBody Body { get; private set; }
 
-    public string ContactDetails { get; private set; }
+    public List<Contact> ContactDetails { get; private set; }
 
     public Location LocationDetails { get; }
 
