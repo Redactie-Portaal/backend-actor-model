@@ -4,7 +4,23 @@ namespace RedacteurPortaal.DomainModels.Media;
 
 public abstract class MediaItem
 {
-    protected MediaItem(Guid guid, string title, string folder, DateTime republishDate, string rights, string camera, string lastWords, string proxyFile, string presentation, Location location, string format, Uri mediaLocation)
+    public MediaItem()
+    {
+    }
+
+    protected MediaItem(
+        Guid guid,
+        string title,
+        string folder,
+        DateTime republishDate,
+        string rights,
+        string camera,
+        string lastWords,
+        string proxyFile,
+        string presentation,
+        Location location,
+        string format,
+        Uri mediaLocation)
     {
         this.Guid = guid;
         this.Title = title ?? throw new ArgumentNullException(nameof(title));

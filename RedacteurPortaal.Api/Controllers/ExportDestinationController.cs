@@ -12,7 +12,7 @@ using RedacteurPortaal.Grains.Grains;
 namespace RedacteurPortaal.Api.Controllers;
 
 [ApiController]
-[Route("api/ExportDestination")]
+[Route("api/[controller]")]
 public class ExportDestinationController : Controller
 {
     private readonly IExportPluginService pluginService;
@@ -58,6 +58,7 @@ public class ExportDestinationController : Controller
 
         _ = apiKey ?? throw new KeyNotFoundException();
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
         await plugin.Upload(new Export.Base.ExportItem()
         {
             AudioUri = story.Audio.Select(v => v.MediaLocation).ToArray(),
@@ -67,6 +68,7 @@ public class ExportDestinationController : Controller
             TextContent = story.Body.Description,
             VideoUri = story.Videos.Select(v => v.MediaLocation).ToArray(),
         }, apiKey);
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
         return this.Ok();
     }

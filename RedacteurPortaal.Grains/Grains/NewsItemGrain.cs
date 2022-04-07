@@ -29,7 +29,9 @@ public class NewsItemGrain : Grain, INewsItemGrain
     public async Task AddNewsItem(NewsItemModel newsitem)
     {
         var grain = this.GrainFactory.GetGrain<INewsItemDescriptionGrain>(newsitem.Id);
+#pragma warning disable CS8604 // Possible null reference argument.
         await grain.AddDescription(newsitem.Id, newsitem.Body);
+#pragma warning restore CS8604 // Possible null reference argument.
         this.newsItem.State = newsitem;
         await this.newsItem.WriteStateAsync();
     }
