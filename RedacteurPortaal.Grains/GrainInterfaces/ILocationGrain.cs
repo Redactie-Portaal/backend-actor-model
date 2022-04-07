@@ -9,14 +9,8 @@ using System.Threading.Tasks;
 
 namespace RedacteurPortaal.Grains.GrainInterfaces
 {
-    public interface ILocationGrain : IGrainWithGuidKey
+    public interface ILocationGrain : IManageableGrain<Location>
     {
-        Task<Location> GetLocation(Guid guid);
-
-        Task AddLocation(Location location);
-
-        Task DeleteLocation(Guid guid);
-
-        Task UpdateLocation(Location location);
+        Task Update(Location location);
     }
 }

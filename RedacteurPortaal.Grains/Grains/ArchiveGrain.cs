@@ -18,17 +18,17 @@ public class ArchiveGrain : Grain, IArchiveGrain
         this.archive = archive;
     }
 
-    public async Task DeleteArchive(Guid guid)
+    public async Task Delete(Guid guid)
     {
         var grain = this.GrainFactory.GetGrain<IArchiveGrain>(guid);
-        await grain.DeleteArchive(guid);
+        await grain.Delete();
         await this.archive.ClearStateAsync();
     }
 
     public async Task AddVideoItem(ArchiveModel archive, MediaVideoItem videoItem)
     {
         var grain = this.GrainFactory.GetGrain<IArchiveGrain>(archive.Guid);
-        await grain.AddVideoItem(archive, videoItem);
+        await grain.AddVideoItem(videoItem);
         this.archive.State = archive;
         await this.archive.WriteStateAsync();
     }
@@ -36,7 +36,7 @@ public class ArchiveGrain : Grain, IArchiveGrain
     public async Task AddPhotoItem(ArchiveModel archive, MediaPhotoItem photoItem)
     {
         var grain = this.GrainFactory.GetGrain<IArchiveGrain>(archive.Guid);
-        await grain.AddPhotoItem(archive, photoItem);
+        await grain.AddPhotoItem(photoItem);
         this.archive.State = archive;
         await this.archive.WriteStateAsync();
     }
@@ -44,12 +44,12 @@ public class ArchiveGrain : Grain, IArchiveGrain
     public async Task AddAudioItem(ArchiveModel archive, MediaAudioItem audioItem)
     {
         var grain = this.GrainFactory.GetGrain<IArchiveGrain>(archive.Guid);
-        await grain.AddAudioItem(archive, audioItem);
+        await grain.AddAudioItem(audioItem);
         this.archive.State = archive;
         await this.archive.WriteStateAsync();
     }
 
-    public async Task<ArchiveModel> GetArchive(Guid guid)
+    public async Task<ArchiveModel> Get(Guid guid)
     {
         var grain = this.GrainFactory.GetGrain<IArchiveGrain>(guid);
         return await Task.FromResult(this.archive.State);

@@ -4,15 +4,12 @@ using RedacteurPortaal.DomainModels.Media;
 
 namespace RedacteurPortaal.Grains.GrainInterfaces;
 
-public interface IArchiveGrain : IGrainWithGuidKey
+public interface IArchiveGrain : IManageableGrain<ArchiveModel>
 {
-    Task DeleteArchive(Guid guid);
 
-    Task AddVideoItem(ArchiveModel archive, MediaVideoItem videoItem);
+    Task AddVideoItem(MediaVideoItem videoItem);
 
-    Task AddPhotoItem(ArchiveModel archive, MediaPhotoItem photoItem);
+    Task AddPhotoItem(MediaPhotoItem photoItem);
 
-    Task AddAudioItem(ArchiveModel archive, MediaAudioItem audioItem);
-
-    Task<ArchiveModel> GetArchive(Guid guid);
+    Task AddAudioItem(MediaAudioItem audioItem);
 }

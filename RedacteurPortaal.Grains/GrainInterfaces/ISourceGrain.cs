@@ -8,13 +8,7 @@ using System.Threading.Tasks;
 
 namespace RedacteurPortaal.Grains.GrainInterfaces;
 
-public interface ISourceGrain : IGrainWithGuidKey
+public interface ISourceGrain : IManageableGrain<Source>
 {
-    Task<Source> GetSource(Guid guid);
-
-    Task AddSource(Source source);
-
-    Task DeleteSource(Guid guid);
-
-    Task UpdateSource(Source source);
+    Task Update(Source source);
 }
