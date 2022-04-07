@@ -17,9 +17,25 @@ public class MediaAudioGrain : Grain, IMediaAudioGrain
         this.audioItem = audioItem;
     }
 
-    public void PlaceHolder()
+    public MediaAudioItem GetMediaAudioItem(Guid guid)
     {
-        _ = this.audioItem;
-        throw new NotImplementedException();
+        return this.audioItem.State;
+    }
+
+    public async Task AddMediaAudioItem(MediaAudioItem item)
+    {
+        this.audioItem.State = item;
+        await this.audioItem.WriteStateAsync();
+    }
+
+    public async Task DeleteMediaAudioItem(Guid guid)
+    {
+        await this.audioItem.ClearStateAsync();
+    }
+
+    public async Task UpdateMediaAudioItem(MediaAudioItem item)
+    {
+        this.audioItem.State = item;
+        await this.audioItem.WriteStateAsync();
     }
 }

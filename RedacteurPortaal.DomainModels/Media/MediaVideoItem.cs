@@ -43,7 +43,6 @@ public class MediaVideoItem : MediaItem
     public string FirstWords { get; }
 
     public MediaVideoItem(
-        Guid guid,
         Guid newsItemGuid,
         string title,
         string folder,

@@ -4,6 +4,7 @@ using RedacteurPortaal.Api.Models;
 using RedacteurPortaal.Api.Models.Request;
 using RedacteurPortaal.Data.Context;
 using RedacteurPortaal.DomainModels;
+using RedacteurPortaal.DomainModels.Media;
 using RedacteurPortaal.DomainModels.NewsItem;
 using RedacteurPortaal.Grains.GrainInterfaces;
 using RedacteurPortaal.Grains.Grains;
@@ -59,12 +60,12 @@ public class ExportDestinationController : Controller
 
         await plugin.Upload(new Export.Base.ExportItem()
         {
-            AudioUri = story.Audio.MediaLocation,
+            AudioUri = story.Audio.Select(v => v.MediaLocation).ToArray(),
             Images = story.Photos.Select(x => x.Image).ToArray(),
             Name = story.Title,
             ShortText = story.Body.ShortDescription,
             TextContent = story.Body.Description,
-            VideoUri = story.Video.MediaLocation
+            VideoUri = story.Videos.Select(v => v.MediaLocation).ToArray(),
         }, apiKey);
 
         return this.Ok();
