@@ -8,7 +8,7 @@ using RedacteurPortaal.Grains.GrainServices;
 namespace RedacteurPortaal.Api.Controllers
 {
     [ApiController]
-    [Route("api/Profiles")]
+    [Route("api/[controller]")]
     public class ProfileController : ControllerBase
     {
         private readonly IGrainManagementService<IProfileGrain> grainService;
