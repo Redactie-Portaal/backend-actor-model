@@ -5,6 +5,7 @@ namespace RedacteurPortaal.DomainModels.Archive;
 public class ArchiveModel
 {
     public ArchiveModel(
+        string title,
         string label,
         List<MediaPhotoItem> mediaPhotoItems,
         List<MediaVideoItem> mediaVideoItems,
@@ -12,6 +13,7 @@ public class ArchiveModel
         DateTime archivedDate,
         List<string> scripts)
     {
+        this.Title = title ?? throw new ArgumentNullException(nameof(title));
         this.Label = label ?? throw new ArgumentNullException(nameof(label));
         this.MediaPhotoItems = mediaPhotoItems;
         this.MediaVideoItems = mediaVideoItems;
@@ -19,6 +21,8 @@ public class ArchiveModel
         this.ArchivedDate = archivedDate;
         this.Scripts = scripts;
     }
+
+    public string Title { get; }
 
     public string Label { get; }
 

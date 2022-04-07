@@ -9,13 +9,13 @@ namespace RedacteurPortaal.Grains.Grains;
 
 public class ArchiveGrain : Grain, IArchiveGrain
 {
-    private readonly IPersistentState<ArchiveModel> archiveModel;
+    private readonly IPersistentState<ArchiveModel> archive;
 
     public ArchiveGrain(
         [PersistentState("archiveModel", "OrleansStorage")]
-        IPersistentState<ArchiveModel> archiveModel)
+        IPersistentState<ArchiveModel> archive)
     {
-        this.archiveModel = archiveModel;
+        this.archive = archive;
     }
 
     public Task RemoveArchive()
@@ -41,7 +41,6 @@ public class ArchiveGrain : Grain, IArchiveGrain
     public async Task<ArchiveModel> GetArchive(Guid guid)
     {
         var grain = this.GrainFactory.GetGrain<IArchiveGrain>(guid);
-        var archive = await Task.FromResult(this.archiveModel.State);
-        return archive;
+        return await Task.FromResult(this.archive.State);
     }
 }
