@@ -7,7 +7,5 @@ public interface INewsItemGrain : IManageableGrain<NewsItemModel>
 {
     Task AddNewsItem(NewsItemModel newsitem);
 
-    Task DeleteNewsItem(Guid guid);
-
     Task Update(NewsItemUpdate update);
 }
