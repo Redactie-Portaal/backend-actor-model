@@ -10,7 +10,7 @@ public class Location
 {
     public Location(string name, string city, string province, string street, string zip, string latitude, string longitude)
     {
-        this.Name = name;
+        this.Name = name ?? throw new ArgumentNullException(nameof(name));
         this.City = city;
         this.Province = province;
         this.Street = street;
