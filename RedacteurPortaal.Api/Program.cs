@@ -13,7 +13,8 @@ using RedacteurPortaal.Grains.GrainServices;
 using System.Runtime.Loader;
 
 await Host.CreateDefaultBuilder(args)
-    .UseOrleans((ctx, siloBuilder) => {
+    .UseOrleans((ctx, siloBuilder) =>
+    {
         if (ctx.HostingEnvironment.IsDevelopment())
         {
             siloBuilder.UseLocalhostClustering();
@@ -31,11 +32,12 @@ await Host.CreateDefaultBuilder(args)
 
             siloBuilder.AddAdoNetGrainStorage(
                 "OrleansStorage",
-                options => {
+                options =>
+                {
                     options.Invariant = "Npgsql";
                     options.UseJsonFormat = true;
                     options.ConnectionString = postgresqlConnString;
-            });
+                });
 
             siloBuilder.ConfigureLogging(logging => logging.AddConsole());
         }
@@ -44,7 +46,8 @@ await Host.CreateDefaultBuilder(args)
     {
         webBuilder.ConfigureServices(services => services.AddControllers());
         webBuilder.ConfigureServices(services => services.AddSwaggerGen());
-        webBuilder.Configure((ctx, app) => {
+        webBuilder.Configure((ctx, app) => 
+        {
             if (ctx.HostingEnvironment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -63,7 +66,8 @@ await Host.CreateDefaultBuilder(args)
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         });
     })
-    .ConfigureServices((ctx, services) => {
+    .ConfigureServices((ctx, services) =>
+    {
         services.AddScoped<IExportPluginService, ExportPluginService>();
         services.AddScoped< IGrainManagementService<INewsItemGrain>, GrainManagementService<INewsItemGrain, NewsItemModel>>();
         services.AddScoped<IGrainManagementService<IProfileGrain>, GrainManagementService<IProfileGrain, Profile>>();
