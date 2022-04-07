@@ -1,5 +1,13 @@
+using Export.Base;
+using Microsoft.EntityFrameworkCore;
 using Orleans;
 using Orleans.Hosting;
+using RedacteurPortaal.Api;
+using RedacteurPortaal.Api.Middleware;
+using RedacteurPortaal.Data.Context;
+using RedacteurPortaal.Grains.GrainInterfaces;
+using RedacteurPortaal.Grains.Grains;
+using System.Runtime.Loader;
 
 await Host.CreateDefaultBuilder(args)
     .UseOrleans((ctx, siloBuilder) =>
@@ -7,7 +15,7 @@ await Host.CreateDefaultBuilder(args)
         if (ctx.HostingEnvironment.IsDevelopment())
         {
             siloBuilder.UseLocalhostClustering();
-            siloBuilder.AddMemoryGrainStorage("definitions");
+            siloBuilder.AddMemoryGrainStorage("OrleansStorage");
         }
         else
         {
@@ -44,11 +52,30 @@ await Host.CreateDefaultBuilder(args)
             app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthorization();
+
+            // global error handler
+            app.UseMiddleware<ExceptionHandelingMiddleware>();
+
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         });
     })
-    .ConfigureServices(services =>
+    .ConfigureServices((ctx, services) =>
     {
-        // Add services here
+        services.AddScoped<IExportPluginService, ExportPluginService>();
+        services.AddDbContext<DataContext>(options =>
+        {
+            var connString = ctx.Configuration.GetConnectionString("DefaultConnection");
+            options.UseNpgsql(connString);
+        });
+
+        // migrate ef.
+#pragma warning disable ASP0000 // Do not call 'IServiceCollection.BuildServiceProvider' in 'ConfigureServices'
+        using (var scope = services.BuildServiceProvider().CreateScope())
+        {
+            var context = scope.ServiceProvider.GetService<DataContext>();
+            _ = context ?? throw new Exception("Failed to retrieve Database context");
+            context.Database.Migrate();
+        }
+#pragma warning restore ASP0000 // Do not call 'IServiceCollection.BuildServiceProvider' in 'ConfigureServices'
     })
     .RunConsoleAsync();
