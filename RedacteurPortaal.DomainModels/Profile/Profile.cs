@@ -1,0 +1,37 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace RedacteurPortaal.DomainModels.Profile
+{
+    public class Profile
+    {
+        public Profile()
+        {
+        }
+
+        public Profile(Guid id, string fullName, ContactDetails contactDetails, string profilePicture, Role role, DateTime lastOnline)
+        {
+            this.Id = id;
+            this.FullName = fullName ?? throw new ArgumentNullException(nameof(fullName));
+            this.ContactDetails = contactDetails ?? throw new ArgumentNullException(nameof(contactDetails));
+            this.ProfilePicture = profilePicture ?? throw new ArgumentNullException(nameof(profilePicture));
+            this.Role = role;
+            this.LastOnline = lastOnline;
+        }
+
+        public Guid Id { get; private set; }
+
+        public string FullName { get; private set; }
+
+        public ContactDetails ContactDetails { get; private set; }
+
+        public string ProfilePicture { get; private set; }
+
+        public Role Role { get; private set; }
+
+        public DateTime LastOnline { get; private set; }
+    }
+}

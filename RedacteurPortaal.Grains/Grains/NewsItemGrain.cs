@@ -47,4 +47,11 @@ public class NewsItemGrain : Grain, INewsItemGrain
         this.newsItem.State.Id = guid;
         await this.newsItem.WriteStateAsync();
     }
+
+    public  async Task Delete()
+    {
+        var grain = this.GrainFactory.GetGrain<INewsItemDescriptionGrain>(this.newsItem.State.Id);
+        await grain.DeleteDescription();
+        await this.newsItem.ClearStateAsync();
+    }
 }
