@@ -9,6 +9,7 @@
         <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
         <CodeAnalysisRuleSet>..\.sonarlint\redactie-portaal_backend-actor-modelcsharp.ruleset</CodeAnalysisRuleSet>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<Platforms>AnyCPU;x64</Platforms>
     </PropertyGroup>
 
     <ItemGroup>
@@ -19,10 +20,11 @@
         <PackageReference Include="Mapster" Version="7.3.0" />
         <PackageReference Include="Mapster.Core" Version="1.2.0" />
         <PackageReference Include="Export.Base" Version="1.0.20" />
-        <PackageReference Include="Microsoft.Orleans.CodeGenerator.MSBuild" Version="3.6.0">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        <PackageReference Include="Microsoft.Orleans.CodeGenerator.MSBuild" Version="3.6.1">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="Microsoft.Orleans.Core.Abstractions" Version="3.6.1" />
         <PackageReference Include="Microsoft.Orleans.Persistence.AdoNet" Version="3.6.0" />
         <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.15.0" />
         <PackageReference Include="Npgsql" Version="6.0.3" />
@@ -53,10 +55,6 @@
 		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
 		<PackageReference Include="Microsoft.Orleans.Client" Version="3.6.0" />
 		<PackageReference Include="Microsoft.Orleans.Hosting.Kubernetes" Version="3.6.0" />
-		<PackageReference Include="Microsoft.Orleans.CodeGenerator.MSBuild" Version="3.6.0">
-		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
 		<PackageReference Include="Microsoft.Orleans.Persistence.AdoNet" Version="3.6.0" />
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.15.0" />
 		<PackageReference Include="Npgsql" Version="6.0.3" />
@@ -73,5 +71,11 @@
 	  <ProjectReference Include="..\RedacteurPortaal.DomainModels\RedacteurPortaal.DomainModels.csproj" />
 	  <ProjectReference Include="..\RedacteurPortaal.Grains\RedacteurPortaal.Grains.csproj" />
     </ItemGroup>
+
+	<ItemGroup>
+	  <None Update="ExportPlugins\Export.Console.dll">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
 
 </Project>

@@ -21,10 +21,10 @@ public class LocationGrain : Grain, ILocationGrain
         this.location = location;
     }
 
-    public Location GetLocation(Guid guid)
+    public Task<Location> GetLocation(Guid guid)
     {
         var grain = this.GrainFactory.GetGrain<ILocationGrain>(guid);
-        return this.location.State;
+        return Task.FromResult(this.location.State);
     }
 
     public async Task AddLocation(Location location)
@@ -40,9 +40,9 @@ public class LocationGrain : Grain, ILocationGrain
         await this.location.WriteStateAsync();
     }
 
-    public async Task DeleteLocation(Guid id)
+    public async Task DeleteLocation(Guid guid)
     {
-        var grain = this.GrainFactory.GetGrain<ILocationGrain>(id);
+        var grain = this.GrainFactory.GetGrain<ILocationGrain>(guid);
         await this.location.ClearStateAsync();
     }
 }
