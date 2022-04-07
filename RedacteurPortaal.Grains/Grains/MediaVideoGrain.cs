@@ -17,9 +17,23 @@ public class MediaVideoGrain : Grain, IMediaVideoGrain
         this.videoItem = videoItem;
     }
 
-    public void PlaceHolder()
+    public MediaVideoItem GetMediaVideoItem(Guid guid) 
     {
-        _ = this.videoItem;
-        throw new NotImplementedException();
+        return this.videoItem.State;
+    }
+
+    public async Task AddMediaVideoItem(MediaVideoItem videoItem)
+    {
+        await this.videoItem.WriteStateAsync();
+    }
+
+    public async Task DeleteMediaVideoItem(Guid guid) 
+    {
+        await this.videoItem.ClearStateAsync();
+    }
+
+    public async Task UpdateMediaVideoItem(MediaVideoItem videoItem)
+    {
+        await this.videoItem.WriteStateAsync();
     }
 }

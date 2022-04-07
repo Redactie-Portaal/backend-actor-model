@@ -23,26 +23,21 @@ public class LocationGrain : Grain, ILocationGrain
 
     public Location GetLocation(Guid guid)
     {
-        var grain = this.GrainFactory.GetGrain<ILocationGrain>(guid);
         return this.location.State;
     }
 
     public async Task AddLocation(Location location)
     {
-        var grain = this.GrainFactory.GetGrain<ILocationGrain>(location.Id);
-        this.location.State = location;
         await this.location.WriteStateAsync();
     }
 
     public async Task UpdateLocation(Location location)
     {
-        this.location.State = location;
         await this.location.WriteStateAsync();
     }
 
     public async Task DeleteLocation(Guid id)
     {
-        var grain = this.GrainFactory.GetGrain<ILocationGrain>(id);
         await this.location.ClearStateAsync();
     }
 }
