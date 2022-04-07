@@ -10,13 +10,13 @@ public class Location
 {
     public Location(string name, string city, string province, string street, string zip, string latitude, string longitude)
     {
-        Name = name;
-        City = city;
-        Province = province;
-        Street = street;
-        Zip = zip;
-        Latitude = latitude ?? throw new ArgumentNullException(nameof(latitude));
-        Longitude = longitude ?? throw new ArgumentNullException(nameof(longitude));
+        this.Name = name;
+        this.City = city;
+        this.Province = province;
+        this.Street = street;
+        this.Zip = zip;
+        this.Latitude = latitude ?? throw new ArgumentNullException(nameof(latitude));
+        this.Longitude = longitude ?? throw new ArgumentNullException(nameof(longitude));
     }
 
     public Guid Id { get; }
