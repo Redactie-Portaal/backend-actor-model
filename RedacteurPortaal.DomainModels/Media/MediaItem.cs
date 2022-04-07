@@ -4,8 +4,6 @@ namespace RedacteurPortaal.DomainModels.Media;
 
 public abstract class MediaItem
 {
-    private Guid Guid { get; set; }
-
     protected MediaItem(Guid guid, string title, string folder, DateTime republishDate, string rights, string camera, string lastWords, string proxyFile, string presentation, Location location, string format, Uri mediaLocation)
     {
         this.Guid = guid;
@@ -21,6 +19,8 @@ public abstract class MediaItem
         this.Format = format ?? throw new ArgumentNullException(nameof(format));
         this.MediaLocation = mediaLocation ?? throw new ArgumentNullException(nameof(mediaLocation));
     }
+
+    private Guid Guid { get; set; }
 
     public string Title { get; set; }
 
@@ -38,7 +38,7 @@ public abstract class MediaItem
 
     public string Presentation { get; set; }
 
-    public Location Location { get; set; }
+    public Location Location { get; }
 
     public string Format { get; set; }
 

@@ -12,6 +12,8 @@ namespace RedacteurPortaal.Data.Context
     public class DataContext : DbContext
     {
         public DbSet<PluginSettings> PluginSettings { get; set; }
+
+        public DbSet<GrainReference> GrainReferences { get; set; }
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
 
@@ -19,6 +21,8 @@ namespace RedacteurPortaal.Data.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<GrainReference>().Property(x => x.GrainId).HasConversion(v => v.ToString(), v => Guid.Parse(v));
+
             modelBuilder.Entity<PluginSettings>().Property(x=> x.PluginId).HasConversion(v => v.ToString(), v => Guid.Parse(v));
             base.OnModelCreating(modelBuilder);
         }
