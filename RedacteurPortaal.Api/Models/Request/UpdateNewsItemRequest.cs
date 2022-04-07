@@ -1,11 +1,12 @@
 ﻿using RedacteurPortaal.DomainModels.Media;
+using RedacteurPortaal.DomainModels.NewsItem;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RedacteurPortaal.DomainModels.NewsItem.Requests;
+namespace RedacteurPortaal.Api.Models.Request;
 
 public class UpdateNewsItemRequest
 {

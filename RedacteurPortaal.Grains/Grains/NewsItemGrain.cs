@@ -1,7 +1,6 @@
 ﻿using Orleans;
 using Orleans.Runtime;
 using RedacteurPortaal.DomainModels.NewsItem;
-using RedacteurPortaal.DomainModels.NewsItem.Requests;
 using RedacteurPortaal.Grains.GrainInterfaces;
 
 namespace RedacteurPortaal.Grains.Grains;

@@ -4,7 +4,6 @@ using Orleans;
 using RedacteurPortaal.Api.Models;
 using RedacteurPortaal.Api.Models.Request;
 using RedacteurPortaal.DomainModels.NewsItem;
-using RedacteurPortaal.DomainModels.NewsItem.Requests;
 using RedacteurPortaal.Grains.GrainInterfaces;
 using RedacteurPortaal.Grains.GrainServices;
 
@@ -32,38 +31,36 @@ public class NewsItemController : Controller
             .Map(dest => dest.Id,
                 src => newguid);
 
-            var tosave = newsitem.Adapt<NewsItemModel>();
+        var tosave = newsitem.Adapt<NewsItemModel>();
 
-            const string successMessage = "News item was created";
-            var grain = await this.grainService.GetGrain(tosave.Id);
-            var update = new NewsItemUpdate();
-            await grain.Update(update);
-            this.logger.LogInformation(successMessage);
-            return this.CreatedAtRoute("GetNewsItem", new { guid = newguid }, newsitem);
+        const string successMessage = "News item was created";
+        var grain = await this.grainService.GetGrain(tosave.Id);
+        var update = new NewsItemUpdate();
+        await grain.Update(update);
+        this.logger.LogInformation(successMessage);
+        return this.CreatedAtRoute("GetNewsItem", new { guid = newguid }, newsitem);
     }
 
-/*
     [HttpGet]
-    [Route("id", Name ="GetNewsItem")]
+    [Route("{id}", Name = "GetNewsItem")]
     public async Task<IActionResult> GetNewsItem(Guid guid)
     {
-        var grain = this.client.GetGrain<INewsItemGrain>(guid);
-        var response = await grain.GetNewsItem(guid);
+        var grain = await this.grainService.GetGrain(guid);
+        var response = await grain.Get();
         this.logger.LogInformation("News item fetched successfully");
         return this.Ok(response);
-    } */
+    }
 
     [HttpGet]
-    [Route("id", Name = "GetNewsItem")]
     public async Task<IActionResult> GetNewsItems()
     {
         var grain = await this.grainService.GetGrains();
         this.logger.LogInformation("News item fetched successfully");
-        return this.Ok(grain.Select(x=> x.Get()));
+        return this.Ok(grain.Select(x => x.Get()));
     }
 
     [HttpDelete]
-    [Route("id")]
+    [Route("{id}")]
     public async Task<IActionResult> DeleteNewsItem(Guid guid)
     {
         var grain = await this.grainService.GetGrain(guid);
@@ -73,7 +70,7 @@ public class NewsItemController : Controller
     }
 
     [HttpPatch]
-    [Route("id")]
+    [Route("{id}")]
     public async Task<IActionResult> UpdateNewsItem([FromBody] UpdateNewsItemRequest request)
     {
         var grain = await this.grainService.GetGrain(request.Guid);

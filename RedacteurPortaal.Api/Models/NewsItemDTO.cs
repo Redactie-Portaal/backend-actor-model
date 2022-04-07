@@ -10,19 +10,19 @@ public class NewsItemDTO
 {
     public Guid? Id { get; set; } = Guid.NewGuid();
 
-    public string? Title { get; }
+    public string? Title { get; set; }
 
-    public string? Status { get; }
+    public string? Status { get; set; }
 
-    public string? Author { get; }
+    public string? Author { get; set; }
 
-    public string? ContactDetails { get; }
+    public string? ContactDetails { get; set; }
 
-    public string? LocationDetails { get; }
+    public string? LocationDetails { get; set; }
 
-    public string? ProdutionDate { get; }
+    public string? ProdutionDate { get; set; }
 
-    public string? Category { get; }
+    public string? Category { get; set; }
 
-    public string? Region { get; }
+    public string? Region { get; set; }
 }
