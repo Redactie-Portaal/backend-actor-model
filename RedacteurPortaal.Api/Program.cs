@@ -5,8 +5,11 @@ using Orleans.Hosting;
 using RedacteurPortaal.Api;
 using RedacteurPortaal.Api.Middleware;
 using RedacteurPortaal.Data.Context;
+using RedacteurPortaal.DomainModels.NewsItem;
+using RedacteurPortaal.DomainModels.Profile;
 using RedacteurPortaal.Grains.GrainInterfaces;
 using RedacteurPortaal.Grains.Grains;
+using RedacteurPortaal.Grains.GrainServices;
 using System.Runtime.Loader;
 
 await Host.CreateDefaultBuilder(args)
@@ -26,20 +29,24 @@ await Host.CreateDefaultBuilder(args)
             var redisConnectionString = $"{Environment.GetEnvironmentVariable("REDIS")}:6379";
             var postgresqlConnString = Environment.GetEnvironmentVariable("POSTGRESQL");
             siloBuilder.UseRedisClustering(options => options.ConnectionString = redisConnectionString);
-            siloBuilder.AddAdoNetGrainStorage("OrleansStorage", options =>
-            {
-                options.Invariant = "Npgsql";
-                options.UseJsonFormat = true;
-                options.ConnectionString = postgresqlConnString;
-            });
+
+            siloBuilder.AddAdoNetGrainStorage(
+                "OrleansStorage",
+                options =>
+                {
+                    options.Invariant = "Npgsql";
+                    options.UseJsonFormat = true;
+                    options.ConnectionString = postgresqlConnString;
+                });
+
             siloBuilder.ConfigureLogging(logging => logging.AddConsole());
         }
     })
-    .ConfigureWebHostDefaults(webBuilder =>
+    .ConfigureWebHostDefaults(webBuilder => 
     {
         webBuilder.ConfigureServices(services => services.AddControllers());
         webBuilder.ConfigureServices(services => services.AddSwaggerGen());
-        webBuilder.Configure((ctx, app) =>
+        webBuilder.Configure((ctx, app) => 
         {
             if (ctx.HostingEnvironment.IsDevelopment())
             {
@@ -62,6 +69,9 @@ await Host.CreateDefaultBuilder(args)
     .ConfigureServices((ctx, services) =>
     {
         services.AddScoped<IExportPluginService, ExportPluginService>();
+        services.AddScoped< IGrainManagementService<INewsItemGrain>, GrainManagementService<INewsItemGrain, NewsItemModel>>();
+        services.AddScoped<IGrainManagementService<IProfileGrain>, GrainManagementService<IProfileGrain, Profile>>();
+
         services.AddDbContext<DataContext>(options =>
         {
             var connString = ctx.Configuration.GetConnectionString("DefaultConnection");
