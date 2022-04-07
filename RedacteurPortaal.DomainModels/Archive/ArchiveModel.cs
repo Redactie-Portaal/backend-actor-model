@@ -2,7 +2,7 @@
 
 namespace RedacteurPortaal.DomainModels.Archive;
 
-    class ArchiveModel
+public class ArchiveModel
 {
     public ArchiveModel(
         string label,
@@ -32,4 +32,3 @@ namespace RedacteurPortaal.DomainModels.Archive;
 
     public List<string> Scripts { get; }
 }
-

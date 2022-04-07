@@ -2,37 +2,38 @@
 using Orleans;
 using Orleans.Runtime;
 using RedacteurPortaal.DomainModels.Archive;
+using RedacteurPortaal.DomainModels.Media;
 using RedacteurPortaal.Grains.GrainInterfaces;
 
-namespace RedacteurPortaal.Grains.Grains
+namespace RedacteurPortaal.Grains.Grains;
 
-    public class ArchiveGrain : Grain, IArchiveGrain
+public class ArchiveGrain : Grain, IArchiveGrain
 {
     private readonly IPersistentState<ArchiveModel> archiveModel;
 
     public ArchiveGrain(
         [PersistentState("archiveModel", "OrleansStorage")]
-        IPersistentState<archiveModel> archiveModel)
+        IPersistentState<ArchiveModel> archiveModel)
     {
         this.archiveModel = archiveModel;
     }
 
-    public async Task RemoveArchive()
+    public Task RemoveArchive()
     {
         throw new NotImplementedException();
     }
 
-    public async Task AddVideoItem(MediaVideoItem item)
+    public Task AddVideoItem(MediaVideoItem videoItem)
     {
         throw new NotImplementedException();
     }
 
-    public async Task AddPhotoItem(MediaPhotoItem item)
+    public Task AddPhotoItem(MediaPhotoItem photoItem)
     {
         throw new NotImplementedException();
     }
 
-    public async Task AddAudioItem(MediaAudioItem item)
+    public Task AddAudioItem(MediaAudioItem audioItem)
     {
         throw new NotImplementedException();
     }
@@ -40,8 +41,7 @@ namespace RedacteurPortaal.Grains.Grains
     public async Task<ArchiveModel> GetArchive(Guid guid)
     {
         var grain = this.GrainFactory.GetGrain<IArchiveGrain>(guid);
-
-        return null;
+        var archive = await Task.FromResult(this.archiveModel.State);
+        return archive;
     }
 }
-
