@@ -40,6 +40,10 @@ public class MediaVideoItem : MediaItem
 
     public string FirstWords { get; }
 
+    public MediaVideoItem()
+    {
+    }
+
     public MediaVideoItem(
         Guid guid,
         Guid newsItemGuid,

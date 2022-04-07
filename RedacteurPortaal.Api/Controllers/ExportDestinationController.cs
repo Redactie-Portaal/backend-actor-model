@@ -11,7 +11,7 @@ using RedacteurPortaal.Grains.Grains;
 namespace RedacteurPortaal.Api.Controllers;
 
 [ApiController]
-[Route("api/ExportDestination")]
+[Route("api/[controller]")]
 public class ExportDestinationController : Controller
 {
     private readonly IExportPluginService pluginService;

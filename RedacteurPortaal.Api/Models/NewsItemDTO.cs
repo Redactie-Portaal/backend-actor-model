@@ -8,10 +8,6 @@ namespace RedacteurPortaal.Api.Models;
 
 public class NewsItemDTO
 {
-    public NewsItemDTO()
-    {
-    }
-
     public Guid? Id { get; set; } = Guid.NewGuid();
 
     public string? Title { get; }

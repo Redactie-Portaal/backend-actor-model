@@ -12,5 +12,5 @@ public interface INewsItemGrain : IGrainWithGuidKey
 
     Task DeleteNewsItem(Guid guid);
 
-    Task UpdateNewsItem(Guid guid, UpdateNewsItemRequest request);
+    Task UpdateNewsItem(UpdateNewsItemRequest request);
 }

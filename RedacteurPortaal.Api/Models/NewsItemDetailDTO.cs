@@ -12,8 +12,6 @@ public class NewsItemDetailDTO
 {
     public string? Title { get; set; }
 
-    public string? Status { get; set; }
-
     public string? Author { get; set; }
 
     public FeedSource? Source { get; set; }
@@ -34,5 +32,5 @@ public class NewsItemDetailDTO
 
     public MediaAudioItem? Audio { get; private set; }
 
-    public MediaPhotoItem[] Photos { get; private set; }
+    public MediaPhotoItem[]? Photos { get; private set; }
 }

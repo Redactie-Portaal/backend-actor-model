@@ -2,6 +2,10 @@
 
 public class MediaAudioItem : MediaItem
 {
+    public MediaAudioItem()
+    {
+    }
+
     public MediaAudioItem(
         Guid guid, string title, string folder, DateTime republishDate, string rights, string camera, string lastWords, string proxyFile, string presentation, Location location, string format, Uri audioUrl,
         TimeSpan duration,

@@ -2,6 +2,10 @@
 
 public abstract class MediaItem
 {
+    public MediaItem()
+    {
+    }
+
     private Guid Guid { get; set; }
 
     protected MediaItem(Guid guid, string title, string folder, DateTime republishDate, string rights, string camera, string lastWords, string proxyFile, string presentation, Location location, string format, Uri mediaLocation)

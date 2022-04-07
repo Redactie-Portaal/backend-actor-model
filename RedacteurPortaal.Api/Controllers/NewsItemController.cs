@@ -10,7 +10,7 @@ using RedacteurPortaal.Grains.GrainInterfaces;
 namespace RedacteurPortaal.Api.Controllers;
 
 [ApiController]
-[Route("api/NewsItem")]
+[Route("api/[controller]")]
 public class NewsItemController : Controller
 {
     private readonly IClusterClient client;
@@ -30,45 +30,45 @@ public class NewsItemController : Controller
     [HttpPost]
     public async Task<IActionResult> SaveNewsItem([FromBody] NewsItemDetailDTO newsitem)
     {
-            var newguid = Guid.NewGuid();
-            var tosave = newsitem.Adapt<NewsItemModel>();
-            tosave.Id = newguid;
+        var newguid = Guid.NewGuid();
+        var tosave = newsitem.Adapt<NewsItemModel>();
+        tosave.Id = newguid;
 
-            string successMessage = $"News item was created, the guid is {newguid}";
-            var grain = this.client.GetGrain<INewsItemGrain>(tosave.Id);
-            await grain.AddNewsItem(tosave);
-            this.logger.LogInformation(successMessage);
-        return this.StatusCode(201, newguid.ToString());
+        string successMessage = $"News item was created, the guid is {newguid}";
+        var grain = this.client.GetGrain<INewsItemGrain>(tosave.Id);
+        await grain.AddNewsItem(tosave);
+        this.logger.LogInformation(successMessage);
+        return this.CreatedAtRoute("GetNewsItem", new { guid = newguid }, newsitem);
     }
 
     [HttpGet]
-    [Route(":id")]
+    [Route("id", Name ="GetNewsItem")]
     public async Task<IActionResult> GetNewsItem(Guid guid)
     {
-            var grain = this.client.GetGrain<INewsItemGrain>(guid);
-            var response = await grain.GetNewsItem(guid);
-            this.logger.LogInformation("News item fetched successfully");
-            return this.Ok(response);
+        var grain = this.client.GetGrain<INewsItemGrain>(guid);
+        var response = await grain.GetNewsItem(guid);
+        this.logger.LogInformation("News item fetched successfully");
+        return this.Ok(response);
     }
 
     [HttpDelete]
     [Route(":id")]
     public async Task<IActionResult> DeleteNewsItem(Guid guid)
     {
-            var grain = this.client.GetGrain<INewsItemGrain>(guid);
-            await grain.DeleteNewsItem(guid);
-            this.logger.LogInformation("News item deleted successfully");
-            return this.StatusCode(204, "News item deleted");
+        var grain = this.client.GetGrain<INewsItemGrain>(guid);
+        await grain.DeleteNewsItem(guid);
+        this.logger.LogInformation("News item deleted successfully");
+        return this.StatusCode(204, "News item deleted");
     }
 
     [HttpPatch]
-    public async Task<IActionResult> UpdateNewsItem(Guid guid, [FromBody] UpdateNewsItemRequest request)
+    public async Task<IActionResult> UpdateNewsItem([FromBody] UpdateNewsItemRequest request)
     {
-            var grain = this.client.GetGrain<INewsItemGrain>(guid);
-            await grain.UpdateNewsItem(guid, request);
-            var item = await grain.GetNewsItem(guid);
+        var grain = this.client.GetGrain<INewsItemGrain>(request.Guid);
+        await grain.UpdateNewsItem(request);
+        var item = await grain.GetNewsItem(request.Guid);
 
-            this.logger.LogInformation("News item updated successfully");
-            return this.StatusCode(204, "News item updated");
+        this.logger.LogInformation("News item updated successfully");
+        return this.StatusCode(204, "News item updated");
     }
 }
