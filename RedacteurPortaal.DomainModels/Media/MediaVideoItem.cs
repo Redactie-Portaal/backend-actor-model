@@ -1,4 +1,6 @@
-﻿namespace RedacteurPortaal.DomainModels.Media;
+﻿using RedacteurPortaal.DomainModels.NewsItem;
+
+namespace RedacteurPortaal.DomainModels.Media;
 
 public class MediaVideoItem : MediaItem
 {
@@ -22,8 +24,6 @@ public class MediaVideoItem : MediaItem
 
     public string EPG { get; }
 
-    public string Presentation { get; }
-
     public TimeSpan Duration { get; }
 
     public string ArchiveMaterial { get; }
@@ -38,14 +38,11 @@ public class MediaVideoItem : MediaItem
 
     public string FirstPicture { get; }
 
-    public string LastWords { get; }
-
     public string ProgramName { get; }
 
     public string FirstWords { get; }
 
     public MediaVideoItem(
-        Guid guid,
         Guid newsItemGuid,
         string title,
         string folder,
@@ -75,7 +72,8 @@ public class MediaVideoItem : MediaItem
         List<string> guests,
         string firstPicture,
         string programName,
-        string firstWords)
+        string firstWords,
+        Uri mediaLocation)
      : base(
            newsItemGuid,
            title,
@@ -87,28 +85,29 @@ public class MediaVideoItem : MediaItem
            proxyFile,
            presentation,
            location,
-           format)
+           format,
+           mediaLocation)
     {
-        Reporter = reporter;
-        Sound = sound;
-        Editor = editor;
-        LastPicture = lastPicture;
-        Keywords = keywords;
-        VoiceOver = voiceOver;
-        Description = description;
-        ProgramDate = programDate;
-        ItemName = itemName;
-        EPG = ePG;
-        Presentation = presentation;
-        Duration = duration;
-        ArchiveMaterial = archiveMaterial;
-        Weather = weather;
-        Producer = producer;
-        Director = director;
-        Guests = guests;
-        FirstPicture = firstPicture;
-        LastWords = lastWords;
-        ProgramName = programName;
-        FirstWords = firstWords;
+        this.Reporter = reporter;
+        this.Sound = sound;
+        this.Editor = editor;
+        this.LastPicture = lastPicture;
+        this.Keywords = keywords;
+        this.VoiceOver = voiceOver;
+        this.Description = description;
+        this.ProgramDate = programDate;
+        this.ItemName = itemName;
+        this.EPG = ePG;
+        this.Presentation = presentation;
+        this.Duration = duration;
+        this.ArchiveMaterial = archiveMaterial;
+        this.Weather = weather;
+        this.Producer = producer;
+        this.Director = director;
+        this.Guests = guests;
+        this.FirstPicture = firstPicture;
+        this.LastWords = lastWords;
+        this.ProgramName = programName;
+        this.FirstWords = firstWords;
     }
 }

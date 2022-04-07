@@ -1,24 +1,30 @@
-﻿using RedacteurPortaal.DomainModels.Media;
+﻿using System.Runtime.CompilerServices;
+﻿using Mapster;
+using RedacteurPortaal.DomainModels.Media;
 
 namespace RedacteurPortaal.DomainModels.NewsItem;
-
-public class NewsItemModel
+[AdaptTo("[name]Dto"), GenerateMapper]
+public class NewsItemModel : IBaseEntity
 {
+    public NewsItemModel()
+    {
+    }
+
     public NewsItemModel(
         string title,
         Status status,
         string author,
         FeedSource source,
         ItemBody body,
-        string contactDetails,
-        string locationDetails,
+        List<Contact> contactDetails,
+        Location locationDetails,
         DateTime produtionDate,
         DateTime endDate,
         Category category,
         Region region,
-        MediaVideoItem video,
-        MediaAudioItem audio,
-        MediaPhotoItem photo)
+        MediaVideoItem[] videos,
+        MediaAudioItem[] audio,
+        MediaPhotoItem[] photos)
     {
         this.Title = title ?? throw new ArgumentNullException(nameof(title));
         this.Status = status;
@@ -31,38 +37,38 @@ public class NewsItemModel
         this.EndDate = endDate;
         this.Category = category;
         this.Region = region;
-        this.Video = video ?? throw new ArgumentNullException(nameof(video));
+        this.Videos = videos ?? throw new ArgumentNullException(nameof(videos));
         this.Audio = audio ?? throw new ArgumentNullException(nameof(audio));
-        this.Photo = photo ?? throw new ArgumentNullException(nameof(photo));
+        this.Photos = photos ?? throw new ArgumentNullException(nameof(photos));
     }
 
-    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid Id { get; init; } = Guid.NewGuid();
 
-    public string Title { get; }
+    public string Title { get; private set; }
 
-    public Status Status { get; }
+    public Status Status { get; private set; }
 
-    public string Author { get; }
+    public string Author { get; private set; }
 
-    public FeedSource Source { get; }
+    public FeedSource Source { get; private set; }
 
-    public ItemBody Body { get; }
+    public ItemBody Body { get; private set; }
 
-    public string ContactDetails { get; }
+    public List<Contact> ContactDetails { get; private set; }
 
-    public string LocationDetails { get; }
+    public Location LocationDetails { get; }
 
-    public DateTime ProdutionDate { get; }
+    public DateTime ProdutionDate { get; private set; }
 
-    public DateTime EndDate { get; }
+    public DateTime EndDate { get; private set; }
 
-    public Category Category { get; }
+    public Category Category { get; private set; }
 
-    public Region Region { get; }
+    public Region Region { get; private set; }
 
-    public MediaVideoItem Video { get; }
+    public MediaVideoItem[] Videos { get; private set; }
 
-    public MediaAudioItem Audio { get; }
+    public MediaAudioItem[] Audio { get; private set; }
 
-    public MediaPhotoItem Photo { get; }
+    public MediaPhotoItem[] Photos { get; private set; }
 }
