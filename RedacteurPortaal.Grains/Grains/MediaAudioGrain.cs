@@ -17,9 +17,9 @@ public class MediaAudioGrain : Grain, IMediaAudioGrain
         this.audioItem = audioItem;
     }
 
-    public MediaAudioItem GetMediaAudioItem(Guid guid)
+    public Task<MediaAudioItem> GetMediaAudioItem(Guid guid)
     {
-        return this.audioItem.State;
+        return Task.FromResult(this.audioItem.State);
     }
 
     public async Task AddMediaAudioItem(MediaAudioItem item)

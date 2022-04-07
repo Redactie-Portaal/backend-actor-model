@@ -5,11 +5,11 @@ namespace RedacteurPortaal.Grains.GrainInterfaces;
 
 public interface IMediaPhotoGrain : IGrainWithGuidKey
 {
-    MediaPhotoItem GetMediaPhotoItem(Guid guid);
+    Task<MediaPhotoItem> GetMediaPhotoItem(Guid guid);
 
-    Task AddMediaPhotoItem(MediaPhotoItem mediaPhoto);
+    Task AddMediaPhotoItem(MediaPhotoItem item);
 
     Task DeleteMediaPhotoItem(Guid guid);
 
-    Task UpdateMediaPhotoItem(MediaPhotoItem mediaPhoto);
+    Task UpdateMediaPhotoItem(MediaPhotoItem item);
 }

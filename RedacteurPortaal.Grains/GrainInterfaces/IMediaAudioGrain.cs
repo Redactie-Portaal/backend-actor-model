@@ -5,7 +5,7 @@ namespace RedacteurPortaal.Grains.GrainInterfaces;
 
 public interface IMediaAudioGrain : IGrainWithGuidKey
 {
-    MediaAudioItem GetMediaAudioItem(Guid guid);
+    Task<MediaAudioItem> GetMediaAudioItem(Guid guid);
 
     Task AddMediaAudioItem(MediaAudioItem mediaAudio);
 

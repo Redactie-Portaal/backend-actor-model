@@ -22,7 +22,7 @@ public class LocationGrain : Grain, ILocationGrain
     }
 
     public Task<Location> GetLocation(Guid guid)
-    { 
+    {
         return Task.FromResult(this.location.State);
     }
     

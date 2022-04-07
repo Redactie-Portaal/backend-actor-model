@@ -17,9 +17,9 @@ public class MediaPhotoGrain : Grain, IMediaPhotoGrain
         this.photoItem = photoItem;
     }
 
-    public MediaPhotoItem GetMediaPhotoItem(Guid guid)
+    public Task<MediaPhotoItem> GetMediaPhotoItem(Guid guid)
     {
-        return this.photoItem.State;
+        return Task.FromResult(this.photoItem.State);
     }
 
     public async Task AddMediaPhotoItem(MediaPhotoItem item)
