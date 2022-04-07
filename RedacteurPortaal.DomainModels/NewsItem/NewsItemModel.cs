@@ -1,8 +1,6 @@
-﻿using Mapster;
-using RedacteurPortaal.DomainModels.Media;
+﻿using RedacteurPortaal.DomainModels.Media;
 
 namespace RedacteurPortaal.DomainModels.NewsItem;
-[AdaptTo("[name]Dto"), GenerateMapper]
 public class NewsItemModel
 {
     public NewsItemModel()
