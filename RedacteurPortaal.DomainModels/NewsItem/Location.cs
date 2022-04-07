@@ -11,10 +11,10 @@ public class Location
     public Location(string name, string city, string province, string street, string zip, string latitude, string longitude)
     {
         this.Name = name ?? throw new ArgumentNullException(nameof(name));
-        this.City = city;
-        this.Province = province;
-        this.Street = street;
-        this.Zip = zip;
+        this.City = city ?? throw new ArgumentNullException(nameof(city));
+        this.Province = province ?? throw new ArgumentNullException(nameof(province));
+        this.Street = street ?? throw new ArgumentNullException(nameof(street));
+        this.Zip = zip ?? throw new ArgumentNullException(nameof(zip));
         this.Latitude = latitude ?? throw new ArgumentNullException(nameof(latitude));
         this.Longitude = longitude ?? throw new ArgumentNullException(nameof(longitude));
     }
