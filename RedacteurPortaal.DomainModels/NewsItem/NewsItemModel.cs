@@ -1,8 +1,10 @@
 ﻿using System.Runtime.CompilerServices;
+﻿using Mapster;
 using RedacteurPortaal.DomainModels.Media;
 
 namespace RedacteurPortaal.DomainModels.NewsItem;
-public class NewsItemModel
+[AdaptTo("[name]Dto"), GenerateMapper]
+public class NewsItemModel : IBaseEntity
 {
     public NewsItemModel()
     {
@@ -40,7 +42,7 @@ public class NewsItemModel
         this.Photos = photos ?? throw new ArgumentNullException(nameof(photos));
     }
 
-    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid Id { get; init; } = Guid.NewGuid();
 
     public string Title { get; private set; }
 
