@@ -16,7 +16,7 @@ namespace RedacteurPortaal.DomainModels.Archive
             this.MediaPhotoItems = mediaPhotoItems;
             this.MediaVideoItems = mediaVideoItems;
             this.MediaAudioItems = mediaAudioItems;
-            this.ArchivedDate = archivedDate ?? throw new ArgumentNullException(nameof(archivedDate));
+            this.ArchivedDate = archivedDate;
             this.Scripts = scripts;
         }
 
