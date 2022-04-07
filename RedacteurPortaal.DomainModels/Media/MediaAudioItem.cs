@@ -1,4 +1,6 @@
-﻿namespace RedacteurPortaal.DomainModels.Media;
+﻿using RedacteurPortaal.DomainModels.NewsItem;
+
+namespace RedacteurPortaal.DomainModels.Media;
 
 [Serializable]
 public class MediaAudioItem : MediaItem
