@@ -21,9 +21,9 @@ public class LocationGrain : Grain, ILocationGrain
         this.location = location;
     }
 
-    public Location GetLocation(Guid guid)
+    public Task<Location> GetLocation(Guid guid)
     {
-        return this.location.State;
+        return Task.FromResult(this.location.State);
     }
 
     public async Task AddLocation(Location item)

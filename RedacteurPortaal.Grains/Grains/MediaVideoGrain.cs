@@ -17,9 +17,9 @@ public class MediaVideoGrain : Grain, IMediaVideoGrain
         this.videoItem = videoItem;
     }
 
-    public MediaVideoItem GetMediaVideoItem(Guid guid) 
+    public Task<MediaVideoItem> GetMediaVideoItem(Guid guid) 
     {
-        return this.videoItem.State;
+        return Task.FromResult(this.videoItem.State);
     }
 
     public async Task AddMediaVideoItem(MediaVideoItem item)

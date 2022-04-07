@@ -5,7 +5,7 @@ namespace RedacteurPortaal.Grains.GrainInterfaces;
 
 public interface IMediaVideoGrain : IGrainWithGuidKey
 {
-    MediaVideoItem GetMediaVideoItem(Guid guid);
+    Task<MediaVideoItem> GetMediaVideoItem(Guid guid);
 
     Task AddMediaVideoItem(MediaVideoItem videoItem);
 
