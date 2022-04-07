@@ -1,3 +1,4 @@
+﻿using System.Runtime.CompilerServices;
 ﻿using Mapster;
 using RedacteurPortaal.DomainModels.Media;
 
@@ -15,7 +16,7 @@ public class NewsItemModel : IBaseEntity
         string author,
         FeedSource source,
         ItemBody body,
-        string contactDetails,
+        List<Contact> contactDetails,
         Location locationDetails,
         DateTime produtionDate,
         DateTime endDate,
@@ -53,7 +54,7 @@ public class NewsItemModel : IBaseEntity
 
     public ItemBody Body { get; private set; }
 
-    public string ContactDetails { get; private set; }
+    public List<Contact> ContactDetails { get; private set; }
 
     public Location LocationDetails { get; }
 
