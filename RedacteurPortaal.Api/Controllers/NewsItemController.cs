@@ -63,17 +63,16 @@ public class NewsItemController : Controller
     [Route("{id}")]
     public async Task<IActionResult> DeleteNewsItem(Guid guid)
     {
-        var grain = await this.grainService.GetGrain(guid);
-        await grain.Delete();
+        await this.grainService.DeleteGrain(guid);
         this.logger.LogInformation("News item deleted successfully");
         return this.StatusCode(204, "News item deleted");
     }
 
     [HttpPatch]
     [Route("{id}")]
-    public async Task<IActionResult> UpdateNewsItem([FromBody] UpdateNewsItemRequest request)
+    public async Task<IActionResult> UpdateNewsItem(Guid guid, [FromBody] UpdateNewsItemRequest request)
     {
-        var grain = await this.grainService.GetGrain(request.Guid);
+        var grain = await this.grainService.GetGrain(guid);
         var updateRequest = new NewsItemUpdate();
         await grain.Update(updateRequest);
         this.logger.LogInformation("News item updated successfully");

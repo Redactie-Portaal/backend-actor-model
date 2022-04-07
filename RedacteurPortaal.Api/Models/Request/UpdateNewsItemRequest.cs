@@ -10,8 +10,6 @@ namespace RedacteurPortaal.Api.Models.Request;
 
 public class UpdateNewsItemRequest
 {
-    public Guid Guid { get; set; } = Guid.NewGuid();
-
     public string? Title { get; set; }
 
     public string? Status { get; set; }
