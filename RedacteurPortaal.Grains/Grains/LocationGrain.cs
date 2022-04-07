@@ -15,7 +15,7 @@ public class LocationGrain : Grain, ILocationGrain
     private readonly IPersistentState<Location> location;
 
     public LocationGrain(
-        [PersistentState("newsitem", "OrleansStorage")]
+        [PersistentState("location", "OrleansStorage")]
         IPersistentState<Location> location)
     {
         this.location = location;
@@ -29,7 +29,7 @@ public class LocationGrain : Grain, ILocationGrain
 
     public async Task AddLocation(Location location)
     {
-        var grain = this.GrainFactory.GetGrain<INewsItemDescriptionGrain>(location.Id);
+        var grain = this.GrainFactory.GetGrain<ILocationGrain>(location.Id);
         this.location.State = location;
         await this.location.WriteStateAsync();
     }
@@ -42,7 +42,7 @@ public class LocationGrain : Grain, ILocationGrain
 
     public async Task DeleteLocation(Guid id)
     {
-        var grain = this.GrainFactory.GetGrain<INewsItemDescriptionGrain>(id);
+        var grain = this.GrainFactory.GetGrain<ILocationGrain>(id);
         await this.location.ClearStateAsync();
     }
 }
