@@ -34,7 +34,7 @@ public class NewsItemModel
         this.EndDate = endDate;
         this.Category = category;
         this.Region = region;
-        this.Videos = videos ?? throw new ArgumentNullException(nameof(video));
+        this.Videos = videos ?? throw new ArgumentNullException(nameof(videos));
         this.Audio = audio ?? throw new ArgumentNullException(nameof(audio));
         this.Photos = photos ?? throw new ArgumentNullException(nameof(photos));
     }
