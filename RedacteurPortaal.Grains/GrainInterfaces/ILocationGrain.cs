@@ -11,7 +11,7 @@ namespace RedacteurPortaal.Grains.GrainInterfaces
 {
     public interface ILocationGrain : IGrainWithGuidKey
     {
-        Task<Location> GetLocation(Guid guid);
+        Location GetLocation(Guid guid);
 
         Task AddLocation(Location location);
 

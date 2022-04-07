@@ -21,7 +21,7 @@ public class LocationGrain : Grain, ILocationGrain
         this.location = location;
     }
 
-    public async Task<Location> GetLocation(Guid guid)
+    public Location GetLocation(Guid guid)
     {
         var grain = this.GrainFactory.GetGrain<ILocationGrain>(guid);
         return this.location.State;
