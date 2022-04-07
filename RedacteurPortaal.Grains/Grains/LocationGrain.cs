@@ -40,9 +40,9 @@ public class LocationGrain : Grain, ILocationGrain
         await this.location.WriteStateAsync();
     }
 
-    public async Task DeleteLocation(Guid id)
+    public async Task DeleteLocation(Guid guid)
     {
-        var grain = this.GrainFactory.GetGrain<ILocationGrain>(id);
+        var grain = this.GrainFactory.GetGrain<ILocationGrain>(guid);
         await this.location.ClearStateAsync();
     }
 }

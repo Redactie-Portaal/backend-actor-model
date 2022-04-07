@@ -29,16 +29,19 @@ await Host.CreateDefaultBuilder(args)
             var postgresqlConnString = Environment.GetEnvironmentVariable("POSTGRESQL");
             siloBuilder.UseRedisClustering(options => options.ConnectionString = redisConnectionString);
 
-            siloBuilder.AddAdoNetGrainStorage("OrleansStorage", options => {
-                options.Invariant = "Npgsql";
-                options.UseJsonFormat = true;
-                options.ConnectionString = postgresqlConnString;
+            siloBuilder.AddAdoNetGrainStorage(
+                "OrleansStorage",
+                options => {
+                    options.Invariant = "Npgsql";
+                    options.UseJsonFormat = true;
+                    options.ConnectionString = postgresqlConnString;
             });
 
             siloBuilder.ConfigureLogging(logging => logging.AddConsole());
         }
     })
-    .ConfigureWebHostDefaults(webBuilder => {
+    .ConfigureWebHostDefaults(webBuilder => 
+    {
         webBuilder.ConfigureServices(services => services.AddControllers());
         webBuilder.ConfigureServices(services => services.AddSwaggerGen());
         webBuilder.Configure((ctx, app) => {
