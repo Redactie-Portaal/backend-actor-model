@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace RedacteurPortaal.Grains.GrainServices
 {
-    public interface IGrainManagementService<T> : IGrainWithGuidKey where T : IManageableGrain
+    public interface IGrainManagementService<T>
     {
         public Task<T> GetGrain(Guid id);
 
-        public IEnumerable<T> GetGrains();
+        public Task<List<T>> GetGrains();
 
         public Task DeleteGrain(Guid id);
     }

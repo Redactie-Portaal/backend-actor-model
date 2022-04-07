@@ -16,9 +16,9 @@ public class NewsItemGrain : Grain, INewsItemGrain
         this.newsItem = newsItem;
     }
 
-    public async Task<NewsItemModel> GetNewsItem(Guid guid)
+    public async Task<NewsItemModel> Get()
     {
-        var grain = this.GrainFactory.GetGrain<INewsItemDescriptionGrain>(guid);
+        var grain = this.GrainFactory.GetGrain<INewsItemDescriptionGrain>(this.newsItem.State.Id);
         var description = await grain.GetDescription();
         var item = await Task.FromResult(this.newsItem.State);
 
@@ -41,17 +41,16 @@ public class NewsItemGrain : Grain, INewsItemGrain
         await this.newsItem.ClearStateAsync();
     }
 
-    public async Task UpdateNewsItem(string name, Guid guid)
-    {
-        // TODO: Merge title.
-        this.newsItem.State.Id = guid;
-        await this.newsItem.WriteStateAsync();
-    }
-
     public  async Task Delete()
     {
         var grain = this.GrainFactory.GetGrain<INewsItemDescriptionGrain>(this.newsItem.State.Id);
         await grain.DeleteDescription();
         await this.newsItem.ClearStateAsync();
+    }
+
+    public async Task Update(NewsItemUpdate update)
+    {
+        // TODO: Merge title.
+        await this.newsItem.WriteStateAsync();
     }
 }

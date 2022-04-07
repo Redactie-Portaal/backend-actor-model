@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RedacteurPortaal.DomainModels.Profile
 {
-    public class Profile
+    public class Profile : IBaseEntity
     {
         public Profile()
         {
@@ -22,13 +22,13 @@ namespace RedacteurPortaal.DomainModels.Profile
             this.LastOnline = lastOnline;
         }
 
-        public Guid Id { get; private set; }
+        public Guid Id { get; init; }
 
-        public string FullName { get; private set; }
+        public string FullName { get; set; }
 
-        public ContactDetails ContactDetails { get; private set; }
+        public ContactDetails ContactDetails { get; set; }
 
-        public string ProfilePicture { get; private set; }
+        public string ProfilePicture { get; set; }
 
         public Role Role { get; private set; }
 

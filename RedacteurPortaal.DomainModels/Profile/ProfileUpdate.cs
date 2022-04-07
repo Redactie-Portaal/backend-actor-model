@@ -10,7 +10,6 @@ namespace RedacteurPortaal.DomainModels.Profile
     {
         public ProfileUpdate()
         {
-
         }
 
         public ProfileUpdate(string name, string profilePicture, ContactDetails contactDetails)
@@ -21,6 +20,7 @@ namespace RedacteurPortaal.DomainModels.Profile
         }
 
         public string Name { get; private set; }
+
         public string ProfilePicture { get; private set; }
 
         public ContactDetails ContactDetails { get; private set; }

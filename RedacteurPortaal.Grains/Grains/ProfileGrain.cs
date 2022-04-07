@@ -32,6 +32,10 @@ namespace RedacteurPortaal.Grains.Grains
 
         public Task<Profile> Update(ProfileUpdate profile)
         {
+            this.profile.State.ProfilePicture = profile.ProfilePicture;
+            this.profile.State.FullName = profile.Name;
+            this.profile.State.ContactDetails = profile.ContactDetails;
+
             return Task.FromResult(this.profile.State);
         }
     }

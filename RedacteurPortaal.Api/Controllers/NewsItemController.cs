@@ -15,11 +15,6 @@ public class NewsItemController : Controller
     private readonly ILogger logger;
     private readonly IGrainManagementService<INewsItemGrain> grainService;
 
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="NewsItemController" /> class.
-    /// </summary>
-    /// <param name="client">Cluster client to use.</param>
-    /// <param name="logger">Logger to use.</param>
     public NewsItemController(ILogger<NewsItemController> logger, IGrainManagementService<INewsItemGrain> grainService)
     {
         this.logger = logger;
@@ -29,13 +24,19 @@ public class NewsItemController : Controller
     [HttpPost]
     public async Task<IActionResult> SaveNewsItem([FromBody] NewsItemDetailDTO newsitem)
     {
-            var newguid = Guid.NewGuid();
+        var newguid = Guid.NewGuid();
+
+        TypeAdapterConfig<NewsItemDetailDTO, NewsItemModel>
+            .NewConfig()
+            .Map(dest => dest.Id,
+                src => newguid);
+
             var tosave = newsitem.Adapt<NewsItemModel>();
-            tosave.Id = newguid;
 
             const string successMessage = "News item was created";
             var grain = await this.grainService.GetGrain(tosave.Id);
-            await grain.AddNewsItem(tosave);
+            var update = new NewsItemUpdate();
+            await grain.Update(update);
             this.logger.LogInformation(successMessage);
         return this.StatusCode(201, newguid.ToString());
     }
@@ -45,9 +46,17 @@ public class NewsItemController : Controller
     public async Task<IActionResult> GetNewsItem(Guid guid)
     {
             var grain = await this.grainService.GetGrain(guid);
-            var response = await grain.GetNewsItem(guid);
+            var response = await grain.Get();
             this.logger.LogInformation("News item fetched successfully");
             return this.Ok(response);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetNewsItems()
+    {
+        var grain = await this.grainService.GetGrains();
+        this.logger.LogInformation("News item fetched successfully");
+        return this.Ok(grain.Select(x=> x.Get()));
     }
 
     [HttpDelete]
@@ -63,8 +72,8 @@ public class NewsItemController : Controller
     public async Task<IActionResult> UpdateNewsItem(string name, Guid guid)
     {
         var grain = await this.grainService.GetGrain(guid);
-
-        await grain.UpdateNewsItem(name, guid);
+        var updateRequest = new NewsItemUpdate();
+        await grain.Update(updateRequest);
             this.logger.LogInformation("News item updated successfully");
             return this.StatusCode(204, "News item updated");
     }

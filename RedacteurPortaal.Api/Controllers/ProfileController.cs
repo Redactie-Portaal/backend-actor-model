@@ -22,7 +22,7 @@ namespace RedacteurPortaal.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var profile = this.grainService.GetGrains();
+            var profile = await this.grainService.GetGrains();
             return this.Ok(profile);
         }
 
@@ -52,6 +52,5 @@ namespace RedacteurPortaal.Api.Controllers
 
             return this.Ok(profile.Get());
         }
-
     }
 }

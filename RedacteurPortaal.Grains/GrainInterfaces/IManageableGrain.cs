@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 
 namespace RedacteurPortaal.Grains.GrainInterfaces
 {
-    public interface IManageableGrain : IGrainWithGuidKey
+    public interface IManageableGrain<T> : IGrainWithGuidKey
     {
         public Task Delete();
+
+        public Task<T> Get();
     }
 }
