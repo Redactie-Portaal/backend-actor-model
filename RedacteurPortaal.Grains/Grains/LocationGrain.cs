@@ -1,13 +1,7 @@
 ﻿using Orleans;
 using Orleans.Runtime;
-using RedacteurPortaal.DomainModels.Media;
-using RedacteurPortaal.DomainModels.NewsItem;
 using RedacteurPortaal.Grains.GrainInterfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using RedacteurPortaal.DomainModels.Shared;
 
 namespace RedacteurPortaal.Grains.Grains;
 public class LocationGrain : Grain, ILocationGrain

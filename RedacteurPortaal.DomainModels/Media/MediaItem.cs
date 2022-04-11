@@ -1,4 +1,6 @@
 ﻿using RedacteurPortaal.DomainModels.NewsItem;
+using RedacteurPortaal.DomainModels.Shared;
+using RedacteurPortaal.DomainModels.Validation.Shared;
 
 namespace RedacteurPortaal.DomainModels.Media;
 
@@ -36,27 +38,27 @@ public abstract class MediaItem
         this.MediaLocation = mediaLocation ?? throw new ArgumentNullException(nameof(mediaLocation));
     }
 
-    private Guid Guid { get; set; }
+    public Guid Guid { get; private set; }
 
-    public string Title { get; set; }
+    public string Title { get; private set; }
 
-    public string Folder { get; set; }
+    public string Folder { get; private set; }
 
-    public DateTime RepublishDate { get; set; }
+    public DateTime RepublishDate { get; private set; }
 
-    public string Rights { get; set; }
+    public string Rights { get; private set; }
 
-    public string Camera { get; set; }
+    public string Camera { get; private set; }
 
-    public string LastWords { get; set; }
+    public string LastWords { get; private set; }
 
-    public string ProxyFile { get; set; }
+    public string ProxyFile { get; private set; }
 
-    public string Presentation { get; set; }
+    public string Presentation { get; private set; }
 
-    public Location Location { get; }
+    public Location Location { get; private set; }
 
-    public string Format { get; set; }
+    public string Format { get; private set; }
 
-    public Uri MediaLocation { get; set; }
+    public Uri MediaLocation { get; private set; }
 }
