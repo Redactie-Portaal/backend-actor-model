@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Orleans;
+using RedacteurPortaal.Api.DTOs;
 using RedacteurPortaal.DomainModels.Adress;
 using RedacteurPortaal.Grains.GrainInterfaces;
 
@@ -20,7 +21,7 @@ namespace RedacteurPortaal.Api.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> SaveAddress([FromBody] AddressModel address )   //Hier komt een DTO
+        public async Task<IActionResult> SaveAddress([FromBody] AddressModel address )   
         {
             if (address == null)
             {
