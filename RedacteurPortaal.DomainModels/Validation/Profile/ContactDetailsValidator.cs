@@ -19,7 +19,6 @@ namespace RedacteurPortaal.DomainModels.Validation.Profile
             // Phone number regex
             this.RuleFor(x => x.PhoneNumber).Matches(new Regex(
                 "^(?:(?:\\(?(?:00|\\+)([1-4]\\d\\d|[1-9]\\d+)\\)?)[\\-\\.\\ \\\\\\/]?)?((?:\\(?\\d{1,}\\)?[\\-\\.\\ \\\\\\/]?){0,})(?:[\\-\\.\\ \\\\\\/]?(?:#|ext\\.?|extension|x)[\\-\\.\\ \\\\\\/]?(\\d+))?$"));
-
         }
     }
 }

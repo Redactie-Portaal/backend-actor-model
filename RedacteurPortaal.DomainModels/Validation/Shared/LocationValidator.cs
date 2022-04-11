@@ -19,5 +19,4 @@ public class LocationValidator : AbstractValidator<Location>
         // Postal code regex ^[1-9][0-9]{3}[[:space:]]{0,1}(?!SA|SD|SS)[A-Z]{2}$
         this.RuleFor(x => x.Zip).Matches(new Regex("^[1-9][0-9]{3}[[:space:]]{0,1}(?!SA|SD|SS)[A-Z]{2}$"));
     }
-
 }

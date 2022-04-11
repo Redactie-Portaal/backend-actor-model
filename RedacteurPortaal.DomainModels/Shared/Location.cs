@@ -21,7 +21,6 @@ public class Location
         this.Latitude = latitude;
 
         new LocationValidator().ValidateAndThrow(this);
-
     }
 
     public Guid Id { get; }

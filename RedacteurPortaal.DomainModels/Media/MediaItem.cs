@@ -6,7 +6,7 @@ namespace RedacteurPortaal.DomainModels.Media;
 
 public abstract class MediaItem
 {
-    public MediaItem()
+    protected MediaItem()
     {
     }
 
