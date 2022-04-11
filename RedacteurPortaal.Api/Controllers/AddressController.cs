@@ -11,13 +11,13 @@ namespace RedacteurPortaal.Api.Controllers
     [Route("api/[controller]")]
     public class AddressController : Controller
     {
-        private IClusterClient _client;
-        private ILogger _logger;
+        private IClusterClient client;
+        private ILogger logger;
 
         public AddressController(IClusterClient client, ILogger<AddressController> logger)
         {
-            this._client = client;
-            this._logger = logger;
+            this.client = client;
+            this.logger = logger;
         }
 
         [HttpPost]
@@ -31,41 +31,41 @@ namespace RedacteurPortaal.Api.Controllers
 
             addressDTO.Id = newguid;
             var successMessage = "Address is saved";
-            var grain = _client.GetGrain<IAddressGrain>(addressDTO.Id);
+            var grain = this.client.GetGrain<IAddressGrain>(addressDTO.Id);
             var address = addressDTO.Adapt<AddressModel>();
             await grain.AddAdress(address);
-            this._logger.LogInformation(successMessage);
-            return StatusCode(201, successMessage);
+            this.logger.LogInformation(successMessage);
+            return this.StatusCode(201, successMessage);
         }
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<IActionResult> GetAddress(Guid guid)
+        public IActionResult GetAddress(Guid guid)
         {
-                var grain = _client.GetGrain<IAddressGrain>(guid);
-                var response = await grain.GetAddress(guid);
-                _logger.LogInformation("Address fetched successfully");
-                return Ok(response);
+            var grain = this.client.GetGrain<IAddressGrain>(guid);
+            var response = grain.GetAddress(guid);
+            this.logger.LogInformation("Address fetched successfully");
+            return this.Ok(response);
         }
 
         [HttpDelete]
         [Route("{id}")]
         public async Task<IActionResult> DeleteAddress(Guid guid)
         {
-            var grain = _client.GetGrain<IAddressGrain>(guid);
+            var grain = this.client.GetGrain<IAddressGrain>(guid);
             await grain.RemoveAdress(guid);
-            this._logger.LogInformation("Address deleted successfully");
-            return StatusCode(204, "Address deleted");
+            this.logger.LogInformation("Address deleted successfully");
+            return this.StatusCode(204, "Address deleted");
         }
 
         [HttpPut]
         public async Task<IActionResult> UpdateAddress([FromBody]AddressDTO addressDTO)
         {
             var address = addressDTO.Adapt<AddressModel>();
-            var grain = this._client.GetGrain<IAddressGrain>(address.Id);
+            var grain = this.client.GetGrain<IAddressGrain>(address.Id);
             await grain.UpdateAdress(address);
-            this._logger.LogInformation("Address updated succesfully");
-            return StatusCode(204, "Address updated");
+            this.logger.LogInformation("Address updated succesfully");
+            return this.StatusCode(204, "Address updated");
         }
 
             //_logger.LogInformation("News item not found");

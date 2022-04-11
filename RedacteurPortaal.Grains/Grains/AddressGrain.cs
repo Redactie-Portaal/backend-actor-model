@@ -1,5 +1,4 @@
-﻿
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Orleans;
 using Orleans.Runtime;
 using RedacteurPortaal.Grains.GrainInterfaces;
@@ -9,28 +8,27 @@ namespace RedacteurPortaal.Grains.Grains
 {
     public class AddressGrain : Grain, IAddressGrain
     {
-        private readonly ILogger _logger;
+        private readonly ILogger logger;
 
-
-        private readonly IPersistentState<AddressModel> _adress;
+        private readonly IPersistentState<AddressModel> adress;
 
         public AddressGrain(ILogger<NewsItemGrain> logger,
            [PersistentState("adress", "OrleansStorage")] IPersistentState<AddressModel> adress)
         {
-            _logger = logger;
-            _adress = adress;
+            this.logger = logger;
+            this.adress = adress;
         }
 
-        public async Task<AddressModel> GetAddress(Guid guid)
+        public AddressModel GetAddress(Guid guid)
         {
-            return _adress.State;
+            return this.adress.State;
         }
 
         public async Task AddAdress(AddressModel address)
         {
             // control Adress fields not null
-            _adress.State = address;
-            await _adress.WriteStateAsync();
+            this.adress.State = address;
+            await this.adress.WriteStateAsync();
         }
 
         public Task<List<AddressModel>> GetAdresses()
@@ -42,20 +40,21 @@ namespace RedacteurPortaal.Grains.Grains
         public async Task RemoveAdress(Guid guid)
         {
             //Delete Address
-            GrainFactory.GetGrain<IAddressGrain>(guid);
-            await this._adress.ClearStateAsync();
+            this.GrainFactory.GetGrain<IAddressGrain>(guid);
+            await this.adress.ClearStateAsync();
         }
 
         public async Task UpdateAdress(AddressModel address)
         {
             // TODO control if adress date is not empty
-           _adress.State.CompanyName = address.CompanyName;
-           _adress.State.PhoneNumber = address.CompanyName;
-           _adress.State.EmailAddress = address.CompanyName;
-           _adress.State.PostalCode = address.CompanyName;
-           _adress.State.Webpage = address.CompanyName;
-           _adress.State.Address = address.CompanyName;
-           await _adress.WriteStateAsync();
+           this.adress.State.CompanyName = address.CompanyName;
+           this.adress.State.PhoneNumber = address.CompanyName;
+           this.adress.State.EmailAddress = address.CompanyName;
+           this.adress.State.PostalCode = address.CompanyName;
+           this.adress.State.Webpage = address.CompanyName;
+           this.adress.State.Address = address.CompanyName;
+           var adress1 = this.adress;
+           await adress1.WriteStateAsync();
         }
     }
 }

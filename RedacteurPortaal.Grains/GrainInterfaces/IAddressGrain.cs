@@ -7,7 +7,7 @@ namespace RedacteurPortaal.Grains.GrainInterfaces
     {
         Task AddAdress(AddressModel address);
 
-        Task<AddressModel> GetAddress(Guid guid);
+        AddressModel GetAddress(Guid guid);
 
         Task UpdateAdress(AddressModel address);
 
