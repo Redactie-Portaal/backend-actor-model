@@ -1,6 +1,8 @@
 ﻿using System.Runtime.CompilerServices;
 ﻿using Mapster;
 using RedacteurPortaal.DomainModels.Media;
+using RedacteurPortaal.DomainModels.Shared;
+using RedacteurPortaal.DomainModels.Validation.Shared;
 
 namespace RedacteurPortaal.DomainModels.NewsItem;
 
@@ -44,27 +46,27 @@ public class NewsItemModel : IBaseEntity
 
     public Guid Id { get; init; } = Guid.NewGuid();
 
-    public string? Title { get; private set; }
+    public string Title { get; private set; }
 
-    public Status? Status { get; private set; }
+    public Status Status { get; private set; }
 
-    public string? Author { get; private set; }
+    public string Author { get; private set; }
 
-    public FeedSource? Source { get; private set; }
+    public FeedSource Source { get; private set; }
 
-    public ItemBody? Body { get; private set; }
+    public ItemBody Body { get; private set; }
 
     public List<Contact> ContactDetails { get; private set; }
 
     public Location LocationDetails { get; }
 
-    public DateTime? ProdutionDate { get; private set; }
+    public DateTime ProdutionDate { get; private set; }
 
-    public DateTime? EndDate { get; private set; }
+    public DateTime EndDate { get; private set; }
 
-    public Category? Category { get; private set; }
+    public Category Category { get; private set; }
 
-    public Region? Region { get; private set; }
+    public Region Region { get; private set; }
 
     public MediaVideoItem[] Videos { get; private set; }
 
