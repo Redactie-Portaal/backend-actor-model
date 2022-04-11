@@ -1,4 +1,5 @@
 ﻿using RedacteurPortaal.DomainModels.NewsItem;
+using RedacteurPortaal.DomainModels.Shared;
 
 namespace RedacteurPortaal.DomainModels.Media;
 
@@ -65,7 +66,6 @@ public class MediaVideoItem : MediaItem
         this.ProgramDate = programDate;
         this.ItemName = itemName;
         this.EPG = ePG;
-        this.Presentation = presentation;
         this.Duration = duration;
         this.ArchiveMaterial = archiveMaterial;
         this.Weather = weather;
@@ -73,7 +73,6 @@ public class MediaVideoItem : MediaItem
         this.Director = director;
         this.Guests = guests;
         this.FirstPicture = firstPicture;
-        this.LastWords = lastWords;
         this.ProgramName = programName;
         this.FirstWords = firstWords;
     }

@@ -17,25 +17,19 @@ public class MediaAudioGrain : Grain, IMediaAudioGrain
         this.audioItem = audioItem;
     }
 
-    public Task<MediaAudioItem> GetMediaAudioItem(Guid guid)
+    public Task<MediaAudioItem> GetMediaAudioItem()
     {
         return Task.FromResult(this.audioItem.State);
     }
 
-    public async Task AddMediaAudioItem(MediaAudioItem item)
-    {
-        this.audioItem.State = item;
-        await this.audioItem.WriteStateAsync();
-    }
-
-    public async Task DeleteMediaAudioItem(Guid guid)
+    public async Task DeleteMediaAudioItem()
     {
         await this.audioItem.ClearStateAsync();
     }
 
-    public async Task UpdateMediaAudioItem(MediaAudioItem item)
+    public async Task UpdateMediaAudioItem(MediaAudioItem mediaAudio)
     {
-        this.audioItem.State = item;
+        this.audioItem.State = mediaAudio;
         await this.audioItem.WriteStateAsync();
     }
 }
