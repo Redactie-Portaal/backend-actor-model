@@ -1,6 +1,6 @@
 ﻿namespace RedacteurPortaal.Api.Models
 {
-    public class ExportPluginDto
+    public class ExportPluginDTO
     {
         public Guid Id { get; set; }
 

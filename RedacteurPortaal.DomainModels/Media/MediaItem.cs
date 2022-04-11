@@ -11,7 +11,7 @@ public abstract class MediaItem
     }
 
     protected MediaItem(
-        Guid guid,
+        Guid id,
         string title,
         string folder,
         DateTime republishDate,
@@ -24,7 +24,7 @@ public abstract class MediaItem
         string format,
         Uri mediaLocation)
     {
-        this.Guid = guid;
+        this.Id = id;
         this.Title = title ?? throw new ArgumentNullException(nameof(title));
         this.Folder = folder ?? throw new ArgumentNullException(nameof(folder));
         this.RepublishDate = republishDate;

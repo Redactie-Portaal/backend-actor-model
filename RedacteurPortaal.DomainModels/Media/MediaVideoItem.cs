@@ -77,41 +77,41 @@ public class MediaVideoItem : MediaItem
         this.FirstWords = firstWords;
     }
 
-    public string Reporter { get; }
+    public string Reporter { get; private set; }
 
-    public string Sound { get; }
+    public string Sound { get; private set; }
 
-    public string Editor { get; }
+    public string Editor { get; private set; }
 
-    public string LastPicture { get; }
+    public string LastPicture { get; private set; }
 
-    public List<string> Keywords { get; }
+    public List<string> Keywords { get; private set; }
 
-    public string VoiceOver { get; }
+    public string VoiceOver { get; private set; }
 
-    public string Description { get; }
+    public string Description { get; private set; }
 
-    public DateTime ProgramDate { get; }
+    public DateTime ProgramDate { get; private set; }
 
-    public string ItemName { get; }
+    public string ItemName { get; private set; }
 
-    public string EPG { get; }
+    public string EPG { get; private set; }
 
-    public TimeSpan Duration { get; }
+    public TimeSpan Duration { get; private set; }
 
-    public string ArchiveMaterial { get; }
+    public string ArchiveMaterial { get; private set; }
 
-    public Weather Weather { get; }
+    public Weather Weather { get; private set; }
 
-    public string Producer { get; }
+    public string Producer { get; private set; }
 
-    public string Director { get; }
+    public string Director { get; private set; }
 
-    public List<string> Guests { get; }
+    public List<string> Guests { get; private set; }
 
-    public string FirstPicture { get; }
+    public string FirstPicture { get; private set; }
 
-    public string ProgramName { get; }
+    public string ProgramName { get; private set; }
 
-    public string FirstWords { get; }
+    public string FirstWords { get; private set; }
 }

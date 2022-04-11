@@ -41,5 +41,5 @@ public class MediaPhotoItem : MediaItem
         this.Image = image;
     }
 
-    public string Image { get; }
+    public string Image { get; private set; }
 }

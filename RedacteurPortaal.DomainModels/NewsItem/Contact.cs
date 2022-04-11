@@ -15,11 +15,11 @@ public class Contact
         new ContactValidator().ValidateAndThrow(this);
     }
 
-    public Guid Id { get; }
+    public Guid Id { get; private set; }
     
-    public string Name { get; }
+    public string Name { get; private set; }
     
-    public string Email { get; }
+    public string Email { get; private set; }
     
-    public string TelephoneNumber { get; }
+    public string TelephoneNumber { get; private set; }
 }
