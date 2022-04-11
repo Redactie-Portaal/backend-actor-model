@@ -9,7 +9,7 @@ public abstract class MediaItem
     }
 
     protected MediaItem(
-        Guid guid,
+        Guid id,
         string title,
         string folder,
         DateTime republishDate,
@@ -22,7 +22,7 @@ public abstract class MediaItem
         string format,
         Uri mediaLocation)
     {
-        this.Guid = guid;
+        this.Id = id;
         this.Title = title ?? throw new ArgumentNullException(nameof(title));
         this.Folder = folder ?? throw new ArgumentNullException(nameof(folder));
         this.RepublishDate = republishDate;
@@ -36,27 +36,27 @@ public abstract class MediaItem
         this.MediaLocation = mediaLocation ?? throw new ArgumentNullException(nameof(mediaLocation));
     }
 
-    private Guid Guid { get; set; }
+    private Guid Id { get; }
 
-    public string Title { get; set; }
+    public string Title { get; }
 
-    public string Folder { get; set; }
+    public string Folder { get; }
 
-    public DateTime RepublishDate { get; set; }
+    public DateTime RepublishDate { get; }
 
-    public string Rights { get; set; }
+    public string Rights { get; }
 
-    public string Camera { get; set; }
+    public string Camera { get; }
 
-    public string LastWords { get; set; }
+    public string LastWords { get; }
 
-    public string ProxyFile { get; set; }
+    public string ProxyFile { get; }
 
-    public string Presentation { get; set; }
+    public string Presentation { get; }
 
     public Location Location { get; }
 
-    public string Format { get; set; }
+    public string Format { get; }
 
-    public Uri MediaLocation { get; set; }
+    public Uri MediaLocation { get; }
 }

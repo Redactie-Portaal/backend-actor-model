@@ -1,8 +1,10 @@
 ﻿using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using Orleans;
+using RedacteurPortaal.Api.DTOs;
 using RedacteurPortaal.Api.Models;
 using RedacteurPortaal.Api.Models.Request;
+using RedacteurPortaal.DomainModels.Media;
 using RedacteurPortaal.DomainModels.NewsItem;
 using RedacteurPortaal.Grains.GrainInterfaces;
 using RedacteurPortaal.Grains.GrainServices;
@@ -30,7 +32,12 @@ public class NewsItemController : Controller
             .NewConfig()
             .Map(dest => dest.Id,
                 src => newguid);
-
+        
+        TypeAdapterConfig<MediaVideoItemDTO, MediaVideoItem>
+            .NewConfig()
+            .Map(dest => dest.Duration,
+                  src => TimeSpan.FromSeconds(src.DurationSeconds));
+        
         var tosave = newsitem.Adapt<NewsItemModel>();
 
         const string successMessage = "News item was created";
@@ -38,7 +45,7 @@ public class NewsItemController : Controller
         var update = new NewsItemUpdate();
         await grain.Update(update);
         this.logger.LogInformation(successMessage);
-        return this.CreatedAtRoute("GetNewsItem", new { guid = newguid }, newsitem);
+        return this.CreatedAtRoute("GetNewsItem", new { id = newguid }, newsitem);
     }
 
     [HttpGet]

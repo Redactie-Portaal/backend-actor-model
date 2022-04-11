@@ -8,6 +8,10 @@ namespace RedacteurPortaal.DomainModels.NewsItem;
 
 public class Location
 {
+    public Location()
+    {    
+    }
+    
     public Location(string name, string city, string province, string street, string zip, string latitude, string longitude)
     {
         this.Name = name ?? throw new ArgumentNullException(nameof(name));
@@ -19,19 +23,19 @@ public class Location
         this.Longitude = longitude ?? throw new ArgumentNullException(nameof(longitude));
     }
 
-    public Guid Id { get; }
+    public Guid Id { get; set; }
 
-    public string Name { get; }
+    public string Name { get; set; }
 
-    public string City { get; }
+    public string City { get; set; }
 
-    public string Province { get; }
+    public string Province { get; set; }
 
-    public string Street { get; }
+    public string Street { get; set; }
 
-    public string Zip { get; }
+    public string Zip { get; set; }
 
-    public string Latitude { get; }
+    public string Latitude { get; set; }
 
-    public string Longitude { get; }
+    public string Longitude { get; set; }
 }
