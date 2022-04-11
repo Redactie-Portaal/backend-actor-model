@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FluentValidation;
+using RedacteurPortaal.DomainModels.Validation.Shared;
 
-namespace RedacteurPortaal.DomainModels.NewsItem;
+namespace RedacteurPortaal.DomainModels.Shared;
 
 public class Location
 {
@@ -19,8 +21,10 @@ public class Location
         this.Province = province ?? throw new ArgumentNullException(nameof(province));
         this.Street = street ?? throw new ArgumentNullException(nameof(street));
         this.Zip = zip ?? throw new ArgumentNullException(nameof(zip));
-        this.Latitude = latitude ?? throw new ArgumentNullException(nameof(latitude));
-        this.Longitude = longitude ?? throw new ArgumentNullException(nameof(longitude));
+        this.Longitude = longitude;
+        this.Latitude = latitude;
+
+        new LocationValidator().ValidateAndThrow(this);
     }
 
     public Guid Id { get; set; }
