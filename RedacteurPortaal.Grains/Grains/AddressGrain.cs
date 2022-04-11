@@ -23,8 +23,6 @@ namespace RedacteurPortaal.Grains.Grains
 
         public async Task<AddressModel> GetAddress(Guid guid)
         {
-            //control if guid is not empty
-            //_adress.State.Id = guid;
             return _adress.State;
         }
 
@@ -41,25 +39,16 @@ namespace RedacteurPortaal.Grains.Grains
             throw new NotImplementedException();
         }
 
-        public async Task<bool> RemoveAdress(Guid guid)
+        public async Task RemoveAdress(Guid guid)
         {
             //Delete Address
             GrainFactory.GetGrain<IAddressGrain>(guid);
-            await _adress.ClearStateAsync();
-
-            // Control if address is deleted
-            GrainFactory.GetGrain<IAddressGrain>(guid);
-            var adress = await Task.FromResult(_adress.State);
-            if(adress != null)
-            {
-                return false;
-            }
-            return true;
+            await this._adress.ClearStateAsync();
         }
 
         public async Task UpdateAdress(AddressModel address)
         {
-            //control if adress date is not empty
+            // TODO control if adress date is not empty
            _adress.State.CompanyName = address.CompanyName;
            _adress.State.PhoneNumber = address.CompanyName;
            _adress.State.EmailAddress = address.CompanyName;

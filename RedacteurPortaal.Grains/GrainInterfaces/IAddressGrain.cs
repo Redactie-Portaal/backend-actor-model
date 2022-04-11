@@ -11,7 +11,7 @@ namespace RedacteurPortaal.Grains.GrainInterfaces
 
         Task UpdateAdress(AddressModel address);
 
-        Task<bool> RemoveAdress(Guid guid);
+        Task RemoveAdress(Guid guid);
 
         Task<List<AddressModel>> GetAdresses();
     }

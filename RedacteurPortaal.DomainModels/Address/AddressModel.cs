@@ -28,5 +28,10 @@
             this.EmailAddress = emailAddress;
             this.Webpage = webpage;
         }
+
+        public AddressModel()
+        {
+
+        }
     }
 }
