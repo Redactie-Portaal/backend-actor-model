@@ -6,7 +6,7 @@ using RedacteurPortaal.Grains.GrainInterfaces;
 namespace RedacteurPortaal.Api.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/[address]")]
     public class AddressController : Controller
     {
         private IClusterClient _client;
@@ -18,11 +18,14 @@ namespace RedacteurPortaal.Api.Controllers
             _logger = logger;
         }
 
-        [Route("/address")]
+
         [HttpPost]
-        public async Task<IActionResult> SaveAddress([FromBody] AddressModel address )
+        public async Task<IActionResult> SaveAddress([FromBody] AddressModel address )   //Hier komt een DTO
         {
-            if (address == null) { return StatusCode(404, "Address is empty"); }
+            if (address == null)
+            {
+                return StatusCode(404, "Address is empty");
+            }
             else
             {
                 var newguid = Guid.NewGuid();
@@ -35,11 +38,11 @@ namespace RedacteurPortaal.Api.Controllers
             }
         }
 
-        [Route("/address")]
+
         [HttpGet]
+        [Route(":id")]
         public async Task<IActionResult> GetAddress(Guid guid)
         {
-                
                 var grain = _client.GetGrain<IAddressGrain>(guid);
                 var response = await grain.GetAddress(guid);
                 if (response is not null)
@@ -54,8 +57,8 @@ namespace RedacteurPortaal.Api.Controllers
                 }
         }
 
-        [Route("/address")]
         [HttpDelete]
+        [Route(":id")]
         public async Task<IActionResult> DeleteAddress(Guid guid)
         {
             var grain = _client.GetGrain<IAddressGrain>(guid);
@@ -65,12 +68,10 @@ namespace RedacteurPortaal.Api.Controllers
                 _logger.LogInformation("Address deleted successfully");
                 return StatusCode(204, "Address deleted");
             }
+
             return StatusCode(400, "Address is not deleted");
-
-
         }
 
-        [Route("/address")]
         [HttpPut]
         public async Task<IActionResult> UpdateAddress([FromBody]AddressModel address)
         {

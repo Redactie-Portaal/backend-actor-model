@@ -25,7 +25,6 @@ namespace RedacteurPortaal.Grains.Grains
         {
             //control if guid is not empty
             //_adress.State.Id = guid;
-            
             return _adress.State;
         }
 
