@@ -2,5 +2,5 @@
 
 public class FeedSource
 {
-    public string Aids { get; set; }
+    public string PlaceHolder { get; set; }
 }

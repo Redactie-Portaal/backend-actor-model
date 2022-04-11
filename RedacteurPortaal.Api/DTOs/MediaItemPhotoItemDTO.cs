@@ -4,10 +4,6 @@ namespace RedacteurPortaal.Api.DTOs
 {
     public class MediaItemPhotoItemDTO : MediaItemDTO
     {
-        public MediaItemPhotoItemDTO()
-        {
-        }
-
         public MediaItemPhotoItemDTO(
             Guid guid,
             string title,
