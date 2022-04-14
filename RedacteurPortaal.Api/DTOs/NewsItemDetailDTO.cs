@@ -37,9 +37,9 @@ public class NewsItemDetailDto
 
     public Region? Region { get; set; }
 
-    public MediaVideoItemDTO[] Videos { get; set; }
+    public MediaVideoItemDto[] Videos { get; set; }
 
-    public MediaAudioItemDTO[] Audio { get; set; }
+    public MediaAudioItemDto[] Audio { get; set; }
 
-    public MediaPhotoItemDTO[] Photos { get; set; }
+    public MediaPhotoItemDto[] Photos { get; set; }
 }
