@@ -38,7 +38,6 @@ namespace RedacteurPortaal.Api.Controllers
             return this.StatusCode(201, successMessage);
         }
 
-
         [HttpGet]
         [Route("{id}")]
         public IActionResult GetAddress(Guid guid)

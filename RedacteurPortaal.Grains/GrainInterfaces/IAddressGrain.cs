@@ -13,6 +13,6 @@ namespace RedacteurPortaal.Grains.GrainInterfaces
 
         Task RemoveAdress(Guid guid);
 
-        Task<List<AddressModel>> GetAdresses();
+        /*Task<List<AddressModel>> GetAdresses();*/
     }
 }

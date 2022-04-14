@@ -31,22 +31,20 @@ namespace RedacteurPortaal.Grains.Grains
             await this.adress.WriteStateAsync();
         }
 
-        public async Task<List<AddressModel>> GetAdresses()
+       /* public async Task<List<AddressModel>> GetAdresses()
         {
             //var adresses = await Task.FromResult();
             throw new NotImplementedException();
-        }
+        }*/
 
         public async Task RemoveAdress(Guid guid)
         {
-            //Delete Address
             this.GrainFactory.GetGrain<IAddressGrain>(guid);
             await this.adress.ClearStateAsync();
         }
 
         public async Task UpdateAdress(AddressModel address)
         {
-            // TODO control if adress date is not empty
            this.adress.State.CompanyName = address.CompanyName;
            this.adress.State.PhoneNumber = address.CompanyName;
            this.adress.State.EmailAddress = address.CompanyName;
