@@ -70,7 +70,7 @@ namespace RedacteurPortaal.Grains.GrainServices
             {
                 var grain = this.DbContext.GrainReferences.Single(x => x.GrainId == id);
                 var realGrain = await this.GetGrain(id);
-
+                await realGrain.Delete();
                 this.DbContext.GrainReferences.Remove(grain);
             }
             else
