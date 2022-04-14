@@ -54,20 +54,20 @@ public class NewsItemController : Controller
                   src => TimeSpan.FromSeconds(src.DurationSeconds));
 
         const string successMessage = "News item was created";
-        var grain = await this.grainService.GetGrain(Guid.NewGuid());
+        var grain = await this.grainService.GetGrain(newguid);
 
-        var update = newsitem.Adapt<NewsItemUpdate>();
-
+        var update = newsitem.Adapt<NewsItemModel>();
+        await Task.Delay(1000); 
         await grain.Update(update);
         this.logger.LogInformation(successMessage);
-        return this.CreatedAtRoute("GetNewsItem", new { id = newguid }, newsitem);
+        return this.CreatedAtRoute("GetNewsItem", new { id = newguid }, update);
     }
 
     [HttpGet]
     [Route("{id}", Name = "GetNewsItem")]
-    public async Task<IActionResult> GetNewsItem(Guid guid)
+    public async Task<IActionResult> GetNewsItem(Guid id)
     {
-        var grain = await this.grainService.GetGrain(guid);
+        var grain = await this.grainService.GetGrain(id);
         var response = await grain.Get();
         this.logger.LogInformation("News item fetched successfully");
         return this.Ok(response);
@@ -96,7 +96,7 @@ public class NewsItemController : Controller
     {
         var grain = await this.grainService.GetGrain(guid);
         var updateRequest = new NewsItemUpdate();
-        await grain.Update(updateRequest);
+        //await grain.Update(updateRequest);
         this.logger.LogInformation("News item updated successfully");
         return this.StatusCode(204, "News item updated");
     }
