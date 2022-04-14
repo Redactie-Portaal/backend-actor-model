@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Orleans;
 using RedacteurPortaal.Api.DTOs;
+using RedacteurPortaal.Api.Models.Request;
 using RedacteurPortaal.DomainModels.Adress;
 using RedacteurPortaal.Grains.GrainInterfaces;
 using RedacteurPortaal.Grains.GrainServices;
@@ -22,7 +23,7 @@ namespace RedacteurPortaal.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SaveAddress([FromBody] AddressDTO addressDTO )   
+        public async Task<IActionResult> SaveAddress([FromBody] AddAddressRequest addressDTO )   
         {
             var newguid = Guid.NewGuid();
             TypeAdapterConfig<AddressDTO, AddressModel>
@@ -31,11 +32,12 @@ namespace RedacteurPortaal.Api.Controllers
                     src => newguid);
 
             var address = addressDTO.Adapt<AddressModel>();
+            address.Id = newguid;
             const string successMessage = "Address was created";
             var grain = await this.grainService.GetGrain(address.Id);
             await grain.UpdateAdress(address);
             this.logger.LogInformation(successMessage);
-            return this.CreatedAtRoute("GetAddress", new { guid = newguid }, addressDTO);
+            return this.CreatedAtRoute("GetAddress", new { id = newguid }, address);
         }
 
         [HttpGet]
@@ -44,9 +46,8 @@ namespace RedacteurPortaal.Api.Controllers
         {
             var grain = await this.grainService.GetGrain(id);
             var response = await grain.Get();
-            var address = response.Adapt<AddressDTO>();
             this.logger.LogInformation("Address fetched successfully");
-            return this.Ok(address);
+            return this.Ok(response);
         }
 
         [HttpGet]
@@ -63,7 +64,7 @@ namespace RedacteurPortaal.Api.Controllers
         {
             await this.grainService.DeleteGrain(id);
             this.logger.LogInformation("Address deleted successfully");
-            return this.StatusCode(204, "Address deleted");
+            return this.Ok("Address deleted");
         }
 
         [HttpPatch]

@@ -2,7 +2,7 @@
 {
     public class AddressDTO
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public Guid Id { get; set; }
 
         public string CompanyName { get; set; }
 

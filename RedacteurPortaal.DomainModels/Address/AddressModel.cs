@@ -3,7 +3,7 @@
     // [Serializable]
     public class AddressModel : IBaseEntity
     {
-        public Guid Id { get; init; } = Guid.NewGuid();
+        public Guid Id { get; set; }
 
         public string CompanyName { get; set; }
 
