@@ -3,7 +3,7 @@ using RedacteurPortaal.DomainModels.Shared;
 
 namespace RedacteurPortaal.Api.DTOs
 {
-    public abstract class MediaItemDTO
+    public abstract class MediaItemDto
     { 
         public Guid Id { get; set; }
 

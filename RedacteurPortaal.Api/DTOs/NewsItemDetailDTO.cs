@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace RedacteurPortaal.Api.Models;
 
 [Serializable]
-public class NewsItemDetailDTO
+public class NewsItemDetailDto
 {
     public Guid Id { get; set; }
 

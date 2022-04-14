@@ -2,12 +2,8 @@
 
 namespace RedacteurPortaal.Api.Models
 {
-    public class MediaAudioItemDTO
+    public class MediaAudioItemDto
     {
-        public MediaAudioItemDTO()
-        {
-        }
-        
         public int DurationSeconds { get; set; }
 
         public Weather Weather { get; set; }

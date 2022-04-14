@@ -4,7 +4,7 @@ using RedacteurPortaal.DomainModels.Shared;
 
 namespace RedacteurPortaal.Api.DTOs
 {
-    public class MediaVideoItemDTO : MediaItemDTO
+    public class MediaVideoItemDto : MediaItemDto
     {
         public string Reporter { get; set; }
 
