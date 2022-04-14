@@ -8,7 +8,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using RedacteurPortaal.Data.Context;
+using RedacteurPortaal.Data.Migrations;
 using RedacteurPortaal.DomainModels;
 
 namespace RedacteurPortaal.Grains.GrainServices
@@ -28,10 +30,15 @@ namespace RedacteurPortaal.Grains.GrainServices
         public async Task<T> GetGrain(Guid id)
         {
             var grain = await Task.FromResult(this.client.GetGrain<T>(id));
+
             if (!this.DbContext.GrainReferences.Any(x=> x.GrainId == id))
             {
                 this.DbContext.GrainReferences.Add(new Data.Models.GrainReference() { GrainId = id, TypeName = typeof(T).Name });
                 await this.DbContext.SaveChangesAsync();
+            }
+            else
+            {
+                throw new KeyNotFoundException($"Grain {id} not found");
             }
 
             return grain;
@@ -59,10 +66,17 @@ namespace RedacteurPortaal.Grains.GrainServices
 
         public async Task DeleteGrain(Guid id)
         {
-            var grain = this.DbContext.GrainReferences.Single(x => x.GrainId == id);
-            var realGrain = await this.GetGrain(id);
-            
-            this.DbContext.GrainReferences.Remove(grain);
+            if (this.DbContext.GrainReferences.Any(x => x.GrainId == id && x.TypeName == typeof(T).Name))
+            {
+                var grain = this.DbContext.GrainReferences.Single(x => x.GrainId == id);
+                var realGrain = await this.GetGrain(id);
+
+                this.DbContext.GrainReferences.Remove(grain);
+            }
+            else
+            {
+                throw new KeyNotFoundException($"Grain {id} not found");
+            }
         }
     }
 }
