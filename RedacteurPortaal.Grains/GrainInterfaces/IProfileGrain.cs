@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RedacteurPortaal.Grains.GrainInterfaces
 {
-    public interface IProfileGrain : IGrainWithGuidKey, IManageableGrain<Profile>
+    public interface IProfileGrain : IManageableGrain<Profile>
     {
         public Task<Profile> Update(ProfileUpdate profile);
     }

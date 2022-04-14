@@ -11,12 +11,8 @@ using RedacteurPortaal.DomainModels.Validation.Shared;
 
 namespace RedacteurPortaal.Grains.GrainInterfaces
 {
-    public interface ILocationGrain : IGrainWithGuidKey
+    public interface ILocationGrain : IManageableGrain<Location>
     {
-        Task<Location> GetLocation();
-
-        Task DeleteLocation();
-
-        Task UpdateLocation(Location location);
+        Task Update(Location location);
     }
 }

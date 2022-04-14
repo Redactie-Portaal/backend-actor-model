@@ -3,11 +3,7 @@ using RedacteurPortaal.DomainModels.Media;
 
 namespace RedacteurPortaal.Grains.GrainInterfaces;
 
-public interface IMediaVideoGrain : IGrainWithGuidKey
+public interface IMediaVideoGrain : IManageableGrain<MediaVideoItem>
 {
-    Task<MediaVideoItem> GetMediaVideoItem();
-    
-    Task DeleteMediaVideoItem();
-
-    Task UpdateMediaVideoItem(MediaVideoItem videoItem);
+    Task Update(MediaVideoItem videoItem);
 }

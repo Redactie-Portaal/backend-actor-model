@@ -49,13 +49,13 @@ public class MediaAudioItem : MediaItem
 
     // Delete deze comments als je deze class wilt gebruiken.
     // ReSharper disable UnusedAutoPropertyAccessor.Global
-    public TimeSpan Duration { get; }
+    public TimeSpan Duration { get; private set; }
 
-    public Weather Weather { get; }
+    public Weather Weather { get; private set; }
 
-    public string FirstWords { get; }
+    public string FirstWords { get; private set; }
 
-    public string ProgramName { get; }
+    public string ProgramName { get; private set; }
 
     // ReSharper restore UnusedAutoPropertyAccessor.Global
 }

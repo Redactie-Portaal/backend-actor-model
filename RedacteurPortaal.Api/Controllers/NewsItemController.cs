@@ -1,9 +1,12 @@
 ﻿using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using Orleans;
+using RedacteurPortaal.Api.DTOs;
 using RedacteurPortaal.Api.Models;
 using RedacteurPortaal.Api.Models.Request;
+using RedacteurPortaal.DomainModels.Media;
 using RedacteurPortaal.DomainModels.NewsItem;
+using RedacteurPortaal.DomainModels.Shared;
 using RedacteurPortaal.Grains.GrainInterfaces;
 using RedacteurPortaal.Grains.GrainServices;
 
@@ -23,29 +26,47 @@ public class NewsItemController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> SaveNewsItem([FromBody] NewsItemDetailDTO newsitem)
+    public async Task<IActionResult> SaveNewsItem([FromBody] NewsItemDetailDto newsitem)
     {
         var newguid = Guid.NewGuid();
-        TypeAdapterConfig<NewsItemDetailDTO, NewsItemModel>
+        TypeAdapterConfig<NewsItemDetailDto, NewsItemModel>
             .NewConfig()
+            .Map(dest => dest.ContactDetails,
+                src => src.ContactDetails.AsQueryable().ProjectToType<Contact>(null).ToList())
+            .Map(dest => dest.LocationDetails,
+                src => src.LocationDetails.Adapt<Location>())
+            .Map(dest => dest.Body,
+                src => src.Body != null ? src.Body.Adapt<ItemBody>() : new ItemBody())
+            .Map(dest => dest.Source,
+                src => src.Source != null ? src.Source.Adapt<FeedSource>() : new FeedSource())
+            .Map(dest => dest.Videos,
+                src => src.Videos.AsQueryable().ProjectToType<MediaVideoItem>(null).ToList())
+            .Map(dest => dest.Audio,
+                src => src.Audio.AsQueryable().ProjectToType<MediaAudioItem>(null).ToList())
+            .Map(dest => dest.Photos,
+                src => src.Photos.AsQueryable().ProjectToType<MediaPhotoItem>(null).ToList())
             .Map(dest => dest.Id,
                 src => newguid);
-
-        var tosave = newsitem.Adapt<NewsItemModel>();
+        
+        TypeAdapterConfig<MediaVideoItemDto, MediaVideoItem>
+            .NewConfig()
+            .Map(dest => dest.Duration,
+                  src => TimeSpan.FromSeconds(src.DurationSeconds));
 
         const string successMessage = "News item was created";
-        var grain = await this.grainService.GetGrain(tosave.Id);
-        var update = new NewsItemUpdate();
+        var grain = await this.grainService.GetGrain(newguid);
+
+        var update = newsitem.Adapt<NewsItemModel>();
         await grain.Update(update);
         this.logger.LogInformation(successMessage);
-        return this.CreatedAtRoute("GetNewsItem", new { guid = newguid }, newsitem);
+        return this.CreatedAtRoute("GetNewsItem", new { id = newguid }, update);
     }
 
     [HttpGet]
     [Route("{id}", Name = "GetNewsItem")]
-    public async Task<IActionResult> GetNewsItem(Guid guid)
+    public async Task<IActionResult> GetNewsItem(Guid id)
     {
-        var grain = await this.grainService.GetGrain(guid);
+        var grain = await this.grainService.GetGrain(id);
         var response = await grain.Get();
         this.logger.LogInformation("News item fetched successfully");
         return this.Ok(response);
@@ -74,7 +95,28 @@ public class NewsItemController : Controller
     {
         var grain = await this.grainService.GetGrain(guid);
         var updateRequest = new NewsItemUpdate();
-        await grain.Update(updateRequest);
+        TypeAdapterConfig<NewsItemModel, NewsItemUpdate>
+        .NewConfig()
+        .Map(dest => dest.ContactDetails,
+        src => src.ContactDetails.AsQueryable().ProjectToType<Contact>(null).ToList())
+        .Map(dest => dest.LocationDetails,
+        src => src.LocationDetails.Adapt<Location>())
+        .Map(dest => dest.Body,
+        src => src.Body != null ? src.Body.Adapt<ItemBody>() : new ItemBody())
+        .Map(dest => dest.Source,
+        src => src.Source != null ? src.Source.Adapt<FeedSource>() : new FeedSource())
+        .Map(dest => dest.Videos,
+        src => src.Videos.AsQueryable().ProjectToType<MediaVideoItem>(null).ToList())
+        .Map(dest => dest.Audio,
+        src => src.Audio.AsQueryable().ProjectToType<MediaAudioItem>(null).ToList())
+        .Map(dest => dest.Photos,
+        src => src.Photos.AsQueryable().ProjectToType<MediaPhotoItem>(null).ToList())
+        .Map(dest => dest.Id,
+        src => guid);
+        var update = request.Adapt<NewsItemModel>();
+
+        await grain.Update(update);
+        
         this.logger.LogInformation("News item updated successfully");
         return this.StatusCode(204, "News item updated");
     }
