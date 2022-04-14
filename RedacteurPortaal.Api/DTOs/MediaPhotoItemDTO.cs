@@ -1,15 +1,12 @@
 ﻿using RedacteurPortaal.DomainModels.NewsItem;
+using RedacteurPortaal.DomainModels.Shared;
 
 namespace RedacteurPortaal.Api.DTOs
 {
     public class MediaPhotoItemDTO : MediaItemDTO
     {
-        public MediaPhotoItemDTO()
-        {
-        }
-
         public MediaPhotoItemDTO(
-            Guid guid,
+            Guid id,
             string title,
             string folder,
             DateTime republishDate,
@@ -23,7 +20,7 @@ namespace RedacteurPortaal.Api.DTOs
             Uri mediaLocation,
             string image)
             : base(
-                guid,
+                id,
                 title,
                 folder,
                 republishDate,

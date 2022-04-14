@@ -14,7 +14,7 @@ public class Location
     {    
     }
     
-    public Location(string name, string city, string province, string street, string zip, string latitude, string longitude)
+    public Location(string name, string city, string province, string street, string zip, decimal latitude, decimal longitude)
     {
         this.Name = name ?? throw new ArgumentNullException(nameof(name));
         this.City = city ?? throw new ArgumentNullException(nameof(city));
