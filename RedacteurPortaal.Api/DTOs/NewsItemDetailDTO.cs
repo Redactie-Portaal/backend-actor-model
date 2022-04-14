@@ -21,13 +21,13 @@ public class NewsItemDetailDTO
 
     public string? Author { get; set; }
 
-    public FeedSource? Source { get; set; }
+    public FeedSourceDto? Source { get; set; }
 
-    public ItemBody? Body { get; set; }
+    public ItemBodyDto? Body { get; set; }
 
-    public List<Contact> ContactDetails { get; set; }
+    public List<ContactDto> ContactDetails { get; set; }
 
-    public Location LocationDetails { get; set;  }
+    public LocationDto LocationDetails { get; set;  }
 
     public DateTime? ProdutionDate { get; set; }
 
