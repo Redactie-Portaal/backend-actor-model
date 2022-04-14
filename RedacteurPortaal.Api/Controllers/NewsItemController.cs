@@ -57,7 +57,6 @@ public class NewsItemController : Controller
         var grain = await this.grainService.GetGrain(newguid);
 
         var update = newsitem.Adapt<NewsItemModel>();
-        await Task.Delay(1000); 
         await grain.Update(update);
         this.logger.LogInformation(successMessage);
         return this.CreatedAtRoute("GetNewsItem", new { id = newguid }, update);
