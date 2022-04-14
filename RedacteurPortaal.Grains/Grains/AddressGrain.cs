@@ -19,32 +19,16 @@ namespace RedacteurPortaal.Grains.Grains
             this.adress = adress;
         }
 
-        public Task <AddressModel> GetAddress(Guid guid)
-        {
-            return Task.FromResult(this.adress.State);
-        }
-
-        public async Task AddAdress(AddressModel address)
+     /*   public async Task AddAdress(AddressModel address)
         {
             // control Adress fields not null
             this.adress.State = address;
             await this.adress.WriteStateAsync();
-        }
-
-       /* public async Task<List<AddressModel>> GetAdresses()
-        {
-            //var adresses = await Task.FromResult();
-            throw new NotImplementedException();
         }*/
-
-        public async Task RemoveAdress(Guid guid)
-        {
-            this.GrainFactory.GetGrain<IAddressGrain>(guid);
-            await this.adress.ClearStateAsync();
-        }
 
         public async Task UpdateAdress(AddressModel address)
         {
+            // TODO control if adress date is not empty
            this.adress.State.CompanyName = address.CompanyName;
            this.adress.State.PhoneNumber = address.CompanyName;
            this.adress.State.EmailAddress = address.CompanyName;
@@ -53,6 +37,16 @@ namespace RedacteurPortaal.Grains.Grains
            this.adress.State.Address = address.CompanyName;
            var adress1 = this.adress;
            await adress1.WriteStateAsync();
+        }
+
+        public async Task Delete()
+        {
+            await this.adress.ClearStateAsync();
+        }
+
+        public Task<AddressModel> Get()
+        {
+            return Task.FromResult(this.adress.State);
         }
     }
 }
