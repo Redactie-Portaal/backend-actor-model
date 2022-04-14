@@ -1,9 +1,11 @@
 ﻿using System.Runtime.CompilerServices;
 ﻿using Mapster;
 using RedacteurPortaal.DomainModels.Media;
+using RedacteurPortaal.DomainModels.Shared;
+using RedacteurPortaal.DomainModels.Validation.Shared;
 
 namespace RedacteurPortaal.DomainModels.NewsItem;
-[AdaptTo("[name]Dto"), GenerateMapper]
+
 public class NewsItemModel : IBaseEntity
 {
     public NewsItemModel()

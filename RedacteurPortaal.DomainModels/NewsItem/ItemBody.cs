@@ -13,9 +13,9 @@ public class ItemBody
         this.ShortDescription = shortDescription ?? throw new ArgumentNullException(nameof(shortDescription));
     }
 
-    public Guid Guid { get; }
+    public Guid? Guid { get; }
 
-    public string Description { get; }
+    public string? Description { get; }
 
-    public string ShortDescription { get; }
+    public string? ShortDescription { get; }
 }

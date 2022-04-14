@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FluentValidation;
+using RedacteurPortaal.DomainModels.Validation.Profile;
 
 namespace RedacteurPortaal.DomainModels.Profile
 {
@@ -20,6 +22,8 @@ namespace RedacteurPortaal.DomainModels.Profile
             this.Province = province ?? throw new ArgumentNullException(nameof(province));
             this.City = city ?? throw new ArgumentNullException(nameof(city));
             this.PostalCode = postalCode ?? throw new ArgumentNullException(nameof(postalCode));
+
+            new ContactDetailsValidator().ValidateAndThrow(this);
         }
 
         public string Email { get; private set; }

@@ -5,5 +5,7 @@ namespace RedacteurPortaal.Grains.GrainInterfaces;
 
 public interface INewsItemGrain : IManageableGrain<NewsItemModel>
 {
-    public Task Update(NewsItemUpdate update);
+    Task AddNewsItem(NewsItemModel newsitem);
+
+    Task Update(NewsItemUpdate update);
 }

@@ -8,41 +8,21 @@ namespace RedacteurPortaal.Api.Models;
 
 public class NewsItemDTO
 {
-    public NewsItemDTO(
-        string title,
-        string status,
-        string author,
-        string contactDetails,
-        string locationDetails,
-        string produtionDate,
-        string category,
-        string region)
-    {
-        this.Title = title ?? throw new ArgumentNullException(nameof(title));
-        this.Status = status;
-        this.Author = author ?? throw new ArgumentNullException(nameof(author));
-        this.ContactDetails = contactDetails ?? throw new ArgumentNullException(nameof(contactDetails));
-        this.LocationDetails = locationDetails ?? throw new ArgumentNullException(nameof(locationDetails));
-        this.ProdutionDate = produtionDate;
-        this.Category = category;
-        this.Region = region;
-    }
+    public Guid? Id { get; set; } = Guid.NewGuid();
 
-    public Guid Id { get; set; } = Guid.NewGuid();
+    public string? Title { get; set; }
 
-    public string Title { get; }
+    public string? Status { get; set; }
 
-    public string Status { get; }
+    public string? Author { get; set; }
 
-    public string Author { get; }
+    public string? ContactDetails { get; set; }
 
-    public string ContactDetails { get; }
+    public string? LocationDetails { get; set; }
 
-    public string LocationDetails { get; }
+    public string? ProdutionDate { get; set; }
 
-    public string ProdutionDate { get; }
+    public string? Category { get; set; }
 
-    public string Category { get; }
-
-    public string Region { get; }
+    public string? Region { get; set; }
 }

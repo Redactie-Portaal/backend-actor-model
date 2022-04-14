@@ -1,11 +1,42 @@
 ﻿using RedacteurPortaal.DomainModels.NewsItem;
+using RedacteurPortaal.DomainModels.Shared;
 
 namespace RedacteurPortaal.DomainModels.Media;
 
+[Serializable]
 public class MediaPhotoItem : MediaItem
 {
-    public MediaPhotoItem(Guid guid, string title, string folder, DateTime republishDate, string rights, string camera, string lastWords, string proxyFile, string presentation, Location location, string format, Uri mediaLocation, string image)
-            : base(guid, title, folder, republishDate, rights, camera, lastWords, proxyFile, presentation, location, format, mediaLocation)
+    public MediaPhotoItem()
+    {
+    }
+
+    public MediaPhotoItem(
+        Guid guid,
+        string title,
+        string folder,
+        DateTime republishDate,
+        string rights,
+        string camera,
+        string lastWords,
+        string proxyFile,
+        string presentation,
+        Location location,
+        string format,
+        Uri mediaLocation,
+        string image)
+        : base(
+            guid,
+            title,
+            folder,
+            republishDate,
+            rights,
+            camera,
+            lastWords,
+            proxyFile,
+            presentation,
+            location,
+            format,
+            mediaLocation)
     {
         this.Image = image;
     }

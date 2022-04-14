@@ -29,7 +29,7 @@ public class MediaVideoGrain : Grain, IMediaVideoGrain
 
     public async Task Update(MediaVideoItem item)
     {
-        this.videoItem.State = item;
+        this.videoItem.State = videoItem;
         await this.videoItem.WriteStateAsync();
     }
 }
