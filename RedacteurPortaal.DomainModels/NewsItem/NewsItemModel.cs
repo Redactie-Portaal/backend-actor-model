@@ -6,6 +6,7 @@ using RedacteurPortaal.DomainModels.Validation.Shared;
 
 namespace RedacteurPortaal.DomainModels.NewsItem;
 
+[Serializable]
 public class NewsItemModel : IBaseEntity
 {
     public NewsItemModel()
@@ -13,6 +14,7 @@ public class NewsItemModel : IBaseEntity
     }
 
     public NewsItemModel(
+        Guid id,
         string title,
         Status status,
         string author,
@@ -28,6 +30,7 @@ public class NewsItemModel : IBaseEntity
         MediaAudioItem[] audio,
         MediaPhotoItem[] photos)
     {
+        this.Id = id;
         this.Title = title ?? throw new ArgumentNullException(nameof(title));
         this.Status = status;
         this.Author = author ?? throw new ArgumentNullException(nameof(author));
@@ -44,33 +47,33 @@ public class NewsItemModel : IBaseEntity
         this.Photos = photos ?? throw new ArgumentNullException(nameof(photos));
     }
 
-    public Guid Id { get; init; } = Guid.NewGuid();
+    public Guid Id { get; set; }
 
-    public string Title { get; private set; }
+    public string Title { get; set; }
 
-    public Status Status { get; private set; }
+    public Status Status { get; set; }
 
-    public string Author { get; private set; }
+    public string Author { get; set; }
 
-    public FeedSource Source { get; private set; }
+    public FeedSource Source { get; set; }
 
-    public ItemBody Body { get; private set; }
+    public ItemBody Body { get; set; }
 
-    public List<Contact> ContactDetails { get; private set; }
+    public List<Contact> ContactDetails { get; set; }
 
     public Location LocationDetails { get; }
 
-    public DateTime ProdutionDate { get; private set; }
+    public DateTime ProdutionDate { get; set; }
 
-    public DateTime EndDate { get; private set; }
+    public DateTime EndDate { get; set; }
 
-    public Category Category { get; private set; }
+    public Category Category { get; set; }
 
-    public Region Region { get; private set; }
+    public Region Region { get; set; }
 
-    public MediaVideoItem[] Videos { get; private set; }
+    public MediaVideoItem[] Videos { get; set; }
 
-    public MediaAudioItem[] Audio { get; private set; }
+    public MediaAudioItem[] Audio { get; set; }
 
-    public MediaPhotoItem[] Photos { get; private set; }
+    public MediaPhotoItem[] Photos { get; set; }
 }

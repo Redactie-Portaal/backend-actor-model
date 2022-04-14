@@ -10,6 +10,11 @@ namespace RedacteurPortaal.DomainModels.Shared;
 
 public class Location
 {
+    public Location()
+    {
+
+    }
+
     public Location(string name, string city, string province, string street, string zip, decimal latitude, decimal longitude)
     {
         this.Name = name ?? throw new ArgumentNullException(nameof(name));

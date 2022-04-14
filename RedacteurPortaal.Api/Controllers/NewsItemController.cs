@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using Orleans;
 using RedacteurPortaal.Api.Models;
 using RedacteurPortaal.Api.Models.Request;
+using RedacteurPortaal.DomainModels.Media;
 using RedacteurPortaal.DomainModels.NewsItem;
+using RedacteurPortaal.DomainModels.Shared;
 using RedacteurPortaal.Grains.GrainInterfaces;
 using RedacteurPortaal.Grains.GrainServices;
 
@@ -35,20 +37,40 @@ public class NewsItemController : Controller
 
         const string successMessage = "News item was created";
         var grain = await this.grainService.GetGrain(tosave.Id);
-        var update = new NewsItemUpdate();
+        var update = new NewsItemUpdate() { 
+        };
         await grain.Update(update);
         this.logger.LogInformation(successMessage);
-        return this.CreatedAtRoute("GetNewsItem", new { guid = newguid }, newsitem);
+        return this.CreatedAtRoute("GetNewsItem", new { guid = newguid
+            }, newsitem);
     }
 
     [HttpGet]
     [Route("{id}", Name = "GetNewsItem")]
-    public async Task<IActionResult> GetNewsItem(Guid guid)
+    public async Task<IActionResult> GetNewsItem(Guid id)
     {
-        var grain = await this.grainService.GetGrain(guid);
-        var response = await grain.Get();
-        this.logger.LogInformation("News item fetched successfully");
-        return this.Ok(response);
+
+        var guid = Guid.NewGuid();
+
+        var newsitem = new NewsItemModel(guid, "Newsitem Title", Status.DONE, "Newsitem Author", new FeedSource { }, new ItemBody { }, new List<Contact>(), new Location { }, DateTime.UtcNow, DateTime.UtcNow, Category.STORY, Region.LOCAL, new MediaVideoItem[0], new MediaAudioItem[0], new MediaPhotoItem[0]);
+
+
+        var newsitemgrain = await this.grainService.GetGrain(guid);
+
+        await newsitemgrain.AddNewsItem(newsitem);
+        var news = await newsitemgrain.Get();
+
+
+        return Ok(news.Title);
+        ////var newguid = Guid.NewGuid();
+        ////var model = new NewsItemModel() {
+        ////    Id = newguid
+        ////};
+        //var grain = await this.grainService.GetGrain(id);
+        ////await grain.AddNewsItem(model);
+        //var response = await grain.Get();
+        //this.logger.LogInformation("News item fetched successfully");
+        //return this.Ok(response);
     }
 
     [HttpGet]

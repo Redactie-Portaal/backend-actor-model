@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Orleans;
-using RedacteurPortaal.DomainModels.Archive;
 using RedacteurPortaal.Api.DTOs;
 
 namespace RedacteurPortaal.Api.Controllers;

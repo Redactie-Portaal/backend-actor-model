@@ -18,7 +18,16 @@ await Host.CreateDefaultBuilder(args)
         if (ctx.HostingEnvironment.IsDevelopment())
         {
             siloBuilder.UseLocalhostClustering();
-            siloBuilder.AddMemoryGrainStorage("OrleansStorage");
+            //var postgresqlConnString = Environment.GetEnvironmentVariable("POSTGRESQL");
+            //siloBuilder.AddMemoryGrainStorage("OrleansStorage");
+            var conn = ctx.Configuration.GetConnectionString("DefaultConnection");
+            siloBuilder.AddAdoNetGrainStorage("OrleansStorage",
+                options => {
+                    options.Invariant = "Npgsql";
+                    options.UseJsonFormat = true;
+                    options.ConnectionString = conn;
+                });
+
         }
         else
         {
