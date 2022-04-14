@@ -39,7 +39,7 @@ public class Location
 
     public string Zip { get; set; }
 
-    public decimal Latitude { get; }
+    public decimal Latitude { get; set; }
 
-    public decimal Longitude { get; }
+    public decimal Longitude { get; set; }
 }
