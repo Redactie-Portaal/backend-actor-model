@@ -30,11 +30,11 @@ namespace RedacteurPortaal.Grains.Grains
         {
             // TODO control if adress date is not empty
            this.adress.State.CompanyName = address.CompanyName;
-           this.adress.State.PhoneNumber = address.CompanyName;
-           this.adress.State.EmailAddress = address.CompanyName;
-           this.adress.State.PostalCode = address.CompanyName;
-           this.adress.State.Webpage = address.CompanyName;
-           this.adress.State.Address = address.CompanyName;
+           this.adress.State.PhoneNumber = address.PhoneNumber;
+           this.adress.State.EmailAddress = address.EmailAddress;
+           this.adress.State.PostalCode = address.PostalCode;
+           this.adress.State.Webpage = address.Webpage;
+           this.adress.State.Address = address.Address;
            var adress1 = this.adress;
            await adress1.WriteStateAsync();
         }

@@ -40,17 +40,17 @@ namespace RedacteurPortaal.Api.Controllers
 
         [HttpGet]
         [Route("{id}", Name = "GetAddress")]
-        public async Task<IActionResult> GetAddress(Guid guid)
+        public async Task<IActionResult> GetAddress(Guid id)
         {
-            var grain = await this.grainService.GetGrain(guid);
-            var response = await grain.Get(); 
+            var grain = await this.grainService.GetGrain(id);
+            var response = await grain.Get();
+            var address = response.Adapt<AddressDTO>();
             this.logger.LogInformation("Address fetched successfully");
-            return this.Ok(response);
+            return this.Ok(address);
         }
 
         [HttpGet]
-        [Route("getAll")]
-        public async Task<IActionResult> GetAll(Guid guid)
+        public async Task<IActionResult> Get()
         {
             var grain = await this.grainService.GetGrains();
             this.logger.LogInformation("Addresses fetched successfully");
@@ -59,9 +59,9 @@ namespace RedacteurPortaal.Api.Controllers
 
         [HttpDelete]
         [Route("{id}")]
-        public async Task<IActionResult> DeleteAddress(Guid guid)
+        public async Task<IActionResult> DeleteAddress(Guid id)
         {
-            await this.grainService.DeleteGrain(guid);
+            await this.grainService.DeleteGrain(id);
             this.logger.LogInformation("Address deleted successfully");
             return this.StatusCode(204, "Address deleted");
         }

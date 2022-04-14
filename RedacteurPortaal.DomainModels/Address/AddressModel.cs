@@ -1,9 +1,9 @@
 ﻿namespace RedacteurPortaal.DomainModels.Adress
 {
     // [Serializable]
-    public class AddressModel
+    public class AddressModel : IBaseEntity
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public Guid Id { get; init; } = Guid.NewGuid();
 
         public string CompanyName { get; set; }
 
