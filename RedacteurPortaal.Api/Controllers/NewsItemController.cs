@@ -6,6 +6,7 @@ using RedacteurPortaal.Api.Models;
 using RedacteurPortaal.Api.Models.Request;
 using RedacteurPortaal.DomainModels.Media;
 using RedacteurPortaal.DomainModels.NewsItem;
+using RedacteurPortaal.DomainModels.Shared;
 using RedacteurPortaal.Grains.GrainInterfaces;
 using RedacteurPortaal.Grains.GrainServices;
 
@@ -30,6 +31,20 @@ public class NewsItemController : Controller
         var newguid = Guid.NewGuid();
         TypeAdapterConfig<NewsItemDetailDTO, NewsItemModel>
             .NewConfig()
+            .Map(dest => dest.ContactDetails,
+                src => src.ContactDetails.AsQueryable().ProjectToType<Contact>(null).ToList())
+            .Map(dest => dest.LocationDetails,
+                src => src.LocationDetails.Adapt<Location>())
+            .Map(dest => dest.Body,
+                src => src.Body.Adapt<ItemBody>())
+            .Map(dest => dest.Source,
+                src => src.Source.Adapt<FeedSource>())
+            .Map(dest => dest.Videos,
+                src => src.Videos.AsQueryable().ProjectToType<MediaVideoItem>(null).ToList())
+            .Map(dest => dest.Audio,
+                src => src.Audio.AsQueryable().ProjectToType<MediaAudioItem>(null).ToList())
+            .Map(dest => dest.Photos,
+                src => src.Photos.AsQueryable().ProjectToType<MediaPhotoItem>(null).ToList())
             .Map(dest => dest.Id,
                 src => newguid);
         
@@ -37,12 +52,12 @@ public class NewsItemController : Controller
             .NewConfig()
             .Map(dest => dest.Duration,
                   src => TimeSpan.FromSeconds(src.DurationSeconds));
-        
-        var tosave = newsitem.Adapt<NewsItemModel>();
 
         const string successMessage = "News item was created";
-        var grain = await this.grainService.GetGrain(tosave.Id);
-        var update = new NewsItemUpdate();
+        var grain = await this.grainService.GetGrain(Guid.NewGuid());
+
+        var update = newsitem.Adapt<NewsItemUpdate>();
+
         await grain.Update(update);
         this.logger.LogInformation(successMessage);
         return this.CreatedAtRoute("GetNewsItem", new { id = newguid }, newsitem);

@@ -10,5 +10,5 @@ public interface IArchiveGrain : IManageableGrain<ArchiveModel>
 
     Task AddPhotoItem(MediaPhotoItem photoItem);
 
-    Task AddAudioItem(MediaAudioItem audioItem);
+    Task AddAudioItem(MediaAudioItem audioItem);    
 }
