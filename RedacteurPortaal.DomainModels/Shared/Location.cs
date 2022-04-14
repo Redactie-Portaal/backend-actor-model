@@ -14,7 +14,7 @@ public class Location
     {    
     }
     
-    public Location(string name, string city, string province, string street, string zip, string latitude, string longitude)
+    public Location(string name, string city, string province, string street, string zip, decimal latitude, decimal longitude)
     {
         this.Name = name ?? throw new ArgumentNullException(nameof(name));
         this.City = city ?? throw new ArgumentNullException(nameof(city));
@@ -39,7 +39,7 @@ public class Location
 
     public string Zip { get; set; }
 
-    public string Latitude { get; set; }
+    public decimal Latitude { get; set; }
 
-    public string Longitude { get; set; }
+    public decimal Longitude { get; set; }
 }

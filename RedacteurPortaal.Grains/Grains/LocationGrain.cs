@@ -1,7 +1,7 @@
 ﻿using Orleans;
 using Orleans.Runtime;
-using RedacteurPortaal.Grains.GrainInterfaces;
 using RedacteurPortaal.DomainModels.Shared;
+using RedacteurPortaal.Grains.GrainInterfaces;
 
 namespace RedacteurPortaal.Grains.Grains;
 public class LocationGrain : Grain, ILocationGrain
