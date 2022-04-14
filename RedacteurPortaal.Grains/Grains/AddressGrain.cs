@@ -19,9 +19,9 @@ namespace RedacteurPortaal.Grains.Grains
             this.adress = adress;
         }
 
-        public AddressModel GetAddress(Guid guid)
+        public Task <AddressModel> GetAddress(Guid guid)
         {
-            return this.adress.State;
+            return Task.FromResult(this.adress.State);
         }
 
         public async Task AddAdress(AddressModel address)
@@ -31,7 +31,7 @@ namespace RedacteurPortaal.Grains.Grains
             await this.adress.WriteStateAsync();
         }
 
-        public Task<List<AddressModel>> GetAdresses()
+        public async Task<List<AddressModel>> GetAdresses()
         {
             //var adresses = await Task.FromResult();
             throw new NotImplementedException();
