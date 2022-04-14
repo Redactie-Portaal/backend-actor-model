@@ -33,9 +33,10 @@ public class NewsItemGrain : Grain, INewsItemGrain
         await this.newsItem.ClearStateAsync();
     }
 
-    public async Task Update(NewsItemUpdate update)
+    public async Task Update(NewsItemModel model)
     {
         // TODO: Merge title.
+        this.newsItem.State = model;
         await this.newsItem.WriteStateAsync();
     }
 }

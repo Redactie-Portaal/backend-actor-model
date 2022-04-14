@@ -11,7 +11,7 @@ public abstract class MediaItem
     }
 
     protected MediaItem(
-        Guid guid,
+        Guid id,
         string title,
         string folder,
         DateTime republishDate,
@@ -24,7 +24,7 @@ public abstract class MediaItem
         string format,
         Uri mediaLocation)
     {
-        this.Guid = guid;
+        this.Id = id;
         this.Title = title ?? throw new ArgumentNullException(nameof(title));
         this.Folder = folder ?? throw new ArgumentNullException(nameof(folder));
         this.RepublishDate = republishDate;
@@ -38,7 +38,7 @@ public abstract class MediaItem
         this.MediaLocation = mediaLocation ?? throw new ArgumentNullException(nameof(mediaLocation));
     }
 
-    public Guid Guid { get; private set; }
+    public Guid Id { get; private set; }
 
     public string Title { get; private set; }
 
@@ -57,7 +57,7 @@ public abstract class MediaItem
     public string Presentation { get; private set; }
 
     public Location Location { get; private set; }
-
+  
     public string Format { get; private set; }
 
     public Uri MediaLocation { get; private set; }
