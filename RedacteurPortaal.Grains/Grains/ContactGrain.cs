@@ -14,23 +14,17 @@ public class ContactGrain : Grain, IContactGrain
         this.contactState = contact;
     }
 
-    public Task GetContactDetails(Guid guid)
+    public Task<Contact> Get()
     {
         return Task.FromResult(this.contactState.State);
     }
 
-    public async Task AddContactDetails(Contact contact)
-    {
-        this.contactState.State = contact;
-        await this.contactState.WriteStateAsync();
-    }
-
-    public async Task DeleteContactDetails(Guid guid)
+    public async Task Delete()
     {
         await this.contactState.ClearStateAsync();
     }
 
-    public async Task UpdateContactDetails(Contact contact)
+    public async Task Update(Contact contact)
     {
         this.contactState.State = contact;
         await this.contactState.WriteStateAsync();

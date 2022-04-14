@@ -3,13 +3,7 @@ using RedacteurPortaal.DomainModels.Media;
 
 namespace RedacteurPortaal.Grains.GrainInterfaces;
 
-public interface IMediaPhotoGrain : IGrainWithGuidKey
+public interface IMediaPhotoGrain : IManageableGrain<MediaPhotoItem>
 {
-    Task<MediaPhotoItem> GetMediaPhotoItem(Guid guid);
-
-    Task AddMediaPhotoItem(MediaPhotoItem item);
-
-    Task DeleteMediaPhotoItem(Guid guid);
-
-    Task UpdateMediaPhotoItem(MediaPhotoItem item);
+    Task Update(MediaPhotoItem item);
 }

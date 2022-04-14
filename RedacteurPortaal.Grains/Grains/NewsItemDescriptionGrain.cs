@@ -16,18 +16,19 @@ public class NewsItemDescriptionGrain : Grain, INewsItemDescriptionGrain
         this.description = description;
     }
 
-    public async Task AddDescription(Guid guid, ItemBody description)
-    {
-        await this.description.WriteStateAsync();
-    }
-
-    public async Task<ItemBody> GetDescription()
+    public async Task<ItemBody> Get()
     {
         return await Task.FromResult(this.description.State);
     }
 
-    public async Task DeleteDescription()
+    public async Task Delete()
     {
         await this.description.ClearStateAsync();
+    }
+
+    public async Task Update(ItemBody item)
+    {
+        this.description.State = item;
+        await this.description.WriteStateAsync();
     }
 }

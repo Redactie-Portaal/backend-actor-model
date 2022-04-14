@@ -15,18 +15,18 @@ public class LocationGrain : Grain, ILocationGrain
         this.location = location;
     }
 
-    public Task<Location> GetLocation()
+    public Task<Location> Get()
     {
         return Task.FromResult(this.location.State);
     }
 
-    public async Task UpdateLocation(Location location)
+    public async Task Update(Location location)
     {
         this.location.State = location;
         await this.location.WriteStateAsync();
     }
 
-    public async Task DeleteLocation()
+    public async Task Delete()
     {
         await this.location.ClearStateAsync();
     }

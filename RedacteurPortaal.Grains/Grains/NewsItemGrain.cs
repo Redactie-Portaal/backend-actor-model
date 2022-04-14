@@ -19,34 +19,17 @@ public class NewsItemGrain : Grain, INewsItemGrain
     public async Task<NewsItemModel> Get()
     {
         var grain = this.GrainFactory.GetGrain<INewsItemDescriptionGrain>(this.newsItem.State.Id);
-        var description = await grain.GetDescription();
+        var description = await grain.Get();
         var item = await Task.FromResult(this.newsItem.State);
 
         // TODO: Merge description
         return item;
     }
 
-    public async Task AddNewsItem(NewsItemModel newsitem)
-    {
-        var grain = this.GrainFactory.GetGrain<INewsItemDescriptionGrain>(newsitem.Id);
-#pragma warning disable CS8604 // Possible null reference argument.
-        await grain.AddDescription(newsitem.Id, newsitem.Body);
-#pragma warning restore CS8604 // Possible null reference argument.
-        this.newsItem.State = newsitem;
-        await this.newsItem.WriteStateAsync();
-    }
-
-    public async Task DeleteNewsItem(Guid guid)
-    {
-        var grain = this.GrainFactory.GetGrain<INewsItemDescriptionGrain>(guid);
-        await grain.DeleteDescription();
-        await this.newsItem.ClearStateAsync();
-    }
-
     public  async Task Delete()
     {
         var grain = this.GrainFactory.GetGrain<INewsItemDescriptionGrain>(this.newsItem.State.Id);
-        await grain.DeleteDescription();
+        await grain.Delete();
         await this.newsItem.ClearStateAsync();
     }
 
