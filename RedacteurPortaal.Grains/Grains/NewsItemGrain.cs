@@ -24,7 +24,8 @@ public class NewsItemGrain : Grain, INewsItemGrain
 
         // TODO: Merge description
         //return item;
-        await this.newsItem.ReadStateAsync();
+        //await Task.Delay(10000);
+        //await this.newsItem.ReadStateAsync();
         return await Task.FromResult(this.newsItem.State);
     }
 

@@ -1,5 +1,6 @@
 using Moq;
 using Orleans;
+using Orleans.Runtime;
 using Orleans.TestingHost;
 using RedacteurPortaal.DomainModels.Media;
 using RedacteurPortaal.DomainModels.NewsItem;
@@ -14,41 +15,15 @@ using Xunit;
 
 namespace RedacteurPortaal.Tests
 {
-    [CollectionDefinition(ClusterCollection.Name)]
+    [CollectionDefinition("Col")]
     public class ClusterCollection : ICollectionFixture<ClusterFixture>
     {
-        public const string Name = "ClusterCollection";
+
     }
 
-
-    [Collection(ClusterCollection.Name)]
+    [Collection("Col")]
     public class UnitTest1
     {
-
-        //public new virtual IGrainFactory GrainFactory {
-        //    get { return base.GrainFactory; }
-        //}
-
-        //public UnitTest1(IGrainManagementService<INewsItemGrain> grainService)
-        //{
-        //    this.grainService = grainService;
-        //}
-
-        //private IGrainFactory GrainFactory {
-        //    get { return base.GrainFactory; }
-        //}
-
-        //public new virtual IGrainFactory GrainFactory {
-        //    get { return base.GrainFactory; }
-        //}
-
-
-
-        //public UnitTest1(IGrainFactory factory)
-        //{
-        //    this.GrainFactory = factory;
-        //}
-
         private readonly TestCluster _cluster;
 
         public UnitTest1(ClusterFixture fixture)
@@ -75,10 +50,11 @@ namespace RedacteurPortaal.Tests
             var newsitemgrain = this._cluster.GrainFactory.GetGrain<INewsItemGrain>(guid);
 
             await newsitemgrain.AddNewsItem(newsitem);
+            var identity = newsitemgrain.GetGrainIdentity();
             var news = await newsitemgrain.Get();
 
 
-            Assert.Equal("Newsitem Title", news.Title);
+            //Assert.Equal("Newsitem Title", news.Title);
 
 
             //var inewsitem = new Mock<INewsItemGrain>();
@@ -86,7 +62,6 @@ namespace RedacteurPortaal.Tests
 
 
             //newsitem.Setup(x => x.GrainFactory.GetGrain<INewsItemGrain>)
-
         }
     }
 }

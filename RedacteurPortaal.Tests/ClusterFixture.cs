@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Orleans;
 using Orleans.Hosting;
 using Orleans.Storage;
 using Orleans.TestingHost;
@@ -15,7 +17,8 @@ namespace RedacteurPortaal.Tests
         public ClusterFixture()
         {
             var builder = new TestClusterBuilder();
-            builder.AddSiloBuilderConfigurator<TestSiloConfiguration>();
+            builder.AddSiloBuilderConfigurator<SiloConfigurator>();
+            builder.AddClientBuilderConfigurator<ClientConfiguretor>();
             this.Cluster = builder.Build();
             this.Cluster.Deploy();
         }
@@ -28,18 +31,29 @@ namespace RedacteurPortaal.Tests
         public TestCluster Cluster { get; private set; }
 
         public static FakeGrainStorage GrainStorage { get; } = new();
-        class TestSiloConfiguration : ISiloBuilderConfigurator
+        public class SiloConfigurator : ISiloConfigurator
         {
-            public void Configure(ISiloHostBuilder siloBuilder)
+            public void Configure(ISiloBuilder hostBuilder)
             {
-                siloBuilder
+                hostBuilder
                     .ConfigureServices(services => {
-                             services
-                             .AddSingleton<IGrainStorage>(GrainStorage);
+                            services.AddSingleton<IGrainStorage>(GrainStorage);
                          })
                     .UseLocalhostClustering()
-                    .AddMemoryGrainStorage("OrleansStorage");  
+                    .AddMemoryGrainStorage("OrleansStorage");
+                //    siloBuilder.AddAdoNetGrainStorage("OrleansStorage",
+                //options => {
+                //    options.Invariant = "Npgsql";
+                //    options.UseJsonFormat = true;
+                //    options.ConnectionString = conn;
+                //});
+                //.AddMemoryGrainStorage("OrleansStorage");  
             }
+        }
+        private class ClientConfiguretor : IClientBuilderConfigurator
+        {
+            public void Configure(IConfiguration configuration, IClientBuilder clientBuilder) =>
+              clientBuilder.AddSimpleMessageStreamProvider("SMSProvider");
         }
     }
 }
