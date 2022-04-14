@@ -26,10 +26,10 @@ public class NewsItemController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> SaveNewsItem([FromBody] NewsItemDetailDTO newsitem)
+    public async Task<IActionResult> SaveNewsItem([FromBody] NewsItemDetailDto newsitem)
     {
         var newguid = Guid.NewGuid();
-        TypeAdapterConfig<NewsItemDetailDTO, NewsItemModel>
+        TypeAdapterConfig<NewsItemDetailDto, NewsItemModel>
             .NewConfig()
             .Map(dest => dest.ContactDetails,
                 src => src.ContactDetails.AsQueryable().ProjectToType<Contact>(null).ToList())
@@ -48,7 +48,7 @@ public class NewsItemController : Controller
             .Map(dest => dest.Id,
                 src => newguid);
         
-        TypeAdapterConfig<MediaVideoItemDTO, MediaVideoItem>
+        TypeAdapterConfig<MediaVideoItemDto, MediaVideoItem>
             .NewConfig()
             .Map(dest => dest.Duration,
                   src => TimeSpan.FromSeconds(src.DurationSeconds));
@@ -96,6 +96,7 @@ public class NewsItemController : Controller
     {
         var grain = await this.grainService.GetGrain(guid);
         var updateRequest = new NewsItemUpdate();
+        
         //await grain.Update(updateRequest);
         this.logger.LogInformation("News item updated successfully");
         return this.StatusCode(204, "News item updated");
