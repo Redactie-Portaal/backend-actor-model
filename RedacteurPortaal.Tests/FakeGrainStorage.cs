@@ -22,11 +22,5 @@ namespace RedacteurPortaal.Tests
 
         public Task WriteStateAsync(string grainType, GrainReference grainReference, IGrainState grainState)
             => Task.FromResult(Storage.TryAdd(grainReference, grainState));
-        public TState GetGrainState<TState>(IGrain grain)
-    => Storage.TryGetValue((GrainReference)grain, out var state)
-        ? (TState)state.State
-        : default;
-
     }
-
 }

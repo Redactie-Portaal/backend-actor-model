@@ -10,6 +10,7 @@ using RedacteurPortaal.Grains.Grains;
 using RedacteurPortaal.Grains.GrainServices;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -32,36 +33,42 @@ namespace RedacteurPortaal.Tests
         }
 
         [Fact]
-        public void Test1()
+        public async Task Test1Async()
         {
-            var hello = "hi";
-            Assert.Equal("hi", hello);
+            var guid = Guid.NewGuid();
+
+            var newsitem = new NewsItemModel(guid, "Newsitem Title", Status.DONE, "Newsitem Author", new FeedSource { }, new ItemBody { }, new List<Contact>(), new Location { }, DateTime.UtcNow, DateTime.UtcNow, Category.STORY, Region.LOCAL, new MediaVideoItem[0], new MediaAudioItem[0], new MediaPhotoItem[0]);
+
+
+            var newsitemgrain = this._cluster.GrainFactory.GetGrain<INewsItemGrain>(guid);
+
+            await newsitemgrain.AddNewsItem(newsitem);
+            await Task.Delay(60000);
+            var identity = newsitemgrain.GetGrainIdentity();
+            var news = await newsitemgrain.Get();
+
+
+            Assert.Equal("Newsitem Title", news.Title);
         }
 
         [Fact]
         public async Task Test2Async()
         {
-            //cluster.Deploy();
-
             var guid = Guid.NewGuid();
 
             var newsitem = new NewsItemModel(guid, "Newsitem Title", Status.DONE, "Newsitem Author", new FeedSource { }, new ItemBody { }, new List<Contact>(), new Location { }, DateTime.UtcNow, DateTime.UtcNow, Category.STORY, Region.LOCAL, new MediaVideoItem[0], new MediaAudioItem[0], new MediaPhotoItem[0]);
 
+
+            var test = this._cluster.Client.GetGrain<INewsItemGrain>(guid);
             var newsitemgrain = this._cluster.GrainFactory.GetGrain<INewsItemGrain>(guid);
 
-            await newsitemgrain.AddNewsItem(newsitem);
-            var identity = newsitemgrain.GetGrainIdentity();
-            var news = await newsitemgrain.Get();
+            await test.AddNewsItem(newsitem);
+            //await Task.Delay(60000);
+            var identity = test.GetGrainIdentity();
+            var news = await test.Get();
 
 
-            //Assert.Equal("Newsitem Title", news.Title);
-
-
-            //var inewsitem = new Mock<INewsItemGrain>();
-            //var newsitem = new Mock<NewsItemGrain>();
-
-
-            //newsitem.Setup(x => x.GrainFactory.GetGrain<INewsItemGrain>)
+            Assert.Equal("Newsitem Title", news.Title);
         }
     }
 }

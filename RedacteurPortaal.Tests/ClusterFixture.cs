@@ -10,50 +10,36 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RedacteurPortaal.Tests
+namespace RedacteurPortaal.Tests;
+
+public class ClusterFixture 
 {
-    public class ClusterFixture : IDisposable
+    public ClusterFixture()
     {
-        public ClusterFixture()
-        {
-            var builder = new TestClusterBuilder();
-            builder.AddSiloBuilderConfigurator<SiloConfigurator>();
-            builder.AddClientBuilderConfigurator<ClientConfiguretor>();
-            this.Cluster = builder.Build();
-            this.Cluster.Deploy();
-        }
+        var builder = new TestClusterBuilder();
+        builder.AddSiloBuilderConfigurator<SiloConfigurator>();
+        this.Cluster = builder.Build();
+        this.Cluster.Deploy();
+    }
 
-        public void Dispose()
-        {
-            this.Cluster.StopAllSilos();
-        }
+    public void Dispose()
+    {
+        this.Cluster.StopAllSilos();
+    }
 
-        public TestCluster Cluster { get; private set; }
+    public TestCluster Cluster { get; private set; }
 
-        public static FakeGrainStorage GrainStorage { get; } = new();
-        public class SiloConfigurator : ISiloConfigurator
+    public static FakeGrainStorage GrainStorage { get; } = new();
+    public class SiloConfigurator : ISiloConfigurator
+    {
+        public void Configure(ISiloBuilder hostBuilder)
         {
-            public void Configure(ISiloBuilder hostBuilder)
-            {
-                hostBuilder
-                    .ConfigureServices(services => {
-                            services.AddSingleton<IGrainStorage>(GrainStorage);
-                         })
-                    .UseLocalhostClustering()
-                    .AddMemoryGrainStorage("OrleansStorage");
-                //    siloBuilder.AddAdoNetGrainStorage("OrleansStorage",
-                //options => {
-                //    options.Invariant = "Npgsql";
-                //    options.UseJsonFormat = true;
-                //    options.ConnectionString = conn;
-                //});
-                //.AddMemoryGrainStorage("OrleansStorage");  
-            }
-        }
-        private class ClientConfiguretor : IClientBuilderConfigurator
-        {
-            public void Configure(IConfiguration configuration, IClientBuilder clientBuilder) =>
-              clientBuilder.AddSimpleMessageStreamProvider("SMSProvider");
+            hostBuilder
+                .ConfigureServices(services => {
+                    services.AddSingleton<IGrainStorage>(GrainStorage);
+                })
+                .UseLocalhostClustering()
+                .AddMemoryGrainStorage("OrleansStorage");
         }
     }
 }
