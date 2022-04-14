@@ -20,7 +20,7 @@ public class LocationGrain : Grain, ILocationGrain
         return Task.FromResult(this.location.State);
     }
 
-    public async Task Update(Location item)
+    public async Task Update(Location location)
     {
         this.location.State = location;
         await this.location.WriteStateAsync();

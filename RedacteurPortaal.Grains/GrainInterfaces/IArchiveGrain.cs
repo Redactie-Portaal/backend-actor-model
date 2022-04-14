@@ -6,7 +6,6 @@ namespace RedacteurPortaal.Grains.GrainInterfaces;
 
 public interface IArchiveGrain : IManageableGrain<ArchiveModel>
 {
-
     Task AddVideoItem(MediaVideoItem videoItem);
 
     Task AddPhotoItem(MediaPhotoItem photoItem);

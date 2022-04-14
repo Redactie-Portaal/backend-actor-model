@@ -5,5 +5,5 @@ namespace RedacteurPortaal.Grains.GrainInterfaces;
 
 public interface IMediaAudioGrain : IManageableGrain<MediaAudioItem>
 {
-    Task Update(MediaAudioItem mediaAudio);
+    Task Update(MediaAudioItem mediaItem);
 }
