@@ -36,9 +36,9 @@ public class NewsItemController : Controller
             .Map(dest => dest.LocationDetails,
                 src => src.LocationDetails.Adapt<Location>())
             .Map(dest => dest.Body,
-                src => src.Body.Adapt<ItemBody>())
+                src => src.Body != null ? src.Body.Adapt<ItemBody>() : new ItemBody())
             .Map(dest => dest.Source,
-                src => src.Source.Adapt<FeedSource>())
+                src => src.Source != null ? src.Source.Adapt<FeedSource>() : new FeedSource())
             .Map(dest => dest.Videos,
                 src => src.Videos.AsQueryable().ProjectToType<MediaVideoItem>(null).ToList())
             .Map(dest => dest.Audio,
