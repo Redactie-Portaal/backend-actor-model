@@ -82,9 +82,9 @@ public class NewsItemController : Controller
 
     [HttpDelete]
     [Route("{id}")]
-    public async Task<IActionResult> DeleteNewsItem(Guid guid)
+    public async Task<IActionResult> DeleteNewsItem(Guid id)
     {
-        await this.grainService.DeleteGrain(guid);
+        await this.grainService.DeleteGrain(id);
         this.logger.LogInformation("News item deleted successfully");
         return this.StatusCode(204, "News item deleted");
     }

@@ -44,7 +44,7 @@ public class NewsItemModel : IBaseEntity
         this.Photos = photos ?? throw new ArgumentNullException(nameof(photos));
     }
 
-    public Guid Id { get; init; } = Guid.NewGuid();
+    public Guid Id { get; set; }
 
     public string Title { get; private set; }
 
