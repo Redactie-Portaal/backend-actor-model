@@ -30,16 +30,18 @@ public class ClusterFixture
     public TestCluster Cluster { get; private set; }
 
     public static FakeGrainStorage GrainStorage { get; } = new();
+
     public class SiloConfigurator : ISiloConfigurator
     {
-        public void Configure(ISiloBuilder hostBuilder)
+        public void Configure(ISiloBuilder siloBuilder)
         {
-            hostBuilder
-                .ConfigureServices(services => {
-                    services.AddSingleton<IGrainStorage>(GrainStorage);
-                })
-                .UseLocalhostClustering()
-                .AddMemoryGrainStorage("OrleansStorage");
+            siloBuilder.ConfigureServices(services => {
+                services.AddSingleton<IGrainStorage>(GrainStorage);
+            });
+            siloBuilder.UseLocalhostClustering();
+            //siloBuilder.
+            siloBuilder.AddMemoryGrainStorageAsDefault();
+            //siloBuilder.AddMemoryGrainStorage("OrleansStorage");
         }
     }
 }

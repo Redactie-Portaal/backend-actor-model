@@ -43,12 +43,11 @@ namespace RedacteurPortaal.Tests
             var newsitemgrain = this._cluster.GrainFactory.GetGrain<INewsItemGrain>(guid);
 
             await newsitemgrain.AddNewsItem(newsitem);
-            await Task.Delay(60000);
-            var identity = newsitemgrain.GetGrainIdentity();
-            var news = await newsitemgrain.Get();
 
+            var news = ClusterFixture.GrainStorage.GetGrainState<NewsItemModel>(newsitemgrain);
 
-            Assert.Equal("Newsitem Title", news.Title);
+            Assert.Equal("abc", news.Title);
+            Assert.Equal(Status.DONE, news.Status);
         }
 
         [Fact]
@@ -63,9 +62,8 @@ namespace RedacteurPortaal.Tests
             var newsitemgrain = this._cluster.GrainFactory.GetGrain<INewsItemGrain>(guid);
 
             await test.AddNewsItem(newsitem);
-            //await Task.Delay(60000);
-            var identity = test.GetGrainIdentity();
-            var news = await test.Get();
+
+            var news = ClusterFixture.GrainStorage.GetGrainState<NewsItemModel>(newsitemgrain);
 
 
             Assert.Equal("Newsitem Title", news.Title);
