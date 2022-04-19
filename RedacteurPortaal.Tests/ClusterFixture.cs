@@ -33,15 +33,14 @@ public class ClusterFixture
 
     public class SiloConfigurator : ISiloConfigurator
     {
-        public void Configure(ISiloBuilder siloBuilder)
+        public void Configure(ISiloBuilder hostBuilder)
         {
-            siloBuilder.ConfigureServices(services => {
+            hostBuilder.ConfigureServices(services => {
                 services.AddSingleton<IGrainStorage>(GrainStorage);
-            });
-            siloBuilder.UseLocalhostClustering();
-            //siloBuilder.
-            siloBuilder.AddMemoryGrainStorageAsDefault();
-            //siloBuilder.AddMemoryGrainStorage("OrleansStorage");
+            })
+            .UseLocalhostClustering();
+            //.AddMemoryGrainStorageAsDefault()
+            //.AddMemoryGrainStorage("OrleansStorage");
         }
     }
 }

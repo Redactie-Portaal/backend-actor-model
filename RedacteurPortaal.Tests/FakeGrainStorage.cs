@@ -16,17 +16,11 @@ public class FakeGrainStorage : IGrainStorage
     private readonly string name;
 
 
-    public FakeGrainStorage(
-        [PersistentState("newsitem", "OrleansStorage")]
-        IPersistentState<NewsItemModel> newsItem)
+    public FakeGrainStorage()
     {
         this.name = "OrleansStorage";
     }
-
-    public FakeGrainStorage()
-    {
-    }
-
+    
     public ConcurrentDictionary<GrainReference, IGrainState> Storage { get; } = new();
 
     public Task ClearStateAsync(string grainType, GrainReference grainReference, IGrainState grainState)
@@ -47,5 +41,5 @@ public class FakeGrainStorage : IGrainStorage
         //return stor;
         return (TState)state.State;
     }
-        //=>  Storage.TryGetValue((GrainReference)grain, out var state) ? (TState)state.State : default;
+    //=> Storage.TryGetValue((GrainReference)grain, out var state) ? (TState)state.State : default;
 }

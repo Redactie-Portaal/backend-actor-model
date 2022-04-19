@@ -66,7 +66,7 @@ namespace RedacteurPortaal.Tests
             var news = ClusterFixture.GrainStorage.GetGrainState<NewsItemModel>(newsitemgrain);
 
 
-            Assert.Equal("Newsitem Title", news.Title);
+            Assert.Equal(Status.DONE, news.Status);
         }
     }
 }

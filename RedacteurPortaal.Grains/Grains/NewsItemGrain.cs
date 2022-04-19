@@ -10,6 +10,11 @@ public class NewsItemGrain : Grain, INewsItemGrain
     private readonly IPersistentState<NewsItemModel> newsItem;
 
     public NewsItemGrain(
+        
+        // This doesn't work in testing, but I don't know why.
+        //[PersistentState("newsitem", "OrleansStorage")]
+
+        // This works in testing.
         [PersistentState("newsitem")]
         IPersistentState<NewsItemModel> newsItem)
     {
@@ -32,7 +37,7 @@ public class NewsItemGrain : Grain, INewsItemGrain
     public async Task AddNewsItem(NewsItemModel newsitem)
     {
         this.newsItem.State = newsitem;
-        this.newsItem.State.Title = "abc";
+        //this.newsItem.State.Title = "abc";
         await this.newsItem.WriteStateAsync();
         //var item = await this.Get();
     }
