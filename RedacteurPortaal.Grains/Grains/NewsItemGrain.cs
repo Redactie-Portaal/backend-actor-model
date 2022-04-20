@@ -37,7 +37,7 @@ public class NewsItemGrain : Grain, INewsItemGrain
     public async Task AddNewsItem(NewsItemModel newsitem)
     {
         this.newsItem.State = newsitem;
-        //this.newsItem.State.Title = "abc";
+        this.newsItem.State.Title = "abc";
         await this.newsItem.WriteStateAsync();
         //var item = await this.Get();
     }
