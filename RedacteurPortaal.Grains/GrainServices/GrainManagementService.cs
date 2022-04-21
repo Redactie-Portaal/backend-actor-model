@@ -1,4 +1,5 @@
-﻿using Orleans;
+﻿using System.Data;
+using Orleans;
 using RedacteurPortaal.Grains.GrainInterfaces;
 using RedacteurPortaal.Data.Context;
 using RedacteurPortaal.DomainModels;
@@ -17,14 +18,26 @@ namespace RedacteurPortaal.Grains.GrainServices
             this.client = client;
         }
 
+        public async Task<T> CreateGrain(Guid id)
+        {
+            if (this.DbContext.GrainReferences.Any(x => x.GrainId == id))
+            {
+                throw new DuplicateNameException($"Grain with id {id} already exists!");
+            }
+
+            var grain = await Task.FromResult(this.client.GetGrain<T>(id));
+            this.DbContext.GrainReferences.Add(new Data.Models.GrainReference() { GrainId = id, TypeName = typeof(T).Name });
+            await this.DbContext.SaveChangesAsync();
+            return grain;
+        }
+
         public async Task<T> GetGrain(Guid id)
         {
             var grain = await Task.FromResult(this.client.GetGrain<T>(id));
 
             if (!this.DbContext.GrainReferences.Any(x=> x.GrainId == id))
             {
-                this.DbContext.GrainReferences.Add(new Data.Models.GrainReference() { GrainId = id, TypeName = typeof(T).Name });
-                await this.DbContext.SaveChangesAsync();
+                throw new KeyNotFoundException($"Grain with id {id} not found!");
             }
 
             return grain;
@@ -58,6 +71,7 @@ namespace RedacteurPortaal.Grains.GrainServices
                 var realGrain = await this.GetGrain(id);
                 await realGrain.Delete();
                 this.DbContext.GrainReferences.Remove(grain);
+                await this.DbContext.SaveChangesAsync();
             }
             else
             {

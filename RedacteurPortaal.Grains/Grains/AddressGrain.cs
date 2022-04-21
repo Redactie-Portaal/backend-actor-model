@@ -44,6 +44,8 @@ namespace RedacteurPortaal.Grains.Grains
 
         public Task<AddressModel> Get()
         {
+            var state = this.adress.State;
+            state.Id = this.GetGrainIdentity().PrimaryKey;
             this.logger.LogInformation("foobar");
             return Task.FromResult(this.adress.State);
         }
