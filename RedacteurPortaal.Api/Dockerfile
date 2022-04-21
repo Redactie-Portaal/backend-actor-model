@@ -9,6 +9,8 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["RedacteurPortaal.Api/RedacteurPortaal.Api.csproj", "RedacteurPortaal.Api/"]
 COPY ["RedacteurPortaal.Grains/RedacteurPortaal.Grains.csproj", "RedacteurPortaal.Grains/"]
+COPY ["RedacteurPortaal.Helpers/RedacteurPortaal.Helpers.csproj", "RedacteurPortaal.Helpers/"]
+
 RUN dotnet nuget add source --username joepvand --password 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 --store-password-in-clear-text --name github "https://nuget.pkg.github.com/Redactie-Portaal/index.json"
 RUN dotnet restore "RedacteurPortaal.Api/RedacteurPortaal.Api.csproj"
 COPY . .

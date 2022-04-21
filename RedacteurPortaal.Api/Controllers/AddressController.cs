@@ -6,6 +6,7 @@ using RedacteurPortaal.Api.Models.Request;
 using RedacteurPortaal.DomainModels.Adress;
 using RedacteurPortaal.Grains.GrainInterfaces;
 using RedacteurPortaal.Grains.GrainServices;
+using RedacteurPortaal.Helpers;
 
 namespace RedacteurPortaal.Api.Controllers
 {
@@ -13,8 +14,8 @@ namespace RedacteurPortaal.Api.Controllers
     [Route("api/[controller]")]
     public class AddressController : Controller
     {
-        private IGrainManagementService<IAddressGrain> grainService;
-        private ILogger logger;
+        private readonly IGrainManagementService<IAddressGrain> grainService;
+        private readonly ILogger logger;
 
         public AddressController(IGrainManagementService<IAddressGrain> grainService, ILogger<AddressController> logger)
         {
@@ -23,7 +24,7 @@ namespace RedacteurPortaal.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SaveAddress([FromBody] AddAddressRequest addressDTO )   
+        public async Task<ActionResult<AddressDTO>> SaveAddress([FromBody] AddAddressRequest addressDTO )   
         {
             var newguid = Guid.NewGuid();
             TypeAdapterConfig<AddressDTO, AddressModel>
@@ -34,7 +35,7 @@ namespace RedacteurPortaal.Api.Controllers
             var address = addressDTO.Adapt<AddressModel>();
             address.Id = newguid;
             const string successMessage = "Address was created";
-            var grain = await this.grainService.GetGrain(address.Id);
+            var grain = await this.grainService.CreateGrain(address.Id);
             await grain.UpdateAdress(address);
             this.logger.LogInformation(successMessage);
             return this.CreatedAtRoute("GetAddress", new { id = newguid }, address);
@@ -42,20 +43,21 @@ namespace RedacteurPortaal.Api.Controllers
 
         [HttpGet]
         [Route("{id}", Name = "GetAddress")]
-        public async Task<IActionResult> GetAddress(Guid id)
+        public async Task<AddressDTO> GetAddress(Guid id)
         {
             var grain = await this.grainService.GetGrain(id);
             var response = await grain.Get();
             this.logger.LogInformation("Address fetched successfully");
-            return this.Ok(response);
+            return response.Adapt<AddressDTO>();
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<List<AddressDTO>> Get()
         {
             var grain = await this.grainService.GetGrains();
             this.logger.LogInformation("Addresses fetched successfully");
-            return this.Ok(grain.Select(x => x.Get()));
+            var addresses = await grain.SelectAsync(async x => await x.Get());
+            return addresses.AsQueryable().ProjectToType<AddressDTO>().ToList();
         }
 
         [HttpDelete]
@@ -68,7 +70,7 @@ namespace RedacteurPortaal.Api.Controllers
         }
 
         [HttpPatch]
-        public async Task<IActionResult> UpdateAddress(Guid guid,[FromBody]AddressDTO addressDTO)
+        public async Task<ActionResult<AddressDTO>> UpdateAddress(Guid guid,[FromBody]AddressDTO addressDTO)
         {
             var address = addressDTO.Adapt<AddressModel>();
             var grain = await this.grainService.GetGrain(guid);
@@ -76,9 +78,5 @@ namespace RedacteurPortaal.Api.Controllers
             this.logger.LogInformation("Address updated succesfully");
             return this.StatusCode(204, "Address updated");
         }
-
-            //_logger.LogInformation("News item not found");
-            //return StatusCode(400, "News item not found");
-            //return StatusCode(500, "An internal server error has occured");
     }
 }
