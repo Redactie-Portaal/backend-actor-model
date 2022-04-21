@@ -27,7 +27,22 @@ public class NewsItemGrainTests
     {
         var guid = Guid.NewGuid();
 
-        var newsitem = new NewsItemModel(guid, "Newsitem Title", Status.DONE, "Newsitem Author", new FeedSource { }, new ItemBody { }, new List<Contact>(), new Location { }, DateTime.UtcNow, DateTime.UtcNow, Category.STORY, Region.LOCAL, new MediaVideoItem[0], new MediaAudioItem[0], new MediaPhotoItem[0]);
+        var newsitem = new NewsItemModel(guid,
+                                         "Newsitem Title",
+                                         Status.DONE,
+                                         ApprovalState.PENDING,
+                                         "Newsitem Author",
+                                         new FeedSource { },
+                                         new ItemBody { },
+                                         new List<Contact>(),
+                                         new Location { },
+                                         DateTime.UtcNow,
+                                         DateTime.UtcNow,
+                                         Category.STORY,
+                                         Region.LOCAL,
+                                         new MediaVideoItem[0],
+                                         new MediaAudioItem[0],
+                                         new MediaPhotoItem[0]);
 
 
         var newsitemgrain = this._cluster.GrainFactory.GetGrain<INewsItemGrain>(guid);
