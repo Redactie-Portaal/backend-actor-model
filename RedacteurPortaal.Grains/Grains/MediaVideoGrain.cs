@@ -9,12 +9,17 @@ namespace RedacteurPortaal.Grains.Grains;
 public class MediaVideoGrain : Grain, IMediaVideoGrain
 {
     private readonly IPersistentState<MediaVideoItem> videoItem;
-
+    
     public MediaVideoGrain(
         [PersistentState("videoItem", "OrleansStorage")]
         IPersistentState<MediaVideoItem> videoItem)
     {
         this.videoItem = videoItem;
+    }
+
+    public Task<bool> HasState()
+    {
+        return Task.FromResult(this.videoItem.RecordExists);
     }
 
     public Task<MediaVideoItem> Get() 

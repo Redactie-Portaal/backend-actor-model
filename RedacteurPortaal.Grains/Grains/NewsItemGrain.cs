@@ -9,6 +9,11 @@ public class NewsItemGrain : Grain, INewsItemGrain
 {
     private readonly IPersistentState<NewsItemModel> newsItem;
 
+    public Task<bool> HasState()
+    {
+        return Task.FromResult(this.newsItem.RecordExists);
+    }
+
     public NewsItemGrain(
         
         // This doesn't work in testing, but I don't know why.
@@ -56,10 +61,10 @@ public class NewsItemGrain : Grain, INewsItemGrain
         await this.newsItem.ClearStateAsync();
     }
 
-    public async Task Update(NewsItemModel model)
+    public async Task Update(NewsItemModel update)
     {
         // TODO: Merge title.
-        this.newsItem.State = model;
+        this.newsItem.State = update;
         await this.newsItem.WriteStateAsync();
     }
 }
