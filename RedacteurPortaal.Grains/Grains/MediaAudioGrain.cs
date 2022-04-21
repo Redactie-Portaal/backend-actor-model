@@ -43,6 +43,4 @@ public class MediaAudioGrain : Grain, IMediaAudioGrain
         this.audioItem.State = audioItem;
         await this.audioItem.WriteStateAsync();
     }
-
-
 }

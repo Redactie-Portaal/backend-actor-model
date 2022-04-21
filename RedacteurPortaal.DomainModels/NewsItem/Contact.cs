@@ -7,7 +7,6 @@ public class Contact : IBaseEntity
 {
     public Contact()
     {
-
     }
 
     public Contact(Guid id, string name, string email, string telephoneNumber)

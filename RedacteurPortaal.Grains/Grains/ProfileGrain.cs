@@ -46,6 +46,5 @@ public class ProfileGrain : Grain, IProfileGrain
     {
         this.profile.State = profile;
         await this.profile.WriteStateAsync();
-
     }
 }

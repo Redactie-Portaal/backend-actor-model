@@ -43,6 +43,4 @@ public class MediaPhotoGrain : Grain, IMediaPhotoGrain
         this.photoItem.State = photoItem;
         await this.photoItem.WriteStateAsync();
     }
-
-
 }
