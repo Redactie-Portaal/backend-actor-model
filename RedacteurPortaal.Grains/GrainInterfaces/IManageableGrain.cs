@@ -12,5 +12,7 @@ namespace RedacteurPortaal.Grains.GrainInterfaces
         public Task Delete();
 
         public Task<T> Get();
+
+        public bool HasState { get; }
     }
 }

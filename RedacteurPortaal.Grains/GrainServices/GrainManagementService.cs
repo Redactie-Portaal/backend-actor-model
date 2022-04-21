@@ -1,21 +1,11 @@
-﻿using Microsoft.Extensions.Logging;
-using Orleans;
-using Orleans.Core;
-using Orleans.Runtime;
+﻿using Orleans;
 using RedacteurPortaal.Grains.GrainInterfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using RedacteurPortaal.Data.Context;
-using RedacteurPortaal.Data.Migrations;
 using RedacteurPortaal.DomainModels;
 
 namespace RedacteurPortaal.Grains.GrainServices
 {
-    public class GrainManagementService<T, TReturnType> : IGrainManagementService<T> where T : IManageableGrain<TReturnType> where TReturnType : IBaseEntity
+    public class GrainManagementService<T, TReturnType> : IGrainManagementService<T> where T : class,  IManageableGrain<TReturnType>  where TReturnType : IBaseEntity
     {
         private readonly IClusterClient client;
 
@@ -36,10 +26,6 @@ namespace RedacteurPortaal.Grains.GrainServices
                 this.DbContext.GrainReferences.Add(new Data.Models.GrainReference() { GrainId = id, TypeName = typeof(T).Name });
                 await this.DbContext.SaveChangesAsync();
             }
-            else
-            {
-                throw new KeyNotFoundException($"Grain {id} not found");
-            }
 
             return grain;
         }
@@ -50,7 +36,7 @@ namespace RedacteurPortaal.Grains.GrainServices
             foreach (var grain in this.DbContext.GrainReferences.Where(x => x.TypeName == typeof(T).Name).ToList())
             {
                 var realGrain = this.client.GetGrain<T>(grain.GrainId);
-                if (realGrain.Get().Result.Id != Guid.Empty)
+                if (realGrain.HasState)
                 {
                     grains.Add(realGrain);
                 }

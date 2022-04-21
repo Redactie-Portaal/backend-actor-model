@@ -9,6 +9,8 @@ public class NewsItemDescriptionGrain : Grain, INewsItemDescriptionGrain
 {
     private readonly IPersistentState<ItemBody> description;
 
+    public bool HasState => this.description.RecordExists;
+
     public NewsItemDescriptionGrain(
         [PersistentState("newsitem", "OrleansStorage")]
         IPersistentState<ItemBody> description)

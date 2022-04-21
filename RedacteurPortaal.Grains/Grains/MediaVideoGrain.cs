@@ -10,6 +10,8 @@ public class MediaVideoGrain : Grain, IMediaVideoGrain
 {
     private readonly IPersistentState<MediaVideoItem> videoItem;
 
+    public bool HasState => this.videoItem.RecordExists;
+
     public MediaVideoGrain(
         [PersistentState("videoItem", "OrleansStorage")]
         IPersistentState<MediaVideoItem> videoItem)

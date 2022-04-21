@@ -8,6 +8,8 @@ public class LocationGrain : Grain, ILocationGrain
 {
     private readonly IPersistentState<Location> location;
 
+    public bool HasState => this.location.RecordExists;
+
     public LocationGrain(
         [PersistentState("location", "OrleansStorage")]
         IPersistentState<Location> location)
