@@ -11,7 +11,7 @@ namespace RedacteurPortaal.DomainModels.NewsItem
     public class NewsItemUpdate
     {
         public NewsItemUpdate(Guid id, string title, Status status, ApprovalState approvalState, string author, FeedSource source, ItemBody body,
-            List<Contact> contactDetails, Location locationDetails, DateTime produtionDate, DateTime endDate,
+            List<Contact> contactDetails, Location locationDetails, DateTime productionDate, DateTime endDate,
             Category category, Region region, MediaVideoItem[] videos, MediaAudioItem[] audio, MediaPhotoItem[] photos)
         {
             this.Id = id;
@@ -22,7 +22,7 @@ namespace RedacteurPortaal.DomainModels.NewsItem
             this.Body = body ?? throw new ArgumentNullException(nameof(body));
             this.ContactDetails = contactDetails ?? throw new ArgumentNullException(nameof(contactDetails));
             this.LocationDetails = locationDetails ?? throw new ArgumentNullException(nameof(locationDetails));
-            this.ProductionDate = produtionDate;
+            this.ProductionDate = productionDate;
             this.EndDate = endDate;
             this.Category = category;
             this.Region = region;

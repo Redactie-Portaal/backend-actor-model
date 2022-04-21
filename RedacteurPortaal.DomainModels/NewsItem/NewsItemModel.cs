@@ -23,7 +23,7 @@ public class NewsItemModel : IBaseEntity
         ItemBody body,
         List<Contact> contactDetails,
         Location locationDetails,
-        DateTime produtionDate,
+        DateTime productionDate,
         DateTime endDate,
         Category category,
         Region region,
@@ -40,7 +40,7 @@ public class NewsItemModel : IBaseEntity
         this.Body = body ?? throw new ArgumentNullException(nameof(body));
         this.ContactDetails = contactDetails ?? throw new ArgumentNullException(nameof(contactDetails));
         this.LocationDetails = locationDetails ?? throw new ArgumentNullException(nameof(locationDetails));
-        this.ProductionDate = produtionDate;
+        this.ProductionDate = productionDate;
         this.EndDate = endDate;
         this.Category = category;
         this.Region = region;
