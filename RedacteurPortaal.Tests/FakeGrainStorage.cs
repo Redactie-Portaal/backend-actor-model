@@ -28,13 +28,6 @@ public class FakeGrainStorage : IGrainStorage
 
 #pragma warning disable CS8603 // Possible null reference return.
     public TState GetGrainState<TState>(IGrain grain)
-    //{
-    //    //var stor = Storage.TryGetValue((GrainReference)grain, out var state) ? (TState)state.State : default;
-    //    var stor = Storage.TryGetValue((GrainReference)grain, out var state);
-    //    //return stor;
-    //    return (TState)state.State;
-    //}
-
     => Storage.TryGetValue((GrainReference)grain, out var state) ? (TState)state.State : default;
 #pragma warning restore CS8603 // Possible null reference return.
 }
