@@ -16,29 +16,42 @@ namespace RedacteurPortaal.Api.Controllers
     {
         private readonly IGrainManagementService<IAddressGrain> grainService;
         private readonly ILogger logger;
+        private Guid newguid;
 
         public AddressController(IGrainManagementService<IAddressGrain> grainService, ILogger<AddressController> logger)
         {
             this.grainService = grainService;    
             this.logger = logger;
+
+            TypeAdapterConfig<AddressDTO, AddressModel>
+                .NewConfig()
+                .Map(dest => dest.Id,
+                    src => newguid);
+
+            TypeAdapterConfig<AddressModel, AddressDTO>
+            .NewConfig()
+            .Map(dest => dest.Id,
+                src => src.Id);
+
         }
 
         [HttpPost]
         public async Task<ActionResult<AddressDTO>> SaveAddress([FromBody] AddAddressRequest addressDTO )   
         {
             var newguid = Guid.NewGuid();
-            TypeAdapterConfig<AddressDTO, AddressModel>
-                .NewConfig()
-                .Map(dest => dest.Id,
-                    src => newguid);
 
             var address = addressDTO.Adapt<AddressModel>();
             address.Id = newguid;
             const string successMessage = "Address was created";
             var grain = await this.grainService.CreateGrain(address.Id);
             await grain.UpdateAdress(address);
+
+            var createdGrain = await this.grainService.GetGrain(newguid);
+            var createdItem = await createdGrain.Get();
+            var response = createdItem.Adapt<AddressDTO>();
+
             this.logger.LogInformation(successMessage);
-            return this.CreatedAtRoute("GetAddress", new { id = newguid }, address);
+            return this.CreatedAtRoute("GetAddress", new { id = newguid }, response);
         }
 
         [HttpGet]
@@ -70,13 +83,16 @@ namespace RedacteurPortaal.Api.Controllers
         }
 
         [HttpPatch]
-        public async Task<ActionResult<AddressDTO>> UpdateAddress(Guid guid,[FromBody]AddressDTO addressDTO)
+        public async Task<ActionResult<AddressDTO>> UpdateAddress(Guid guid,[FromBody]UpdateAddressRequest addressDTO)
         {
             var address = addressDTO.Adapt<AddressModel>();
             var grain = await this.grainService.GetGrain(guid);
             await grain.UpdateAdress(address);
             this.logger.LogInformation("Address updated succesfully");
-            return this.StatusCode(204, "Address updated");
+            var updatedGrain = await this.grainService.GetGrain(address.Id);
+            var updatedItem = await updatedGrain.Get();
+            var response = updatedItem.Adapt<AddressModel>();
+            return this.StatusCode(204, response);
         }
     }
 }

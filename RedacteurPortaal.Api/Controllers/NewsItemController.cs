@@ -82,9 +82,6 @@ public class NewsItemController : Controller
 
         var createdGrain = await this.grainService.GetGrain(newguid);
         var createdItem = await createdGrain.Get();
-
-
-
         var response = createdItem.Adapt<NewsItemDetailDto>();
 
         this.logger.LogInformation(successMessage);
