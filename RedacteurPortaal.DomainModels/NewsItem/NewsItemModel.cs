@@ -40,7 +40,7 @@ public class NewsItemModel : IBaseEntity
         this.Body = body ?? throw new ArgumentNullException(nameof(body));
         this.ContactDetails = contactDetails ?? throw new ArgumentNullException(nameof(contactDetails));
         this.LocationDetails = locationDetails ?? throw new ArgumentNullException(nameof(locationDetails));
-        this.ProdutionDate = produtionDate;
+        this.ProductionDate = produtionDate;
         this.EndDate = endDate;
         this.Category = category;
         this.Region = region;
@@ -67,7 +67,7 @@ public class NewsItemModel : IBaseEntity
 
     public Location LocationDetails { get; private set; }
 
-    public DateTime ProdutionDate { get; private set; }
+    public DateTime ProductionDate { get; private set; }
 
     public DateTime EndDate { get; private set; }
 
