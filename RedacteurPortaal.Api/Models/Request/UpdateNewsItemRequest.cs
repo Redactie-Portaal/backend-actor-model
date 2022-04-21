@@ -14,6 +14,8 @@ public class UpdateNewsItemRequest
 
     public string? Status { get; set; }
 
+    public string? ApprovalState { get; set; }
+
     public string? Author { get; set; }
 
     public FeedSource? Source { get; set; }

@@ -19,6 +19,8 @@ public class NewsItemDetailDto
 
     public Status? Status { get; set; }
 
+    public string ApprovalStatus { get; set; }
+
     public string? Author { get; set; }
 
     public FeedSourceDto? Source { get; set; }
