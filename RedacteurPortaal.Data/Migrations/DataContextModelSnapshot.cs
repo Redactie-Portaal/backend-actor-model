@@ -21,6 +21,21 @@ namespace RedacteurPortaal.Data.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("RedacteurPortaal.Data.Models.GrainReference", b =>
+                {
+                    b.Property<string>("GrainId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text");
+
+                    b.Property<string>("TypeName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("GrainId");
+
+                    b.ToTable("GrainReferences");
+                });
+
             modelBuilder.Entity("RedacteurPortaal.Data.Models.PluginSettings", b =>
                 {
                     b.Property<string>("PluginId")

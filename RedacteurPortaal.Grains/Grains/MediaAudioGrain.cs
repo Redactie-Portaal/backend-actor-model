@@ -10,6 +10,11 @@ public class MediaAudioGrain : Grain, IMediaAudioGrain
 {
     private readonly IPersistentState<MediaAudioItem> audioItem;
 
+    public Task<bool> HasState()
+    {
+        return Task.FromResult(this.audioItem.RecordExists);
+    }
+
     public MediaAudioGrain(
         [PersistentState("audioItem", "OrleansStorage")]
         IPersistentState<MediaAudioItem> audioItem)
@@ -17,9 +22,19 @@ public class MediaAudioGrain : Grain, IMediaAudioGrain
         this.audioItem = audioItem;
     }
 
-    public void PlaceHolder()
+    public Task<MediaAudioItem> Get()
     {
-        _ = this.audioItem;
-        throw new NotImplementedException();
+        return Task.FromResult(this.audioItem.State);
+    }
+
+    public async Task Delete()
+    {
+        await this.audioItem.ClearStateAsync();
+    }
+
+    public async Task Update(MediaAudioItem mediaItem)
+    {
+        this.audioItem.State = mediaItem;
+        await this.audioItem.WriteStateAsync();
     }
 }

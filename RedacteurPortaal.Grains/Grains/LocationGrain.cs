@@ -1,18 +1,17 @@
 ﻿using Orleans;
 using Orleans.Runtime;
-using RedacteurPortaal.DomainModels.Media;
-using RedacteurPortaal.DomainModels.NewsItem;
+using RedacteurPortaal.DomainModels.Shared;
 using RedacteurPortaal.Grains.GrainInterfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RedacteurPortaal.Grains.Grains;
 public class LocationGrain : Grain, ILocationGrain
 {
     private readonly IPersistentState<Location> location;
+
+    public Task<bool> HasState()
+    {
+        return Task.FromResult(this.location.RecordExists);
+    }
 
     public LocationGrain(
         [PersistentState("location", "OrleansStorage")]
@@ -21,28 +20,19 @@ public class LocationGrain : Grain, ILocationGrain
         this.location = location;
     }
 
-    public Location GetLocation(Guid guid)
+    public Task<Location> Get()
     {
-        var grain = this.GrainFactory.GetGrain<ILocationGrain>(guid);
-        return this.location.State;
+        return Task.FromResult(this.location.State);
     }
 
-    public async Task AddLocation(Location location)
-    {
-        var grain = this.GrainFactory.GetGrain<ILocationGrain>(location.Id);
-        this.location.State = location;
-        await this.location.WriteStateAsync();
-    }
-
-    public async Task UpdateLocation(Location location)
+    public async Task Update(Location location)
     {
         this.location.State = location;
         await this.location.WriteStateAsync();
     }
 
-    public async Task DeleteLocation(Guid id)
+    public async Task Delete()
     {
-        var grain = this.GrainFactory.GetGrain<ILocationGrain>(id);
         await this.location.ClearStateAsync();
     }
 }

@@ -17,9 +17,24 @@ public class MediaPhotoGrain : Grain, IMediaPhotoGrain
         this.photoItem = photoItem;
     }
 
-    public void PlaceHolder()
+    public Task<bool> HasState()
     {
-        _ = this.photoItem;
-        throw new NotImplementedException();
+        return Task.FromResult(this.photoItem.RecordExists);
+    }
+
+    public Task<MediaPhotoItem> Get()
+    {
+        return Task.FromResult(this.photoItem.State);
+    }
+
+    public async Task Delete()
+    {
+        await this.photoItem.ClearStateAsync();
+    }
+
+    public async Task Update(MediaPhotoItem item)
+    {
+        this.photoItem.State = item;
+        await this.photoItem.WriteStateAsync();
     }
 }

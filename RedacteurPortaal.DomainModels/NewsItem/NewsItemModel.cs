@@ -1,7 +1,12 @@
-﻿using RedacteurPortaal.DomainModels.Media;
+﻿using System.Runtime.CompilerServices;
+﻿using Mapster;
+using RedacteurPortaal.DomainModels.Media;
+using RedacteurPortaal.DomainModels.Shared;
+using RedacteurPortaal.DomainModels.Validation.Shared;
 
 namespace RedacteurPortaal.DomainModels.NewsItem;
-public class NewsItemModel
+
+public class NewsItemModel : IBaseEntity
 {
     public NewsItemModel()
     {
@@ -13,14 +18,14 @@ public class NewsItemModel
         string author,
         FeedSource source,
         ItemBody body,
-        string contactDetails,
+        List<Contact> contactDetails,
         Location locationDetails,
         DateTime produtionDate,
         DateTime endDate,
         Category category,
         Region region,
-        MediaVideoItem video,
-        MediaAudioItem audio,
+        MediaVideoItem[] videos,
+        MediaAudioItem[] audio,
         MediaPhotoItem[] photos)
     {
         this.Title = title ?? throw new ArgumentNullException(nameof(title));
@@ -34,12 +39,12 @@ public class NewsItemModel
         this.EndDate = endDate;
         this.Category = category;
         this.Region = region;
-        this.Video = video ?? throw new ArgumentNullException(nameof(video));
+        this.Videos = videos ?? throw new ArgumentNullException(nameof(videos));
         this.Audio = audio ?? throw new ArgumentNullException(nameof(audio));
         this.Photos = photos ?? throw new ArgumentNullException(nameof(photos));
     }
 
-    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid Id { get; set; }
 
     public string Title { get; private set; }
 
@@ -51,9 +56,9 @@ public class NewsItemModel
 
     public ItemBody Body { get; private set; }
 
-    public string ContactDetails { get; private set; }
+    public List<Contact> ContactDetails { get; private set; }
 
-    public Location LocationDetails { get; }
+    public Location LocationDetails { get; private set; }
 
     public DateTime ProdutionDate { get; private set; }
 
@@ -63,9 +68,9 @@ public class NewsItemModel
 
     public Region Region { get; private set; }
 
-    public MediaVideoItem Video { get; private set; }
+    public MediaVideoItem[] Videos { get; private set; }
 
-    public MediaAudioItem Audio { get; private set; }
+    public MediaAudioItem[] Audio { get; private set; }
 
     public MediaPhotoItem[] Photos { get; private set; }
 }

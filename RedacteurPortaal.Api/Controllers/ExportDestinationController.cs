@@ -4,6 +4,7 @@ using RedacteurPortaal.Api.Models;
 using RedacteurPortaal.Api.Models.Request;
 using RedacteurPortaal.Data.Context;
 using RedacteurPortaal.DomainModels;
+using RedacteurPortaal.DomainModels.Media;
 using RedacteurPortaal.DomainModels.NewsItem;
 using RedacteurPortaal.Grains.GrainInterfaces;
 using RedacteurPortaal.Grains.Grains;
@@ -11,7 +12,7 @@ using RedacteurPortaal.Grains.Grains;
 namespace RedacteurPortaal.Api.Controllers;
 
 [ApiController]
-[Route("api/ExportDestination")]
+[Route("api/[controller]")]
 public class ExportDestinationController : Controller
 {
     private readonly IExportPluginService pluginService;
@@ -52,20 +53,22 @@ public class ExportDestinationController : Controller
            .Single(x => x.Id == guid);
         _ = plugin ?? throw new KeyNotFoundException();
 
-        var story = await this.clusterClient.GetGrain<INewsItemGrain>(request.StoryId).GetNewsItem(request.StoryId);
+        var story = await this.clusterClient.GetGrain<INewsItemGrain>(request.StoryId).Get();
         var apiKey = this.context.PluginSettings.Single(x => x.PluginId == guid).ApiKey;
 
         _ = apiKey ?? throw new KeyNotFoundException();
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
         await plugin.Upload(new Export.Base.ExportItem()
         {
-            AudioUri = story.Audio.MediaLocation,
+            AudioUri = story.Audio.Select(v => v.MediaLocation).ToArray(),
             Images = story.Photos.Select(x => x.Image).ToArray(),
             Name = story.Title,
             ShortText = story.Body.ShortDescription,
             TextContent = story.Body.Description,
-            VideoUri = story.Video.MediaLocation
+            VideoUri = story.Videos.Select(v => v.MediaLocation).ToArray(),
         }, apiKey);
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
         return this.Ok();
     }

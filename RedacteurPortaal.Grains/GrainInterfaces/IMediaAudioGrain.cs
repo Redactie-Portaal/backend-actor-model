@@ -1,8 +1,9 @@
 ﻿using Orleans;
+using RedacteurPortaal.DomainModels.Media;
 
 namespace RedacteurPortaal.Grains.GrainInterfaces;
 
-public interface IMediaAudioGrain : IGrainWithGuidKey
+public interface IMediaAudioGrain : IManageableGrain<MediaAudioItem>
 {
-    void PlaceHolder();
+    Task Update(MediaAudioItem mediaItem);
 }

@@ -9,7 +9,7 @@ namespace RedacteurPortaal.Grains.Grains;
 public class MediaVideoGrain : Grain, IMediaVideoGrain
 {
     private readonly IPersistentState<MediaVideoItem> videoItem;
-
+    
     public MediaVideoGrain(
         [PersistentState("videoItem", "OrleansStorage")]
         IPersistentState<MediaVideoItem> videoItem)
@@ -17,9 +17,24 @@ public class MediaVideoGrain : Grain, IMediaVideoGrain
         this.videoItem = videoItem;
     }
 
-    public void PlaceHolder()
+    public Task<bool> HasState()
     {
-        _ = this.videoItem;
-        throw new NotImplementedException();
+        return Task.FromResult(this.videoItem.RecordExists);
+    }
+
+    public Task<MediaVideoItem> Get() 
+    {
+        return Task.FromResult(this.videoItem.State);
+    }
+
+    public async Task Delete() 
+    {
+        await this.videoItem.ClearStateAsync();
+    }
+
+    public async Task Update(MediaVideoItem videoItem)
+    {
+        this.videoItem.State = videoItem;
+        await this.videoItem.WriteStateAsync();
     }
 }

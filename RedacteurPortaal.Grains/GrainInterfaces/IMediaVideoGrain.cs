@@ -1,8 +1,9 @@
 ﻿using Orleans;
+using RedacteurPortaal.DomainModels.Media;
 
 namespace RedacteurPortaal.Grains.GrainInterfaces;
 
-public interface IMediaVideoGrain : IGrainWithGuidKey
+public interface IMediaVideoGrain : IManageableGrain<MediaVideoItem>
 {
-    void PlaceHolder();
+    Task Update(MediaVideoItem videoItem);
 }

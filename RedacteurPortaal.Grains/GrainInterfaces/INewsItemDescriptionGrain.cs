@@ -3,11 +3,7 @@ using RedacteurPortaal.DomainModels.NewsItem;
 
 namespace RedacteurPortaal.Grains.GrainInterfaces;
 
-public interface INewsItemDescriptionGrain : IGrainWithGuidKey
+public interface INewsItemDescriptionGrain : IManageableGrain<ItemBody>
 {
-    Task<ItemBody> GetDescription();
-
-    Task AddDescription(Guid guid, ItemBody description);
-
-    Task DeleteDescription();
+   // TODO: Add update description
 }
