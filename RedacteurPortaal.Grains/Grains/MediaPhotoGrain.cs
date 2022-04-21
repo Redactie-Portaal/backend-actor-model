@@ -11,7 +11,13 @@ public class MediaPhotoGrain : Grain, IMediaPhotoGrain
     private readonly IPersistentState<MediaPhotoItem> photoItem;
 
     public MediaPhotoGrain(
+#if DEBUG
+        // This works in testing.
+        [PersistentState("photoItem")]
+#else
+        // This doesn't work in testing, but I don't know why.
         [PersistentState("photoItem", "OrleansStorage")]
+#endif
         IPersistentState<MediaPhotoItem> photoItem)
     {
         this.photoItem = photoItem;

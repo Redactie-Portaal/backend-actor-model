@@ -15,13 +15,15 @@ public class NewsItemGrain : Grain, INewsItemGrain
     }
 
     public NewsItemGrain(
-        
-        // This doesn't work in testing, but I don't know why.
-        //[PersistentState("newsitem", "OrleansStorage")]
 
+#if DEBUG
         // This works in testing.
         [PersistentState("newsitem")]
-        IPersistentState<NewsItemModel> newsItem)
+#else
+        // This doesn't work in testing, but I don't know why.
+        [PersistentState("newsitem", "OrleansStorage")]
+#endif
+    IPersistentState<NewsItemModel> newsItem)
     {
         this.newsItem = newsItem;
     }
@@ -42,19 +44,13 @@ public class NewsItemGrain : Grain, INewsItemGrain
     public async Task AddNewsItem(NewsItemModel newsitem)
     {
         this.newsItem.State = newsitem;
-        this.newsItem.State.Title = "abc";
+        //this.newsItem.State.Title = "abc";
         await this.newsItem.WriteStateAsync();
+
         //var item = await this.Get();
     }
 
-    public async Task DeleteNewsItem(Guid guid)
-    {
-        var grain = this.GrainFactory.GetGrain<INewsItemDescriptionGrain>(guid);
-        await grain.DeleteDescription();
-        await this.newsItem.ClearStateAsync();
-    }
-
-    public  async Task Delete()
+    public async Task Delete()
     {
         var grain = this.GrainFactory.GetGrain<INewsItemDescriptionGrain>(this.newsItem.State.Id);
         await grain.Delete();

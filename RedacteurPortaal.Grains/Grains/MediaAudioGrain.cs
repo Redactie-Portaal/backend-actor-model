@@ -16,7 +16,13 @@ public class MediaAudioGrain : Grain, IMediaAudioGrain
     }
 
     public MediaAudioGrain(
+#if DEBUG
+        // This works in testing.
+        [PersistentState("audioItem")]
+#else
+        // This doesn't work in testing, but I don't know why.
         [PersistentState("audioItem", "OrleansStorage")]
+#endif
         IPersistentState<MediaAudioItem> audioItem)
     {
         this.audioItem = audioItem;

@@ -1,4 +1,5 @@
-﻿using Orleans.Runtime;
+﻿using Orleans;
+using Orleans.Runtime;
 using RedacteurPortaal.DomainModels.NewsItem;
 using RedacteurPortaal.Grains.GrainInterfaces;
 using System;
@@ -9,15 +10,28 @@ using System.Threading.Tasks;
 
 namespace RedacteurPortaal.Grains.Grains;
 
-public class SourceGrain : ISourceGrain
+public class SourceGrain : Grain, ISourceGrain
 {
     private readonly IPersistentState<Source> source;
 
     public SourceGrain(
-        [PersistentState("source", "OrleansStorage")]
+#if DEBUG
+    // This works in testing.
+    [PersistentState("source")]
+#else
+    // This doesn't work in testing, but I don't know why.
+    [PersistentState("source", "OrleansStorage")]
+#endif
         IPersistentState<Source> source)
     {
         this.source = source;
+    }
+
+
+    public async Task AddSource(Source source)
+    {
+        this.source.State = source;
+        await this.source.WriteStateAsync();
     }
 
     public Task<bool> HasState()
@@ -41,4 +55,5 @@ public class SourceGrain : ISourceGrain
 
         await this.source.WriteStateAsync();
     }
+
 }

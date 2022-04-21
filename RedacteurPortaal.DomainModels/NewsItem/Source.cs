@@ -8,8 +8,10 @@ namespace RedacteurPortaal.DomainModels.NewsItem;
 
 public class Source
 {
-    public Source(string name, string uri, DateTime date)
+    public Source() { }
+    public Source(Guid id, string name, string uri, DateTime date)
     {
+        this.Id = id;
         this.Name = name ?? throw new ArgumentNullException(nameof(name));
         this.Uri = uri ?? throw new ArgumentNullException(nameof(uri));
         this.Date = date;

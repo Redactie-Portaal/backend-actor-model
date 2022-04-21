@@ -13,7 +13,14 @@ namespace RedacteurPortaal.Grains.Grains
         private readonly IPersistentState<AddressModel> adress;
 
         public AddressGrain(ILogger<NewsItemGrain> logger,
-           [PersistentState("adress", "OrleansStorage")] IPersistentState<AddressModel> adress)
+#if DEBUG
+        // This works in testing.
+            [PersistentState("address")]
+#else
+        // This doesn't work in testing, but I don't know why.
+            [PersistentState("address", "OrleansStorage")]
+#endif
+            IPersistentState<AddressModel> adress)
         {
             this.logger = logger;
             this.adress = adress;
