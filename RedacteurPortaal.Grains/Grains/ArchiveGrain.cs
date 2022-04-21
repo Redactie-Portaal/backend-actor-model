@@ -46,5 +46,8 @@ public class ArchiveGrain : Grain, IArchiveGrain
         return await Task.FromResult(this.archive.State);
     }
 
-    public bool HasState => this.archive.RecordExists;
+    public Task<bool> HasState()
+    {
+        return Task.FromResult(this.archive.RecordExists);
+    }
 }

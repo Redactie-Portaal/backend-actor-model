@@ -10,7 +10,10 @@ public class MediaAudioGrain : Grain, IMediaAudioGrain
 {
     private readonly IPersistentState<MediaAudioItem> audioItem;
 
-    public bool HasState => this.audioItem.RecordExists;
+    public Task<bool> HasState()
+    {
+        return Task.FromResult(this.audioItem.RecordExists);
+    }
 
     public MediaAudioGrain(
         [PersistentState("audioItem", "OrleansStorage")]

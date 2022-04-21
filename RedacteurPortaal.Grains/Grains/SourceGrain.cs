@@ -20,6 +20,11 @@ public class SourceGrain : ISourceGrain
         this.source = source;
     }
 
+    public Task<bool> HasState()
+    {
+        return Task.FromResult(this.source.RecordExists);
+    }
+
     public Task<Source> Get()
     {
         return Task.FromResult(this.source.State);
@@ -30,9 +35,9 @@ public class SourceGrain : ISourceGrain
         await this.source.ClearStateAsync();
     }
 
-    public async Task Update(Source item)
+    public async Task Update(Source source)
     {
-        this.source.State = item;
+        this.source.State = source;
         await this.source.WriteStateAsync();
     }
 }

@@ -19,12 +19,10 @@ namespace RedacteurPortaal.Grains.Grains
             this.adress = adress;
         }
 
-     /*   public async Task AddAdress(AddressModel address)
+        public Task<bool> HasState()
         {
-            // control Adress fields not null
-            this.adress.State = address;
-            await this.adress.WriteStateAsync();
-        }*/
+            return Task.FromResult(this.adress.RecordExists);
+        }
 
         public async Task UpdateAdress(AddressModel address)
         {
@@ -46,6 +44,7 @@ namespace RedacteurPortaal.Grains.Grains
 
         public Task<AddressModel> Get()
         {
+            this.logger.LogInformation("foobar");
             return Task.FromResult(this.adress.State);
         }
     }

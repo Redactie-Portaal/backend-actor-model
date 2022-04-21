@@ -17,6 +17,11 @@ public class MediaPhotoGrain : Grain, IMediaPhotoGrain
         this.photoItem = photoItem;
     }
 
+    public Task<bool> HasState()
+    {
+        return Task.FromResult(this.photoItem.RecordExists);
+    }
+
     public Task<MediaPhotoItem> Get()
     {
         return Task.FromResult(this.photoItem.State);

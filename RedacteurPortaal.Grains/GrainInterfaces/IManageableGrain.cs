@@ -13,6 +13,6 @@ namespace RedacteurPortaal.Grains.GrainInterfaces
 
         public Task<T> Get();
 
-        public bool HasState { get; }
+        public Task<bool> HasState();
     }
 }

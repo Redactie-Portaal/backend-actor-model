@@ -9,7 +9,10 @@ public class NewsItemGrain : Grain, INewsItemGrain
 {
     private readonly IPersistentState<NewsItemModel> newsItem;
 
-    public bool HasState => this.newsItem.RecordExists;
+    public Task<bool> HasState()
+    {
+        return Task.FromResult(this.newsItem.RecordExists);
+    }
 
     public NewsItemGrain(
         [PersistentState("newsitem", "OrleansStorage")]

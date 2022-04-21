@@ -36,7 +36,7 @@ namespace RedacteurPortaal.Grains.GrainServices
             foreach (var grain in this.DbContext.GrainReferences.Where(x => x.TypeName == typeof(T).Name).ToList())
             {
                 var realGrain = this.client.GetGrain<T>(grain.GrainId);
-                if (realGrain.HasState)
+                if (realGrain.HasState().Result)
                 {
                     grains.Add(realGrain);
                 }
