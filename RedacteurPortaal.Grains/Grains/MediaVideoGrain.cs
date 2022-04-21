@@ -23,12 +23,6 @@ public class MediaVideoGrain : Grain, IMediaVideoGrain
         this.videoItem = videoItem;
     }
 
-    public async Task AddMediaVideoItem(MediaVideoItem item)
-    {
-        this.videoItem.State = item;
-        await this.videoItem.WriteStateAsync();
-    }
-
     public Task<bool> HasState()
     {
         return Task.FromResult(this.videoItem.RecordExists);
@@ -49,6 +43,4 @@ public class MediaVideoGrain : Grain, IMediaVideoGrain
         this.videoItem.State = videoItem;
         await this.videoItem.WriteStateAsync();
     }
-
-
 }

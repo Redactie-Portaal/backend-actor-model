@@ -32,7 +32,7 @@ public class NewsItemGrainTests
 
         var newsitemgrain = this._cluster.GrainFactory.GetGrain<INewsItemGrain>(guid);
 
-        await newsitemgrain.AddNewsItem(newsitem);
+        await newsitemgrain.Update(newsitem);
 
         var news = ClusterFixture.GrainStorage.GetGrainState<NewsItemModel>(newsitemgrain);
 

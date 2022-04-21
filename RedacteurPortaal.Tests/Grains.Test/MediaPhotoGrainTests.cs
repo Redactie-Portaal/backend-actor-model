@@ -44,7 +44,7 @@ public class MediaPhotoGrainTests
 
         var mediaPhotoGrain = this._cluster.GrainFactory.GetGrain<IMediaPhotoGrain>(guid);
 
-        await mediaPhotoGrain.AddMediaPhotoItem(toSaveMediaPhotoItem);
+        await mediaPhotoGrain.Update(toSaveMediaPhotoItem);
 
         var mediaPhotoItem = ClusterFixture.GrainStorage.GetGrainState<MediaPhotoItem>(mediaPhotoGrain);
 

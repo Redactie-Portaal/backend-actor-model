@@ -1,19 +1,19 @@
 ﻿namespace RedacteurPortaal.DomainModels.NewsItem;
 
-public class ItemBody
+public class ItemBody : IBaseEntity
 {
     public ItemBody()
     {
     }
 
-    public ItemBody(Guid guid, string description, string shortDescription)
+    public ItemBody(Guid id, string description, string shortDescription)
     {
-        this.Guid = guid;
+        this.Id = id;
         this.Description = description ?? throw new ArgumentNullException(nameof(description));
         this.ShortDescription = shortDescription ?? throw new ArgumentNullException(nameof(shortDescription));
     }
 
-    public Guid? Guid { get; private set; }
+    public Guid Id { get; set; }
 
     public string? Description { get; private set; }
 

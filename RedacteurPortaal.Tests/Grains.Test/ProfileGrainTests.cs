@@ -32,7 +32,7 @@ public class ProfileGrainTests
 
         var profilegrain = this._cluster.GrainFactory.GetGrain<IProfileGrain>(guid);
 
-        await profilegrain.AddProfile(toSaveProfile);
+        await profilegrain.Update(toSaveProfile);
         
         var profile = ClusterFixture.GrainStorage.GetGrainState<Profile>(profilegrain);
 

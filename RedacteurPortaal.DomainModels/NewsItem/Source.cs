@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RedacteurPortaal.DomainModels.NewsItem;
 
-public class Source
+public class Source : IBaseEntity
 {
     public Source()
     {
@@ -20,11 +20,11 @@ public class Source
         this.Date = date;
     }
 
-    public Guid Id { get; }
+    public Guid Id { get; set; }
 
-    public string Name { get; }
+    public string Name { get; private set; }
     
-    public string Uri { get; }
+    public string Uri { get; private set; }
 
-    public DateTime Date { get; }
+    public DateTime Date { get; private set; }
 }

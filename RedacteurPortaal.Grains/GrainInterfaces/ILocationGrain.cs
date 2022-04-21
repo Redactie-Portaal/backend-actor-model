@@ -13,8 +13,6 @@ namespace RedacteurPortaal.Grains.GrainInterfaces
 {
     public interface ILocationGrain : IManageableGrain<Location>
     {
-        Task AddLocation(Location location);
-
         Task Update(Location location);
     }
 }

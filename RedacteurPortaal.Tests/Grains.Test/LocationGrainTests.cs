@@ -31,7 +31,7 @@ public class LocationGrainTests
 
         var locationGrain = this._cluster.GrainFactory.GetGrain<ILocationGrain>(guid);
 
-        await locationGrain.AddLocation(toSaveLocation);
+        await locationGrain.Update(toSaveLocation);
 
         var location = ClusterFixture.GrainStorage.GetGrainState<Location>(locationGrain);
 

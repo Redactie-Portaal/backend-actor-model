@@ -27,12 +27,6 @@ public class SourceGrain : Grain, ISourceGrain
         this.source = source;
     }
 
-    public async Task AddSource(Source source)
-    {
-        this.source.State = source;
-        await this.source.WriteStateAsync();
-    }
-
     public Task<bool> HasState()
     {
         return Task.FromResult(this.source.RecordExists);
@@ -51,7 +45,6 @@ public class SourceGrain : Grain, ISourceGrain
     public async Task Update(Source source)
     {
         this.source.State = source;
-
         await this.source.WriteStateAsync();
     }
 }

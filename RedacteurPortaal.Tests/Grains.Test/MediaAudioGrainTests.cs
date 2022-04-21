@@ -47,7 +47,7 @@ public class MediaAudioGrainTests
 
         var mediaAudioGrain = this._cluster.GrainFactory.GetGrain<IMediaAudioGrain>(guid);
 
-        await mediaAudioGrain.AddMediaAudioItem(toSaveMediaAudioItem);
+        await mediaAudioGrain.Update(toSaveMediaAudioItem);
 
         var mediaAudioItem = ClusterFixture.GrainStorage.GetGrainState<MediaAudioItem>(mediaAudioGrain);
 

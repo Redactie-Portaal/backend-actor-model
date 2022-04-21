@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Mapster;
+using Microsoft.AspNetCore.Mvc;
 using Orleans;
 using RedacteurPortaal.Api.Models.Request;
 using RedacteurPortaal.DomainModels.Profile;
@@ -48,7 +49,9 @@ namespace RedacteurPortaal.Api.Controllers
                     patch.ContactDetails.City,
                     patch.ContactDetails.PostalCode));
 
-            await profile.Update(update);
+            var profileUpdate = update.Adapt<Profile>();
+
+            await profile.Update(profileUpdate);
 
             return this.Ok(profile.Get());
         }

@@ -31,23 +31,10 @@ namespace RedacteurPortaal.Grains.Grains
             return Task.FromResult(this.address.RecordExists);
         }
 
-        public async Task AddAddress(AddressModel address)
+        public async Task UpdateAddress(AddressModel address)
         {
             this.address.State = address;
             await this.address.WriteStateAsync();
-        }
-
-        public async Task UpdateAddress(AddressModel address)
-        {
-            // TODO control if address date is not empty
-           this.address.State.CompanyName = address.CompanyName;
-           this.address.State.PhoneNumber = address.PhoneNumber;
-           this.address.State.EmailAddress = address.EmailAddress;
-           this.address.State.PostalCode = address.PostalCode;
-           this.address.State.Webpage = address.Webpage;
-           this.address.State.Address = address.Address;
-           var address1 = this.address;
-           await address1.WriteStateAsync();
         }
 
         public async Task Delete()

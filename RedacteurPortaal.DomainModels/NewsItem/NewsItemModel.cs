@@ -49,31 +49,31 @@ public class NewsItemModel : IBaseEntity
 
     public Guid Id { get; set; }
 
-    public string Title { get; set; }
+    public string Title { get; private set; }
 
-    public Status Status { get; set; }
+    public Status Status { get; private set; }
 
-    public string Author { get; set; }
+    public string Author { get; private set; }
 
-    public FeedSource Source { get; set; }
+    public FeedSource Source { get; private  set; }
 
-    public ItemBody Body { get; set; }
+    public ItemBody Body { get; private set; }
 
-    public List<Contact> ContactDetails { get; set; }
+    public List<Contact> ContactDetails { get; private set; }
 
     public Location LocationDetails { get; private set; }
 
-    public DateTime ProdutionDate { get; set; }
+    public DateTime ProdutionDate { get; private set; }
 
-    public DateTime EndDate { get; set; }
+    public DateTime EndDate { get; private set; }
 
-    public Category Category { get; set; }
+    public Category Category { get; private set; }
 
-    public Region Region { get; set; }
+    public Region Region { get; private set; }
 
-    public MediaVideoItem[] Videos { get; set; }
+    public MediaVideoItem[] Videos { get; private set; }
 
-    public MediaAudioItem[] Audio { get; set; }
+    public MediaAudioItem[] Audio { get; private set; }
 
-    public MediaPhotoItem[] Photos { get; set; }
+    public MediaPhotoItem[] Photos { get; private set; }
 }

@@ -30,7 +30,7 @@ public class SourceGrainTests
 
         var sourceGrain = this._cluster.GrainFactory.GetGrain<ISourceGrain>(guid);
 
-        await sourceGrain.AddSource(toSaveSource);
+        await sourceGrain.Update(toSaveSource);
 
         var source = ClusterFixture.GrainStorage.GetGrainState<Source>(sourceGrain);
 

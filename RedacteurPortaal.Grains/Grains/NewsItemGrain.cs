@@ -41,16 +41,6 @@ public class NewsItemGrain : Grain, INewsItemGrain
         return await Task.FromResult(this.newsItem.State);
     }
 
-    public async Task AddNewsItem(NewsItemModel newsitem)
-    {
-        this.newsItem.State = newsitem;
-
-        //this.newsItem.State.Title = "abc";
-        await this.newsItem.WriteStateAsync();
-
-        //var item = await this.Get();
-    }
-
     public async Task Delete()
     {
         var grain = this.GrainFactory.GetGrain<INewsItemDescriptionGrain>(this.newsItem.State.Id);
@@ -58,10 +48,9 @@ public class NewsItemGrain : Grain, INewsItemGrain
         await this.newsItem.ClearStateAsync();
     }
 
-    public async Task Update(NewsItemModel update)
+    public async Task Update(NewsItemModel newsItem)
     {
-        // TODO: Merge title.
-        this.newsItem.State = update;
+        this.newsItem.State = newsItem;
         await this.newsItem.WriteStateAsync();
     }
 }

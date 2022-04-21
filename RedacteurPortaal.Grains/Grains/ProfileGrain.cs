@@ -37,23 +37,15 @@ public class ProfileGrain : Grain, IProfileGrain
         await this.profile.ClearStateAsync();
     }
 
-    public async Task AddProfile(Profile profile)
-    {
-        this.profile.State = profile;
-        await this.profile.WriteStateAsync();
-    }
-
     public Task<Profile> Get()
     {
         return Task.FromResult(this.profile.State);
     }
 
-    public Task<Profile> Update(ProfileUpdate profile)
+    public async Task Update(Profile profile)
     {
-        this.profile.State.ProfilePicture = profile.ProfilePicture;
-        this.profile.State.FullName = profile.Name;
-        this.profile.State.ContactDetails = profile.ContactDetails;
+        this.profile.State = profile;
+        await this.profile.WriteStateAsync();
 
-        return Task.FromResult(this.profile.State);
     }
 }

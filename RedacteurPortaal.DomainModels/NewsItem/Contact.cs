@@ -3,7 +3,7 @@ using RedacteurPortaal.DomainModels.Validation.NewsItem;
 
 namespace RedacteurPortaal.DomainModels.NewsItem;
 
-public class Contact
+public class Contact : IBaseEntity
 {
     public Contact()
     {
@@ -20,7 +20,7 @@ public class Contact
         new ContactValidator().ValidateAndThrow(this);
     }
 
-    public Guid Id { get; private set; }
+    public Guid Id { get; set; }
     
     public string Name { get; private set; }
     

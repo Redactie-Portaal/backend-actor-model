@@ -30,7 +30,7 @@ public class ContactGrainTests
 
         var contactGrain = this._cluster.GrainFactory.GetGrain<IContactGrain>(guid);
 
-        await contactGrain.AddContact(toSaveContact);
+        await contactGrain.Update(toSaveContact);
 
         var contact = ClusterFixture.GrainStorage.GetGrainState<Contact>(contactGrain);
 

@@ -31,7 +31,7 @@ public class AddressGrainTests
 
         var addressGrain = this._cluster.GrainFactory.GetGrain<IAddressGrain>(guid);
 
-        await addressGrain.AddAddress(toSaveAddress);
+        await addressGrain.UpdateAddress(toSaveAddress);
 
         var address = ClusterFixture.GrainStorage.GetGrainState<AddressModel>(addressGrain);
 

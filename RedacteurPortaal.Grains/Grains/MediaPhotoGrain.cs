@@ -23,12 +23,6 @@ public class MediaPhotoGrain : Grain, IMediaPhotoGrain
         this.photoItem = photoItem;
     }
 
-    public async Task AddMediaPhotoItem(MediaPhotoItem item)
-    {
-        this.photoItem.State = item;
-        await this.photoItem.WriteStateAsync();
-    }
-
     public Task<bool> HasState()
     {
         return Task.FromResult(this.photoItem.RecordExists);
@@ -44,9 +38,9 @@ public class MediaPhotoGrain : Grain, IMediaPhotoGrain
         await this.photoItem.ClearStateAsync();
     }
 
-    public async Task Update(MediaPhotoItem item)
+    public async Task Update(MediaPhotoItem photoItem)
     {
-        this.photoItem.State = item;
+        this.photoItem.State = photoItem;
         await this.photoItem.WriteStateAsync();
     }
 

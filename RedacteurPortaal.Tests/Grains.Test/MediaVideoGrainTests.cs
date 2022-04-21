@@ -62,7 +62,7 @@ public class MediaVideoGrainTests
 
         var mediaVideoGrain = this._cluster.GrainFactory.GetGrain<IMediaVideoGrain>(guid);
 
-        await mediaVideoGrain.AddMediaVideoItem(toSaveMediaVideoItem);
+        await mediaVideoGrain.Update(toSaveMediaVideoItem);
 
         var mediaVideoItem = ClusterFixture.GrainStorage.GetGrainState<MediaVideoItem>(mediaVideoGrain);
 
