@@ -70,13 +70,13 @@ namespace RedacteurPortaal.Api.Controllers
         }
 
         [HttpPatch]
-        public async Task<ActionResult<AddressDTO>> UpdateAddress(Guid guid,[FromBody]AddressDTO addressDTO)
+        public async Task<ActionResult<AddressDTO>> UpdateAddress(Guid guid,[FromBody] AddAddressRequest addAddressRequest)
         {
-            var address = addressDTO.Adapt<AddressModel>();
             var grain = await this.grainService.GetGrain(guid);
+            var address = addAddressRequest.Adapt<AddressModel>();
             await grain.UpdateAdress(address);
             this.logger.LogInformation("Address updated succesfully");
-            return this.StatusCode(204, "Address updated");
+            return this.Ok("Address updated");
         }
     }
 }
