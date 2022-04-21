@@ -32,20 +32,20 @@ namespace RedacteurPortaal.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<AddressDTO>> SaveAddress([FromBody] AddAddressRequest addressDTO )   
         {
-            var newguid = Guid.NewGuid();
+            this.newguid = Guid.NewGuid();
 
             var address = addressDTO.Adapt<AddressModel>();
-            address.Id = newguid;
+            address.Id = this.newguid;
             const string successMessage = "Address was created";
             var grain = await this.grainService.CreateGrain(address.Id);
             await grain.UpdateAdress(address);
 
-            var createdGrain = await this.grainService.GetGrain(newguid);
+            var createdGrain = await this.grainService.GetGrain(this.newguid);
             var createdItem = await createdGrain.Get();
             var response = createdItem.Adapt<AddressDTO>();
 
             this.logger.LogInformation(successMessage);
-            return this.CreatedAtRoute("GetAddress", new { id = newguid }, response);
+            return this.CreatedAtRoute("GetAddress", new { id = this.newguid }, response);
         }
 
         [HttpGet]
@@ -77,16 +77,21 @@ namespace RedacteurPortaal.Api.Controllers
         }
 
         [HttpPatch]
-        public async Task<ActionResult<AddressDTO>> UpdateAddress(Guid guid,[FromBody]UpdateAddressRequest addressDTO)
+        public async Task<ActionResult<AddressDTO>> UpdateAddress(Guid id, [FromBody]UpdateAddressRequest addressDTO)
         {
+            TypeAdapterConfig<UpdateAddressRequest, AddressModel>
+            .NewConfig()
+            .Map(dest => dest.Id,
+                src => id);
+
             var address = addressDTO.Adapt<AddressModel>();
-            var grain = await this.grainService.GetGrain(guid);
+            var grain = await this.grainService.GetGrain(id);
             await grain.UpdateAdress(address);
             this.logger.LogInformation("Address updated succesfully");
             var updatedGrain = await this.grainService.GetGrain(address.Id);
             var updatedItem = await updatedGrain.Get();
             var response = updatedItem.Adapt<AddressModel>();
-            return this.StatusCode(204, response);
+            return this.StatusCode(200, response);
         }
     }
 }
