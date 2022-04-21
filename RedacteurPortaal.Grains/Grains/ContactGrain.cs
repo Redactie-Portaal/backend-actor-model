@@ -14,6 +14,11 @@ public class ContactGrain : Grain, IContactGrain
         this.contactState = contact;
     }
 
+    public Task<bool> HasState()
+    {
+        return Task.FromResult(this.contactState.RecordExists);
+    }
+
     public Task<Contact> Get()
     {
         return Task.FromResult(this.contactState.State);
