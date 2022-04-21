@@ -15,6 +15,8 @@ namespace RedacteurPortaal.Grains.GrainServices
 
         public Task<List<T>> GetGrains();
 
+        public Task<T> CreateGrain(Guid id);
+
         public Task DeleteGrain(Guid id);
     }
 }

@@ -20,6 +20,11 @@ namespace RedacteurPortaal.Grains.Grains
             this.profile = profile;
         }
 
+        public Task<bool> HasState()
+        {
+            return Task.FromResult(this.profile.RecordExists);
+        }
+
         public async Task Delete()
         {
             await this.profile.ClearStateAsync();
