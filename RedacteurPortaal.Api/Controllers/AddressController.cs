@@ -26,13 +26,7 @@ namespace RedacteurPortaal.Api.Controllers
             TypeAdapterConfig<AddressDTO, AddressModel>
                 .NewConfig()
                 .Map(dest => dest.Id,
-                    src => newguid);
-
-            TypeAdapterConfig<AddressModel, AddressDTO>
-            .NewConfig()
-            .Map(dest => dest.Id,
-                src => src.Id);
-
+                    src => this.newguid);
         }
 
         [HttpPost]

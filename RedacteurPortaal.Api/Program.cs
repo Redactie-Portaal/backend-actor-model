@@ -3,6 +3,7 @@ using Orleans;
 using Orleans.Hosting;
 using RedacteurPortaal.Api;
 using RedacteurPortaal.Api.Middleware;
+using RedacteurPortaal.Api.Utility;
 using RedacteurPortaal.Data.Context;
 using RedacteurPortaal.DomainModels.Adress;
 using RedacteurPortaal.DomainModels.NewsItem;
@@ -90,3 +91,7 @@ await Host.CreateDefaultBuilder(args)
 #pragma warning restore ASP0000 // Do not call 'IServiceCollection.BuildServiceProvider' in 'ConfigureServices'
     })
     .RunConsoleAsync();
+
+TypeAdapterConfigManager typeAdapterConfigManager = new TypeAdapterConfigManager();
+typeAdapterConfigManager.ÍnitiateNewsItemAdapter();
+typeAdapterConfigManager.initiateAddressAdapter();
