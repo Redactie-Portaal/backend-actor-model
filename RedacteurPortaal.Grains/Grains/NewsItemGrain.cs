@@ -30,14 +30,6 @@ public class NewsItemGrain : Grain, INewsItemGrain
 
     public async Task<NewsItemModel> Get()
     {
-        //var grain = this.GrainFactory.GetGrain<INewsItemDescriptionGrain>(this.newsItem.State.Id);
-        //var description = await grain.GetDescription();
-        //var item = Task.FromResult(this.newsItem.State);
-
-        // TODO: Merge description
-        //return item;
-        //await Task.Delay(10000);
-        //await this.newsItem.ReadStateAsync();
         return await Task.FromResult(this.newsItem.State);
     }
 
