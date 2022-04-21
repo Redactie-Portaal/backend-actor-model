@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RedacteurPortaal.Api.Models;
 
-public class NewsItemDTO
+public class NewsItemDto
 {
     public Guid? Id { get; set; }
     

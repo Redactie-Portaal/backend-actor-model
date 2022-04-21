@@ -61,7 +61,7 @@ public class NewsItemModel : IBaseEntity
 
     public List<Contact> ContactDetails { get; set; }
 
-    public Location LocationDetails { get; }
+    public Location LocationDetails { get; private set; }
 
     public DateTime ProdutionDate { get; set; }
 

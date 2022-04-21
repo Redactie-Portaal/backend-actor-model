@@ -52,13 +52,14 @@ public class NewsItemGrain : Grain, INewsItemGrain
     public  async Task Delete()
     {
         var grain = this.GrainFactory.GetGrain<INewsItemDescriptionGrain>(this.newsItem.State.Id);
-        await grain.DeleteDescription();
+        await grain.Delete();
         await this.newsItem.ClearStateAsync();
     }
 
-    public async Task Update(NewsItemUpdate update)
+    public async Task Update(NewsItemModel model)
     {
         // TODO: Merge title.
+        this.newsItem.State = model;
         await this.newsItem.WriteStateAsync();
     }
 }

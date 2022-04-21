@@ -17,23 +17,17 @@ public class MediaPhotoGrain : Grain, IMediaPhotoGrain
         this.photoItem = photoItem;
     }
 
-    public Task<MediaPhotoItem> GetMediaPhotoItem(Guid guid)
+    public Task<MediaPhotoItem> Get()
     {
         return Task.FromResult(this.photoItem.State);
     }
 
-    public async Task AddMediaPhotoItem(MediaPhotoItem item)
-    {
-        this.photoItem.State = item;
-        await this.photoItem.WriteStateAsync();
-    }
-
-    public async Task DeleteMediaPhotoItem(Guid guid)
+    public async Task Delete()
     {
         await this.photoItem.ClearStateAsync();
     }
 
-    public async Task UpdateMediaPhotoItem(MediaPhotoItem item)
+    public async Task Update(MediaPhotoItem item)
     {
         this.photoItem.State = item;
         await this.photoItem.WriteStateAsync();

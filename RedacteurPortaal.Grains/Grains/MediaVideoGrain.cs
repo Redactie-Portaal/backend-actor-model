@@ -17,17 +17,17 @@ public class MediaVideoGrain : Grain, IMediaVideoGrain
         this.videoItem = videoItem;
     }
 
-    public Task<MediaVideoItem> GetMediaVideoItem() 
+    public Task<MediaVideoItem> Get() 
     {
         return Task.FromResult(this.videoItem.State);
     }
 
-    public async Task DeleteMediaVideoItem() 
+    public async Task Delete() 
     {
         await this.videoItem.ClearStateAsync();
     }
 
-    public async Task UpdateMediaVideoItem(MediaVideoItem videoItem)
+    public async Task Update(MediaVideoItem videoItem)
     {
         this.videoItem.State = videoItem;
         await this.videoItem.WriteStateAsync();
