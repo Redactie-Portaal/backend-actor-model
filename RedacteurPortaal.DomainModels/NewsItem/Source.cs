@@ -8,7 +8,10 @@ namespace RedacteurPortaal.DomainModels.NewsItem;
 
 public class Source
 {
-    public Source() { }
+    public Source()
+    {
+    }
+
     public Source(Guid id, string name, string uri, DateTime date)
     {
         this.Id = id;

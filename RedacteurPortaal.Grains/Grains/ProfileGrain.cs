@@ -27,21 +27,21 @@ public class ProfileGrain : Grain, IProfileGrain
         this.profile = profile;
     }
 
-        public Task<bool> HasState()
-        {
-            return Task.FromResult(this.profile.RecordExists);
-        }
+    public Task<bool> HasState()
+    {
+        return Task.FromResult(this.profile.RecordExists);
+    }
 
-        public async Task Delete()
-        {
-            await this.profile.ClearStateAsync();
-        }
+    public async Task Delete()
+    {
+        await this.profile.ClearStateAsync();
+    }
+
     public async Task AddProfile(Profile profile)
     {
         this.profile.State = profile;
         await this.profile.WriteStateAsync();
     }
-    
 
     public Task<Profile> Get()
     {

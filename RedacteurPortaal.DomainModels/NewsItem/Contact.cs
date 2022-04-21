@@ -5,6 +5,11 @@ namespace RedacteurPortaal.DomainModels.NewsItem;
 
 public class Contact
 {
+    public Contact()
+    {
+
+    }
+
     public Contact(Guid id, string name, string email, string telephoneNumber)
     {
         this.Id = id;

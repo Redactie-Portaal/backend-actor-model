@@ -27,7 +27,6 @@ public class SourceGrain : Grain, ISourceGrain
         this.source = source;
     }
 
-
     public async Task AddSource(Source source)
     {
         this.source.State = source;
@@ -55,5 +54,4 @@ public class SourceGrain : Grain, ISourceGrain
 
         await this.source.WriteStateAsync();
     }
-
 }

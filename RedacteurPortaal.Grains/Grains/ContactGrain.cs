@@ -27,6 +27,12 @@ public class ContactGrain : Grain, IContactGrain
         return Task.FromResult(this.contactState.RecordExists);
     }
 
+    public async Task AddContact(Contact contact)
+    {
+        this.contactState.State = contact;
+        await this.contactState.WriteStateAsync();
+    }
+
     public Task<Contact> Get()
     {
         return Task.FromResult(this.contactState.State);

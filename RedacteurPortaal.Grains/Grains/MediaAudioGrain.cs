@@ -28,6 +28,12 @@ public class MediaAudioGrain : Grain, IMediaAudioGrain
         this.audioItem = audioItem;
     }
 
+    public async Task AddMediaAudioItem(MediaAudioItem item)
+    {
+        this.audioItem.State = item;
+        await this.audioItem.WriteStateAsync();
+    }
+
     public Task<MediaAudioItem> Get()
     {
         return Task.FromResult(this.audioItem.State);
@@ -43,4 +49,6 @@ public class MediaAudioGrain : Grain, IMediaAudioGrain
         this.audioItem.State = mediaItem;
         await this.audioItem.WriteStateAsync();
     }
+
+
 }
