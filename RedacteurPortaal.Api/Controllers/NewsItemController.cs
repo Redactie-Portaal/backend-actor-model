@@ -94,9 +94,10 @@ public class NewsItemController : Controller
     public async Task<IActionResult> UpdateNewsItem(Guid guid, [FromBody] UpdateNewsItemRequest request)
     {
         var grain = await this.grainService.GetGrain(guid);
-        var updateRequest = new NewsItemUpdate();
         TypeAdapterConfig<NewsItemModel, NewsItemUpdate>
         .NewConfig()
+        .Map(dest => dest.ApprovalState,
+            src => request.ApprovalState != null ? Enum.Parse<ApprovalState>(request.ApprovalState) : ApprovalState.PENDING)
         .Map(dest => dest.ContactDetails,
         src => src.ContactDetails.AsQueryable().ProjectToType<Contact>(null).ToList())
         .Map(dest => dest.LocationDetails,
