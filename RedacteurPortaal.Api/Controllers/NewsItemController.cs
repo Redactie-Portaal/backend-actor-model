@@ -47,7 +47,7 @@ public class NewsItemController : Controller
                 src => src.Photos.AsQueryable().ProjectToType<MediaPhotoItem>(null).ToList())
             .Map(dest => dest.Id,
                 src => newguid);
-        
+
         TypeAdapterConfig<MediaVideoItemDto, MediaVideoItem>
             .NewConfig()
             .Map(dest => dest.Duration,
@@ -86,37 +86,24 @@ public class NewsItemController : Controller
     {
         await this.grainService.DeleteGrain(id);
         this.logger.LogInformation("News item deleted successfully");
-        return this.StatusCode(204, "News item deleted");
+        return this.StatusCode(200, "News item deleted");
     }
 
     [HttpPatch]
     [Route("{id}")]
-    public async Task<IActionResult> UpdateNewsItem(Guid guid, [FromBody] UpdateNewsItemRequest request)
+    public async Task<IActionResult> UpdateNewsItem(Guid id, [FromBody] UpdateNewsItemRequest request)
     {
-        var grain = await this.grainService.GetGrain(guid);
-        var updateRequest = new NewsItemUpdate();
-        TypeAdapterConfig<NewsItemModel, NewsItemUpdate>
+        var grain = await this.grainService.GetGrain(id);
+
+        TypeAdapterConfig<UpdateNewsItemRequest, NewsItemModel>
         .NewConfig()
-        .Map(dest => dest.ContactDetails,
-        src => src.ContactDetails.AsQueryable().ProjectToType<Contact>(null).ToList())
-        .Map(dest => dest.LocationDetails,
-        src => src.LocationDetails.Adapt<Location>())
-        .Map(dest => dest.Body,
-        src => src.Body != null ? src.Body.Adapt<ItemBody>() : new ItemBody())
-        .Map(dest => dest.Source,
-        src => src.Source != null ? src.Source.Adapt<FeedSource>() : new FeedSource())
-        .Map(dest => dest.Videos,
-        src => src.Videos.AsQueryable().ProjectToType<MediaVideoItem>(null).ToList())
-        .Map(dest => dest.Audio,
-        src => src.Audio.AsQueryable().ProjectToType<MediaAudioItem>(null).ToList())
-        .Map(dest => dest.Photos,
-        src => src.Photos.AsQueryable().ProjectToType<MediaPhotoItem>(null).ToList())
-        .Map(dest => dest.Id,
-        src => guid);
+        .Map(dest => dest.Id, 
+        src => id);
+        
         var update = request.Adapt<NewsItemModel>();
 
         await grain.Update(update);
-        
+
         this.logger.LogInformation("News item updated successfully");
         return this.StatusCode(204, "News item updated");
     }
