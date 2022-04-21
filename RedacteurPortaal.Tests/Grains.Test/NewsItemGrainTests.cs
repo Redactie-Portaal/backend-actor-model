@@ -49,7 +49,8 @@ public class NewsItemGrainTests
 
         await newsitemgrain.Update(newsitem);
 
-        var news = ClusterFixture.GrainStorage.GetGrainState<NewsItemModel>(newsitemgrain);
+        var news = await newsitemgrain.Get();
+        //var news = ClusterFixture.GrainStorage.GetGrainState<NewsItemModel>(newsitemgrain);
 
         Assert.Equal("Newsitem Title", news.Title);
         Assert.Equal(Status.DONE, news.Status);

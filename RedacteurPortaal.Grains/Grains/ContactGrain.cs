@@ -10,14 +10,8 @@ public class ContactGrain : Grain, IContactGrain
     private readonly IPersistentState<Contact> contactState;
 
     public ContactGrain(
-#if DEBUG
-        // This works in testing.
-        [PersistentState("contact")]
-#else
-        // This doesn't work in testing, but I don't know why.
-        [PersistentState("contact", "OrleansStorage")]
-#endif        
-        IPersistentState<Contact> contact)
+    [PersistentState("contact", "OrleansStorage")]
+    IPersistentState<Contact> contact)
     {
         this.contactState = contact;
     }

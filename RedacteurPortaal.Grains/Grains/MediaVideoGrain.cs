@@ -11,14 +11,8 @@ public class MediaVideoGrain : Grain, IMediaVideoGrain
     private readonly IPersistentState<MediaVideoItem> videoItem;
     
     public MediaVideoGrain(
-#if DEBUG
-        // This works in testing.
-        [PersistentState("videoItem")]
-#else
-        // This doesn't work in testing, but I don't know why.
-        [PersistentState("videoItem", "OrleansStorage")]
-#endif
-        IPersistentState<MediaVideoItem> videoItem)
+    [PersistentState("videoItem", "OrleansStorage")]
+    IPersistentState<MediaVideoItem> videoItem)
     {
         this.videoItem = videoItem;
     }

@@ -15,14 +15,8 @@ public class ProfileGrain : Grain, IProfileGrain
     private readonly IPersistentState<Profile> profile;
 
     public ProfileGrain(
-#if DEBUG
-    // This works in testing.
-    [PersistentState("profile")]
-#else
-    // This doesn't work in testing, but I don't know why.
     [PersistentState("profile", "OrleansStorage")]
-#endif
-        IPersistentState<Profile> profile)
+    IPersistentState<Profile> profile)
     {
         this.profile = profile;
     }

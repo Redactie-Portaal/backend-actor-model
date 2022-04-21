@@ -33,7 +33,9 @@ public class LocationGrainTests
 
         await locationGrain.Update(toSaveLocation);
 
-        var location = ClusterFixture.GrainStorage.GetGrainState<Location>(locationGrain);
+        var location = await locationGrain.Get();
+
+        //var location = ClusterFixture.GrainStorage.GetGrainState<Location>(locationGrain);
 
         Assert.Equal("Name", location.Name);
         Assert.Equal(guid, location.Id);

@@ -15,14 +15,7 @@ public class NewsItemGrain : Grain, INewsItemGrain
     }
 
     public NewsItemGrain(
-
-#if DEBUG
-        // This works in testing.
-        [PersistentState("newsitem")]
-#else
-        // This doesn't work in testing, but I don't know why.
-        [PersistentState("newsitem", "OrleansStorage")]
-#endif
+    [PersistentState("newsitem", "OrleansStorage")]
     IPersistentState<NewsItemModel> newsItem)
     {
         this.newsItem = newsItem;

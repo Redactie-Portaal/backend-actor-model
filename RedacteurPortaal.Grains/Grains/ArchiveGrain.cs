@@ -12,14 +12,8 @@ public class ArchiveGrain : Grain, IArchiveGrain
     private readonly IPersistentState<ArchiveModel> archive;
 
     public ArchiveGrain(
-#if DEBUG
-        // This works in testing.
-        [PersistentState("archive")]
-#else
-        // This doesn't work in testing, but I don't know why.
-        [PersistentState("archive", "OrleansStorage")]
-#endif
-        IPersistentState<ArchiveModel> archive)
+    [PersistentState("archive")]
+    IPersistentState<ArchiveModel> archive)
     {
         this.archive = archive;
     }

@@ -14,14 +14,8 @@ public class LocationGrain : Grain, ILocationGrain
     }
 
     public LocationGrain(
-#if DEBUG
-        // This works in testing.
-        [PersistentState("location")]
-#else
-        // This doesn't work in testing, but I don't know why.
-        [PersistentState("location", "OrleansStorage")]
-#endif
-        IPersistentState<Location> location)
+    [PersistentState("location","OrleansStorage")]
+    IPersistentState<Location> location)
     {
         this.location = location;
     }

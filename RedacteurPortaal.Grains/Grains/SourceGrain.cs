@@ -15,14 +15,8 @@ public class SourceGrain : Grain, ISourceGrain
     private readonly IPersistentState<Source> source;
 
     public SourceGrain(
-#if DEBUG
-    // This works in testing.
-    [PersistentState("source")]
-#else
-    // This doesn't work in testing, but I don't know why.
     [PersistentState("source", "OrleansStorage")]
-#endif
-        IPersistentState<Source> source)
+    IPersistentState<Source> source)
     {
         this.source = source;
     }

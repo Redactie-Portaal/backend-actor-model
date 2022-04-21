@@ -33,6 +33,8 @@ public class ArchiveGrainTests
 
         //await archiveGrain
 
+        //var archive = await archiveGrain.Get();
+
         //var source = ClusterFixture.GrainStorage.GetGrainState<Source>(sourceGrain);
 
         //Assert.Equal("SourceName", source.Name);

@@ -46,7 +46,9 @@ public class MediaPhotoGrainTests
 
         await mediaPhotoGrain.Update(toSaveMediaPhotoItem);
 
-        var mediaPhotoItem = ClusterFixture.GrainStorage.GetGrainState<MediaPhotoItem>(mediaPhotoGrain);
+        var mediaPhotoItem = await mediaPhotoGrain.Get();
+
+        //var mediaPhotoItem = ClusterFixture.GrainStorage.GetGrainState<MediaPhotoItem>(mediaPhotoGrain);
 
         Assert.Equal("Title", mediaPhotoItem.Title);
         Assert.Equal(guid, mediaPhotoItem.Id);

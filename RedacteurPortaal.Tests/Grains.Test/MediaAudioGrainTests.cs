@@ -49,7 +49,9 @@ public class MediaAudioGrainTests
 
         await mediaAudioGrain.Update(toSaveMediaAudioItem);
 
-        var mediaAudioItem = ClusterFixture.GrainStorage.GetGrainState<MediaAudioItem>(mediaAudioGrain);
+        var mediaAudioItem = await mediaAudioGrain.Get();
+
+        //var mediaAudioItem = ClusterFixture.GrainStorage.GetGrainState<MediaAudioItem>(mediaAudioGrain);
 
         Assert.Equal("Title", mediaAudioItem.Title);
         Assert.Equal(guid, mediaAudioItem.Id);

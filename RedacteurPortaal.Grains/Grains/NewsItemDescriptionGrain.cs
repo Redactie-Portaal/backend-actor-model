@@ -15,14 +15,8 @@ public class NewsItemDescriptionGrain : Grain, INewsItemDescriptionGrain
     }
 
     public NewsItemDescriptionGrain(
-#if DEBUG
-        // This works in testing.
-        [PersistentState("newsItemDescription")]
-#else
-        // This doesn't work in testing, but I don't know why.
-        [PersistentState("newsItemDescription", "OrleansStorage")]
-#endif
-        IPersistentState<ItemBody> description)
+    [PersistentState("newsItemDescription", "OrleansStorage")]
+    IPersistentState<ItemBody> description)
     {
         this.description = description;
     }

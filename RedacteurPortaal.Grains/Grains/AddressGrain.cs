@@ -4,50 +4,43 @@ using Orleans.Runtime;
 using RedacteurPortaal.Grains.GrainInterfaces;
 using RedacteurPortaal.DomainModels.Adress;
 
-namespace RedacteurPortaal.Grains.Grains
+namespace RedacteurPortaal.Grains.Grains;
+
+public class AddressGrain : Grain, IAddressGrain
 {
-    public class AddressGrain : Grain, IAddressGrain
+    private readonly ILogger logger;
+
+    private readonly IPersistentState<AddressModel> address;
+
+    public AddressGrain(ILogger<NewsItemGrain> logger,
+    [PersistentState("address", "OrleansStorage")]
+    IPersistentState<AddressModel> address)
     {
-        private readonly ILogger logger;
+        this.logger = logger;
+        this.address = address;
+    }
 
-        private readonly IPersistentState<AddressModel> address;
+    public Task<bool> HasState()
+    {
+        return Task.FromResult(this.address.RecordExists);
+    }
 
-        public AddressGrain(ILogger<NewsItemGrain> logger,
-#if DEBUG
-        // This works in testing.
-            [PersistentState("address")]
-#else
-        // This doesn't work in testing, but I don't know why.
-            [PersistentState("address", "OrleansStorage")]
-#endif
-            IPersistentState<AddressModel> address)
-        {
-            this.logger = logger;
-            this.address = address;
-        }
+    public async Task UpdateAddress(AddressModel address)
+    {
+        this.address.State = address;
+        await this.address.WriteStateAsync();
+    }
 
-        public Task<bool> HasState()
-        {
-            return Task.FromResult(this.address.RecordExists);
-        }
+    public async Task Delete()
+    {
+        await this.address.ClearStateAsync();
+    }
 
-        public async Task UpdateAddress(AddressModel address)
-        {
-            this.address.State = address;
-            await this.address.WriteStateAsync();
-        }
-
-        public async Task Delete()
-        {
-            await this.address.ClearStateAsync();
-        }
-
-        public Task<AddressModel> Get()
-        {
-            var state = this.address.State;
-            state.Id = this.GetGrainIdentity().PrimaryKey;
-            this.logger.LogInformation("foobar");
-            return Task.FromResult(this.address.State);
-        }
+    public Task<AddressModel> Get()
+    {
+        var state = this.address.State;
+        state.Id = this.GetGrainIdentity().PrimaryKey;
+        this.logger.LogInformation("foobar");
+        return Task.FromResult(this.address.State);
     }
 }

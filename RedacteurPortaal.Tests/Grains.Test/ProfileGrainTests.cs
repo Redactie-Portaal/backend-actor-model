@@ -33,8 +33,9 @@ public class ProfileGrainTests
         var profilegrain = this._cluster.GrainFactory.GetGrain<IProfileGrain>(guid);
 
         await profilegrain.Update(toSaveProfile);
-        
-        var profile = ClusterFixture.GrainStorage.GetGrainState<Profile>(profilegrain);
+
+        //var profile = ClusterFixture.GrainStorage.GetGrainState<Profile>(profilegrain);
+        var profile = await profilegrain.Get();
 
         Assert.Equal("Joep Struikrover", profile.FullName);
         Assert.Equal(Role.ADMIN, profile.Role);
