@@ -40,9 +40,9 @@ public class NewsItemGrainTests
                                          DateTime.UtcNow,
                                          Category.STORY,
                                          Region.LOCAL,
-                                         new MediaVideoItem[0],
-                                         new MediaAudioItem[0],
-                                         new MediaPhotoItem[0]);
+                                         Array.Empty<MediaVideoItem>(),
+                                         Array.Empty<MediaAudioItem>(),
+                                         Array.Empty<MediaPhotoItem>());
 
 
         var newsitemgrain = this._cluster.GrainFactory.GetGrain<INewsItemGrain>(guid);
@@ -50,7 +50,6 @@ public class NewsItemGrainTests
         await newsitemgrain.Update(newsitem);
 
         var news = await newsitemgrain.Get();
-        //var news = ClusterFixture.GrainStorage.GetGrainState<NewsItemModel>(newsitemgrain);
 
         Assert.Equal("Newsitem Title", news.Title);
         Assert.Equal(Status.DONE, news.Status);

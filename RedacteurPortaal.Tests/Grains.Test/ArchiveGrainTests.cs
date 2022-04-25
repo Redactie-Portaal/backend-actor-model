@@ -30,15 +30,6 @@ public class ArchiveGrainTests
         var toSaveArchive = new ArchiveModel(guid, "Title", "Label", new List<MediaPhotoItem> { }, new List<MediaVideoItem> { }, new List<MediaAudioItem> { }, DateTime.UtcNow, new List<string> { });
 
         var archiveGrain = this._cluster.GrainFactory.GetGrain<IArchiveGrain>(guid);
-
-        //await archiveGrain
-
-        //var archive = await archiveGrain.Get();
-
-        //var source = ClusterFixture.GrainStorage.GetGrainState<Source>(sourceGrain);
-
-        //Assert.Equal("SourceName", source.Name);
-        //Assert.Equal(guid, source.Id);
     }
 
 }

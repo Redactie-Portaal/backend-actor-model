@@ -29,8 +29,6 @@ public class ClusterFixture
 
     public TestCluster Cluster { get; private set; }
 
-    public static FakeGrainStorage GrainStorage { get; } = new();
-
     public class SiloConfigurator : ISiloConfigurator
     {
         public void Configure(ISiloBuilder hostBuilder)

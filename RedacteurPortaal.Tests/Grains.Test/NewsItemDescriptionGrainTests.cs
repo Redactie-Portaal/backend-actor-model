@@ -24,18 +24,7 @@ public class NewsItemDescriptionGrainTests
     [Fact]
     public void CanAddDescriptionCorrectly()
     {
-        //var guid = Guid.NewGuid();
-
-        //var toSaveSource = new Source(guid, "SourceName", "URI", DateTime.UtcNow);
-
-        //var sourceGrain = this._cluster.GrainFactory.GetGrain<ISourceGrain>(guid);
-
-        //await sourceGrain.AddSource(toSaveSource);
-
-        //var source = ClusterFixture.GrainStorage.GetGrainState<Source>(sourceGrain);
-
-        //Assert.Equal("SourceName", source.Name);
-        //Assert.Equal(guid, source.Id);
+        
     }
 
 }

@@ -34,8 +34,6 @@ public class ContactGrainTests
 
         var contact = await contactGrain.Get();
 
-        //var contact = ClusterFixture.GrainStorage.GetGrainState<Contact>(contactGrain);
-
         Assert.Equal("Name", contact.Name);
         Assert.Equal(guid, contact.Id);
     }

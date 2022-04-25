@@ -35,8 +35,6 @@ public class AddressGrainTests
 
         var address = await addressGrain.Get();
 
-        //var address = ClusterFixture.GrainStorage.GetGrainState<AddressModel>(addressGrain);
-
         Assert.Equal("Company", address.CompanyName);
         Assert.Equal(guid, address.Id);
     }

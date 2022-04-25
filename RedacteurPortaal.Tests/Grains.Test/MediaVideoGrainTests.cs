@@ -66,8 +66,6 @@ public class MediaVideoGrainTests
 
         var mediaVideoItem = await mediaVideoGrain.Get();
 
-        //var mediaVideoItem = ClusterFixture.GrainStorage.GetGrainState<MediaVideoItem>(mediaVideoGrain);
-
         Assert.Equal("Title", mediaVideoItem.Title);
         Assert.Equal(guid, mediaVideoItem.Id);
     }

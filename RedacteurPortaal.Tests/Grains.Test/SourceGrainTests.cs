@@ -34,8 +34,6 @@ public class SourceGrainTests
 
         var source = await sourceGrain.Get();
 
-        //var source = ClusterFixture.GrainStorage.GetGrainState<Source>(sourceGrain);
-
         Assert.Equal("SourceName", source.Name);
         Assert.Equal(guid, source.Id);
     }
