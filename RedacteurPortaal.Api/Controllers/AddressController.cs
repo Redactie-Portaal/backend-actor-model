@@ -44,7 +44,7 @@ namespace RedacteurPortaal.Api.Controllers
             address.Id = newguid;
             const string successMessage = "Address was created";
             var grain = await this.grainService.CreateGrain(address.Id);
-            await grain.UpdateAdress(address);
+            await grain.UpdateAddress(address);
 
             var createdGrain = await this.grainService.GetGrain(newguid);
             var createdItem = await createdGrain.Get();
@@ -92,7 +92,7 @@ namespace RedacteurPortaal.Api.Controllers
 
             var address = addressDTO.Adapt<AddressModel>();
             var grain = await this.grainService.GetGrain(id);
-            await grain.UpdateAdress(address);
+            await grain.UpdateAddress(address);
             this.logger.LogInformation("Address updated succesfully");
             var updatedGrain = await this.grainService.GetGrain(address.Id);
             var updatedItem = await updatedGrain.Get();
