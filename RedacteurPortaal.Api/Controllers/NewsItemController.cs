@@ -69,7 +69,10 @@ public class NewsItemController : Controller
     public async Task<ActionResult<List<NewsItemDto>>> GetNewsItems()
     {
         var grain = await this.grainService.GetGrains();
-        var response = (await grain.SelectAsync(async x => await x.Get())).AsQueryable().ProjectToType<NewsItemDto>(null).ToList();
+        
+        var response = (await grain.SelectAsync(async x => await 
+        x.Get())).AsQueryable().ProjectToType<NewsItemDto>(null).ToList();
+        
         this.logger.LogInformation("News item fetched successfully");
         return this.Ok(response);
     }

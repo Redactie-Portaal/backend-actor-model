@@ -33,7 +33,6 @@ namespace RedacteurPortaal.Api.Controllers
                     src => newguid);
             
             var address = addressDTO.Adapt<AddressModel>();
-            address.Id = newguid;
             const string successMessage = "Address was created";
             var grain = await this.grainService.CreateGrain(address.Id);
             await grain.UpdateAddress(address);
