@@ -22,7 +22,7 @@ public class UpdateNewsItemRequest
 
     public FeedSourceDto Source { get; set; }
 
-    public ItemBodyDto Body { get; set; }
+    public string Body { get; set; }
 
     public List<ContactDto> ContactDetails { get; set; }
 
