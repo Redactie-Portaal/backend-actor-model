@@ -1,4 +1,5 @@
 ﻿using RedacteurPortaal.DomainModels.Media;
+using RedacteurPortaal.DomainModels.NewsItem;
 
 namespace RedacteurPortaal.Api.DTOs
 {
@@ -15,6 +16,8 @@ namespace RedacteurPortaal.Api.DTOs
         public List<MediaVideoItem>? MediaVideoItems { get; set; }
 
         public List<MediaAudioItem>? MediaAudioItems { get; set; }
+
+        public List<NewsItemModel>? NewsItems { get; set; }
 
         public DateTime ArchivedDate { get; set; }
 
