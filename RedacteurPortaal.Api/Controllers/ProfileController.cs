@@ -21,12 +21,26 @@ namespace RedacteurPortaal.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateProfile([FromBody] ProfileDto profile)
+        public async Task<IActionResult> CreateProfile([FromBody] AddProfileRequest profile)
         {
-            var grain = await this.grainService.CreateGrain(profile.Id);
+            var guid = Guid.NewGuid();
+            var grain = await this.grainService.CreateGrain(guid);
+
+            TypeAdapterConfig<AddProfileRequest, Profile>
+            .NewConfig()
+                .Map(dest => dest.FullName, src => src.FullName)
+                .Map(dest => dest.ProfilePicture, src => src.ProfilePicture)
+                .Map(dest => dest.ContactDetails, src => new ContactDetails(src.ContactDetails.Email,
+                                                                            src.ContactDetails.Phone,
+                                                                            src.ContactDetails.Address,
+                                                                            src.ContactDetails.Province,
+                                                                            src.ContactDetails.City,
+                                                                            src.ContactDetails.PostalCode));
+
             var updateProfile = profile.Adapt<Profile>();
+            updateProfile.Id = guid;
             await grain.Update(updateProfile);
-            return this.Ok(updateProfile);
+            return this.CreatedAtRoute("GetProfile", new { id = guid }, updateProfile);
         }
 
         // Get list of profiles
@@ -37,7 +51,7 @@ namespace RedacteurPortaal.Api.Controllers
             return this.Ok(profile);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetProfile")]
         public async Task<IActionResult> Get(Guid id)
         {
             var profile = await this.grainService.GetGrain(id);
@@ -59,7 +73,7 @@ namespace RedacteurPortaal.Api.Controllers
                 .Map(dest => dest.ContactDetails.Province, src => src.ContactDetails.Province)
                 .Map(dest => dest.ContactDetails.City, src => src.ContactDetails.City)
                 .Map(dest => dest.ContactDetails.PostalCode, src => src.ContactDetails.PostalCode);
-            
+
             var profileUpdate = patch.Adapt<Profile>();
             profileUpdate.Id = id;
 
