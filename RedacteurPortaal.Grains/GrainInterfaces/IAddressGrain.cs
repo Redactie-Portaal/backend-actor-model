@@ -5,6 +5,6 @@ namespace RedacteurPortaal.Grains.GrainInterfaces
 {
     public interface IAddressGrain : IManageableGrain<AddressModel>
     {
-        Task UpdateAdress(AddressModel address);
+        Task UpdateAddress(AddressModel address);
     }
 }

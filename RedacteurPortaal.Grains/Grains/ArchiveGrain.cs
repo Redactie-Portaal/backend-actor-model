@@ -12,8 +12,8 @@ public class ArchiveGrain : Grain, IArchiveGrain
     private readonly IPersistentState<ArchiveModel> archive;
 
     public ArchiveGrain(
-        [PersistentState("archive", "OrleansStorage")]
-        IPersistentState<ArchiveModel> archive)
+    [PersistentState("archive", "OrleansStorage")]
+    IPersistentState<ArchiveModel> archive)
     {
         this.archive = archive;
     }
