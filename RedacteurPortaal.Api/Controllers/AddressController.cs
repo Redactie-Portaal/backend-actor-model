@@ -23,14 +23,6 @@ namespace RedacteurPortaal.Api.Controllers
             this.logger = logger;
         }
 
-        public void MapGuid(Guid guid)
-        {
-            TypeAdapterConfig<AddressDTO, AddressModel>
-             .NewConfig()
-             .Map(dest => dest.Id,
-                 src => guid);
-        }
-
         [HttpPost]
         public async Task<ActionResult<AddressDTO>> SaveAddress([FromBody] AddAddressRequest addressDTO )   
         {
