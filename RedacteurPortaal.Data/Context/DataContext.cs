@@ -13,10 +13,15 @@ namespace RedacteurPortaal.Data.Context
     {
         public DbSet<PluginSettings> PluginSettings { get; set; }
 
-        public DbSet<GrainReference> GrainReferences { get; set; }
+        public virtual DbSet<GrainReference> GrainReferences { get; set; }
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
 
+        }
+
+        public DataContext()
+        {
+                
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
