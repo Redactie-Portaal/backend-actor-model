@@ -1,10 +1,10 @@
-name: Build
+name: SonarQube
 on:
   push:
     branches:
       - main # or the name of your main branch
   pull_request:
-    branches: "**"
+    branches: [ main, development ]
 jobs:
   build:
     name: SonarQube
