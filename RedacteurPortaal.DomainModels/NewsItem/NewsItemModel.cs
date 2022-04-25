@@ -1,9 +1,11 @@
 ﻿using System.Runtime.CompilerServices;
 ﻿using Mapster;
 using RedacteurPortaal.DomainModels.Media;
+using RedacteurPortaal.DomainModels.Shared;
+using RedacteurPortaal.DomainModels.Validation.Shared;
 
 namespace RedacteurPortaal.DomainModels.NewsItem;
-[AdaptTo("[name]Dto"), GenerateMapper]
+
 public class NewsItemModel : IBaseEntity
 {
     public NewsItemModel()
@@ -42,7 +44,7 @@ public class NewsItemModel : IBaseEntity
         this.Photos = photos ?? throw new ArgumentNullException(nameof(photos));
     }
 
-    public Guid Id { get; init; } = Guid.NewGuid();
+    public Guid Id { get; set; }
 
     public string Title { get; private set; }
 
@@ -56,7 +58,7 @@ public class NewsItemModel : IBaseEntity
 
     public List<Contact> ContactDetails { get; private set; }
 
-    public Location LocationDetails { get; }
+    public Location LocationDetails { get; private set; }
 
     public DateTime ProdutionDate { get; private set; }
 

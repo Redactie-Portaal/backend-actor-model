@@ -18,40 +18,36 @@ public class ArchiveGrain : Grain, IArchiveGrain
         this.archive = archive;
     }
 
-    public async Task DeleteArchive(Guid guid)
+    public async Task Delete()
     {
-        var grain = this.GrainFactory.GetGrain<IArchiveGrain>(guid);
-        await grain.DeleteArchive(guid);
         await this.archive.ClearStateAsync();
     }
 
-    public async Task AddVideoItem(ArchiveModel archive, MediaVideoItem videoItem)
+    public async Task AddVideoItem(MediaVideoItem videoItem)
     {
-        var grain = this.GrainFactory.GetGrain<IArchiveGrain>(archive.Guid);
-        await grain.AddVideoItem(archive, videoItem);
-        this.archive.State = archive;
+        this.archive.State.MediaVideoItems.Add(videoItem);
         await this.archive.WriteStateAsync();
     }
 
-    public async Task AddPhotoItem(ArchiveModel archive, MediaPhotoItem photoItem)
+    public async Task AddPhotoItem(MediaPhotoItem photoItem)
     {
-        var grain = this.GrainFactory.GetGrain<IArchiveGrain>(archive.Guid);
-        await grain.AddPhotoItem(archive, photoItem);
-        this.archive.State = archive;
+        this.archive.State.MediaPhotoItems.Add(photoItem);
         await this.archive.WriteStateAsync();
     }
 
-    public async Task AddAudioItem(ArchiveModel archive, MediaAudioItem audioItem)
+    public async Task AddAudioItem(MediaAudioItem audioItem)
     {
-        var grain = this.GrainFactory.GetGrain<IArchiveGrain>(archive.Guid);
-        await grain.AddAudioItem(archive, audioItem);
-        this.archive.State = archive;
+        this.archive.State.MediaAudioItems.Add(audioItem);
         await this.archive.WriteStateAsync();
     }
 
-    public async Task<ArchiveModel> GetArchive(Guid guid)
+    public async Task<ArchiveModel> Get()
     {
-        var grain = this.GrainFactory.GetGrain<IArchiveGrain>(guid);
         return await Task.FromResult(this.archive.State);
+    }
+
+    public Task<bool> HasState()
+    {
+        return Task.FromResult(this.archive.RecordExists);
     }
 }

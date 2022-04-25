@@ -1,10 +1,10 @@
-using Export.Base;
 using Microsoft.EntityFrameworkCore;
 using Orleans;
 using Orleans.Hosting;
 using RedacteurPortaal.Api;
 using RedacteurPortaal.Api.Middleware;
 using RedacteurPortaal.Data.Context;
+using RedacteurPortaal.DomainModels.Adress;
 using RedacteurPortaal.DomainModels.NewsItem;
 using RedacteurPortaal.DomainModels.Profile;
 using RedacteurPortaal.Grains.GrainInterfaces;
@@ -69,8 +69,9 @@ await Host.CreateDefaultBuilder(args)
     .ConfigureServices((ctx, services) =>
     {
         services.AddScoped<IExportPluginService, ExportPluginService>();
-        services.AddScoped< IGrainManagementService<INewsItemGrain>, GrainManagementService<INewsItemGrain, NewsItemModel>>();
+        services.AddScoped<IGrainManagementService<INewsItemGrain>, GrainManagementService<INewsItemGrain, NewsItemModel>>();
         services.AddScoped<IGrainManagementService<IProfileGrain>, GrainManagementService<IProfileGrain, Profile>>();
+        services.AddScoped<IGrainManagementService<IAddressGrain>, GrainManagementService<IAddressGrain, AddressModel>>();
 
         services.AddDbContext<DataContext>(options =>
         {

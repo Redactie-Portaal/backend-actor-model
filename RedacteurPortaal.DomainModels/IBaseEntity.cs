@@ -8,6 +8,6 @@ namespace RedacteurPortaal.DomainModels
 {
     public interface IBaseEntity
     {
-        public Guid Id { get; init; }
+        public Guid Id { get; set; }
     }
 }

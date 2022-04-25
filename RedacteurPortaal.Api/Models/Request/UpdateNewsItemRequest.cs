@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RedacteurPortaal.Api.Models;
+namespace RedacteurPortaal.Api.Models.Request;
 
-public class NewsItemDetailDTO
+public class UpdateNewsItemRequest
 {
     public string? Title { get; set; }
 
@@ -24,11 +24,15 @@ public class NewsItemDetailDTO
 
     public string? LocationDetails { get; set; }
 
-    public DateTime ProdutionDate { get; set; }
-
     public DateTime EndDate { get; set; }
 
     public string? Category { get; set; }
 
     public string? Region { get; set; }
+
+    public MediaVideoItem? Video { get; private set; }
+
+    public MediaAudioItem? Audio { get; private set; }
+
+    public MediaPhotoItem[]? Photos { get; private set; }
 }

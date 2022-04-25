@@ -3,13 +3,7 @@ using RedacteurPortaal.DomainModels.Media;
 
 namespace RedacteurPortaal.Grains.GrainInterfaces;
 
-public interface IMediaAudioGrain : IGrainWithGuidKey
+public interface IMediaAudioGrain : IManageableGrain<MediaAudioItem>
 {
-    Task<MediaAudioItem> GetMediaAudioItem(Guid guid);
-
-    Task AddMediaAudioItem(MediaAudioItem mediaAudio);
-
-    Task DeleteMediaAudioItem(Guid guid);
-
-    Task UpdateMediaAudioItem(MediaAudioItem mediaAudio);
+    Task Update(MediaAudioItem mediaItem);
 }

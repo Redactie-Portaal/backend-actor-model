@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RedacteurPortaal.DomainModels.Validation.Profile;
 
 namespace RedacteurPortaal.DomainModels.Profile
 {
@@ -22,7 +23,7 @@ namespace RedacteurPortaal.DomainModels.Profile
             this.LastOnline = lastOnline;
         }
 
-        public Guid Id { get; init; }
+        public Guid Id { get; set; }
 
         public string FullName { get; set; }
 
