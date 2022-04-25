@@ -38,13 +38,7 @@ public abstract class MediaItem
         this.MediaLocation = mediaLocation ?? throw new ArgumentNullException(nameof(mediaLocation));
     }
 
-<<<<<<< Updated upstream
     public Guid Id { get; private set; }
-=======
-    public Guid Guid { get; set; }
-
-    public string Title { get; set; }
->>>>>>> Stashed changes
 
     public string Title { get; private set; }
 
