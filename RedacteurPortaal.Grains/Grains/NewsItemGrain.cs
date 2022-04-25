@@ -28,8 +28,6 @@ public class NewsItemGrain : Grain, INewsItemGrain
 
     public async Task Delete()
     {
-        var grain = this.GrainFactory.GetGrain<INewsItemDescriptionGrain>(this.newsItem.State.Id);
-        await grain.Delete();
         await this.newsItem.ClearStateAsync();
     }
 

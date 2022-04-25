@@ -27,11 +27,11 @@ public class NewsItemController : Controller
     }
 
     [HttpPost]
-    public async Task<ActionResult<NewsItemDetailDto>> SaveNewsItem([FromBody] NewsItemDetailDto newsitem)
+    public async Task<ActionResult<NewsItemDto>> SaveNewsItem([FromBody] NewsItemDto newsitem)
     {
         Guid newguid = Guid.NewGuid();
 
-        TypeAdapterConfig<NewsItemDetailDto, NewsItemModel>
+        TypeAdapterConfig<NewsItemDto, NewsItemModel>
             .NewConfig()
             .Map(dest => dest.Id,
                 src => newguid);
@@ -48,7 +48,7 @@ public class NewsItemController : Controller
 
         var createdGrain = await this.grainService.GetGrain(newguid);
         var createdItem = await createdGrain.Get();
-        var response = createdItem.Adapt<NewsItemDetailDto>();
+        var response = createdItem.Adapt<NewsItemDto>();
 
         this.logger.LogInformation(successMessage);
         return this.CreatedAtRoute("GetNewsItem", new { id = newguid }, response);
@@ -56,20 +56,20 @@ public class NewsItemController : Controller
 
     [HttpGet]
     [Route("{id}", Name = "GetNewsItem")]
-    public async Task<ActionResult<NewsItemDetailDto>> GetNewsItem(Guid id)
+    public async Task<ActionResult<NewsItemDto>> GetNewsItem(Guid id)
     {
         var grain = await this.grainService.GetGrain(id);
         var response = await grain.Get();
         this.logger.LogInformation("News item fetched successfully");
-        var dto = response.Adapt<NewsItemDetailDto>();
+        var dto = response.Adapt<NewsItemDto>();
         return this.Ok(dto);
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<NewsItemDetailDto>>> GetNewsItems()
+    public async Task<ActionResult<List<NewsItemDto>>> GetNewsItems()
     {
         var grain = await this.grainService.GetGrains();
-        var response = (await grain.SelectAsync(async x => await x.Get())).AsQueryable().ProjectToType<NewsItemDetailDto>(null).ToList();
+        var response = (await grain.SelectAsync(async x => await x.Get())).AsQueryable().ProjectToType<NewsItemDto>(null).ToList();
         this.logger.LogInformation("News item fetched successfully");
         return this.Ok(response);
     }
@@ -85,7 +85,7 @@ public class NewsItemController : Controller
 
     [HttpPatch]
     [Route("{id}")]
-    public async Task<ActionResult<NewsItemDetailDto>> UpdateNewsItem(Guid id, [FromBody] UpdateNewsItemRequest request)
+    public async Task<ActionResult<NewsItemDto>> UpdateNewsItem(Guid id, [FromBody] UpdateNewsItemRequest request)
     {
         TypeAdapterConfig<UpdateNewsItemRequest, NewsItemModel>
         .NewConfig()
@@ -97,7 +97,7 @@ public class NewsItemController : Controller
         await grain.Update(update);
         var updatedGrain = await this.grainService.GetGrain(update.Id);
         var updatedItem = await updatedGrain.Get();
-        var response = updatedItem.Adapt<NewsItemDetailDto>();
+        var response = updatedItem.Adapt<NewsItemDto>();
         this.logger.LogInformation("News item updated successfully");
         return this.Ok(response);
     }

@@ -77,7 +77,7 @@ namespace RedacteurPortaal.Api.Controllers
         [HttpPatch]
         public async Task<ActionResult<AddressDTO>> UpdateAddress(Guid id, [FromBody]UpdateAddressRequest addressDTO)
         {
-            TypeAdapterConfig<UpdateAddressRequest, AddressModel>
+            TypeAdapterConfig<UpdateAddressRequest, AddressDTO>
             .NewConfig()
             .Map(dest => dest.Id,
                 src => id);
@@ -88,7 +88,7 @@ namespace RedacteurPortaal.Api.Controllers
             this.logger.LogInformation("Address updated succesfully");
             var updatedGrain = await this.grainService.GetGrain(address.Id);
             var updatedItem = await updatedGrain.Get();
-            var response = updatedItem.Adapt<AddressModel>();
+            var response = updatedItem.Adapt<AddressDTO>();
             return this.Ok(response);
         }
     }
