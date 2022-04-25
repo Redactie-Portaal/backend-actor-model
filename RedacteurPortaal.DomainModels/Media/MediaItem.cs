@@ -4,7 +4,7 @@ using RedacteurPortaal.DomainModels.Validation.Shared;
 
 namespace RedacteurPortaal.DomainModels.Media;
 
-public abstract class MediaItem
+public abstract class MediaItem : IBaseEntity
 {
     protected MediaItem()
     {
@@ -38,7 +38,7 @@ public abstract class MediaItem
         this.MediaLocation = mediaLocation ?? throw new ArgumentNullException(nameof(mediaLocation));
     }
 
-    public Guid Id { get; private set; }
+    public Guid Id { get; set; }
 
     public string Title { get; private set; }
 

@@ -1,4 +1,5 @@
-﻿using Orleans.Runtime;
+﻿using Orleans;
+using Orleans.Runtime;
 using RedacteurPortaal.DomainModels.NewsItem;
 using RedacteurPortaal.Grains.GrainInterfaces;
 using System;
@@ -9,13 +10,13 @@ using System.Threading.Tasks;
 
 namespace RedacteurPortaal.Grains.Grains;
 
-public class SourceGrain : ISourceGrain
+public class SourceGrain : Grain, ISourceGrain
 {
     private readonly IPersistentState<Source> source;
 
     public SourceGrain(
-        [PersistentState("source", "OrleansStorage")]
-        IPersistentState<Source> source)
+    [PersistentState("source", "OrleansStorage")]
+    IPersistentState<Source> source)
     {
         this.source = source;
     }
@@ -38,7 +39,6 @@ public class SourceGrain : ISourceGrain
     public async Task Update(Source source)
     {
         this.source.State = source;
-
         await this.source.WriteStateAsync();
     }
 }
