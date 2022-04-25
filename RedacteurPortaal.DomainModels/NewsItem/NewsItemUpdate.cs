@@ -10,12 +10,34 @@ namespace RedacteurPortaal.DomainModels.NewsItem
 {
     public class NewsItemUpdate
     {
+        public NewsItemUpdate(Guid id, string title, Status status, ApprovalState approvalState, string author, FeedSource source, ItemBody body,
+            List<Contact> contactDetails, Location locationDetails, DateTime produtionDate, DateTime endDate,
+            Category category, Region region, MediaVideoItem[] videos, MediaAudioItem[] audio, MediaPhotoItem[] photos)
+        {
+            this.Id = id;
+            this.Title = title ?? throw new ArgumentNullException(nameof(title));
+            this.Status = status;
+            this.Author = author ?? throw new ArgumentNullException(nameof(author));
+            this.Source = source ?? throw new ArgumentNullException(nameof(source));
+            this.Body = body ?? throw new ArgumentNullException(nameof(body));
+            this.ContactDetails = contactDetails ?? throw new ArgumentNullException(nameof(contactDetails));
+            this.LocationDetails = locationDetails ?? throw new ArgumentNullException(nameof(locationDetails));
+            this.ProdutionDate = produtionDate;
+            this.EndDate = endDate;
+            this.Category = category;
+            this.Region = region;
+            this.Videos = videos ?? throw new ArgumentNullException(nameof(videos));
+            this.Audio = audio ?? throw new ArgumentNullException(nameof(audio));
+            this.Photos = photos ?? throw new ArgumentNullException(nameof(photos));
+        }
         public Guid Id { get; private set; }
 
         public string Title { get; private set; }
 
         public Status Status { get; private set; }
 
+        public ApprovalState ApprovalState { get; private set; }
+      
         public string Author { get; private set; }
 
         public FeedSource Source { get; private set; }
