@@ -4,6 +4,9 @@ services:
     hostname: api
     build:
       dockerfile: ./RedacteurPortaal.Api/Dockerfile
+      args:
+        username: $USERNAME
+        password: $PASSWORD
     ports:
       - "80:80"
     environment:

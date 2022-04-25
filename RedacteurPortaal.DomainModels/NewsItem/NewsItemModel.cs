@@ -15,6 +15,7 @@ public class NewsItemModel : IBaseEntity
     public NewsItemModel(
         string title,
         Status status,
+        ApprovalState approvalState,
         string author,
         FeedSource source,
         ItemBody body,
@@ -30,6 +31,7 @@ public class NewsItemModel : IBaseEntity
     {
         this.Title = title ?? throw new ArgumentNullException(nameof(title));
         this.Status = status;
+        this.ApprovalState = approvalState;
         this.Author = author ?? throw new ArgumentNullException(nameof(author));
         this.Source = source ?? throw new ArgumentNullException(nameof(source));
         this.Body = body ?? throw new ArgumentNullException(nameof(body));
@@ -49,6 +51,8 @@ public class NewsItemModel : IBaseEntity
     public string Title { get; private set; }
 
     public Status Status { get; private set; }
+    
+    public ApprovalState ApprovalState { get; private set; }
 
     public string Author { get; private set; }
 

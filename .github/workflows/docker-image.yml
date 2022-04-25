@@ -11,6 +11,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
+      env:
+        PASSWORD: ${{secrets.GITHUB_TOKEN}}
+        USERNAME: ${{secrets.GITHUB_ACTOR}}
       run: |
         docker build . --file ./RedacteurPortaal.Api/Dockerfile --tag ghcr.io/redactie-portaal/redacteurportaalapi:latest
         echo $CR_PAT | docker login ghcr.io -u joepvand -p ${{secrets.GITHUB_TOKEN}}
