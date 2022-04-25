@@ -30,7 +30,6 @@ namespace RedacteurPortaal.DomainModels.NewsItem
             this.Audio = audio ?? throw new ArgumentNullException(nameof(audio));
             this.Photos = photos ?? throw new ArgumentNullException(nameof(photos));
         }
-
         public Guid Id { get; private set; }
 
         public string Title { get; private set; }
@@ -38,7 +37,7 @@ namespace RedacteurPortaal.DomainModels.NewsItem
         public Status Status { get; private set; }
 
         public ApprovalState ApprovalState { get; private set; }
-
+      
         public string Author { get; private set; }
 
         public FeedSource Source { get; private set; }
