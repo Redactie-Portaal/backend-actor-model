@@ -64,8 +64,7 @@ public class ExportDestinationController : Controller
             AudioUri = story.Audio.Select(v => v.MediaLocation).ToArray(),
             Images = story.Photos.Select(x => x.Image).ToArray(),
             Name = story.Title,
-            ShortText = story.Body.ShortDescription,
-            TextContent = story.Body.Description,
+            TextContent = plugin.TruncateForSocialMedia(story.Body, 140),
             VideoUri = story.Videos.Select(v => v.MediaLocation).ToArray(),
         }, apiKey);
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
