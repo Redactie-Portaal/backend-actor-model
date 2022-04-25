@@ -51,7 +51,7 @@ public class NewsItemController : Controller
         var response = createdItem.Adapt<NewsItemDetailDto>();
 
         this.logger.LogInformation(successMessage);
-        return this.CreatedAtRoute("GetNewsItem", new { id = this.newguid }, response);
+        return this.CreatedAtRoute("GetNewsItem", new { id = newguid }, response);
     }
 
     [HttpGet]
