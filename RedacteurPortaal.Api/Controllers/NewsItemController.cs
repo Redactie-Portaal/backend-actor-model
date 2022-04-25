@@ -77,7 +77,6 @@ public class NewsItemController : Controller
     {
         var grain = await this.grainService.GetGrains();
         this.logger.LogInformation("News item fetched successfully");
-
         return this.Ok(grain.Select(x => x.Get()));
     }
 

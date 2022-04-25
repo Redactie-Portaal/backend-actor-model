@@ -15,8 +15,8 @@ public class NewsItemDescriptionGrain : Grain, INewsItemDescriptionGrain
     }
 
     public NewsItemDescriptionGrain(
-        [PersistentState("newsitem", "OrleansStorage")]
-        IPersistentState<ItemBody> description)
+    [PersistentState("newsItemDescription", "OrleansStorage")]
+    IPersistentState<ItemBody> description)
     {
         this.description = description;
     }

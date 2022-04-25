@@ -14,8 +14,8 @@ public class LocationGrain : Grain, ILocationGrain
     }
 
     public LocationGrain(
-        [PersistentState("location", "OrleansStorage")]
-        IPersistentState<Location> location)
+    [PersistentState("location","OrleansStorage")]
+    IPersistentState<Location> location)
     {
         this.location = location;
     }

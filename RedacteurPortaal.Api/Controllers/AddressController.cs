@@ -36,7 +36,7 @@ namespace RedacteurPortaal.Api.Controllers
             address.Id = newguid;
             const string successMessage = "Address was created";
             var grain = await this.grainService.CreateGrain(address.Id);
-            await grain.UpdateAdress(address);
+            await grain.UpdateAddress(address);
             this.logger.LogInformation(successMessage);
             return this.CreatedAtRoute("GetAddress", new { id = newguid }, address);
         }
@@ -74,7 +74,7 @@ namespace RedacteurPortaal.Api.Controllers
         {
             var grain = await this.grainService.GetGrain(guid);
             var address = addAddressRequest.Adapt<AddressModel>();
-            await grain.UpdateAdress(address);
+            await grain.UpdateAddress(address);
             this.logger.LogInformation("Address updated succesfully");
             return this.Ok("Address updated");
         }

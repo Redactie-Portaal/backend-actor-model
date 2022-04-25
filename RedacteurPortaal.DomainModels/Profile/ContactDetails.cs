@@ -12,6 +12,7 @@ namespace RedacteurPortaal.DomainModels.Profile
     {
         public ContactDetails()
         {
+            new ContactDetailsValidator().ValidateAndThrow(this);
         }
 
         public ContactDetails(string email, string phoneNumber, string address, string province, string city, string postalCode)
@@ -26,7 +27,7 @@ namespace RedacteurPortaal.DomainModels.Profile
             new ContactDetailsValidator().ValidateAndThrow(this);
         }
 
-        public string Email { get; private set; }
+        public string Email { get; private set;  }
 
         public string PhoneNumber { get; private set; }
 

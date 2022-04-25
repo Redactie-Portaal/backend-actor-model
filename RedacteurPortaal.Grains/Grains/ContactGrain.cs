@@ -9,7 +9,9 @@ public class ContactGrain : Grain, IContactGrain
 {
     private readonly IPersistentState<Contact> contactState;
 
-    public ContactGrain([PersistentState("contact", "OrleansStorage")] IPersistentState<Contact> contact)
+    public ContactGrain(
+    [PersistentState("contact", "OrleansStorage")]
+    IPersistentState<Contact> contact)
     {
         this.contactState = contact;
     }
