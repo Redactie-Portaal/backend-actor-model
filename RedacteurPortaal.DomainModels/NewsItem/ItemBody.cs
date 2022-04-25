@@ -6,16 +6,13 @@ public class ItemBody
     {
     }
 
-    public ItemBody(Guid guid, string description, string shortDescription)
+    public ItemBody(Guid guid, string description)
     {
         this.Guid = guid;
         this.Description = description ?? throw new ArgumentNullException(nameof(description));
-        this.ShortDescription = shortDescription ?? throw new ArgumentNullException(nameof(shortDescription));
     }
 
     public Guid? Guid { get; private set; }
 
     public string? Description { get; private set; }
-
-    public string? ShortDescription { get; private set; }
 }
