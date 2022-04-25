@@ -49,7 +49,7 @@ namespace RedacteurPortaal.Tests.Grains.GrainServices
             var service = new GrainManagementService<SourceGrain, Source>(dbContext.Object, clusterClient.Object);
 
             await Assert.ThrowsAsync<DuplicateNameException>(async () => {
-                var foo = await service.CreateGrain(id);
+                _ = await service.CreateGrain(id);
             });
         }
 
@@ -59,9 +59,7 @@ namespace RedacteurPortaal.Tests.Grains.GrainServices
             var id = Guid.NewGuid();
             var dbContext = new Moq.Mock<DataContext>();
 
-            var references = new List<GrainReference>() {
-
-            };
+            var references = new List<GrainReference>();
 
             dbContext.Setup(x => x.GrainReferences).Returns(references.GetQueryableMockDbSet().Object);
 
@@ -70,12 +68,12 @@ namespace RedacteurPortaal.Tests.Grains.GrainServices
             var service = new GrainManagementService<SourceGrain, Source>(dbContext.Object, clusterClient.Object);
 
             await Assert.ThrowsAsync<KeyNotFoundException>(async () => {
-                var foo = await service.GetGrain(id);
+                _  = await service.GetGrain(id);
             });
         }
 
         [Fact]
-        public async Task GetReturns()
+        public void GetReturns()
         {
             var id = Guid.NewGuid();
             var dbContext = new Moq.Mock<DataContext>();
@@ -136,7 +134,7 @@ namespace RedacteurPortaal.Tests.Grains.GrainServices
             await service.DeleteGrain(id);
 
             await Assert.ThrowsAsync<KeyNotFoundException>(async () => {
-                var foo = await service.GetGrain(id);
+                _ = await service.GetGrain(id);
             });
         }
 

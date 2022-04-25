@@ -33,9 +33,9 @@ public class NewsItemGrain : Grain, INewsItemGrain
         await this.newsItem.ClearStateAsync();
     }
 
-    public async Task Update(NewsItemModel newsItem)
+    public async Task Update(NewsItemModel update)
     {
-        this.newsItem.State = newsItem;
+        this.newsItem.State = update;
         await this.newsItem.WriteStateAsync();
     }
 }
