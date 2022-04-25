@@ -19,23 +19,22 @@ public class NewsItemController : Controller
 {
     private readonly ILogger logger;
     private readonly IGrainManagementService<INewsItemGrain> grainService;
-    private Guid newguid;
 
     public NewsItemController(ILogger<NewsItemController> logger, IGrainManagementService<INewsItemGrain> grainService)
     {
         this.logger = logger;
         this.grainService = grainService;
-
-        TypeAdapterConfig<NewsItemDetailDto, NewsItemModel>
-            .NewConfig()
-            .Map(dest => dest.Id,
-                src => this.newguid);
     }
 
     [HttpPost]
     public async Task<ActionResult<NewsItemDetailDto>> SaveNewsItem([FromBody] NewsItemDetailDto newsitem)
     {
-        this.newguid = Guid.NewGuid();
+        Guid newguid = Guid.NewGuid();
+
+        TypeAdapterConfig<NewsItemDetailDto, NewsItemModel>
+            .NewConfig()
+            .Map(dest => dest.Id,
+                src => newguid);
 
         TypeAdapterConfig<MediaVideoItemDto, MediaVideoItem>
             .NewConfig()
@@ -43,11 +42,11 @@ public class NewsItemController : Controller
                   src => TimeSpan.FromSeconds(src.DurationSeconds));
 
         const string successMessage = "News item was created";
-        var grain = await this.grainService.CreateGrain(this.newguid);
+        var grain = await this.grainService.CreateGrain(newguid);
         var update = newsitem.Adapt<NewsItemModel>();
         await grain.Update(update);
 
-        var createdGrain = await this.grainService.GetGrain(this.newguid);
+        var createdGrain = await this.grainService.GetGrain(newguid);
         var createdItem = await createdGrain.Get();
         var response = createdItem.Adapt<NewsItemDetailDto>();
 
@@ -81,7 +80,7 @@ public class NewsItemController : Controller
     {
         await this.grainService.DeleteGrain(id);
         this.logger.LogInformation("News item deleted successfully");
-        return this.StatusCode(200, "News item deleted");
+        return this.NoContent();
     }
 
     [HttpPatch]
@@ -100,6 +99,6 @@ public class NewsItemController : Controller
         var updatedItem = await updatedGrain.Get();
         var response = updatedItem.Adapt<NewsItemDetailDto>();
         this.logger.LogInformation("News item updated successfully");
-        return this.StatusCode(200, response);
+        return this.Ok(response);
     }
 }

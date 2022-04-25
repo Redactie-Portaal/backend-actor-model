@@ -16,36 +16,42 @@ namespace RedacteurPortaal.Api.Controllers
     {
         private readonly IGrainManagementService<IAddressGrain> grainService;
         private readonly ILogger logger;
-        private Guid newguid;
-
+        
         public AddressController(IGrainManagementService<IAddressGrain> grainService, ILogger<AddressController> logger)
         {
             this.grainService = grainService;    
             this.logger = logger;
+        }
 
+        public void MapGuid(Guid guid)
+        {
             TypeAdapterConfig<AddressDTO, AddressModel>
-                .NewConfig()
-                .Map(dest => dest.Id,
-                    src => this.newguid);
+             .NewConfig()
+             .Map(dest => dest.Id,
+                 src => guid);
         }
 
         [HttpPost]
         public async Task<ActionResult<AddressDTO>> SaveAddress([FromBody] AddAddressRequest addressDTO )   
         {
-            this.newguid = Guid.NewGuid();
-
+            Guid newguid = Guid.NewGuid();
+            TypeAdapterConfig<AddressDTO, AddressModel>
+                .NewConfig()
+                .Map(dest => dest.Id,
+                    src => newguid);
+            
             var address = addressDTO.Adapt<AddressModel>();
-            address.Id = this.newguid;
+            address.Id = newguid;
             const string successMessage = "Address was created";
             var grain = await this.grainService.CreateGrain(address.Id);
             await grain.UpdateAdress(address);
 
-            var createdGrain = await this.grainService.GetGrain(this.newguid);
+            var createdGrain = await this.grainService.GetGrain(newguid);
             var createdItem = await createdGrain.Get();
             var response = createdItem.Adapt<AddressDTO>();
 
             this.logger.LogInformation(successMessage);
-            return this.CreatedAtRoute("GetAddress", new { id = this.newguid }, response);
+            return this.CreatedAtRoute("GetAddress", new { id = newguid }, response);
         }
 
         [HttpGet]
@@ -73,7 +79,7 @@ namespace RedacteurPortaal.Api.Controllers
         {
             await this.grainService.DeleteGrain(id);
             this.logger.LogInformation("Address deleted successfully");
-            return this.Ok("Address deleted");
+            return this.NoContent();
         }
 
         [HttpPatch]
@@ -91,7 +97,7 @@ namespace RedacteurPortaal.Api.Controllers
             var updatedGrain = await this.grainService.GetGrain(address.Id);
             var updatedItem = await updatedGrain.Get();
             var response = updatedItem.Adapt<AddressModel>();
-            return this.StatusCode(200, response);
+            return this.Ok(response);
         }
     }
 }
