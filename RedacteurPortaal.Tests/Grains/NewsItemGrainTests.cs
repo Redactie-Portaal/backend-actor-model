@@ -40,6 +40,7 @@ public class NewsItemGrainTests
                                          DateTime.UtcNow,
                                          Category.STORY,
                                          Region.LOCAL,
+                                         "dossier",
                                          Array.Empty<MediaVideoItem>(),
                                          Array.Empty<MediaAudioItem>(),
                                          Array.Empty<MediaPhotoItem>());
