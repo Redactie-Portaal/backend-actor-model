@@ -1,4 +1,5 @@
-﻿using RedacteurPortaal.DomainModels.Address;
+﻿using FluentValidation;
+using RedacteurPortaal.DomainModels.Validation.Address;
 
 namespace RedacteurPortaal.DomainModels.Adress
 {
@@ -22,12 +23,14 @@ namespace RedacteurPortaal.DomainModels.Adress
         public AddressModel(Guid id, string companyName, string address, string postalCode, string phoneNumber, string emailAddress, string webpage)
         {
             this.Id = id;
-            this.CompanyName = String.IsNullOrEmpty(companyName) ? throw new ArgumentNullException(nameof(companyName)) : companyName;
+            this.CompanyName = companyName  ?? throw new ArgumentNullException(nameof(companyName));
             this.Address = address ?? throw new ArgumentNullException(nameof(address));
             this.PostalCode = postalCode;
             this.PhoneNumber = phoneNumber;
             this.EmailAddress = emailAddress;
             this.Webpage = webpage;
+
+            new AddressValidator().ValidateAndThrow(this);
         }
 
         public AddressModel()
