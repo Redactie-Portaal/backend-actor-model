@@ -23,7 +23,7 @@ namespace RedacteurPortaal.Api.DTOs
 
         public string Presentation { get; set; }
 
-        public Location Location { get; set; }
+        public LocationDto Location { get; set; }
 
         public string Format { get; set; }
 

@@ -2,5 +2,6 @@
 {
     public class FeedSourceDto
     {
+        public string PlaceHolder { get; set; }
     }
 }

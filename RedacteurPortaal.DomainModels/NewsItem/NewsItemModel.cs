@@ -20,7 +20,7 @@ public class NewsItemModel : IBaseEntity
         ApprovalState approvalState,
         string author,
         FeedSource source,
-        ItemBody body,
+        string body,
         List<Contact> contactDetails,
         Location locationDetails,
         DateTime productionDate,
@@ -61,7 +61,7 @@ public class NewsItemModel : IBaseEntity
 
     public FeedSource Source { get; private  set; }
 
-    public ItemBody Body { get; private set; }
+    public string Body { get; private set; }
 
     public List<Contact> ContactDetails { get; private set; }
 
