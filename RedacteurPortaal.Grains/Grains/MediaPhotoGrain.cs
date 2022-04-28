@@ -11,7 +11,7 @@ public class MediaPhotoGrain : Grain, IMediaPhotoGrain
     private readonly IPersistentState<MediaPhotoItem> photoItem;
 
     public MediaPhotoGrain(
-    [PersistentState("photoItem","OrleansStorage")]
+    [PersistentState("mediaItem","OrleansStorage")]
     IPersistentState<MediaPhotoItem> photoItem)
     {
         this.photoItem = photoItem;
@@ -32,9 +32,9 @@ public class MediaPhotoGrain : Grain, IMediaPhotoGrain
         await this.photoItem.ClearStateAsync();
     }
 
-    public async Task Update(MediaPhotoItem photoItem)
+    public async Task Update(MediaPhotoItem mediaItem)
     {
-        this.photoItem.State = photoItem;
+        this.photoItem.State = mediaItem;
         await this.photoItem.WriteStateAsync();
     }
 }
