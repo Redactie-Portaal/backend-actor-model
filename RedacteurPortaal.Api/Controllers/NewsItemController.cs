@@ -41,16 +41,10 @@ public class NewsItemController : Controller
             .Map(dest => dest.Duration,
                   src => TimeSpan.FromSeconds(src.DurationSeconds));
 
-        const string successMessage = "News item was created";
         var grain = await this.grainService.CreateGrain(newguid);
         var update = newsitem.Adapt<NewsItemModel>();
-        await grain.Update(update);
-
-        var createdGrain = await this.grainService.GetGrain(newguid);
-        var createdItem = await createdGrain.Get();
-        var response = createdItem.Adapt<NewsItemDto>();
-
-        this.logger.LogInformation(successMessage);
+        var createdGrain  = await grain.Update(update);
+        var response = createdGrain.Adapt<NewsItemDto>();
         return this.CreatedAtRoute("GetNewsItem", new { id = newguid }, response);
     }
 
@@ -60,7 +54,6 @@ public class NewsItemController : Controller
     {
         var grain = await this.grainService.GetGrain(id);
         var response = await grain.Get();
-        this.logger.LogInformation("News item fetched successfully");
         var dto = response.Adapt<NewsItemDto>();
         return this.Ok(dto);
     }
@@ -72,17 +65,14 @@ public class NewsItemController : Controller
         
         var response = (await grain.SelectAsync(async x => await 
         x.Get())).AsQueryable().ProjectToType<NewsItemDto>(null).ToList();
-        
-        this.logger.LogInformation("News item fetched successfully");
         return this.Ok(response);
     }
 
     [HttpDelete]
     [Route("{id}")]
-    public async Task<ActionResult<string>> DeleteNewsItem(Guid id)
+    public async Task<IActionResult> DeleteNewsItem(Guid id)
     {
         await this.grainService.DeleteGrain(id);
-        this.logger.LogInformation("News item deleted successfully");
         return this.NoContent();
     }
 
@@ -97,11 +87,8 @@ public class NewsItemController : Controller
 
         var grain = await this.grainService.GetGrain(id);
         var update = request.Adapt<NewsItemModel>();
-        await grain.Update(update);
-        var updatedGrain = await this.grainService.GetGrain(update.Id);
-        var updatedItem = await updatedGrain.Get();
-        var response = updatedItem.Adapt<NewsItemDto>();
-        this.logger.LogInformation("News item updated successfully");
+        var updatedGrain = await grain.Update(update);
+        var response = updatedGrain.Adapt<NewsItemDto>();
         return this.Ok(response);
     }
 }

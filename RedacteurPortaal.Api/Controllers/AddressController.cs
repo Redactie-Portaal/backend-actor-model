@@ -33,15 +33,9 @@ namespace RedacteurPortaal.Api.Controllers
                     src => newguid);
             
             var address = addressDTO.Adapt<AddressModel>();
-            const string successMessage = "Address was created";
             var grain = await this.grainService.CreateGrain(address.Id);
-            await grain.UpdateAddress(address);
-
-            var createdGrain = await this.grainService.GetGrain(newguid);
-            var createdItem = await createdGrain.Get();
-            var response = createdItem.Adapt<AddressDTO>();
-
-            this.logger.LogInformation(successMessage);
+            var updatedGrain = await grain.UpdateAddress(address);
+            var response = updatedGrain.Adapt<AddressDTO>();
             return this.CreatedAtRoute("GetAddress", new { id = newguid }, response);
         }
 
@@ -51,7 +45,6 @@ namespace RedacteurPortaal.Api.Controllers
         {
             var grain = await this.grainService.GetGrain(id);
             var response = await grain.Get();
-            this.logger.LogInformation("Address fetched successfully");
             return response.Adapt<AddressDTO>();
         }
 
@@ -59,7 +52,6 @@ namespace RedacteurPortaal.Api.Controllers
         public async Task<List<AddressDTO>> Get()
         {
             var grain = await this.grainService.GetGrains();
-            this.logger.LogInformation("Addresses fetched successfully");
             var addresses = await grain.SelectAsync(async x => await x.Get());
             return addresses.AsQueryable().ProjectToType<AddressDTO>().ToList();
         }
@@ -69,7 +61,6 @@ namespace RedacteurPortaal.Api.Controllers
         public async Task<IActionResult> DeleteAddress(Guid id)
         {
             await this.grainService.DeleteGrain(id);
-            this.logger.LogInformation("Address deleted successfully");
             return this.NoContent();
         }
 
@@ -83,11 +74,8 @@ namespace RedacteurPortaal.Api.Controllers
 
             var address = addressDTO.Adapt<AddressModel>();
             var grain = await this.grainService.GetGrain(id);
-            await grain.UpdateAddress(address);
-            this.logger.LogInformation("Address updated succesfully");
-            var updatedGrain = await this.grainService.GetGrain(address.Id);
-            var updatedItem = await updatedGrain.Get();
-            var response = updatedItem.Adapt<AddressDTO>();
+            var updatedGrain = await grain.UpdateAddress(address);
+            var response = updatedGrain.Adapt<AddressDTO>();
             return this.Ok(response);
         }
     }
