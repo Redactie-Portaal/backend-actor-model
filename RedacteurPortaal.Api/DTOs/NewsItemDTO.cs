@@ -16,8 +16,8 @@ public class NewsItemDto
     public Guid Id { get; set; }
 
     public string? Title { get; set; }
-
-    public string? Status { get; set; }
+    
+    public Status? Status { get; set; }
 
     public string ApprovalStatus { get; set; }
   
@@ -25,19 +25,21 @@ public class NewsItemDto
 
     public FeedSourceDto? Source { get; set; }
 
-    public ItemBodyDto? Body { get; set; }
+    public string Body { get; set; }
 
     public List<ContactDto> ContactDetails { get; set; }
 
     public LocationDto LocationDetails { get; set;  }
 
-    public DateTime? ProdutionDate { get; set; }
+    public DateTime? ProductionDate { get; set; }
 
     public DateTime? EndDate { get; set; }
 
     public Category? Category { get; set; }
 
     public Region? Region { get; set; }
+
+    public string? Dossier { get; set; }
 
     public MediaVideoItemDto[] Videos { get; set; }
 
