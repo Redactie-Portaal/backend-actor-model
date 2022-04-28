@@ -72,7 +72,7 @@ namespace RedacteurPortaal.Api.Controllers
             var updatedAddress = await grain.UpdateAddress(address);
             this.logger.LogInformation("Address updated succesfully");
 
-            return grain.Get().Adapt<AddressDTO>();
+            return this.Ok(updatedAddress);
         }
     }
 }

@@ -90,7 +90,7 @@ public class AddressGrainTests
     }
   
     [Fact]
-    public async Task ThrowsWhenModelPropIsNull()
+    public void ThrowsWhenModelPropIsNull()
     {
         var guid = Guid.NewGuid();
 
