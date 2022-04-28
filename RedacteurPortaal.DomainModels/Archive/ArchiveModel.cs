@@ -26,8 +26,8 @@ public class ArchiveModel : IBaseEntity
 
     public ArchiveModel()
     {
-        
     }
+
     public Guid Id { get; set; }
 
     public string Title { get; private set; }
