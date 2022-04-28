@@ -10,7 +10,6 @@ namespace RedacteurPortaal.Api
         private readonly DataContext context;
         private readonly FileSystemProvider fileSystemProvider;
         private readonly List<IExportPlugin> plugins;
-        private readonly ILogger logger;
 
         public ExportPluginService(DataContext context, FileSystemProvider fileSystemProvider)
         {

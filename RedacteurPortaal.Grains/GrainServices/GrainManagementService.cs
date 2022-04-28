@@ -25,7 +25,7 @@ namespace RedacteurPortaal.Grains.GrainServices
         {
             if (this.DbContext.GrainReferences.Any(x => x.GrainId == id))
             {
-                this.logger.LogWarning($"Grain with ID: {id} already exists!");
+                this.logger.LogCritical($"Grain with ID: {id} already exists!");
                 throw new DuplicateNameException($"Grain with id {id} already exists!");
             }
 
@@ -41,7 +41,6 @@ namespace RedacteurPortaal.Grains.GrainServices
 
             if (!this.DbContext.GrainReferences.Any(x=> x.GrainId == id))
             {
-                //this.logger.LogWarning($"Grain with ID: {id} does not exist!");
                 throw new KeyNotFoundException($"Grain with id {id} not found!");
             }
 
@@ -81,7 +80,6 @@ namespace RedacteurPortaal.Grains.GrainServices
             }
             else
             {
-                //this.logger.LogWarning($"Grain with ID: {id} does not exist!");
                 throw new KeyNotFoundException($"Grain {id} not found");
             }
         }
