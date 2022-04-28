@@ -31,9 +31,9 @@ public class ClusterFixture
 
     public class SiloConfigurator : ISiloConfigurator
     {
-        public void Configure(ISiloBuilder hostBuilder)
+        public void Configure(ISiloBuilder siloBuilder)
         {
-            hostBuilder.AddMemoryGrainStorage("OrleansStorage");
+            siloBuilder.AddMemoryGrainStorage("OrleansStorage");
         }
     }
 }

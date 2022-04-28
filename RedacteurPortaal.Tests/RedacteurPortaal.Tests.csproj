@@ -8,6 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="EntityFrameworkMock.Moq" Version="1.0.0.64" />
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="6.0.4" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
     <PackageReference Include="Microsoft.Orleans.Core" Version="3.6.1" />
     <PackageReference Include="Microsoft.Orleans.OrleansProviders" Version="3.6.1" />
@@ -26,7 +28,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\RedacteurPortaal.Api\RedacteurPortaal.Api.csproj" />
     <ProjectReference Include="..\RedacteurPortaal.Grains\RedacteurPortaal.Grains.csproj" />
+    <ProjectReference Include="..\RedacteurPortaal.Helpers\RedacteurPortaal.Helpers.csproj" />
   </ItemGroup>
 
 </Project>
