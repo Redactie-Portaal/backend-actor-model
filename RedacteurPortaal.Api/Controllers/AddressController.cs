@@ -16,7 +16,7 @@ namespace RedacteurPortaal.Api.Controllers
     {
         private readonly IGrainManagementService<IAddressGrain> grainService;
         private readonly ILogger logger;
-
+        
         public AddressController(IGrainManagementService<IAddressGrain> grainService, ILogger<AddressController> logger)
         {
             this.grainService = grainService;    
@@ -26,19 +26,17 @@ namespace RedacteurPortaal.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<AddressDTO>> SaveAddress([FromBody] AddAddressRequest addressDTO )   
         {
-            var newguid = Guid.NewGuid();
+            Guid newguid = Guid.NewGuid();
             TypeAdapterConfig<AddressDTO, AddressModel>
                 .NewConfig()
                 .Map(dest => dest.Id,
                     src => newguid);
-
+            
             var address = addressDTO.Adapt<AddressModel>();
-            address.Id = newguid;
-            const string successMessage = "Address was created";
             var grain = await this.grainService.CreateGrain(address.Id);
-            await grain.UpdateAddress(address);
-            this.logger.LogInformation(successMessage);
-            return this.CreatedAtRoute("GetAddress", new { id = newguid }, address);
+            var updatedGrain = await grain.UpdateAddress(address);
+            var response = updatedGrain.Adapt<AddressDTO>();
+            return this.CreatedAtRoute("GetAddress", new { id = newguid }, response);
         }
 
         [HttpGet]
@@ -47,7 +45,6 @@ namespace RedacteurPortaal.Api.Controllers
         {
             var grain = await this.grainService.GetGrain(id);
             var response = await grain.Get();
-            this.logger.LogInformation("Address fetched successfully");
             return response.Adapt<AddressDTO>();
         }
 
@@ -55,7 +52,6 @@ namespace RedacteurPortaal.Api.Controllers
         public async Task<List<AddressDTO>> Get()
         {
             var grain = await this.grainService.GetGrains();
-            this.logger.LogInformation("Addresses fetched successfully");
             var addresses = await grain.SelectAsync(async x => await x.Get());
             return addresses.AsQueryable().ProjectToType<AddressDTO>().ToList();
         }
@@ -65,8 +61,7 @@ namespace RedacteurPortaal.Api.Controllers
         public async Task<IActionResult> DeleteAddress(Guid id)
         {
             await this.grainService.DeleteGrain(id);
-            this.logger.LogInformation("Address deleted successfully");
-            return this.Ok("Address deleted");
+            return this.NoContent();
         }
 
         [HttpPatch]

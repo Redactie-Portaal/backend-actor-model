@@ -33,7 +33,7 @@ public class NewsItemGrainTests
                                          ApprovalState.PENDING,
                                          "Newsitem Author",
                                          new FeedSource { },
-                                         new ItemBody { },
+                                         "body",
                                          new List<Contact>(),
                                          new Location { },
                                          DateTime.UtcNow,

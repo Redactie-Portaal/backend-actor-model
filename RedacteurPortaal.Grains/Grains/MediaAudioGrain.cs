@@ -32,9 +32,9 @@ public class MediaAudioGrain : Grain, IMediaAudioGrain
         await this.audioItem.ClearStateAsync();
     }
 
-    public async Task Update(MediaAudioItem audioItem)
+    public async Task Update(MediaAudioItem mediaItem)
     {
-        this.audioItem.State = audioItem;
+        this.audioItem.State = mediaItem;
         await this.audioItem.WriteStateAsync();
     }
 }

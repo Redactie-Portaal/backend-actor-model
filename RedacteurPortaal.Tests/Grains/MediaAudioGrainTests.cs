@@ -41,7 +41,7 @@ public class MediaAudioGrainTests
                                                       "Format",
                                                       new Uri("https://microsoft.com"),
                                                       TimeSpan.Zero,
-                                                      Weather.Sunny,
+                                                      Weather.SUNNY,
                                                       "Firstwords",
                                                       "Programname");
 
