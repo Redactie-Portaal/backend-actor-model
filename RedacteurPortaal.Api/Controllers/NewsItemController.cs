@@ -9,6 +9,7 @@ using RedacteurPortaal.DomainModels.NewsItem;
 using RedacteurPortaal.DomainModels.Shared;
 using RedacteurPortaal.Grains.GrainInterfaces;
 using RedacteurPortaal.Grains.GrainServices;
+using RedacteurPortaal.Helpers;
 
 namespace RedacteurPortaal.Api.Controllers;
 
@@ -26,58 +27,45 @@ public class NewsItemController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> SaveNewsItem([FromBody] NewsItemDetailDto newsitem)
+    public async Task<ActionResult<NewsItemDto>> SaveNewsItem([FromBody] NewsItemDto newsitem)
     {
-        var newguid = Guid.NewGuid();
-        TypeAdapterConfig<NewsItemDetailDto, NewsItemModel>
+        Guid newguid = Guid.NewGuid();
+
+        TypeAdapterConfig<NewsItemDto, NewsItemModel>
             .NewConfig()
-            .Map(dest => dest.ContactDetails,
-                src => src.ContactDetails.AsQueryable().ProjectToType<Contact>(null).ToList())
-            .Map(dest => dest.LocationDetails,
-                src => src.LocationDetails.Adapt<Location>())
-            .Map(dest => dest.Body,
-                src => src.Body != null ? src.Body.Adapt<ItemBody>() : new ItemBody())
-            .Map(dest => dest.Source,
-                src => src.Source != null ? src.Source.Adapt<FeedSource>() : new FeedSource())
-            .Map(dest => dest.Videos,
-                src => src.Videos.AsQueryable().ProjectToType<MediaVideoItem>(null).ToList())
-            .Map(dest => dest.Audio,
-                src => src.Audio.AsQueryable().ProjectToType<MediaAudioItem>(null).ToList())
-            .Map(dest => dest.Photos,
-                src => src.Photos.AsQueryable().ProjectToType<MediaPhotoItem>(null).ToList())
             .Map(dest => dest.Id,
                 src => newguid);
-        
+
         TypeAdapterConfig<MediaVideoItemDto, MediaVideoItem>
             .NewConfig()
             .Map(dest => dest.Duration,
                   src => TimeSpan.FromSeconds(src.DurationSeconds));
 
-        const string successMessage = "News item was created";
-        var grain = await this.grainService.GetGrain(newguid);
-
+        var grain = await this.grainService.CreateGrain(newguid);
         var update = newsitem.Adapt<NewsItemModel>();
-        await grain.Update(update);
-        this.logger.LogInformation(successMessage);
-        return this.CreatedAtRoute("GetNewsItem", new { id = newguid }, update);
+        var createdGrain  = await grain.Update(update);
+        var response = createdGrain.Adapt<NewsItemDto>();
+        return this.CreatedAtRoute("GetNewsItem", new { id = newguid }, response);
     }
 
     [HttpGet]
     [Route("{id}", Name = "GetNewsItem")]
-    public async Task<IActionResult> GetNewsItem(Guid id)
+    public async Task<ActionResult<NewsItemDto>> GetNewsItem(Guid id)
     {
         var grain = await this.grainService.GetGrain(id);
         var response = await grain.Get();
-        this.logger.LogInformation("News item fetched successfully");
-        return this.Ok(response);
+        var dto = response.Adapt<NewsItemDto>();
+        return this.Ok(dto);
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetNewsItems()
+    public async Task<ActionResult<List<NewsItemDto>>> GetNewsItems()
     {
         var grain = await this.grainService.GetGrains();
-        this.logger.LogInformation("News item fetched successfully");
-        return this.Ok(grain.Select(x => x.Get()));
+        
+        var response = (await grain.SelectAsync(async x => await 
+        x.Get())).AsQueryable().ProjectToType<NewsItemDto>(null).ToList();
+        return this.Ok(response);
     }
 
     [HttpDelete]
@@ -85,40 +73,22 @@ public class NewsItemController : Controller
     public async Task<IActionResult> DeleteNewsItem(Guid id)
     {
         await this.grainService.DeleteGrain(id);
-        this.logger.LogInformation("News item deleted successfully");
-        return this.StatusCode(204, "News item deleted");
+        return this.NoContent();
     }
 
     [HttpPatch]
     [Route("{id}")]
-    public async Task<IActionResult> UpdateNewsItem(Guid guid, [FromBody] UpdateNewsItemRequest request)
+    public async Task<ActionResult<NewsItemDto>> UpdateNewsItem(Guid id, [FromBody] UpdateNewsItemRequest request)
     {
-        var grain = await this.grainService.GetGrain(guid);
-        TypeAdapterConfig<NewsItemModel, NewsItemUpdate>
+        TypeAdapterConfig<UpdateNewsItemRequest, NewsItemModel>
         .NewConfig()
-        .Map(dest => dest.ApprovalState,
-            src => request.ApprovalState != null ? Enum.Parse<ApprovalState>(request.ApprovalState) : ApprovalState.PENDING)
-        .Map(dest => dest.ContactDetails,
-        src => src.ContactDetails.AsQueryable().ProjectToType<Contact>(null).ToList())
-        .Map(dest => dest.LocationDetails,
-        src => src.LocationDetails.Adapt<Location>())
-        .Map(dest => dest.Body,
-        src => src.Body != null ? src.Body.Adapt<ItemBody>() : new ItemBody())
-        .Map(dest => dest.Source,
-        src => src.Source != null ? src.Source.Adapt<FeedSource>() : new FeedSource())
-        .Map(dest => dest.Videos,
-        src => src.Videos.AsQueryable().ProjectToType<MediaVideoItem>(null).ToList())
-        .Map(dest => dest.Audio,
-        src => src.Audio.AsQueryable().ProjectToType<MediaAudioItem>(null).ToList())
-        .Map(dest => dest.Photos,
-        src => src.Photos.AsQueryable().ProjectToType<MediaPhotoItem>(null).ToList())
         .Map(dest => dest.Id,
-        src => guid);
-        var update = request.Adapt<NewsItemModel>();
+            src => id);
 
-        await grain.Update(update);
-        
-        this.logger.LogInformation("News item updated successfully");
-        return this.StatusCode(204, "News item updated");
+        var grain = await this.grainService.GetGrain(id);
+        var update = request.Adapt<NewsItemModel>();
+        var updatedGrain = await grain.Update(update);
+        var response = updatedGrain.Adapt<NewsItemDto>();
+        return this.Ok(response);
     }
 }

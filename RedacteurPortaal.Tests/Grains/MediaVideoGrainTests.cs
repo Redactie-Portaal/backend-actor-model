@@ -51,7 +51,7 @@ public class MediaVideoGrainTests
                                                       "Epg",
                                                       TimeSpan.Zero,
                                                       "Archivematerial",
-                                                      Weather.Sunny,
+                                                      Weather.SUNNY,
                                                       "Producer",
                                                       "Director",
                                                       new List<string> { },
