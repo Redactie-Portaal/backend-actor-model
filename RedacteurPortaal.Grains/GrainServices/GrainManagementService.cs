@@ -41,7 +41,7 @@ namespace RedacteurPortaal.Grains.GrainServices
 
             if (!this.DbContext.GrainReferences.Any(x=> x.GrainId == id))
             {
-                this.logger.LogWarning($"Grain with ID: {id} does not exist!");
+                //this.logger.LogWarning($"Grain with ID: {id} does not exist!");
                 throw new KeyNotFoundException($"Grain with id {id} not found!");
             }
 
@@ -81,7 +81,7 @@ namespace RedacteurPortaal.Grains.GrainServices
             }
             else
             {
-                this.logger.LogWarning($"Grain with ID: {id} does not exist!");
+                //this.logger.LogWarning($"Grain with ID: {id} does not exist!");
                 throw new KeyNotFoundException($"Grain {id} not found");
             }
         }

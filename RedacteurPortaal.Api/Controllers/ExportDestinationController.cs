@@ -50,8 +50,8 @@ public class ExportDestinationController : Controller
     {
         var plugin =  this.pluginService.GetPlugins()
            .Single(x => x.Id == guid);
-        _ = plugin ?? throw new KeyNotFoundException(); this.logger.LogWarning("est");
-
+        _ = plugin ?? throw new KeyNotFoundException();
+        
         var story = await this.clusterClient.GetGrain<INewsItemGrain>(request.StoryId).Get();
         var apiKey = this.context.PluginSettings.Single(x => x.PluginId == guid).ApiKey;
 

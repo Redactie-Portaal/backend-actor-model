@@ -81,8 +81,6 @@ namespace RedacteurPortaal.Api.Controllers
 
             var updatedProfile = await profile.Update(profileUpdate);
 
-            this.logger.LogInformation($"Updated Profile with id:{id}");
-
             return this.Ok(updatedProfile.Adapt<ProfileDto>());
         }
     }

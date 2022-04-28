@@ -10,6 +10,7 @@ using RedacteurPortaal.DomainModels.Profile;
 using RedacteurPortaal.Grains.GrainInterfaces;
 using RedacteurPortaal.Grains.Grains;
 using RedacteurPortaal.Grains.GrainServices;
+using RedacteurPortaal.Helpers;
 using Serilog;
 using Serilog.Exceptions;
 using Serilog.Sinks.Elasticsearch;
@@ -67,6 +68,7 @@ await Host.CreateDefaultBuilder(args)
     })
     .ConfigureServices((ctx, services) => {
         services.AddScoped<IExportPluginService, ExportPluginService>();
+        services.AddScoped<FileSystemProvider>();
         services.AddScoped<IGrainManagementService<INewsItemGrain>, GrainManagementService<INewsItemGrain, NewsItemModel>>();
         services.AddScoped<IGrainManagementService<IProfileGrain>, GrainManagementService<IProfileGrain, Profile>>();
         services.AddScoped<IGrainManagementService<IAddressGrain>, GrainManagementService<IAddressGrain, AddressModel>>();
