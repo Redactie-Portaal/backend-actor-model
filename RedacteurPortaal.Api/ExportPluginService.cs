@@ -1,40 +1,34 @@
 ﻿using Export.Base;
-using Microsoft.Extensions.Logging;
-using Orleans;
-using Orleans.Core;
-using Orleans.Runtime;
 using RedacteurPortaal.Data.Context;
-using RedacteurPortaal.Grains.GrainInterfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Loader;
-using System.Text;
-using System.Threading.Tasks;
+using RedacteurPortaal.Helpers;
 
 namespace RedacteurPortaal.Api
 {
     public class ExportPluginService : IExportPluginService
     {
         private readonly DataContext context;
+        private readonly FileSystemProvider fileSystemProvider;
         private readonly List<IExportPlugin> plugins;
 
-        public ExportPluginService(DataContext context)
+        public ExportPluginService(DataContext context, FileSystemProvider fileSystemProvider)
         {
-            this.plugins = this.SetupExportPlugins();
             this.context = context;
+            this.fileSystemProvider = fileSystemProvider;
+            this.plugins = this.SetupExportPlugins();
+            this.SetupApiKeys();
         }
 
-        public Task<List<IExportPlugin>> GetPlugins()
+        public List<IExportPlugin> GetPlugins()
         {
-            return Task.FromResult(this.plugins);
+            return this.plugins;
         }
 
         private List<IExportPlugin> SetupExportPlugins()
         {
             var pl = new List<IExportPlugin>();
             string pluginPath = AppContext.BaseDirectory + "/ExportPlugins";
-            foreach (var dll in Directory.GetFiles(pluginPath, "*.dll"))
+            foreach (var dll in this.fileSystemProvider.FileSystem.Directory.GetFiles(pluginPath, "*.dll"))
             {
                 var assemblyContext = new AssemblyLoadContext(dll);
                 var assembly = assemblyContext.LoadFromAssemblyPath(dll);
@@ -50,23 +44,19 @@ namespace RedacteurPortaal.Api
                 }
             }
 
-            this.SetupApiKeys();
             return pl;
         }
 
         private void SetupApiKeys()
         {
             var dbPlguins = this.context.PluginSettings.ToList();
-            foreach (var plugin in this.plugins)
+            foreach (var plugin in this.plugins.Where(plugin => dbPlguins.All(x => x.PluginId != plugin.Id)))
             {
-                if (!dbPlguins.Any(x => x.PluginId == plugin.Id))
+                dbPlguins.Add(new Data.Models.PluginSettings()
                 {
-                    dbPlguins.Add(new Data.Models.PluginSettings()
-                    {
-                        PluginId = plugin.Id,
-                        ApiKey = ""
-                    });
-                }
+                    PluginId = plugin.Id,
+                    ApiKey = ""
+                });
             }
 
             this.context.SaveChanges();
