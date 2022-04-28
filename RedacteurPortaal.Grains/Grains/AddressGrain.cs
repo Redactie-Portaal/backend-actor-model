@@ -36,17 +36,6 @@ public class AddressGrain : Grain, IAddressGrain
         await this.address.ClearStateAsync();
     }
 
-        public async Task UpdateAdress(AddressModel address)
-        {
-           this.adress.State= address;
-           await this.adress.WriteStateAsync();
-        }
-
-        public async Task Delete()
-        {
-            await this.adress.ClearStateAsync();
-        }
-
     public Task<AddressModel> Get()
     {
         var state = this.address.State;
