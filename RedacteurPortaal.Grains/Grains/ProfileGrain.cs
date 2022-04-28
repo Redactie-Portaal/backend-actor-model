@@ -36,9 +36,10 @@ public class ProfileGrain : Grain, IProfileGrain
         return Task.FromResult(this.profile.State);
     }
 
-    public async Task Update(Profile profile)
+    public async Task<Profile> Update(Profile profile)
     {
         this.profile.State = profile;
         await this.profile.WriteStateAsync();
+        return this.profile.State;
     }
 }

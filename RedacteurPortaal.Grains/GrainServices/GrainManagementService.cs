@@ -3,25 +3,29 @@ using Orleans;
 using RedacteurPortaal.Grains.GrainInterfaces;
 using RedacteurPortaal.Data.Context;
 using RedacteurPortaal.DomainModels;
+using Microsoft.Extensions.Logging;
 
 namespace RedacteurPortaal.Grains.GrainServices
 {
     public class GrainManagementService<T, TReturnType> : IGrainManagementService<T> where T : class,  IManageableGrain<TReturnType>  where TReturnType : IBaseEntity
     {
         private readonly IClusterClient client;
-
+        private readonly ILogger logger;
+            
         public DataContext DbContext { get; }
 
-        public GrainManagementService(DataContext dbContext, IClusterClient client)
+        public GrainManagementService(DataContext dbContext, IClusterClient client, ILogger<GrainManagementService<T, TReturnType>> logger)
         {
             this.DbContext = dbContext;
             this.client = client;
+            this.logger = logger;
         }
 
         public async Task<T> CreateGrain(Guid id)
         {
             if (this.DbContext.GrainReferences.Any(x => x.GrainId == id))
             {
+                this.logger.LogWarning($"Grain with ID: {id} already exists!");
                 throw new DuplicateNameException($"Grain with id {id} already exists!");
             }
 
@@ -37,6 +41,7 @@ namespace RedacteurPortaal.Grains.GrainServices
 
             if (!this.DbContext.GrainReferences.Any(x=> x.GrainId == id))
             {
+                this.logger.LogWarning($"Grain with ID: {id} does not exist!");
                 throw new KeyNotFoundException($"Grain with id {id} not found!");
             }
 
@@ -55,6 +60,7 @@ namespace RedacteurPortaal.Grains.GrainServices
                 }
                 else
                 {
+                    this.logger.LogWarning($"Grain with ID: {grain.GrainId} does not have a state. Removing Grain.");
                     this.DbContext.GrainReferences.Remove(grain);
                     await this.DbContext.SaveChangesAsync();
                 }
@@ -75,6 +81,7 @@ namespace RedacteurPortaal.Grains.GrainServices
             }
             else
             {
+                this.logger.LogWarning($"Grain with ID: {id} does not exist!");
                 throw new KeyNotFoundException($"Grain {id} not found");
             }
         }

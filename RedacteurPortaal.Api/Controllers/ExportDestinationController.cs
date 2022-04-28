@@ -18,15 +18,14 @@ public class ExportDestinationController : Controller
     private readonly IExportPluginService pluginService;
     private readonly IClusterClient clusterClient;
     private readonly DataContext context;
+    private readonly ILogger logger;
 
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="NewsItemController" /> class.
-    /// </summary>
-    public ExportDestinationController(IExportPluginService pluginService, IClusterClient clusterClient, DataContext context)
+    public ExportDestinationController(IExportPluginService pluginService, IClusterClient clusterClient, DataContext context, ILogger<ExportDestinationController> logger)
     {
         this.pluginService = pluginService;
         this.clusterClient = clusterClient;
         this.context = context;
+        this.logger = logger;
     }
 
     [HttpGet]
@@ -51,7 +50,7 @@ public class ExportDestinationController : Controller
     {
         var plugin = (await this.pluginService.GetPlugins())
            .Single(x => x.Id == guid);
-        _ = plugin ?? throw new KeyNotFoundException();
+        _ = plugin ?? throw new KeyNotFoundException(); this.logger.LogWarning("est");
 
         var story = await this.clusterClient.GetGrain<INewsItemGrain>(request.StoryId).Get();
         var apiKey = this.context.PluginSettings.Single(x => x.PluginId == guid).ApiKey;

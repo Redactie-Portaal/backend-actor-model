@@ -10,5 +10,5 @@ namespace RedacteurPortaal.Grains.GrainInterfaces;
 
 public interface IProfileGrain : IManageableGrain<Profile>
 {     
-    Task Update(Profile profile);
+    Task<Profile> Update(Profile profile);
 }

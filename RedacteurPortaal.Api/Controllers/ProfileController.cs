@@ -14,14 +14,16 @@ namespace RedacteurPortaal.Api.Controllers
     public class ProfileController : ControllerBase
     {
         private readonly IGrainManagementService<IProfileGrain> grainService;
+        private readonly ILogger<ProfileController> logger;
 
-        public ProfileController(IGrainManagementService<IProfileGrain> grainService)
+        public ProfileController(IGrainManagementService<IProfileGrain> grainService, ILogger<ProfileController> logger)
         {
             this.grainService = grainService;
+            this.logger = logger;
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateProfile([FromBody] AddProfileRequest profile)
+        public async Task<ActionResult<ProfileDto>> CreateProfile([FromBody] AddProfileRequest profile)
         {
             var guid = Guid.NewGuid();
             var grain = await this.grainService.CreateGrain(guid);
@@ -39,11 +41,10 @@ namespace RedacteurPortaal.Api.Controllers
 
             var updateProfile = profile.Adapt<Profile>();
             updateProfile.Id = guid;
-            await grain.Update(updateProfile);
-            return this.CreatedAtRoute("GetProfile", new { id = guid }, updateProfile);
+            var returnProfile = await grain.Update(updateProfile);
+            return this.CreatedAtRoute("GetProfile", new { id = guid }, returnProfile.Adapt<ProfileDto>());
         }
 
-        // Get list of profiles
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -52,14 +53,15 @@ namespace RedacteurPortaal.Api.Controllers
         }
 
         [HttpGet("{id}", Name = "GetProfile")]
-        public async Task<IActionResult> Get(Guid id)
+        public async Task<ActionResult<ProfileDto>> Get(Guid id)
         {
             var profile = await this.grainService.GetGrain(id);
-            return this.Ok(await profile.Get());
+            var profileItem = await profile.Get();
+            return this.Ok(profileItem.Adapt<ProfileDto>());
         }
 
         [HttpPatch("{id}")]
-        public async Task<IActionResult> Patch(Guid id, PatchProfileRequest patch)
+        public async Task<ActionResult<ProfileDto>> Patch(Guid id, PatchProfileRequest patch)
         {
             var profile = await this.grainService.GetGrain(id);
 
@@ -77,9 +79,11 @@ namespace RedacteurPortaal.Api.Controllers
             var profileUpdate = patch.Adapt<Profile>();
             profileUpdate.Id = id;
 
-            await profile.Update(profileUpdate);
+            var updatedProfile = await profile.Update(profileUpdate);
 
-            return this.Ok(await profile.Get());
+            this.logger.LogInformation($"Updated Profile with id:{id}");
+
+            return this.Ok(updatedProfile.Adapt<ProfileDto>());
         }
     }
 }

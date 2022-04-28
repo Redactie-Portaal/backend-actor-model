@@ -53,12 +53,10 @@ public class NewsItemController : Controller
             .Map(dest => dest.Duration,
                   src => TimeSpan.FromSeconds(src.DurationSeconds));
 
-        const string successMessage = "News item was created";
         var grain = await this.grainService.GetGrain(newguid);
 
         var update = newsitem.Adapt<NewsItemModel>();
         await grain.Update(update);
-        this.logger.LogInformation(successMessage);
         return this.CreatedAtRoute("GetNewsItem", new { id = newguid }, update);
     }
 
@@ -68,7 +66,6 @@ public class NewsItemController : Controller
     {
         var grain = await this.grainService.GetGrain(id);
         var response = await grain.Get();
-        this.logger.LogInformation("News item fetched successfully");
         return this.Ok(response);
     }
 
@@ -76,7 +73,6 @@ public class NewsItemController : Controller
     public async Task<IActionResult> GetNewsItems()
     {
         var grain = await this.grainService.GetGrains();
-        this.logger.LogInformation("News item fetched successfully");
         return this.Ok(grain.Select(x => x.Get()));
     }
 
@@ -85,7 +81,6 @@ public class NewsItemController : Controller
     public async Task<IActionResult> DeleteNewsItem(Guid id)
     {
         await this.grainService.DeleteGrain(id);
-        this.logger.LogInformation("News item deleted successfully");
         return this.StatusCode(204, "News item deleted");
     }
 
@@ -118,7 +113,6 @@ public class NewsItemController : Controller
 
         await grain.Update(update);
         
-        this.logger.LogInformation("News item updated successfully");
         return this.StatusCode(204, "News item updated");
     }
 }

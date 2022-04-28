@@ -50,6 +50,8 @@ namespace RedacteurPortaal.Api
                 }
             }
 
+            this.context.Database.CanConnect();
+
             this.SetupApiKeys();
             return pl;
         }
