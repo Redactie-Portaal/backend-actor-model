@@ -29,7 +29,7 @@ public class AddressGrainTests
     {   
         var guid = Guid.NewGuid();
 
-        var toSaveAddress = new AddressModel(guid, "Company", "Address", "PostalCode", "Phone", "Email", "Webpage");
+        var toSaveAddress = new AddressModel(guid, "Company", "Address", "PostalCode", "Phone number", "Email", "Webpage");
 
         var addressGrain = this._cluster.GrainFactory.GetGrain<IAddressGrain>(guid);
 
@@ -37,8 +37,13 @@ public class AddressGrainTests
 
         var address = await addressGrain.Get();
 
-        Assert.Equal("Company", address.CompanyName);
         Assert.Equal(guid, address.Id);
+        Assert.Equal("Company", address.CompanyName);
+        Assert.Equal("Address", address.Address);
+        Assert.Equal("PostalCode", address.PostalCode);
+        Assert.Equal("Phone number", address.PhoneNumber);
+        Assert.Equal("Email", address.EmailAddress);
+        Assert.Equal("Webpage", address.Webpage);
     }
 
   [Fact] 
@@ -100,7 +105,7 @@ public class AddressGrainTests
       
     }
 
-    [Fact] /*NOT WORKING DUE TO IGRAINMANAGEMENTSERVICE*/
+    [Fact] 
      public async Task DeleteCorrect()
     {
         var guid = Guid.NewGuid();

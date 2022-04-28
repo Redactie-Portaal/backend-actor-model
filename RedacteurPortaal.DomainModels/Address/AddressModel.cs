@@ -20,7 +20,7 @@
         public AddressModel(Guid id, string companyName, string address, string postalCode, string phoneNumber, string emailAddress, string webpage)
         {
             this.Id = id;
-            this.CompanyName= companyName ?? throw new ArgumentNullException(nameof(companyName));
+            this.CompanyName = companyName ?? throw new ArgumentNullException(nameof(companyName));
             this.Address = address ?? throw new ArgumentNullException(nameof(address));
             this.PostalCode = postalCode;
             this.PhoneNumber = phoneNumber;
