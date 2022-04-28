@@ -10,10 +10,6 @@ namespace RedacteurPortaal.DomainModels.Address
     {
         public IsNullOrWhiteSpaceException(string message)
         {
-            //if (message == null)
-            //{
-            //    throw new ArgumentNullException(message);
-            //}
             if (String.IsNullOrWhiteSpace(message))
             {
                 throw new ArgumentException("Argument must not be the empty string.",
@@ -22,4 +18,3 @@ namespace RedacteurPortaal.DomainModels.Address
         }
     }
 }
-
