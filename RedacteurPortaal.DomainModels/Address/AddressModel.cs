@@ -1,4 +1,6 @@
-﻿namespace RedacteurPortaal.DomainModels.Adress
+﻿using RedacteurPortaal.DomainModels.Address;
+
+namespace RedacteurPortaal.DomainModels.Adress
 {
     // [Serializable]
     public class AddressModel : IBaseEntity
@@ -20,7 +22,7 @@
         public AddressModel(Guid id, string companyName, string address, string postalCode, string phoneNumber, string emailAddress, string webpage)
         {
             this.Id = id;
-            this.CompanyName = companyName ?? throw new ArgumentNullException(nameof(companyName));
+            this.CompanyName = String.IsNullOrEmpty(companyName) ? throw new ArgumentNullException(nameof(companyName)) : companyName;
             this.Address = address ?? throw new ArgumentNullException(nameof(address));
             this.PostalCode = postalCode;
             this.PhoneNumber = phoneNumber;
