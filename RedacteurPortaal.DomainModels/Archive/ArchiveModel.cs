@@ -24,6 +24,10 @@ public class ArchiveModel : IBaseEntity
         this.Scripts = scripts ?? throw new ArgumentNullException(nameof(scripts));
     }
 
+    public ArchiveModel()
+    {
+        
+    }
     public Guid Id { get; set; }
 
     public string Title { get; private set; }
