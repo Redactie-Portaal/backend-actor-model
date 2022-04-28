@@ -1,4 +1,5 @@
-﻿using Orleans.TestingHost;
+﻿using FluentValidation;
+using Orleans.TestingHost;
 using RedacteurPortaal.DomainModels.Adress;
 using RedacteurPortaal.DomainModels.NewsItem;
 using RedacteurPortaal.Grains.GrainInterfaces;
@@ -93,14 +94,14 @@ public class AddressGrainTests
     {
         var guid = Guid.NewGuid();
 
-        var toSaveAddress = new AddressModel(guid, "Company", "Address", "PostalCode", "Phone", "Email", "Webpage");
+        //var toSaveAddress = new AddressModel(guid, "Company", "Address", "PostalCode", "Phone", "Email", "Webpage");
 
-        var addressGrain = this._cluster.GrainFactory.GetGrain<IAddressGrain>(guid);
+        //var addressGrain = this._cluster.GrainFactory.GetGrain<IAddressGrain>(guid);
 
-        await addressGrain.UpdateAddress(toSaveAddress);
+        //await addressGrain.UpdateAddress(toSaveAddress);
 
-        Assert.Throws<ArgumentNullException>(() => {
-            var updateAddres = new AddressModel(guid, "", null, "5049 AA", "06-12345678", "Email", "Webpage");
+        Assert.Throws<ValidationException>(() => {
+            var updateAddres = new AddressModel(guid, "", "", "5049 AA", "06-12345678", "Email", "Webpage");
         });
       
     }
