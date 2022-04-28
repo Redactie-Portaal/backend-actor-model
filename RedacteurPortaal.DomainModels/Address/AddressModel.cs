@@ -29,7 +29,6 @@ namespace RedacteurPortaal.DomainModels.Adress
             this.PhoneNumber = phoneNumber;
             this.EmailAddress = emailAddress;
             this.Webpage = webpage;
-
             new AddressValidator().ValidateAndThrow(this);
         }
 
