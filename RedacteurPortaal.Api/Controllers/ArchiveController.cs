@@ -30,8 +30,8 @@ public class ArchiveController : Controller
     }
 
     [HttpGet]
-    [Route("{archiveId}")]
-    public async Task<IActionResult> Get([FromRoute] Guid archiveId)
+    [Route("{archiveId}", Name = nameof(GetArchiveById))]
+    public async Task<IActionResult> GetArchiveById(Guid archiveId)
     {
         var archive = await this.grainService.GetGrain(archiveId);
         return this.Ok(archive.Get());
@@ -114,7 +114,7 @@ public class ArchiveController : Controller
         archive.Id = newguid;
         var grain = await this.grainService.CreateGrain(archive.Id);
         await grain.CreateArchive(archive);
-        return this.CreatedAtRoute("GetArchive", new { id = newguid }, archive);
+        return this.CreatedAtRoute(nameof(this.GetArchiveById), new { archiveId = newguid }, archive);
     }
 
     [HttpPost]
