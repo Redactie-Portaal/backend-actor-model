@@ -25,7 +25,6 @@ namespace RedacteurPortaal.Tests.Grains.GrainServices
     public class GrainManagementServiceTests
     {
         private readonly TestCluster testCluster;
-        private readonly ILogger logger;
 
         public GrainManagementServiceTests(ClusterFixture fixture)
         {
