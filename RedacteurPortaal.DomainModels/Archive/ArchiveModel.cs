@@ -41,7 +41,7 @@ public class ArchiveModel : IBaseEntity
 
     public List<MediaVideoItem> MediaVideoItems { get; private set; }
 
-    public List<NewsItemModel> NewsItems { get; set; }
+    public List<NewsItemModel> NewsItems { get; private set; }
     public List<MediaAudioItem> MediaAudioItems { get; private set; }
 
     public DateTime ArchivedDate { get; private set; }
