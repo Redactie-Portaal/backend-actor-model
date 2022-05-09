@@ -11,8 +11,8 @@ public class MediaVideoGrain : Grain, IMediaVideoGrain
     private readonly IPersistentState<MediaVideoItem> videoItem;
     
     public MediaVideoGrain(
-        [PersistentState("videoItem", "OrleansStorage")]
-        IPersistentState<MediaVideoItem> videoItem)
+    [PersistentState("videoItem", "OrleansStorage")]
+    IPersistentState<MediaVideoItem> videoItem)
     {
         this.videoItem = videoItem;
     }

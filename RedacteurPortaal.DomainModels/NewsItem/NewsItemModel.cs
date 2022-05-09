@@ -6,6 +6,7 @@ using RedacteurPortaal.DomainModels.Validation.Shared;
 
 namespace RedacteurPortaal.DomainModels.NewsItem;
 
+[Serializable]
 public class NewsItemModel : IBaseEntity
 {
     public NewsItemModel()
@@ -13,14 +14,16 @@ public class NewsItemModel : IBaseEntity
     }
 
     public NewsItemModel(
+        Guid id,
         string title,
         Status status,
+        ApprovalState approvalState,
         string author,
         FeedSource source,
-        ItemBody body,
+        string body,
         List<Contact> contactDetails,
         Location locationDetails,
-        DateTime produtionDate,
+        DateTime productionDate,
         DateTime endDate,
         Category category,
         Region region,
@@ -28,14 +31,16 @@ public class NewsItemModel : IBaseEntity
         MediaAudioItem[] audio,
         MediaPhotoItem[] photos)
     {
+        this.Id = id;
         this.Title = title ?? throw new ArgumentNullException(nameof(title));
         this.Status = status;
+        this.ApprovalState = approvalState;
         this.Author = author ?? throw new ArgumentNullException(nameof(author));
         this.Source = source ?? throw new ArgumentNullException(nameof(source));
         this.Body = body ?? throw new ArgumentNullException(nameof(body));
         this.ContactDetails = contactDetails ?? throw new ArgumentNullException(nameof(contactDetails));
         this.LocationDetails = locationDetails ?? throw new ArgumentNullException(nameof(locationDetails));
-        this.ProdutionDate = produtionDate;
+        this.ProductionDate = productionDate;
         this.EndDate = endDate;
         this.Category = category;
         this.Region = region;
@@ -49,18 +54,20 @@ public class NewsItemModel : IBaseEntity
     public string Title { get; private set; }
 
     public Status Status { get; private set; }
+    
+    public ApprovalState ApprovalState { get; private set; }
 
     public string Author { get; private set; }
 
-    public FeedSource Source { get; private set; }
+    public FeedSource Source { get; private  set; }
 
-    public ItemBody Body { get; private set; }
+    public string Body { get; private set; }
 
     public List<Contact> ContactDetails { get; private set; }
 
     public Location LocationDetails { get; private set; }
 
-    public DateTime ProdutionDate { get; private set; }
+    public DateTime ProductionDate { get; private set; }
 
     public DateTime EndDate { get; private set; }
 

@@ -2,10 +2,10 @@
 
 namespace RedacteurPortaal.DomainModels.Archive;
 
-public class ArchiveModel
+public class ArchiveModel : IBaseEntity
 {
     public ArchiveModel(
-        Guid guid,
+        Guid id,
         string title,
         string label,
         List<MediaPhotoItem> mediaPhotoItems,
@@ -14,7 +14,7 @@ public class ArchiveModel
         DateTime archivedDate,
         List<string> scripts)
     {
-        this.Guid = guid;
+        this.Id = id;
         this.Title = title ?? throw new ArgumentNullException(nameof(title));
         this.Label = label ?? throw new ArgumentNullException(nameof(label));
         this.MediaPhotoItems = mediaPhotoItems ?? throw new ArgumentNullException(nameof(mediaPhotoItems));
@@ -24,19 +24,23 @@ public class ArchiveModel
         this.Scripts = scripts ?? throw new ArgumentNullException(nameof(scripts));
     }
 
-    public Guid Guid { get; }
+    public ArchiveModel()
+    {
+    }
 
-    public string Title { get; }
+    public Guid Id { get; set; }
 
-    public string Label { get; }
+    public string Title { get; private set; }
 
-    public List<MediaPhotoItem> MediaPhotoItems { get; }
+    public string Label { get; private set; }
 
-    public List<MediaVideoItem> MediaVideoItems { get; }
+    public List<MediaPhotoItem> MediaPhotoItems { get; private set; }
 
-    public List<MediaAudioItem> MediaAudioItems { get; }
+    public List<MediaVideoItem> MediaVideoItems { get; private set; }
 
-    public DateTime ArchivedDate { get; }
+    public List<MediaAudioItem> MediaAudioItems { get; private set; }
 
-    public List<string> Scripts { get; }
+    public DateTime ArchivedDate { get; private set; }
+
+    public List<string> Scripts { get; private set;  }
 }

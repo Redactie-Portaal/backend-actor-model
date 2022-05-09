@@ -16,8 +16,8 @@ public class MediaAudioGrain : Grain, IMediaAudioGrain
     }
 
     public MediaAudioGrain(
-        [PersistentState("audioItem", "OrleansStorage")]
-        IPersistentState<MediaAudioItem> audioItem)
+    [PersistentState("audioItem", "OrleansStorage")]
+    IPersistentState<MediaAudioItem> audioItem)
     {
         this.audioItem = audioItem;
     }

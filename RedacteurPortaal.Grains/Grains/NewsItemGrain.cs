@@ -15,33 +15,26 @@ public class NewsItemGrain : Grain, INewsItemGrain
     }
 
     public NewsItemGrain(
-        [PersistentState("newsitem", "OrleansStorage")]
-        IPersistentState<NewsItemModel> newsItem)
+    [PersistentState("newsitem", "OrleansStorage")]
+    IPersistentState<NewsItemModel> newsItem)
     {
         this.newsItem = newsItem;
     }
 
     public async Task<NewsItemModel> Get()
     {
-        var grain = this.GrainFactory.GetGrain<INewsItemDescriptionGrain>(this.newsItem.State.Id);
-        var description = await grain.Get();
-        var item = await Task.FromResult(this.newsItem.State);
-
-        // TODO: Merge description
-        return item;
+        return await Task.FromResult(this.newsItem.State);
     }
 
-    public  async Task Delete()
+    public async Task Delete()
     {
-        var grain = this.GrainFactory.GetGrain<INewsItemDescriptionGrain>(this.newsItem.State.Id);
-        await grain.Delete();
         await this.newsItem.ClearStateAsync();
     }
 
-    public async Task Update(NewsItemModel update)
+    public async Task<NewsItemModel> Update(NewsItemModel newsItem)
     {
-        // TODO: Merge title.
-        this.newsItem.State = update;
+        this.newsItem.State = newsItem;
         await this.newsItem.WriteStateAsync();
+        return this.newsItem.State;
     }
 }

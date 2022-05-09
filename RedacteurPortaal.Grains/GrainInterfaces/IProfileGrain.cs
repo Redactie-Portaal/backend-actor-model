@@ -6,10 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RedacteurPortaal.Grains.GrainInterfaces
-{
-    public interface IProfileGrain : IManageableGrain<Profile>
-    {
-        public Task<Profile> Update(ProfileUpdate profile);
-    }
+namespace RedacteurPortaal.Grains.GrainInterfaces;
+
+public interface IProfileGrain : IManageableGrain<Profile>
+{     
+    Task Update(Profile profile);
 }

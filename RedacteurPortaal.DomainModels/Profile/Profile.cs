@@ -25,11 +25,11 @@ namespace RedacteurPortaal.DomainModels.Profile
 
         public Guid Id { get; set; }
 
-        public string FullName { get; set; }
+        public string FullName { get; private set; }
 
-        public ContactDetails ContactDetails { get; set; }
+        public ContactDetails ContactDetails { get; private set; }
 
-        public string ProfilePicture { get; set; }
+        public string ProfilePicture { get; private set; }
 
         public Role Role { get; private set; }
 

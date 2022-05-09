@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Mapster;
+using Microsoft.AspNetCore.Mvc;
 using Orleans;
+using RedacteurPortaal.Api.DTOs;
 using RedacteurPortaal.Api.Models.Request;
 using RedacteurPortaal.DomainModels.Profile;
 using RedacteurPortaal.Grains.GrainInterfaces;
@@ -18,6 +20,29 @@ namespace RedacteurPortaal.Api.Controllers
             this.grainService = grainService;
         }
 
+        [HttpPost]
+        public async Task<IActionResult> CreateProfile([FromBody] AddProfileRequest profile)
+        {
+            var guid = Guid.NewGuid();
+            var grain = await this.grainService.CreateGrain(guid);
+
+            TypeAdapterConfig<AddProfileRequest, Profile>
+            .NewConfig()
+                .Map(dest => dest.FullName, src => src.FullName)
+                .Map(dest => dest.ProfilePicture, src => src.ProfilePicture)
+                .Map(dest => dest.ContactDetails, src => new ContactDetails(src.ContactDetails.Email,
+                                                                            src.ContactDetails.Phone,
+                                                                            src.ContactDetails.Address,
+                                                                            src.ContactDetails.Province,
+                                                                            src.ContactDetails.City,
+                                                                            src.ContactDetails.PostalCode));
+
+            var updateProfile = profile.Adapt<Profile>();
+            updateProfile.Id = guid;
+            await grain.Update(updateProfile);
+            return this.CreatedAtRoute("GetProfile", new { id = guid }, updateProfile);
+        }
+
         // Get list of profiles
         [HttpGet]
         public async Task<IActionResult> Get()
@@ -26,31 +51,35 @@ namespace RedacteurPortaal.Api.Controllers
             return this.Ok(profile);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetProfile")]
         public async Task<IActionResult> Get(Guid id)
         {
             var profile = await this.grainService.GetGrain(id);
-            return this.Ok(profile.Get());
+            return this.Ok(await profile.Get());
         }
 
         [HttpPatch("{id}")]
         public async Task<IActionResult> Patch(Guid id, PatchProfileRequest patch)
         {
             var profile = await this.grainService.GetGrain(id);
-            var update = new ProfileUpdate(
-                patch.Name,
-                patch.ProfilePicture,
-                new ContactDetails(
-                    patch.ContactDetails.Email,
-                    patch.ContactDetails.Phone,
-                    patch.ContactDetails.Address,
-                    patch.ContactDetails.Province,
-                    patch.ContactDetails.City,
-                    patch.ContactDetails.PostalCode));
 
-            await profile.Update(update);
+            TypeAdapterConfig<PatchProfileRequest, Profile>
+            .NewConfig()
+                .Map(dest => dest.FullName, src => src.Name)
+                .Map(dest => dest.ProfilePicture, src => src.ProfilePicture)
+                .Map(dest => dest.ContactDetails.Email, src => src.ContactDetails.Email)
+                .Map(dest => dest.ContactDetails.PhoneNumber, src => src.ContactDetails.Phone)
+                .Map(dest => dest.ContactDetails.Address, src => src.ContactDetails.Address)
+                .Map(dest => dest.ContactDetails.Province, src => src.ContactDetails.Province)
+                .Map(dest => dest.ContactDetails.City, src => src.ContactDetails.City)
+                .Map(dest => dest.ContactDetails.PostalCode, src => src.ContactDetails.PostalCode);
 
-            return this.Ok(profile.Get());
+            var profileUpdate = patch.Adapt<Profile>();
+            profileUpdate.Id = id;
+
+            await profile.Update(profileUpdate);
+
+            return this.Ok(await profile.Get());
         }
     }
 }

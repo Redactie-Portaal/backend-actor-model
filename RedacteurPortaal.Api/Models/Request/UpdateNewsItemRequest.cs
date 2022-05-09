@@ -1,5 +1,7 @@
-﻿using RedacteurPortaal.DomainModels.Media;
+﻿using RedacteurPortaal.Api.DTOs;
+using RedacteurPortaal.DomainModels.Media;
 using RedacteurPortaal.DomainModels.NewsItem;
+using RedacteurPortaal.DomainModels.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,29 +12,33 @@ namespace RedacteurPortaal.Api.Models.Request;
 
 public class UpdateNewsItemRequest
 {
-    public string? Title { get; set; }
+    public string Title { get; set; }
 
-    public string? Status { get; set; }
+    public Status Status { get; set; }
+
+    public string? ApprovalState { get; set; }
 
     public string? Author { get; set; }
 
-    public FeedSource? Source { get; set; }
+    public FeedSourceDto Source { get; set; }
 
-    public string? BodyDescription { get; set; }
+    public string Body { get; set; }
 
-    public string? ContactDetails { get; set; }
+    public List<ContactDto> ContactDetails { get; set; }
 
-    public string? LocationDetails { get; set; }
+    public LocationDto LocationDetails { get; set; }
+
+    public DateTime ProductionDate { get; set; }
 
     public DateTime EndDate { get; set; }
 
-    public string? Category { get; set; }
+    public Category Category { get; set; }
 
-    public string? Region { get; set; }
+    public Region Region { get; set; }
 
-    public MediaVideoItem? Video { get; private set; }
+    public MediaVideoItemDto[] Videos { get; set; }
 
-    public MediaAudioItem? Audio { get; private set; }
+    public MediaAudioItemDto[] Audio { get; set; }
 
-    public MediaPhotoItem[]? Photos { get; private set; }
+    public MediaPhotoItemDto[] Photos { get; set; }
 }
