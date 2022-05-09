@@ -8,16 +8,14 @@ using RedacteurPortaal.DomainModels.Adress;
 using RedacteurPortaal.DomainModels.NewsItem;
 using RedacteurPortaal.DomainModels.Profile;
 using RedacteurPortaal.Grains.GrainInterfaces;
-using RedacteurPortaal.Grains.Grains;
 using RedacteurPortaal.Grains.GrainServices;
 using RedacteurPortaal.Helpers;
 using Serilog;
 using Serilog.Exceptions;
 using Serilog.Sinks.Elasticsearch;
-using System.Runtime.Loader;
-using RedacteurPortaal.Helpers;
 
 await Host.CreateDefaultBuilder(args)
+
     .UseOrleans((ctx, siloBuilder) => {
         if (ctx.HostingEnvironment.IsDevelopment())
         {
