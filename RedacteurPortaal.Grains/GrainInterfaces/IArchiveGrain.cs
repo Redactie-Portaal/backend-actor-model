@@ -7,16 +7,6 @@ namespace RedacteurPortaal.Grains.GrainInterfaces;
 
 public interface IArchiveGrain : IManageableGrain<ArchiveModel>
 { 
-    Task<ArchiveModel> GetArchive(Guid guid);
-
-    Task<List<MediaVideoItem>> GetAllVideoItems();
-
-    Task<List<MediaPhotoItem>> GetAllPhotoItems();
-
-    Task<List<MediaAudioItem>> GetAllAudioItems();
-
-    Task<List<NewsItemModel>> GetAllNewsItems();
-
     Task<MediaVideoItem> GetVideoItem(Guid guid);
 
     Task<MediaPhotoItem> GetPhotoItem(Guid guid);

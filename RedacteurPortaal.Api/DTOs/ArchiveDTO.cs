@@ -5,7 +5,7 @@ namespace RedacteurPortaal.Api.DTOs
 {
     public class ArchiveDto
     {
-        public Guid Guid { get; set; }
+        public Guid Id { get; set; }
 
         public string Title { get; set; }
 

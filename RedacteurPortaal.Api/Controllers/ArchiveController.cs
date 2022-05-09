@@ -3,11 +3,13 @@ using Orleans;
 using RedacteurPortaal.DomainModels.Archive;
 using RedacteurPortaal.DomainModels.Media;
 using RedacteurPortaal.Api.DTOs;
+using RedacteurPortaal.Api.Models;
 using RedacteurPortaal.Grains.GrainInterfaces;
 using RedacteurPortaal.Grains.GrainServices;
 using RedacteurPortaal.Api.Models.Request;
 using Mapster;
 using RedacteurPortaal.DomainModels.NewsItem;
+using RedacteurPortaal.Helpers;
 
 namespace RedacteurPortaal.Api.Controllers;
 
@@ -23,10 +25,13 @@ public class ArchiveController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Get()
+    public async Task<IActionResult> GetAllArchives()
     {
-        var archives = await this.grainService.GetGrains();
-        return this.Ok(archives);
+        var grain = await this.grainService.GetGrains();
+        
+        var response = (await grain.SelectAsync(async x => await 
+        x.Get())).AsQueryable().ProjectToType<ArchiveDto>(null).ToList();
+        return this.Ok(response);
     }
 
     [HttpGet]
@@ -34,39 +39,49 @@ public class ArchiveController : Controller
     public async Task<IActionResult> GetArchiveById(Guid archiveId)
     {
         var archive = await this.grainService.GetGrain(archiveId);
-        return this.Ok(archive.Get());
+        var response = await archive.Get();
+        var dto = response.Adapt<ArchiveModel>();
+        return this.Ok(dto);
     }
 
     [HttpGet]
     [Route("{archiveId}/VideoItems")]
-    public async Task<IActionResult> GetVideoItems([FromRoute] Guid archiveId)
+    public async Task<ActionResult<List<MediaVideoItemDto>>> GetVideoItems([FromRoute] Guid archiveId)
     {
-        var grain = await this.grainService.GetGrain(archiveId);
-        return this.Ok(grain.GetAllVideoItems());
+        var archive = await this.grainService.GetGrain(archiveId);
+        var response = await archive.Get();
+        var dto = response.Adapt<ArchiveModel>();
+        return this.Ok(dto.MediaVideoItems);
     }
 
     [HttpGet]
     [Route("{archiveId}/AudioItems")]
-    public async Task<IActionResult> GetAudioItems([FromRoute] Guid archiveId)
+    public async Task<ActionResult<List<MediaAudioItem>>> GetAudioItems([FromRoute] Guid archiveId)
     {
-        var grain = await this.grainService.GetGrain(archiveId);
-        return this.Ok(grain.GetAllAudioItems());
+        var archive = await this.grainService.GetGrain(archiveId);
+        var response = await archive.Get();
+        var dto = response.Adapt<ArchiveModel>();
+        return this.Ok(dto.MediaAudioItems);
     }
 
     [HttpGet]
     [Route("{archiveId}/PhotoItems")]
-    public async Task<IActionResult> GetPhotoItems([FromRoute] Guid archiveId)
+    public async Task<ActionResult<List<MediaPhotoItemDto>>> GetPhotoItems([FromRoute] Guid archiveId)
     {
-        var grain = await this.grainService.GetGrain(archiveId);
-        return this.Ok(grain.GetAllPhotoItems());
+        var archive = await this.grainService.GetGrain(archiveId);
+        var response = await archive.Get();
+        var dto = response.Adapt<ArchiveModel>();
+        return this.Ok(dto.MediaPhotoItems);
     }
 
     [HttpGet]
     [Route("{archiveId}/Stories")]
-    public async Task<IActionResult> GetNewsItems([FromRoute] Guid archiveId)
+    public async Task<ActionResult<List<NewsItemDto>>> GetNewsItems([FromRoute] Guid archiveId)
     {
-        var grain = await this.grainService.GetGrain(archiveId);
-        return this.Ok(grain.GetAllNewsItems());
+        var archive = await this.grainService.GetGrain(archiveId);
+        var response = await archive.Get();
+        var dto = response.Adapt<ArchiveModel>();
+        return this.Ok(dto.NewsItems);
     }
 
     [HttpGet]
@@ -74,7 +89,9 @@ public class ArchiveController : Controller
     public async Task<IActionResult> GetVideoItem([FromRoute] Guid archiveId, [FromRoute] Guid videoItemGuid)
     {
         var grain = await this.grainService.GetGrain(archiveId);
-        return this.Ok(grain.GetVideoItem(videoItemGuid));
+        var response = await grain.GetVideoItem(videoItemGuid);
+        var dto = response.Adapt<MediaVideoItem>();
+        return this.Ok(dto);
     }
 
     [HttpGet]
@@ -82,7 +99,9 @@ public class ArchiveController : Controller
     public async Task<IActionResult> GetAudioItem([FromRoute] Guid archiveId, [FromRoute] Guid audioItemGuid)
     {
         var grain = await this.grainService.GetGrain(archiveId);
-        return this.Ok(grain.GetAudioItem(audioItemGuid));
+        var response = await grain.GetAudioItem(audioItemGuid);
+        var dto = response.Adapt<MediaAudioItem>();
+        return this.Ok(dto);
     }
 
     [HttpGet]
@@ -90,7 +109,9 @@ public class ArchiveController : Controller
     public async Task<IActionResult> GetPhotoItem([FromRoute] Guid archiveId, [FromRoute] Guid photoItemGuid)
     {
         var grain = await this.grainService.GetGrain(archiveId);
-        return this.Ok(grain.GetPhotoItem(photoItemGuid));
+        var response = await grain.GetPhotoItem(photoItemGuid);
+        var dto = response.Adapt<MediaPhotoItem>();
+        return this.Ok(dto);
     }
 
     [HttpGet]
@@ -98,7 +119,9 @@ public class ArchiveController : Controller
     public async Task<IActionResult> GetNewsItem([FromRoute] Guid archiveId, [FromRoute] Guid newsItemGuid)
     {
         var grain = await this.grainService.GetGrain(archiveId);
-        return this.Ok(grain.GetNewsItem(newsItemGuid));
+        var response = await grain.GetNewsItem(newsItemGuid);
+        var dto = response.Adapt<NewsItemModel>();
+        return this.Ok(dto);
     }
 
     [HttpPost]

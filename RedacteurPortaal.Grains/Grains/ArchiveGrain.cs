@@ -25,32 +25,6 @@ public class ArchiveGrain : Grain, IArchiveGrain
         return Task.FromResult(state);
     }
 
-    public async Task<ArchiveModel> GetArchive(Guid guid)
-    {
-        var archive = this.GrainFactory.GetGrain<IArchiveGrain>(guid);
-        return (ArchiveModel)await Task.FromResult(archive);
-    }
-
-    public async Task<List<MediaVideoItem>> GetAllVideoItems()
-    {
-        return await Task.FromResult(this.archive.State.MediaVideoItems);
-    }
-
-    public async Task<List<MediaPhotoItem>> GetAllPhotoItems()
-    {
-        return await Task.FromResult(this.archive.State.MediaPhotoItems);
-    }
-
-    public async Task<List<MediaAudioItem>> GetAllAudioItems()
-    {
-        return await Task.FromResult(this.archive.State.MediaAudioItems);
-    }
-
-    public async Task<List<NewsItemModel>> GetAllNewsItems()
-    {
-        return await Task.FromResult(this.archive.State.NewsItems);
-    }
-
     public async Task<MediaVideoItem> GetVideoItem(Guid guid)
     {
         var videoItems = this.archive.State.MediaVideoItems;
