@@ -43,5 +43,5 @@ public interface IArchiveGrain : IManageableGrain<ArchiveModel>
 
     Task DeleteNewsItem(Guid newsItemId);
 
-    Task<ArchiveModel> Update(ArchiveUpdate archive);
+    Task<ArchiveModel> Update(ArchiveModel archive);
 }

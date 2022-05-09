@@ -146,15 +146,9 @@ public class ArchiveGrain : Grain, IArchiveGrain
         await this.archive.WriteStateAsync();
     }
 
-    public async Task<ArchiveModel> Update(ArchiveUpdate archive)
+    public async Task<ArchiveModel> Update(ArchiveModel archive)
     {
-        this.archive.State.Title = archive.Title;
-        this.archive.State.Label = archive.Label;
-        this.archive.State.MediaPhotoItems = archive.MediaPhotoItems;
-        this.archive.State.MediaVideoItems = archive.MediaVideoItems;
-        this.archive.State.MediaAudioItems = archive.MediaAudioItems;
-        this.archive.State.NewsItems = archive.NewsItems;
-        this.archive.State.Scripts = archive.Scripts;
+        this.archive.State = archive;
         await this.archive.WriteStateAsync();
 
         return await Task.FromResult(this.archive.State);

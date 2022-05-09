@@ -199,17 +199,15 @@ public class ArchiveController : Controller
     [HttpPatch]
     public async Task<IActionResult> UpdateArchive(Guid guid, UpdateArchiveRequest updateArchiveRequest)
     {
-        var archive = await this.grainService.GetGrain(guid);
-        var update = new ArchiveUpdate(
-            updateArchiveRequest.Title,
-            updateArchiveRequest.Label,
-            updateArchiveRequest.MediaPhotoItems,
-            updateArchiveRequest.MediaVideoItems,
-            updateArchiveRequest.MediaAudioItems,
-            updateArchiveRequest.NewsItems,
-            updateArchiveRequest.Scripts);
-        await archive.Update(update);
+        TypeAdapterConfig<UpdateArchiveRequest, ArchiveModel>
+       .NewConfig()
+       .Map(dest => dest.Id,
+           src => guid);
 
-        return this.Ok(archive.Get());
+        var grain = await this.grainService.GetGrain(guid);
+        var update = updateArchiveRequest.Adapt<ArchiveModel>();
+        var updatedGrain = await grain.Update(update);
+        var response = updatedGrain.Adapt<ArchiveDto>();
+        return this.Ok(response);
     }
 }

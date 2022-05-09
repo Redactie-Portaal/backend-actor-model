@@ -1,5 +1,6 @@
 ﻿using Orleans.TestingHost;
 using RedacteurPortaal.DomainModels.Archive;
+using RedacteurPortaal.DomainModels.NewsItem;
 using RedacteurPortaal.DomainModels.Media;
 using RedacteurPortaal.Grains.GrainInterfaces;
 using RedacteurPortaal.Tests;
@@ -27,7 +28,7 @@ public class ArchiveGrainTests
     {
         var guid = Guid.NewGuid();
 
-        var toSaveArchive = new ArchiveModel(guid, "Title", "Label", new List<MediaPhotoItem> { }, new List<MediaVideoItem> { }, new List<MediaAudioItem> { }, DateTime.UtcNow, new List<string> { });
+        var toSaveArchive = new ArchiveModel(guid, "Title", "Label", new List<MediaPhotoItem> { }, new List<MediaVideoItem> { }, new List<MediaAudioItem> { }, new List<NewsItemModel> { }, DateTime.UtcNow, new List<string> { });
 
         var archiveGrain = this._cluster.GrainFactory.GetGrain<IArchiveGrain>(guid);
         await archiveGrain.Update(toSaveArchive);
@@ -41,11 +42,6 @@ public class ArchiveGrainTests
         Assert.Equal(toSaveArchive.MediaVideoItems, updatedArchive.MediaVideoItems);
         Assert.Equal(toSaveArchive.MediaPhotoItems, updatedArchive.MediaPhotoItems);
         Assert.Equal(toSaveArchive.Scripts, updatedArchive.Scripts);
-
-
-
-
     }
-
 }
 
