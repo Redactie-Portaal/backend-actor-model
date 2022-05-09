@@ -112,9 +112,6 @@ public class NewsItemControllerTests
         Assert.Equal(patchItem.Body, patchResult?.Body);
         Assert.Equal(patchItem.Category, patchResult?.Category);
         Assert.Equal(patchItem.Region, patchResult?.Region);
-        Assert.Equal(patchItem.Audio, patchResult?.Audio);
-        Assert.Equal(patchItem.Photos, patchResult?.Photos);
-        Assert.Equal(patchItem.Videos, patchResult?.Videos);
         Assert.Equal(patchItem.ContactDetails, patchResult?.ContactDetails);
         Assert.Equal(patchItem.EndDate, patchResult?.EndDate);
         for (int i = 0; i < patchResult?.ContactDetails.Capacity; i++)
