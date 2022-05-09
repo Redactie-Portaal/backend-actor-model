@@ -37,7 +37,7 @@ public class MediaPhotoGrainTests
                                                       "Lastwords",
                                                       "Proxyfile",
                                                       "Presentation",
-                                                      new Location { },
+                                                      new Location(),
                                                       "Foramt",
                                                       new Uri("https://microsoft.com"),
                                                       "Image");
@@ -53,4 +53,3 @@ public class MediaPhotoGrainTests
     }
 
 }
-

@@ -10,7 +10,8 @@ public class AddressGrain : Grain, IAddressGrain
 {
     private readonly IPersistentState<AddressModel> address;
 
-    public AddressGrain([PersistentState("address", "OrleansStorage")]
+    public AddressGrain(
+    [PersistentState("address", "OrleansStorage")]
     IPersistentState<AddressModel> address)
     {
         this.address = address;
@@ -25,7 +26,7 @@ public class AddressGrain : Grain, IAddressGrain
     {
         this.address.State = address;
         await this.address.WriteStateAsync();
-        return this.address.State;
+        return await this.Get();
     }
 
     public async Task Delete()
@@ -37,6 +38,6 @@ public class AddressGrain : Grain, IAddressGrain
     {
         var state = this.address.State;
         state.Id = this.GetGrainIdentity().PrimaryKey;
-        return Task.FromResult(this.address.State);
+        return Task.FromResult(state);
     }
 }

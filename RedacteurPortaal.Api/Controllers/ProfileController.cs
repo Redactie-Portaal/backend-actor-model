@@ -32,7 +32,7 @@ namespace RedacteurPortaal.Api.Controllers
                 .Map(dest => dest.FullName, src => src.FullName)
                 .Map(dest => dest.ProfilePicture, src => src.ProfilePicture)
                 .Map(dest => dest.ContactDetails, src => new ContactDetails(src.ContactDetails.Email,
-                                                                            src.ContactDetails.Phone,
+                                                                            src.ContactDetails.PhoneNumber,
                                                                             src.ContactDetails.Address,
                                                                             src.ContactDetails.Province,
                                                                             src.ContactDetails.City,
@@ -45,10 +45,10 @@ namespace RedacteurPortaal.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<ActionResult<List<ProfileDto>>> Get()
         {
             var profile = await this.grainService.GetGrains();
-            return this.Ok(profile);
+            return this.Ok(profile.AsQueryable().ProjectToType<ProfileDto>().ToList());
         }
 
         [HttpGet("{id}", Name = "GetProfile")]
@@ -60,14 +60,20 @@ namespace RedacteurPortaal.Api.Controllers
         }
 
         [HttpPatch("{id}")]
-        public async Task<ActionResult<ProfileDto>> Patch(Guid id, PatchProfileRequest patch)
+        public async Task<IActionResult> Patch(Guid id, [FromBody] PatchProfileRequest patch)
         {
             var profile = await this.grainService.GetGrain(id);
 
             TypeAdapterConfig<PatchProfileRequest, Profile>
             .NewConfig()
                 .Map(dest => dest.FullName, src => src.Name)
-                .Map(dest => dest.ContactDetails.PhoneNumber, src => src.ContactDetails.Phone);
+                .Map(dest => dest.ProfilePicture, src => src.ProfilePicture)
+                .Map(dest => dest.ContactDetails.Email, src => src.ContactDetails.Email)
+                .Map(dest => dest.ContactDetails.PhoneNumber, src => src.ContactDetails.PhoneNumber)
+                .Map(dest => dest.ContactDetails.Address, src => src.ContactDetails.Address)
+                .Map(dest => dest.ContactDetails.Province, src => src.ContactDetails.Province)
+                .Map(dest => dest.ContactDetails.City, src => src.ContactDetails.City)
+                .Map(dest => dest.ContactDetails.PostalCode, src => src.ContactDetails.PostalCode);
 
             var profileUpdate = patch.Adapt<Profile>();
             profileUpdate.Id = id;

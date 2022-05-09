@@ -155,10 +155,7 @@ namespace RedacteurPortaal.Tests.Grains.GrainServices
             var id = Guid.NewGuid();
             var dbContext = new Moq.Mock<DataContext>();
 
-            var references = new List<GrainReference>() {
-
-            };
-
+            var references = new List<GrainReference>();
             dbContext.Setup(x => x.GrainReferences).Returns(references.GetQueryableMockDbSet().Object);
 
             var logger = new Mock<ILogger<GrainManagementService<IContactGrain, Contact>>>();

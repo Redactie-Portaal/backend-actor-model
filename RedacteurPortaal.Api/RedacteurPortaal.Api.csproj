@@ -61,7 +61,11 @@
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
 	</ItemGroup>
+    <ItemGroup>
+        <InternalsVisibleTo Include="RedacteurPortaal.Tests" />
+        <InternalsVisibleTo Include="RedacteurPortaal.Helpers" />
 
+    </ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\RedacteurPortaal.Grains\RedacteurPortaal.Grains.csproj" />
 	  <ProjectReference Include="..\RedacteurPortaal.Helpers\RedacteurPortaal.Helpers.csproj" />

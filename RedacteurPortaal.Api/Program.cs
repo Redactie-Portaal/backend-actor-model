@@ -15,6 +15,7 @@ using Serilog;
 using Serilog.Exceptions;
 using Serilog.Sinks.Elasticsearch;
 using System.Runtime.Loader;
+using RedacteurPortaal.Helpers;
 
 await Host.CreateDefaultBuilder(args)
     .UseOrleans((ctx, siloBuilder) => {
@@ -66,12 +67,16 @@ await Host.CreateDefaultBuilder(args)
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         });
     })
-    .ConfigureServices((ctx, services) => {
+    .ConfigureServices((ctx, services) =>
+    {
+        services.AddSingleton<FileSystemProvider>();
         services.AddScoped<IExportPluginService, ExportPluginService>();
-        services.AddScoped<FileSystemProvider>();
-        services.AddScoped<IGrainManagementService<INewsItemGrain>, GrainManagementService<INewsItemGrain, NewsItemModel>>();
+        services
+            .AddScoped<IGrainManagementService<INewsItemGrain>,
+                GrainManagementService<INewsItemGrain, NewsItemModel>>();
         services.AddScoped<IGrainManagementService<IProfileGrain>, GrainManagementService<IProfileGrain, Profile>>();
-        services.AddScoped<IGrainManagementService<IAddressGrain>, GrainManagementService<IAddressGrain, AddressModel>>();
+        services
+            .AddScoped<IGrainManagementService<IAddressGrain>, GrainManagementService<IAddressGrain, AddressModel>>();
 
         services.AddDbContext<DataContext>(options => {
             var connString = ctx.Configuration.GetConnectionString("DefaultConnection");
@@ -80,11 +85,14 @@ await Host.CreateDefaultBuilder(args)
 
         // migrate ef.
 #pragma warning disable ASP0000 // Do not call 'IServiceCollection.BuildServiceProvider' in 'ConfigureServices'
-        using (var scope = services.BuildServiceProvider().CreateScope())
+        if (Environment.GetEnvironmentVariable("InTest") == null)
         {
-            var context = scope.ServiceProvider.GetService<DataContext>();
-            _ = context ?? throw new Exception("Failed to retrieve Database context");
-            context.Database.Migrate();
+            using (var scope = services.BuildServiceProvider().CreateScope())
+            {
+                var context = scope.ServiceProvider.GetService<DataContext>();
+                _ = context ?? throw new Exception("Failed to retrieve Database context");
+                context.Database.Migrate();
+            }
         }
 #pragma warning restore ASP0000 // Do not call 'IServiceCollection.BuildServiceProvider' in 'ConfigureServices'
     })
