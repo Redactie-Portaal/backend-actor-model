@@ -12,7 +12,7 @@ namespace RedacteurPortaal.DomainModels
     {
         public HttpStatusCode StatusCode { get; set; } = HttpStatusCode.BadRequest;
 
-        public AppException() : base()
+        public AppException()
         {
         }
 

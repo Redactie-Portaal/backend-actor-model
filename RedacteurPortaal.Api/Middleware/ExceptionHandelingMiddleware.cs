@@ -40,7 +40,7 @@ namespace RedacteurPortaal.Api.Middleware
                         break;
                 }
 
-                string message = error.Message;
+                var message = error.Message;
 
                 if (error is not AppException)
                 {
@@ -50,7 +50,7 @@ namespace RedacteurPortaal.Api.Middleware
                     };
                 }
 
-                var result = JsonSerializer.Serialize(new { message = error?.Message });
+                var result = JsonSerializer.Serialize(new { message });
                 await response.WriteAsync(result);
             }
         }

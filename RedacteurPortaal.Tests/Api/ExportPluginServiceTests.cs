@@ -18,7 +18,7 @@ public class ExportPluginServiceTests
     {
         var dbContext = new Mock<DataContext>();
         var fileSystemProvider = new Mock<FileSystemProvider>();
-        fileSystemProvider.Setup(x=> x.FileSystem).Returns(new FileSystem());
+        fileSystemProvider.Setup(x => x.FileSystem).Returns(new FileSystem());
 
         Assert.Throws<DirectoryNotFoundException>(() => {
             _ = new ExportPluginService(dbContext.Object, fileSystemProvider.Object);

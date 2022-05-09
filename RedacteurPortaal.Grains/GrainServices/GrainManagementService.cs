@@ -35,7 +35,7 @@ namespace RedacteurPortaal.Grains.GrainServices
         {
             var grain = await Task.FromResult(this.client.GetGrain<T>(id));
 
-            if (!this.DbContext.GrainReferences.Any(x=> x.GrainId == id))
+            if (!this.DbContext.GrainReferences.Any(x => x.GrainId == id))
             {
                 throw new KeyNotFoundException($"Grain with id {id} not found!");
             }

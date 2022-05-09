@@ -27,7 +27,11 @@ namespace RedacteurPortaal.Api
         private List<IExportPlugin> SetupExportPlugins()
         {
             var pl = new List<IExportPlugin>();
+
             string pluginPath = AppContext.BaseDirectory + "/ExportPlugins";
+
+            this.fileSystemProvider.FileSystem.Directory.CreateDirectory(pluginPath);
+
             foreach (var dll in this.fileSystemProvider.FileSystem.Directory.GetFiles(pluginPath, "*.dll"))
             {
                 var assemblyContext = new AssemblyLoadContext(dll);
