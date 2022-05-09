@@ -1,6 +1,9 @@
-﻿namespace RedacteurPortaal.Grains.GrainInterfaces;
+﻿using RedacteurPortaal.DomainModels.Agenda;
 
-public interface IAgendaGrain
+namespace RedacteurPortaal.Grains.GrainInterfaces
 {
-    
+    public interface IAgendaGrain : IManageableGrain<AgendaModel>
+    {
+        Task<AgendaModel> UpdateAgenda(AgendaModel agenda);
+    }
 }

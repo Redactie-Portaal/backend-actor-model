@@ -11,6 +11,8 @@ using RedacteurPortaal.Grains.GrainInterfaces;
 using RedacteurPortaal.Grains.Grains;
 using RedacteurPortaal.Grains.GrainServices;
 using System.Runtime.Loader;
+using RedacteurPortaal.DomainModels.Agenda;
+using RedacteurPortaal.Helpers;
 
 await Host.CreateDefaultBuilder(args)
     .UseOrleans((ctx, siloBuilder) =>
@@ -69,9 +71,11 @@ await Host.CreateDefaultBuilder(args)
     .ConfigureServices((ctx, services) =>
     {
         services.AddScoped<IExportPluginService, ExportPluginService>();
+        services.AddScoped<FileSystemProvider>();
         services.AddScoped<IGrainManagementService<INewsItemGrain>, GrainManagementService<INewsItemGrain, NewsItemModel>>();
         services.AddScoped<IGrainManagementService<IProfileGrain>, GrainManagementService<IProfileGrain, Profile>>();
         services.AddScoped<IGrainManagementService<IAddressGrain>, GrainManagementService<IAddressGrain, AddressModel>>();
+        services.AddScoped<IGrainManagementService<IAgendaGrain>, GrainManagementService<IAgendaGrain, AgendaModel>>();
 
         services.AddDbContext<DataContext>(options =>
         {

@@ -12,7 +12,7 @@ public class AddressGrain : Grain, IAddressGrain
 
     private readonly IPersistentState<AddressModel> address;
 
-    public AddressGrain(ILogger<NewsItemGrain> logger,
+    public AddressGrain(ILogger logger,
     [PersistentState("address", "OrleansStorage")]
     IPersistentState<AddressModel> address)
     {
@@ -25,9 +25,9 @@ public class AddressGrain : Grain, IAddressGrain
         return Task.FromResult(this.address.RecordExists);
     }
 
-    public async Task<AddressModel> UpdateAddress(AddressModel address)
+    public async Task<AddressModel> UpdateAddress(AddressModel addressModel)
     {
-        this.address.State = address;
+        this.address.State = addressModel;
         await this.address.WriteStateAsync();
         return this.address.State;
     }

@@ -1,12 +1,12 @@
 ﻿namespace RedacteurPortaal.DomainModels.Agenda
 {
-    public class Agenda : IBaseEntity
+    public class AgendaModel : IBaseEntity
     {
-        public Agenda()
+        public AgendaModel()
         {
         }
 
-        public Agenda(Guid id, DateTime date, string title, string description, string userId)
+        public AgendaModel(Guid id, DateTime date, string title, string description, string userId)
         {
             this.Id = id;
             this.Date = date;
@@ -16,13 +16,13 @@
         }
 
         public Guid Id { get; set; }
-        
+
         public DateTime Date { get; set; }
-        
+
         public string Title { get; set; }
-        
+
         public string Description { get; set; }
-        
+
         public string UserId { get; set; }
     }
 }
