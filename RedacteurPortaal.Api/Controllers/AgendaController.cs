@@ -36,7 +36,7 @@ namespace RedacteurPortaal.Api.Controllers
             var update = agendaItem.Adapt<AgendaModel>();
             var createdGrain = await grain.UpdateAgenda(update);
             var response = createdGrain.Adapt<AgendaModel>();
-            return this.CreatedAtRoute(nameof(this.GetAgendaItem), new { id = newGuid }, response);
+            return this.CreatedAtRoute(nameof(this.GetAgendaItem), new {id = newGuid}, response);
         }
 
         [HttpGet]
@@ -48,18 +48,39 @@ namespace RedacteurPortaal.Api.Controllers
             var dto = response.Adapt<AgendaDto>();
 
             return this.Ok(response);
-        } 
-        
-        /* For testing - delete when authentication is functioning */
+        }
+
+        // TODO: Delete after implementing auth - for testing only!
         [HttpGet]
         public async Task<ActionResult<List<AgendaDto>>> GetAllAgendaItems()
         {
             var grain = await this.grainService.GetGrains();
-        
-            var response = (await grain.SelectAsync(async x => await 
+
+            var response = (await grain.SelectAsync(async x => await
                 x.Get())).AsQueryable().ProjectToType<AgendaDto>(null).ToList();
             return this.Ok(response);
         }
-        
+
+        // TODO: Get agenda items by userid
+        [HttpGet]
+        [Route("s/{startDate}/{endDate}")]
+        public async Task<ActionResult<List<AgendaDto>>> SortAgendaItemsByDate(DateTime startDate, DateTime endDate)
+        {
+            var grain = await this.grainService.GetGrains();
+
+            var list = this.GetAllAgendaItems();
+
+
+            if (list.Result.Value != null)
+            {
+                Console.WriteLine("------------> " +
+                                  list.Result.Value.Where(x => x.StartDate == new DateTime(2022, 05, 09)).ToList());
+                var response = list.Result.Value.Where(x => x.StartDate == new DateTime(2022, 05, 09)).ToList();
+
+                return this.Ok(response);
+            }
+
+            return this.NotFound();
+        }
     }
 }

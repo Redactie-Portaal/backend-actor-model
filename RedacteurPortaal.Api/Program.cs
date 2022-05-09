@@ -10,6 +10,7 @@ using RedacteurPortaal.DomainModels.Profile;
 using RedacteurPortaal.Grains.GrainInterfaces;
 using RedacteurPortaal.Grains.Grains;
 using RedacteurPortaal.Grains.GrainServices;
+using RedacteurPortaal.Helpers;
 using System.Runtime.Loader;
 using RedacteurPortaal.DomainModels.Agenda;
 using RedacteurPortaal.Helpers;
@@ -76,7 +77,6 @@ await Host.CreateDefaultBuilder(args)
         services.AddScoped<IGrainManagementService<IProfileGrain>, GrainManagementService<IProfileGrain, Profile>>();
         services.AddScoped<IGrainManagementService<IAddressGrain>, GrainManagementService<IAddressGrain, AddressModel>>();
         services.AddScoped<IGrainManagementService<IAgendaGrain>, GrainManagementService<IAgendaGrain, AgendaModel>>();
-
         services.AddDbContext<DataContext>(options =>
         {
             var connString = ctx.Configuration.GetConnectionString("DefaultConnection");
