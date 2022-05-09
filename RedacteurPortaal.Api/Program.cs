@@ -5,6 +5,7 @@ using RedacteurPortaal.Api;
 using RedacteurPortaal.Api.Middleware;
 using RedacteurPortaal.Data.Context;
 using RedacteurPortaal.DomainModels.Adress;
+using RedacteurPortaal.DomainModels.Archive;
 using RedacteurPortaal.DomainModels.NewsItem;
 using RedacteurPortaal.DomainModels.Profile;
 using RedacteurPortaal.Grains.GrainInterfaces;
@@ -72,6 +73,7 @@ await Host.CreateDefaultBuilder(args)
         services.AddScoped<IGrainManagementService<INewsItemGrain>, GrainManagementService<INewsItemGrain, NewsItemModel>>();
         services.AddScoped<IGrainManagementService<IProfileGrain>, GrainManagementService<IProfileGrain, Profile>>();
         services.AddScoped<IGrainManagementService<IAddressGrain>, GrainManagementService<IAddressGrain, AddressModel>>();
+        services.AddScoped<IGrainManagementService<IArchiveGrain>, GrainManagementService<IArchiveGrain, ArchiveModel>>();
 
         services.AddDbContext<DataContext>(options =>
         {

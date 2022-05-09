@@ -1,4 +1,5 @@
 ﻿using RedacteurPortaal.DomainModels.Media;
+using RedacteurPortaal.DomainModels.NewsItem;
 
 namespace RedacteurPortaal.DomainModels.Archive;
 
@@ -11,6 +12,7 @@ public class ArchiveModel : IBaseEntity
         List<MediaPhotoItem> mediaPhotoItems,
         List<MediaVideoItem> mediaVideoItems,
         List<MediaAudioItem> mediaAudioItems,
+        List<NewsItemModel> newsItems,
         DateTime archivedDate,
         List<string> scripts)
     {
@@ -20,6 +22,7 @@ public class ArchiveModel : IBaseEntity
         this.MediaPhotoItems = mediaPhotoItems ?? throw new ArgumentNullException(nameof(mediaPhotoItems));
         this.MediaVideoItems = mediaVideoItems ?? throw new ArgumentNullException(nameof(mediaVideoItems));
         this.MediaAudioItems = mediaAudioItems ?? throw new ArgumentNullException(nameof(mediaAudioItems));
+        this.NewsItems = newsItems ?? throw new ArgumentNullException(nameof(newsItems));
         this.ArchivedDate = archivedDate;
         this.Scripts = scripts ?? throw new ArgumentNullException(nameof(scripts));
     }
@@ -38,6 +41,7 @@ public class ArchiveModel : IBaseEntity
 
     public List<MediaVideoItem> MediaVideoItems { get; private set; }
 
+    public List<NewsItemModel> NewsItems { get; set; }
     public List<MediaAudioItem> MediaAudioItems { get; private set; }
 
     public DateTime ArchivedDate { get; private set; }
