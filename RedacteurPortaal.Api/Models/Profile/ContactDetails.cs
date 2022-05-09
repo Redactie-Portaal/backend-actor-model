@@ -1,8 +1,10 @@
-﻿namespace RedacteurPortaal.Api.Models.Profile
+﻿using Newtonsoft.Json;
+
+namespace RedacteurPortaal.Api.Models.Profile
 {
     public class ContactDetails
     {
-        public string Phone { get; set; }
+        public string PhoneNumber { get; set; }
        
         public string Email { get; set; }
 

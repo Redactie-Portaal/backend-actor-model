@@ -15,25 +15,19 @@ namespace RedacteurPortaal.Api.Controllers
     public class AddressController : Controller
     {
         private readonly IGrainManagementService<IAddressGrain> grainService;
-        private readonly ILogger logger;
-        
-        public AddressController(IGrainManagementService<IAddressGrain> grainService, ILogger<AddressController> logger)
+
+        public AddressController(IGrainManagementService<IAddressGrain> grainService)
         {
             this.grainService = grainService;    
-            this.logger = logger;
         }
 
         [HttpPost]
         public async Task<ActionResult<AddressDTO>> SaveAddress([FromBody] AddAddressRequest addressDTO )   
         {
             Guid newguid = Guid.NewGuid();
-            TypeAdapterConfig<AddressDTO, AddressModel>
-                .NewConfig()
-                .Map(dest => dest.Id,
-                    src => newguid);
-            
+
             var address = addressDTO.Adapt<AddressModel>();
-            var grain = await this.grainService.CreateGrain(address.Id);
+            var grain = await this.grainService.CreateGrain(newguid);
             var updatedGrain = await grain.UpdateAddress(address);
             var response = updatedGrain.Adapt<AddressDTO>();
             return this.CreatedAtRoute("GetAddress", new { id = newguid }, response);
@@ -64,7 +58,7 @@ namespace RedacteurPortaal.Api.Controllers
             return this.NoContent();
         }
 
-        [HttpPatch]
+        [HttpPatch("{id}")]
         public async Task<ActionResult<AddressDTO>> UpdateAddress(Guid id, [FromBody]UpdateAddressRequest addressDTO)
         {
             TypeAdapterConfig<UpdateAddressRequest, AddressDTO>
