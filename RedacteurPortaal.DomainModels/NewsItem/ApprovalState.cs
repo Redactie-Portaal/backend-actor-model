@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace RedacteurPortaal.DomainModels.NewsItem;
 
-namespace RedacteurPortaal.DomainModels.NewsItem
+public enum ApprovalState
 {
-    public enum ApprovalState
-    {
-        PENDING,
-        APPROVED,
-        DENIED
-    }
+    PENDING,
+    APPROVED,
+    DENIED
 }

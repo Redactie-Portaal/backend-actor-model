@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using EntityFrameworkMock;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.Internal;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Orleans;
 using Orleans.TestingHost;
@@ -46,7 +47,9 @@ namespace RedacteurPortaal.Tests.Grains.GrainServices
 
             var clusterClient = new Mock<IClusterClient>();
 
-            var service = new GrainManagementService<SourceGrain, Source>(dbContext.Object, clusterClient.Object);
+            var logger = new Mock<ILogger<GrainManagementService<SourceGrain, Source>>>();
+            
+            var service = new GrainManagementService<SourceGrain, Source>(dbContext.Object, clusterClient.Object, logger.Object);
 
             await Assert.ThrowsAsync<DuplicateNameException>(async () => {
                 _ = await service.CreateGrain(id);
@@ -65,7 +68,9 @@ namespace RedacteurPortaal.Tests.Grains.GrainServices
 
             var clusterClient = new Mock<IClusterClient>();
 
-            var service = new GrainManagementService<SourceGrain, Source>(dbContext.Object, clusterClient.Object);
+            var logger = new Mock<ILogger<GrainManagementService<SourceGrain, Source>>>();            
+
+            var service = new GrainManagementService<SourceGrain, Source>(dbContext.Object, clusterClient.Object, logger.Object);
 
             await Assert.ThrowsAsync<KeyNotFoundException>(async () => {
                 _  = await service.GetGrain(id);
@@ -87,7 +92,9 @@ namespace RedacteurPortaal.Tests.Grains.GrainServices
 
             dbContext.Setup(x => x.GrainReferences).Returns(references.GetQueryableMockDbSet().Object);
 
-            var service = new GrainManagementService<SourceGrain, Source>(dbContext.Object, this.testCluster.Client);
+            var logger = new Mock<ILogger<GrainManagementService<SourceGrain, Source>>>();
+
+            var service = new GrainManagementService<SourceGrain, Source>(dbContext.Object, this.testCluster.Client, logger.Object);
 
             Assert.NotNull(service.GetGrain(id));
         }
@@ -104,7 +111,9 @@ namespace RedacteurPortaal.Tests.Grains.GrainServices
             dbContext.Setup(x => x.GrainReferences.Add(It.IsAny<GrainReference>())).Callback(() =>
                 references.Add(new GrainReference() { GrainId = id, TypeName = typeof(ContactGrain).Name }));
 
-            var service = new GrainManagementService<IContactGrain, Contact>(dbContext.Object, this.testCluster.Client);
+            var logger = new Mock<ILogger<GrainManagementService<IContactGrain, Contact>>>();
+
+            var service = new GrainManagementService<IContactGrain, Contact>(dbContext.Object, this.testCluster.Client, logger.Object);
 
             var foo = await (await service.CreateGrain(id)).Get();
 
@@ -128,7 +137,9 @@ namespace RedacteurPortaal.Tests.Grains.GrainServices
             var dbset = references.GetQueryableMockDbSet();
             dbset.Setup(x => x.Remove(It.IsAny<GrainReference>())).Callback(() => references.RemoveAt(0));
 
-            var service = new GrainManagementService<IContactGrain, Contact>(dbContext.Object, this.testCluster.Client);
+            var logger = new Mock<ILogger<GrainManagementService<IContactGrain, Contact>>>();
+
+            var service = new GrainManagementService<IContactGrain, Contact>(dbContext.Object, this.testCluster.Client, logger.Object);
             dbContext.Setup(x => x.GrainReferences).Returns(dbset.Object);
 
             await service.DeleteGrain(id);
@@ -147,7 +158,9 @@ namespace RedacteurPortaal.Tests.Grains.GrainServices
             var references = new List<GrainReference>();
             dbContext.Setup(x => x.GrainReferences).Returns(references.GetQueryableMockDbSet().Object);
 
-            var service = new GrainManagementService<IContactGrain, Contact>(dbContext.Object, this.testCluster.Client);
+            var logger = new Mock<ILogger<GrainManagementService<IContactGrain, Contact>>>();
+
+            var service = new GrainManagementService<IContactGrain, Contact>(dbContext.Object, this.testCluster.Client, logger.Object);
 
 
             await Assert.ThrowsAsync<KeyNotFoundException>(async () => {
