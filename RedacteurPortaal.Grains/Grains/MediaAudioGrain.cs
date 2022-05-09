@@ -9,7 +9,7 @@ namespace RedacteurPortaal.Grains.Grains;
 public class MediaAudioGrain : Grain, IMediaAudioGrain
 {
     private readonly IPersistentState<MediaAudioItem> audioItem;
-
+    
     public MediaAudioGrain(
     [PersistentState("audioItem", "OrleansStorage")]
     IPersistentState<MediaAudioItem> audioItem)

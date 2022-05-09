@@ -41,7 +41,7 @@ await Host.CreateDefaultBuilder(args)
                     options.ConnectionString = postgresqlConnString;
                 });
 
-            //siloBuilder.ConfigureLogging(logging => logging.AddConsole());
+            siloBuilder.ConfigureLogging(logging => logging.AddConsole());
         }
     })
     .ConfigureWebHostDefaults(webBuilder =>

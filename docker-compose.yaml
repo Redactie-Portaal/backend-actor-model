@@ -1,17 +1,17 @@
 version: "3.9"
 services:
-  # api:
-    # hostname: api
-    # build:
-      # dockerfile: ./RedacteurPortaal.Api/Dockerfile
-      # args:
-        # username: $USERNAME
-        # password: $PASSWORD
-    # ports:
-      # - "80:80"
-    # environment:
-      # - ASPNETCORE_URLS=http://+:80
-    # network_mode: host
+  api:
+    hostname: api
+    build:
+      dockerfile: ./RedacteurPortaal.Api/Dockerfile
+      args:
+        username: $USERNAME
+        password: $PASSWORD
+    ports:
+      - "80:80"
+    environment:
+      - ASPNETCORE_URLS=http://+:80
+    network_mode: host
   portaal_db:
     hostname: portaal_db
     image: postgres:14.1-alpine
