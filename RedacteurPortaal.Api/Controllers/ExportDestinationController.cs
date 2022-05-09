@@ -4,10 +4,7 @@ using RedacteurPortaal.Api.Models;
 using RedacteurPortaal.Api.Models.Request;
 using RedacteurPortaal.Data.Context;
 using RedacteurPortaal.DomainModels;
-using RedacteurPortaal.DomainModels.Media;
-using RedacteurPortaal.DomainModels.NewsItem;
 using RedacteurPortaal.Grains.GrainInterfaces;
-using RedacteurPortaal.Grains.Grains;
 
 namespace RedacteurPortaal.Api.Controllers;
 

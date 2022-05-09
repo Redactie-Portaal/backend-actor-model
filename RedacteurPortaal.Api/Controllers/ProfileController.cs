@@ -1,6 +1,5 @@
 ﻿using Mapster;
 using Microsoft.AspNetCore.Mvc;
-using Orleans;
 using RedacteurPortaal.Api.DTOs;
 using RedacteurPortaal.Api.Models.Request;
 using RedacteurPortaal.DomainModels.Profile;
@@ -68,13 +67,7 @@ namespace RedacteurPortaal.Api.Controllers
             TypeAdapterConfig<PatchProfileRequest, Profile>
             .NewConfig()
                 .Map(dest => dest.FullName, src => src.Name)
-                .Map(dest => dest.ProfilePicture, src => src.ProfilePicture)
-                .Map(dest => dest.ContactDetails.Email, src => src.ContactDetails.Email)
-                .Map(dest => dest.ContactDetails.PhoneNumber, src => src.ContactDetails.Phone)
-                .Map(dest => dest.ContactDetails.Address, src => src.ContactDetails.Address)
-                .Map(dest => dest.ContactDetails.Province, src => src.ContactDetails.Province)
-                .Map(dest => dest.ContactDetails.City, src => src.ContactDetails.City)
-                .Map(dest => dest.ContactDetails.PostalCode, src => src.ContactDetails.PostalCode);
+                .Map(dest => dest.ContactDetails.PhoneNumber, src => src.ContactDetails.Phone);
 
             var profileUpdate = patch.Adapt<Profile>();
             profileUpdate.Id = id;

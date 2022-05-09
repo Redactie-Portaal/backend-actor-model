@@ -8,15 +8,11 @@ namespace RedacteurPortaal.Grains.Grains;
 
 public class AddressGrain : Grain, IAddressGrain
 {
-    private readonly ILogger logger;
-
     private readonly IPersistentState<AddressModel> address;
 
-    public AddressGrain(ILogger<NewsItemGrain> logger,
-    [PersistentState("address", "OrleansStorage")]
+    public AddressGrain([PersistentState("address", "OrleansStorage")]
     IPersistentState<AddressModel> address)
     {
-        this.logger = logger;
         this.address = address;
     }
 
@@ -41,7 +37,6 @@ public class AddressGrain : Grain, IAddressGrain
     {
         var state = this.address.State;
         state.Id = this.GetGrainIdentity().PrimaryKey;
-        this.logger.LogInformation("foobar");
         return Task.FromResult(this.address.State);
     }
 }

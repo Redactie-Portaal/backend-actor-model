@@ -1,11 +1,10 @@
-﻿namespace RedacteurPortaal.Helpers
+﻿namespace RedacteurPortaal.Helpers;
+
+public static class AsyncLinq
 {
-    public static class AsyncLinq
+    public static async Task<IEnumerable<TResult>> SelectAsync<TSource, TResult>(
+        this IEnumerable<TSource> source, Func<TSource, Task<TResult>> method)
     {
-        public static async Task<IEnumerable<TResult>> SelectAsync<TSource, TResult>(
-            this IEnumerable<TSource> source, Func<TSource, Task<TResult>> method)
-        {
-            return await Task.WhenAll(source.Select(async s => await method(s)));
-        }
+        return await Task.WhenAll(source.Select(async s => await method(s)));
     }
 }
