@@ -30,15 +30,14 @@ namespace RedacteurPortaal.Api.Controllers
             var grain = await this.grainService.CreateGrain(newguid);
             var updatedGrain = await grain.UpdateAddress(address);
             var response = updatedGrain.Adapt<AddressDTO>();
-            return this.CreatedAtRoute("GetAddress", new { id = newguid.ToString() }, response);
+            return this.CreatedAtRoute("GetAddress", new { id = newguid }, response);
         }
 
         [HttpGet]
         [Route("{id}", Name = "GetAddress")]
-        public async Task<AddressDTO> GetAddress(string id)
+        public async Task<AddressDTO> GetAddress(Guid id)
         {
-            var guid = Guid.Parse(id);
-            var grain = await this.grainService.GetGrain(guid);
+            var grain = await this.grainService.GetGrain(id);
             var response = await grain.Get();
             return response.Adapt<AddressDTO>();
         }
