@@ -103,7 +103,8 @@ await Host.CreateDefaultBuilder(args)
           configuration.Enrich.FromLogContext()
           .Enrich.WithMachineName()
           .WriteTo.Console(restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Warning)
-          .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(context.Configuration["ElasticConfiguration:Uri"])) /*context.Configuration["ElasticConfiguration"]*/{
+          .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(context.Configuration["ElasticConfiguration:Uri"]))
+          {
               IndexFormat = $"{context.Configuration["ApplicationName"]}-logs-{context.HostingEnvironment.EnvironmentName?.ToLower().Replace(".", "-")}-{DateTime.UtcNow:yyyy-MM}",
               AutoRegisterTemplate = true,
               NumberOfShards = 2,
