@@ -15,8 +15,8 @@ using Serilog.Exceptions;
 using Serilog.Sinks.Elasticsearch;
 
 await Host.CreateDefaultBuilder(args)
-
-    .UseOrleans((ctx, siloBuilder) => {
+    .UseOrleans((ctx, siloBuilder) => 
+    {
         if (ctx.HostingEnvironment.IsDevelopment())
         {
             siloBuilder.UseLocalhostClustering();
@@ -34,7 +34,8 @@ await Host.CreateDefaultBuilder(args)
 
             siloBuilder.AddAdoNetGrainStorage(
                 "OrleansStorage",
-                options => {
+                options =>
+                {
                     options.Invariant = "Npgsql";
                     options.UseJsonFormat = true;
                     options.ConnectionString = postgresqlConnString;
