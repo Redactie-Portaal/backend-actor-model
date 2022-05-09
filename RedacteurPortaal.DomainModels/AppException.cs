@@ -7,13 +7,9 @@ public class AppException : Exception
 {
     public HttpStatusCode StatusCode { get; set; } = HttpStatusCode.BadRequest;
 
-    public AppException() : base()
+    public AppException()
     {
     }
-
-        public AppException()
-        {
-        }
 
     public AppException(string message, HttpStatusCode statuscode) : base(message)
     {

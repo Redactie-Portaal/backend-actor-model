@@ -10,11 +10,11 @@ namespace RedacteurPortaal.Tests.Grains.Test;
 [Collection("Col")]
 public class SourceGrainTests
 {
-    private readonly TestCluster cluster;
+    private readonly TestCluster _cluster;
 
     public SourceGrainTests(ClusterFixture fixture)
     {
-        this.cluster = fixture.Cluster;
+        this._cluster = fixture.Cluster;
     }
 
     [Fact]
@@ -24,7 +24,7 @@ public class SourceGrainTests
 
         var toSaveSource = new Source(guid, "SourceName", "URI", DateTime.UtcNow);
 
-        var sourceGrain = this.cluster.GrainFactory.GetGrain<ISourceGrain>(guid);
+        var sourceGrain = this._cluster.GrainFactory.GetGrain<ISourceGrain>(guid);
 
         await sourceGrain.Update(toSaveSource);
 
