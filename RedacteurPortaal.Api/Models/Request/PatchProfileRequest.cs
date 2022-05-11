@@ -1,5 +1,4 @@
 ﻿using RedacteurPortaal.Api.Models.Profile;
-using System.ComponentModel.DataAnnotations;
 
 namespace RedacteurPortaal.Api.Models.Request
 {

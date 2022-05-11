@@ -1,6 +1,4 @@
 ﻿using RedacteurPortaal.DomainModels.Media;
-using RedacteurPortaal.DomainModels.NewsItem;
-using RedacteurPortaal.DomainModels.Shared;
 
 namespace RedacteurPortaal.Api.DTOs
 {

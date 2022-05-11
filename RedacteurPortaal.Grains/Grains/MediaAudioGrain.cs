@@ -9,17 +9,17 @@ namespace RedacteurPortaal.Grains.Grains;
 public class MediaAudioGrain : Grain, IMediaAudioGrain
 {
     private readonly IPersistentState<MediaAudioItem> audioItem;
-
-    public Task<bool> HasState()
-    {
-        return Task.FromResult(this.audioItem.RecordExists);
-    }
-
+    
     public MediaAudioGrain(
     [PersistentState("audioItem", "OrleansStorage")]
     IPersistentState<MediaAudioItem> audioItem)
     {
         this.audioItem = audioItem;
+    }
+    
+    public Task<bool> HasState()
+    {
+        return Task.FromResult(this.audioItem.RecordExists);
     }
 
     public Task<MediaAudioItem> Get()

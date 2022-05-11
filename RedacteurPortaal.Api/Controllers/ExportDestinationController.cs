@@ -4,10 +4,7 @@ using RedacteurPortaal.Api.Models;
 using RedacteurPortaal.Api.Models.Request;
 using RedacteurPortaal.Data.Context;
 using RedacteurPortaal.DomainModels;
-using RedacteurPortaal.DomainModels.Media;
-using RedacteurPortaal.DomainModels.NewsItem;
 using RedacteurPortaal.Grains.GrainInterfaces;
-using RedacteurPortaal.Grains.Grains;
 
 namespace RedacteurPortaal.Api.Controllers;
 
@@ -18,15 +15,14 @@ public class ExportDestinationController : Controller
     private readonly IExportPluginService pluginService;
     private readonly IClusterClient clusterClient;
     private readonly DataContext context;
+    private readonly ILogger logger;
 
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="NewsItemController" /> class.
-    /// </summary>
-    public ExportDestinationController(IExportPluginService pluginService, IClusterClient clusterClient, DataContext context)
+    public ExportDestinationController(IExportPluginService pluginService, IClusterClient clusterClient, DataContext context, ILogger<ExportDestinationController> logger)
     {
         this.pluginService = pluginService;
         this.clusterClient = clusterClient;
         this.context = context;
+        this.logger = logger;
     }
 
     [HttpGet]
@@ -52,7 +48,7 @@ public class ExportDestinationController : Controller
         var plugin =  this.pluginService.GetPlugins()
            .Single(x => x.Id == guid);
         _ = plugin ?? throw new KeyNotFoundException();
-
+        
         var story = await this.clusterClient.GetGrain<INewsItemGrain>(request.StoryId).Get();
         var apiKey = this.context.PluginSettings.Single(x => x.PluginId == guid).ApiKey;
 

@@ -1,12 +1,5 @@
 ﻿using RedacteurPortaal.Api.DTOs;
-using RedacteurPortaal.DomainModels.Media;
 using RedacteurPortaal.DomainModels.NewsItem;
-using RedacteurPortaal.DomainModels.Shared;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RedacteurPortaal.Api.Models;
 
@@ -25,7 +18,7 @@ public class NewsItemDto
 
     public FeedSourceDto? Source { get; set; }
 
-    public ItemBodyDto? Body { get; set; }
+    public string Body { get; set; }
 
     public List<ContactDto> ContactDetails { get; set; }
 
