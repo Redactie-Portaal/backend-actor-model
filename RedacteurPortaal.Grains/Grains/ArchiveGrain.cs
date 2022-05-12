@@ -5,6 +5,7 @@ using RedacteurPortaal.DomainModels.Archive;
 using RedacteurPortaal.DomainModels.Media;
 using RedacteurPortaal.DomainModels.NewsItem;
 using RedacteurPortaal.Grains.GrainInterfaces;
+using System.Runtime;
 
 namespace RedacteurPortaal.Grains.Grains;
 
@@ -53,36 +54,41 @@ public class ArchiveGrain : Grain, IArchiveGrain
         return await Task.FromResult(newsItem);
     }
 
-    public async Task CreateArchive(ArchiveModel archive)
+    public async Task<Task<ArchiveModel>> CreateArchive(ArchiveModel archive)
     {
         this.archive.State = archive;
         await this.archive.WriteStateAsync();
+        return Task.FromResult(this.archive.State);
     }
 
-    public async Task AddVideoItem(MediaVideoItem videoItem)
+    public async Task<Task<MediaVideoItem>> AddVideoItem(MediaVideoItem videoItem)
     {
         this.archive.State.MediaVideoItems.Add(videoItem);
         await this.archive.WriteStateAsync();
+        return Task.FromResult(videoItem);
     }
 
-    public async Task AddPhotoItem(MediaPhotoItem photoItem)
+    public async Task<Task<MediaPhotoItem>> AddPhotoItem(MediaPhotoItem photoItem)
     {
         this.archive.State.MediaPhotoItems.Add(photoItem);
         await this.archive.WriteStateAsync();
+        return Task.FromResult(photoItem);
     }
 
-    public async Task AddAudioItem(MediaAudioItem audioItem)
+    public async Task<Task<MediaAudioItem>> AddAudioItem(MediaAudioItem audioItem)
     {
         this.archive.State.MediaAudioItems.Add(audioItem);
         await this.archive.WriteStateAsync();
+        return Task.FromResult(audioItem);
     }
 
-    public async Task AddNewsItem(NewsItemModel newsItem)
+    public async Task<Task<NewsItemModel>> AddNewsItem(NewsItemModel newsItem)
     {
         this.archive.State.NewsItems.Add(newsItem);
         await this.archive.WriteStateAsync();
+        return Task.FromResult(newsItem);
     }
-    
+
     public async Task Delete()
     {
         await this.archive.ClearStateAsync();
@@ -91,33 +97,89 @@ public class ArchiveGrain : Grain, IArchiveGrain
     public async Task DeleteVideoItem(Guid videoItemId)
     {
         var videoItems = this.archive.State.MediaVideoItems;
-        var videoItem = videoItems.Find(x => x.Id.Equals(videoItemId));
-        this.archive.State.MediaVideoItems.Remove(videoItem);
-        await this.archive.WriteStateAsync();
+        if (videoItems != null && videoItems.Count > 0)
+        {
+            var videoItem = videoItems.Find(x => x.Id.Equals(videoItemId));
+            if (videoItem == null)
+            {
+                throw new Exception("No video item found");
+            }
+            else
+            {
+                this.archive.State.MediaVideoItems.Remove(videoItem);
+                await this.archive.WriteStateAsync();
+            }
+        }
+        else
+        {
+            throw new Exception("No video items found");
+        }
     }
 
     public async Task DeletePhotoItem(Guid photoItemId)
     {
         var photoItems = this.archive.State.MediaPhotoItems;
-        var photoItem = photoItems.Find(x => x.Id.Equals(photoItemId));
-        this.archive.State.MediaPhotoItems.Remove(photoItem);
-        await this.archive.WriteStateAsync();
+        if (photoItems != null && photoItems.Count > 0)
+        {
+            var photoItem = photoItems.Find(x => x.Id.Equals(photoItemId));
+            if (photoItem == null)
+            {
+                throw new Exception("No photo item found");
+            }
+            else
+            {
+                this.archive.State.MediaPhotoItems.Remove(photoItem);
+                await this.archive.WriteStateAsync();
+            }
+        }
+        else
+        {
+            throw new Exception("No photo items found");
+        }
     }
 
     public async Task DeleteAudioItem(Guid audioItemId)
     {
         var audioItems = this.archive.State.MediaAudioItems;
-        var audioItem = audioItems.Find(x => x.Id.Equals(audioItemId));
-        this.archive.State.MediaAudioItems.Remove(audioItem);
-        await this.archive.WriteStateAsync();
+        if (audioItems != null && audioItems.Count > 0)
+        {
+            var audioItem = audioItems.Find(x => x.Id.Equals(audioItemId));
+            if (audioItem == null)
+            {
+                throw new Exception("No audio item found");
+            }
+            else
+            {
+                this.archive.State.MediaAudioItems.Remove(audioItem);
+                await this.archive.WriteStateAsync();
+            }
+        }
+        else
+        {
+            throw new Exception("No audio items found");
+        }
     }
 
     public async Task DeleteNewsItem(Guid newsItemId)
     {
-        var newsItems = this.archive.State.MediaAudioItems;
-        var newsItem = newsItems.Find(x => x.Id.Equals(newsItemId));
-        this.archive.State.MediaAudioItems.Remove(newsItem);
-        await this.archive.WriteStateAsync();
+        var newsItems = this.archive.State.NewsItems;
+        if (newsItems != null && newsItems.Count > 0)
+        {
+            var newsItem = newsItems.Find(x => x.Id.Equals(newsItemId));
+            if (newsItem == null)
+            {
+                throw new Exception("No news item found");
+            }
+            else
+            {
+                this.archive.State.NewsItems.Remove(newsItem);
+                await this.archive.WriteStateAsync();
+            }
+        }
+        else
+        {
+            throw new Exception("No news items found");
+        }
     }
 
     public async Task<ArchiveModel> Update(ArchiveModel archive)

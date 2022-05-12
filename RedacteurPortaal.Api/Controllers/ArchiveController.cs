@@ -25,6 +25,7 @@ public class ArchiveController : Controller
     }
 
     [HttpGet]
+    [Route("{archiveId}/")]
     public async Task<IActionResult> GetAllArchives()
     {
         var grain = await this.grainService.GetGrains();
@@ -125,6 +126,7 @@ public class ArchiveController : Controller
     }
 
     [HttpPost]
+    [Route("{archiveId}/")]
     public async Task<ActionResult<ArchiveModel>> CreateArchive([FromBody] ArchiveDto archiveDTO)
     {
         var newguid = Guid.NewGuid();
@@ -142,92 +144,94 @@ public class ArchiveController : Controller
 
     [HttpPost]
     [Route("{archiveId}/VideoItems")]
-    public async Task<IActionResult> AddVideoItem(Guid guid, MediaVideoItem videoItem)
+    public async Task<IActionResult> AddVideoItem(Guid archiveId, MediaVideoItem videoItem)
     {
-        var grain = await this.grainService.GetGrain(guid);
+        var grain = await this.grainService.GetGrain(archiveId);
         await grain.AddVideoItem(videoItem);
         return this.Ok(grain.Get());
     }
 
     [HttpPost]
     [Route("{archiveId}/AudioItems")]
-    public async Task<IActionResult> AddAudioItems(Guid guid, MediaAudioItem audioItem)
+    public async Task<IActionResult> AddAudioItems(Guid archiveId, MediaAudioItem audioItem)
     {
-        var grain = await this.grainService.GetGrain(guid);
+        var grain = await this.grainService.GetGrain(archiveId);
         await grain.AddAudioItem(audioItem);
         return this.Ok(grain.Get());
     }
 
     [HttpPost]
     [Route("{archiveId}/PhotoItems")]
-    public async Task<IActionResult> AddPhotoItem(Guid guid, MediaPhotoItem photoItem)
+    public async Task<IActionResult> AddPhotoItem(Guid archiveId, MediaPhotoItem photoItem)
     {
-        var grain = await this.grainService.GetGrain(guid);
+        var grain = await this.grainService.GetGrain(archiveId);
         await grain.AddPhotoItem(photoItem);
         return this.Ok(grain.Get());
     }
 
     [HttpPost]
     [Route("{archiveId}/NewsItems")]
-    public async Task<IActionResult> AddNewsItems(Guid guid, NewsItemModel newsItem)
+    public async Task<IActionResult> AddNewsItems(Guid archiveId, NewsItemModel newsItem)
     {
-        var grain = await this.grainService.GetGrain(guid);
+        var grain = await this.grainService.GetGrain(archiveId);
         await grain.AddNewsItem(newsItem);
         return this.Ok(grain.Get());
     }
 
     [HttpDelete]
-    public async Task<IActionResult> DeleteArchive(Guid guid)
+    [Route("{archiveId}/")]
+    public async Task<IActionResult> DeleteArchive(Guid archiveId)
     {
-        await this.grainService.DeleteGrain(guid);
+        await this.grainService.DeleteGrain(archiveId);
         return this.Ok();
     }
 
     [HttpDelete]
     [Route("{archiveId}/VideoItems/{videoItemGuid}")]
-    public async Task<IActionResult> DeleteVideoItem(Guid guid, Guid videoItemGuid)
+    public async Task<IActionResult> DeleteVideoItem(Guid archiveId, Guid videoItemGuid)
     {
-        var grain = await this.grainService.GetGrain(guid);
+        var grain = await this.grainService.GetGrain(archiveId);
         await grain.DeleteVideoItem(videoItemGuid);
         return this.Ok();
     }
 
     [HttpDelete]
     [Route("{archiveId}/AudioItems/{audioItemGuid}")]
-    public async Task<IActionResult> DeleteAudioItem(Guid guid, Guid audioItemGuid)
+    public async Task<IActionResult> DeleteAudioItem(Guid archiveId, Guid audioItemGuid)
     {
-        var grain = await this.grainService.GetGrain(guid);
+        var grain = await this.grainService.GetGrain(archiveId);
         await grain.DeleteAudioItem(audioItemGuid);
         return this.Ok();
     }
 
     [HttpDelete]
     [Route("{archiveId}/PhotoItems/{photoItemGuid}")]
-    public async Task<IActionResult> DeletePhotoItem(Guid guid, Guid photoItemGuid)
+    public async Task<IActionResult> DeletePhotoItem(Guid archiveId, Guid photoItemGuid)
     {
-        var grain = await this.grainService.GetGrain(guid);
+        var grain = await this.grainService.GetGrain(archiveId);
         await grain.DeletePhotoItem(photoItemGuid);
         return this.Ok();
     }
 
     [HttpDelete]
     [Route("{archiveId}/Stories/{newsItemGuid}")]
-    public async Task<IActionResult> DeleteNewsItem(Guid guid, Guid newsItemGuid)
+    public async Task<IActionResult> DeleteNewsItem(Guid archiveId, Guid newsItemGuid)
     {
-        var grain = await this.grainService.GetGrain(guid);
+        var grain = await this.grainService.GetGrain(archiveId);
         await grain.DeleteNewsItem(newsItemGuid);
         return this.Ok();
     }
 
     [HttpPatch]
-    public async Task<IActionResult> UpdateArchive(Guid guid, UpdateArchiveRequest updateArchiveRequest)
+    [Route("{archiveId}/")]
+    public async Task<IActionResult> UpdateArchive(Guid archiveId, UpdateArchiveRequest updateArchiveRequest)
     {
         TypeAdapterConfig<UpdateArchiveRequest, ArchiveModel>
        .NewConfig()
        .Map(dest => dest.Id,
-           src => guid);
+           src => archiveId);
 
-        var grain = await this.grainService.GetGrain(guid);
+        var grain = await this.grainService.GetGrain(archiveId);
         var update = updateArchiveRequest.Adapt<ArchiveModel>();
         var updatedGrain = await grain.Update(update);
         var response = updatedGrain.Adapt<ArchiveDto>();
