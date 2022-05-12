@@ -23,6 +23,10 @@ namespace RedacteurPortaal.DomainModels.Validation.Address
             // Email address regex
             this.RuleFor(x => x.EmailAddress).Matches(new Regex(
                 @"^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$"));
+
+            // Phone number regex
+            this.RuleFor(x => x.PhoneNumber).Matches(new Regex(
+                "^(?:(?:\\(?(?:00|\\+)([1-4]\\d\\d|[1-9]\\d+)\\)?)[\\-\\.\\ \\\\\\/]?)?((?:\\(?\\d{1,}\\)?[\\-\\.\\ \\\\\\/]?){0,})(?:[\\-\\.\\ \\\\\\/]?(?:#|ext\\.?|extension|x)[\\-\\.\\ \\\\\\/]?(\\d+))?$"));
         }
     }
 }
