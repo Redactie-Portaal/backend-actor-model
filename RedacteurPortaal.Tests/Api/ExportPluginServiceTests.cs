@@ -14,18 +14,6 @@ namespace RedacteurPortaal.Tests.Api;
 public class ExportPluginServiceTests
 {
     [Fact]
-    public void ThrowsWhenPathDoesNotExist()
-    {
-        var dbContext = new Mock<DataContext>();
-        var fileSystemProvider = new Mock<FileSystemProvider>();
-        fileSystemProvider.Setup(x=> x.FileSystem).Returns(new FileSystem());
-
-        Assert.Throws<DirectoryNotFoundException>(() => {
-            _ = new ExportPluginService(dbContext.Object, fileSystemProvider.Object);
-        });
-    }
-
-    [Fact]
     public void EmptyListWhenNoPlugins()
     {
         var dbContext = new Mock<DataContext>();

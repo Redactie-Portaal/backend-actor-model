@@ -1,15 +1,8 @@
-﻿using Orleans;
-using RedacteurPortaal.DomainModels.Media;
-using RedacteurPortaal.DomainModels.NewsItem;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using RedacteurPortaal.DomainModels.Shared;
-using RedacteurPortaal.DomainModels.Validation.Shared;
+﻿using RedacteurPortaal.DomainModels.Shared;
 
-namespace RedacteurPortaal.Grains.GrainInterfaces
+namespace RedacteurPortaal.Grains.GrainInterfaces;
+
+public interface ILocationGrain : IManageableGrain<Location>
 {
     public interface ILocationGrain : IManageableGrain<Location>
     {

@@ -1,12 +1,10 @@
 ﻿using Mapster;
 using Microsoft.AspNetCore.Mvc;
-using Orleans;
 using RedacteurPortaal.Api.DTOs;
 using RedacteurPortaal.Api.Models;
 using RedacteurPortaal.Api.Models.Request;
 using RedacteurPortaal.DomainModels.Media;
 using RedacteurPortaal.DomainModels.NewsItem;
-using RedacteurPortaal.DomainModels.Shared;
 using RedacteurPortaal.Grains.GrainInterfaces;
 using RedacteurPortaal.Grains.GrainServices;
 using RedacteurPortaal.Helpers;
@@ -17,12 +15,10 @@ namespace RedacteurPortaal.Api.Controllers;
 [Route("api/[controller]")]
 public class NewsItemController : Controller
 {
-    private readonly ILogger logger;
     private readonly IGrainManagementService<INewsItemGrain> grainService;
 
-    public NewsItemController(ILogger<NewsItemController> logger, IGrainManagementService<INewsItemGrain> grainService)
+    public NewsItemController(IGrainManagementService<INewsItemGrain> grainService)
     {
-        this.logger = logger;
         this.grainService = grainService;
     }
 
@@ -61,11 +57,49 @@ public class NewsItemController : Controller
     [HttpGet]
     public async Task<ActionResult<List<NewsItemDto>>> GetNewsItems()
     {
+        TypeAdapterConfig<NewsItemModel, NewsItemDto>
+            .NewConfig()
+            .Map(dest => dest.Source,
+                src => new FeedSourceDto() { PlaceHolder = src.Source.PlaceHolder })
+            .Map(dest => dest.LocationDetails,
+                src => new LocationDto()
+                {
+                    City = src.LocationDetails.City,
+                    Id = src.LocationDetails.Id,
+                    Latitude = src.LocationDetails.Latitude,
+                    Longitude = src.LocationDetails.Longitude,
+                    Name = src.LocationDetails.Name,
+                    Province = src.LocationDetails.Province,
+                    Street = src.LocationDetails.Street,
+                    Zip = src.LocationDetails.Zip
+                })
+            .Map(dest => dest.ContactDetails,
+                src => src.ContactDetails.Select(x =>
+                    new ContactDto()
+                    {
+                        Id = x.Id,
+                        Name = x.Name,
+                        TelephoneNumber = x.TelephoneNumber,
+                        Email = x.Email
+                    }
+                ).ToList())
+            .Map(dest => dest.Audio,
+                src => src.Audio.Select(x =>
+                    new MediaAudioItemDto()).ToList())
+            .Map(dest => dest.Photos,
+                src => src.Photos.Select(x =>
+                    new MediaPhotoItemDto()).ToList())
+            .Map(dest => dest.Videos,
+                src => src.Videos.Select(x =>
+                    new MediaVideoItemDto()).ToList());
+
         var grain = await this.grainService.GetGrains();
-        
-        var response = (await grain.SelectAsync(async x => await 
-        x.Get())).AsQueryable().ProjectToType<NewsItemDto>(null).ToList();
-        return this.Ok(response);
+
+        var response = (await grain.SelectAsync(async x => await
+            x.Get())).AsQueryable();
+
+        var converted = response.ProjectToType<NewsItemDto>(null).ToList();
+        return this.Ok(converted);
     }
 
     //[HttpGet]

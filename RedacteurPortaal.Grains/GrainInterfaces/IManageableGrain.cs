@@ -1,18 +1,12 @@
 ﻿using Orleans;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace RedacteurPortaal.Grains.GrainInterfaces
+namespace RedacteurPortaal.Grains.GrainInterfaces;
+
+public interface IManageableGrain<T> : IGrainWithGuidKey
 {
-    public interface IManageableGrain<T> : IGrainWithGuidKey
-    {
-        public Task Delete();
+    public Task Delete();
 
-        public Task<T> Get();
+    public Task<T> Get();
 
-        public Task<bool> HasState();
-    }
+    public Task<bool> HasState();
 }
