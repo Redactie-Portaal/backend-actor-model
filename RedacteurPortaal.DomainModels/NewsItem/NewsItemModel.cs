@@ -1,5 +1,6 @@
 ﻿using RedacteurPortaal.DomainModels.Media;
 using RedacteurPortaal.DomainModels.Shared;
+using RedacteurPortaal.DomainModels.Validation.NewsItem;
 
 namespace RedacteurPortaal.DomainModels.NewsItem;
 
@@ -43,6 +44,8 @@ public class NewsItemModel : IBaseEntity
         this.Videos = videos ?? throw new ArgumentNullException(nameof(videos));
         this.Audio = audio ?? throw new ArgumentNullException(nameof(audio));
         this.Photos = photos ?? throw new ArgumentNullException(nameof(photos));
+
+        new NewsItemValidator().Validate(this);
     }
 
     public Guid Id { get; set; }

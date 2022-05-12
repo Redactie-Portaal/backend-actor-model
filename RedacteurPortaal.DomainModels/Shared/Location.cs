@@ -3,10 +3,11 @@ using RedacteurPortaal.DomainModels.Validation.Shared;
 
 namespace RedacteurPortaal.DomainModels.Shared;
 
-public class Location
+public class Location : IBaseEntity
 {
     public Location()
-    {    
+    {
+        new LocationValidator().ValidateAndThrow(this);
     }
     
     public Location(Guid id, string name, string city, string province, string street, string zip, decimal latitude, decimal longitude)
@@ -25,17 +26,17 @@ public class Location
 
     public Guid Id { get; set; }
 
-    public string Name { get; set; }
+    public string Name { get; private set; }
 
-    public string City { get; set; }
+    public string City { get; private set; }
 
-    public string Province { get; set; }
+    public string Province { get; private set; }
 
-    public string Street { get; set; }
+    public string Street { get; private set; }
 
-    public string Zip { get; set; }
+    public string Zip { get; private set; }
 
     public decimal Latitude { get; set; }
 
-    public decimal Longitude { get; set; }
+    public decimal Longitude { get; private set; }
 }
