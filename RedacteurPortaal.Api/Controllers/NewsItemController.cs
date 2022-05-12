@@ -102,62 +102,6 @@ public class NewsItemController : Controller
         return this.Ok(converted);
     }
 
-    [HttpGet]
-    [Route("sortByDate/{startDate}/{endDate}", Name = "SortNewsItemByDateTime")]
-    public async Task<ActionResult<List<NewsItemDto>>> SortNewsItemByDateTime(DateTime startDate, DateTime endDate)
-    {
-        var grain = await this.grainService.GetGrains();
-        
-        var list = (await grain.SelectAsync(async x => await
-        x.Get())).AsQueryable().ProjectToType<NewsItemDto>(null).ToList();
-
-        var response = list.Where(x => x.ProductionDate >= startDate && x.ProductionDate <= endDate).ToList();
-
-        return this.Ok(response);
-    }
-
-    // TODO: Change object to employee
-    [HttpGet]
-    [Route("sortByEmployee/{employeeId}", Name = "SortNewsItemByEmployee")]
-    public async Task<ActionResult<List<NewsItemDto>>> SortNewsItemByEmployee(string employeeId)
-    {
-        var grain = await this.grainService.GetGrains();
-
-        var list = (await grain.SelectAsync(async x => await
-        x.Get())).AsQueryable().ProjectToType<NewsItemDto>(null).ToList();
-        var response = list.Where(x => x.Author == employeeId).ToList();
-
-        return this.Ok(response);
-    }
-
-    [HttpGet]
-    [Route("sortByStatus/{status}", Name = "SortNewsItemByStatus")]
-    public async Task<ActionResult<List<NewsItemDto>>> SortNewsItemByStatus(string status)
-    {
-        var grain = await this.grainService.GetGrains();
-
-        var list = (await grain.SelectAsync(async x => await
-        x.Get())).AsQueryable().ProjectToType<NewsItemDto>(null).ToList();
-        Status parseStatus = (Status) Enum.Parse(typeof(Status), status);
-        var response = list.Where(x => x.Status == parseStatus).ToList();
-       
-        return this.Ok(response);
-    }
-
-    [HttpGet]
-    [Route("sortByDossier/{dossier}", Name = "SortNewsItemByDossier")]
-    public async Task<ActionResult<List<NewsItemDto>>> SortNewsItemByDossier(string dossier)
-    {
-        var grain = await this.grainService.GetGrains();
-
-        var list = (await grain.SelectAsync(async x => await
-        x.Get())).AsQueryable().ProjectToType<NewsItemDto>(null).ToList();
-
-        var response = list.Where(x => x.Dossier == dossier).ToList();
-
-        return this.Ok(response);
-    }
-
     [HttpDelete]
     [Route("{id}")]
     public async Task<IActionResult> DeleteNewsItem(Guid id)

@@ -10,6 +10,10 @@ namespace RedacteurPortaal.Tests;
 
 public static class DtoBuilder
 {
+    static DtoBuilder()
+    {
+    }
+
     public static NewsItemDto BuildAddNewsItemRequest()
     {
         return new NewsItemDto()
@@ -134,6 +138,27 @@ public static class DtoBuilder
                 PostalCode = "9999BB"
             },
             ProfilePicture = "base65"
+        };
+    }
+
+    public static UpdateAgendaRequest BuildPatchAgendaRequest()
+    {
+        return new UpdateAgendaRequest {
+            StartDate = new DateTime(2022, 05, 12, 12, 00, 00),
+            EndDate = new DateTime(2022, 05, 12, 14, 00, 00),
+            Title = "foo1",
+            Description = "bar1"
+        };
+    }
+
+    public static AgendaDto BuildAgendaRequest()
+    {
+        return new AgendaDto {
+            StartDate = new DateTime(2022, 05, 12, 12, 00, 00),
+            EndDate = new DateTime(2022, 05, 12, 14, 00, 00),
+            Title = "foo1",
+            Description = "bar1",
+            UserId = "string"
         };
     }
 }
