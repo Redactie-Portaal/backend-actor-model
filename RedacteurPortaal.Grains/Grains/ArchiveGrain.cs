@@ -6,6 +6,7 @@ using RedacteurPortaal.DomainModels.Media;
 using RedacteurPortaal.DomainModels.NewsItem;
 using RedacteurPortaal.Grains.GrainInterfaces;
 using System.Runtime;
+using System.Collections.Generic;
 
 namespace RedacteurPortaal.Grains.Grains;
 
@@ -54,39 +55,39 @@ public class ArchiveGrain : Grain, IArchiveGrain
         return await Task.FromResult(newsItem);
     }
 
-    public async Task<Task<ArchiveModel>> CreateArchive(ArchiveModel archive)
+    public async Task<ArchiveModel> CreateArchive(ArchiveModel archive)
     {
         this.archive.State = archive;
         await this.archive.WriteStateAsync();
-        return Task.FromResult(this.archive.State);
+        return await Task.FromResult(this.archive.State);
     }
 
-    public async Task<Task<MediaVideoItem>> AddVideoItem(MediaVideoItem videoItem)
+    public async Task<MediaVideoItem> AddVideoItem(MediaVideoItem videoItem)
     {
         this.archive.State.MediaVideoItems.Add(videoItem);
         await this.archive.WriteStateAsync();
-        return Task.FromResult(videoItem);
+        return await Task.FromResult(videoItem);
     }
 
-    public async Task<Task<MediaPhotoItem>> AddPhotoItem(MediaPhotoItem photoItem)
+    public async Task<MediaPhotoItem> AddPhotoItem(MediaPhotoItem photoItem)
     {
         this.archive.State.MediaPhotoItems.Add(photoItem);
         await this.archive.WriteStateAsync();
-        return Task.FromResult(photoItem);
+        return await Task.FromResult(photoItem);
     }
 
-    public async Task<Task<MediaAudioItem>> AddAudioItem(MediaAudioItem audioItem)
+    public async Task<MediaAudioItem> AddAudioItem(MediaAudioItem audioItem)
     {
         this.archive.State.MediaAudioItems.Add(audioItem);
         await this.archive.WriteStateAsync();
-        return Task.FromResult(audioItem);
+        return await Task.FromResult(audioItem);
     }
 
-    public async Task<Task<NewsItemModel>> AddNewsItem(NewsItemModel newsItem)
+    public async Task<NewsItemModel> AddNewsItem(NewsItemModel newsItem)
     {
         this.archive.State.NewsItems.Add(newsItem);
         await this.archive.WriteStateAsync();
-        return Task.FromResult(newsItem);
+        return await Task.FromResult(newsItem);
     }
 
     public async Task Delete()
@@ -102,7 +103,7 @@ public class ArchiveGrain : Grain, IArchiveGrain
             var videoItem = videoItems.Find(x => x.Id.Equals(videoItemId));
             if (videoItem == null)
             {
-                throw new Exception("No video item found");
+                throw new KeyNotFoundException("Video item with id not found");
             }
             else
             {
@@ -112,7 +113,7 @@ public class ArchiveGrain : Grain, IArchiveGrain
         }
         else
         {
-            throw new Exception("No video items found");
+            throw new KeyNotFoundException("List of video items with given archive id not found");
         }
     }
 
@@ -124,7 +125,7 @@ public class ArchiveGrain : Grain, IArchiveGrain
             var photoItem = photoItems.Find(x => x.Id.Equals(photoItemId));
             if (photoItem == null)
             {
-                throw new Exception("No photo item found");
+                throw new KeyNotFoundException("Photo item with id not found");
             }
             else
             {
@@ -134,7 +135,7 @@ public class ArchiveGrain : Grain, IArchiveGrain
         }
         else
         {
-            throw new Exception("No photo items found");
+            throw new KeyNotFoundException("List of photo items with given archive id not found");
         }
     }
 
@@ -146,7 +147,7 @@ public class ArchiveGrain : Grain, IArchiveGrain
             var audioItem = audioItems.Find(x => x.Id.Equals(audioItemId));
             if (audioItem == null)
             {
-                throw new Exception("No audio item found");
+                throw new KeyNotFoundException("audio item with id not found");
             }
             else
             {
@@ -156,7 +157,7 @@ public class ArchiveGrain : Grain, IArchiveGrain
         }
         else
         {
-            throw new Exception("No audio items found");
+            throw new KeyNotFoundException("List of audio items with given archive id not found");
         }
     }
 
@@ -168,7 +169,7 @@ public class ArchiveGrain : Grain, IArchiveGrain
             var newsItem = newsItems.Find(x => x.Id.Equals(newsItemId));
             if (newsItem == null)
             {
-                throw new Exception("No news item found");
+                throw new KeyNotFoundException("News item with id not found");
             }
             else
             {
@@ -178,7 +179,7 @@ public class ArchiveGrain : Grain, IArchiveGrain
         }
         else
         {
-            throw new Exception("No news items found");
+            throw new KeyNotFoundException("List of news items with given archive id not found");
         }
     }
 
