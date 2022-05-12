@@ -1,9 +1,7 @@
-﻿using RedacteurPortaal.DomainModels.NewsItem;
-using RedacteurPortaal.DomainModels.Shared;
+﻿using RedacteurPortaal.DomainModels.Shared;
 
 namespace RedacteurPortaal.DomainModels.Media;
 
-[Serializable]
 public class MediaVideoItem : MediaItem
 {
     public MediaVideoItem()

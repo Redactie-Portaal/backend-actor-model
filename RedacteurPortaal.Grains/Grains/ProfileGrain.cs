@@ -2,11 +2,6 @@
 using Orleans.Runtime;
 using RedacteurPortaal.DomainModels.Profile;
 using RedacteurPortaal.Grains.GrainInterfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RedacteurPortaal.Grains.Grains;
 
@@ -36,9 +31,10 @@ public class ProfileGrain : Grain, IProfileGrain
         return Task.FromResult(this.profile.State);
     }
 
-    public async Task Update(Profile profile)
+    public async Task<Profile> Update(Profile profile)
     {
         this.profile.State = profile;
         await this.profile.WriteStateAsync();
+        return this.profile.State;
     }
 }

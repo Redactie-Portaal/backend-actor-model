@@ -6,6 +6,6 @@ public class FileSystemProvider
 
     public FileSystemProvider()
     {
-        FileSystem = new System.IO.Abstractions.FileSystem();
+        this.FileSystem = new System.IO.Abstractions.FileSystem();
     }
 }

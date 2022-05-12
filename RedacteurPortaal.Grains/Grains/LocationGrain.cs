@@ -8,16 +8,16 @@ public class LocationGrain : Grain, ILocationGrain
 {
     private readonly IPersistentState<Location> location;
 
-    public Task<bool> HasState()
-    {
-        return Task.FromResult(this.location.RecordExists);
-    }
-
     public LocationGrain(
     [PersistentState("location","OrleansStorage")]
     IPersistentState<Location> location)
     {
         this.location = location;
+    }
+
+    public Task<bool> HasState()
+    {
+        return Task.FromResult(this.location.RecordExists);
     }
 
     public Task<Location> Get()

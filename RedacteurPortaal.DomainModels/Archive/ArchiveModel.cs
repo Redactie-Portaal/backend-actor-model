@@ -5,6 +5,10 @@ namespace RedacteurPortaal.DomainModels.Archive;
 
 public class ArchiveModel : IBaseEntity
 {
+    public ArchiveModel()
+    {
+    }
+    
     public ArchiveModel(
         Guid id,
         string title,
@@ -25,10 +29,6 @@ public class ArchiveModel : IBaseEntity
         this.NewsItems = newsItems ?? throw new ArgumentNullException(nameof(newsItems));
         this.ArchivedDate = archivedDate;
         this.Scripts = scripts ?? throw new ArgumentNullException(nameof(scripts));
-    }
-
-    public ArchiveModel()
-    {
     }
 
     public Guid Id { get; set; }
