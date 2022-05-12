@@ -1,6 +1,8 @@
-﻿using Mapster;
+﻿using System.Xml;
+using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using RedacteurPortaal.Api.DTOs;
+using RedacteurPortaal.Api.Models.Request;
 using RedacteurPortaal.DomainModels.Agenda;
 using RedacteurPortaal.Grains.GrainInterfaces;
 using RedacteurPortaal.Grains.GrainServices;
@@ -56,12 +58,13 @@ namespace RedacteurPortaal.Api.Controllers
         {
             var grain = await this.grainService.GetGrains();
 
-            var response = (await grain.SelectAsync(async x => await
-                x.Get())).AsQueryable().ProjectToType<AgendaDto>(null).ToList();
+            var response = (await grain.SelectAsync(async x => 
+                await x.Get())).AsQueryable().ProjectToType<AgendaDto>(null).ToList();
             return this.Ok(response);
         }
 
         // TODO: Get agenda items by userid
+        // Can be used for most date sorting use-cases
         [HttpGet]
         [Route("s/{startDate}/{endDate}")]
         public async Task<ActionResult<List<AgendaDto>>> SortAgendaItemsByDate(DateTime startDate, DateTime endDate)
@@ -71,8 +74,32 @@ namespace RedacteurPortaal.Api.Controllers
             var list = (await grain.SelectAsync(async x => await
                 x.Get())).AsQueryable().ProjectToType<AgendaDto>(null).ToList();
 
-            var response = list.Where(x => x.StartDate >= startDate && x.EndDate <= endDate).ToList();
+            var response = list.Where(x => x.StartDate >= startDate && x.EndDate <= endDate).OrderBy(dto => dto.StartDate).ToList();
+            
+            return this.Ok(response);
+        }
 
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<ActionResult<AgendaDto>> DeleteAgendaItem(Guid id)
+        {
+            await this.grainService.DeleteGrain(id);
+            return this.NoContent();
+        }
+
+        [HttpPatch]
+        [Route("{id}")]
+        public async Task<ActionResult<AgendaDto>> UpdateAgendaItem(Guid id, [FromBody] UpdateAgendaRequest request)
+        {
+            TypeAdapterConfig<UpdateAgendaRequest, AgendaModel>
+                .NewConfig()
+                .Map(dest => dest.Id,
+                src => id);
+
+            var grain = await this.grainService.GetGrain(id);
+            var update = request.Adapt<AgendaModel>();
+            var updatedGrain = await grain.UpdateAgenda(update);
+            var response = updatedGrain.Adapt<AgendaDto>();
             return this.Ok(response);
         }
     }
