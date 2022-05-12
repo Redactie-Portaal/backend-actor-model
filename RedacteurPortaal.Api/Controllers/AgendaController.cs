@@ -68,19 +68,12 @@ namespace RedacteurPortaal.Api.Controllers
         {
             var grain = await this.grainService.GetGrains();
 
-            var list = this.GetAllAgendaItems();
+            var list = (await grain.SelectAsync(async x => await
+                x.Get())).AsQueryable().ProjectToType<AgendaDto>(null).ToList();
 
+            var response = list.Where(x => x.StartDate >= startDate && x.EndDate <= endDate).ToList();
 
-            if (list.Result.Value != null)
-            {
-                Console.WriteLine("------------> " +
-                                  list.Result.Value.Where(x => x.StartDate == new DateTime(2022, 05, 09)).ToList());
-                var response = list.Result.Value.Where(x => x.StartDate == new DateTime(2022, 05, 09)).ToList();
-
-                return this.Ok(response);
-            }
-
-            return this.NotFound();
+            return this.Ok(response);
         }
     }
 }
