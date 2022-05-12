@@ -41,9 +41,9 @@ public class NewsItemGrainTests
                                          Category.STORY,
                                          Region.LOCAL,
                                          "dossier",
-                                         Array.Empty<MediaVideoItem>(),
-                                         Array.Empty<MediaAudioItem>(),
-                                         Array.Empty<MediaPhotoItem>());
+                                         new(),
+                                         new(),
+                                         new());
 
 
         var newsitemgrain = this._cluster.GrainFactory.GetGrain<INewsItemGrain>(guid);

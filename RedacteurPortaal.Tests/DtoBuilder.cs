@@ -15,17 +15,17 @@ public static class DtoBuilder
         return new NewsItemDto()
         {
             Author = "Author",
-            Audio = new MediaAudioItemDto[1],
+            Audio = new(),
             Body = "foo",
             Category = Category.NEWS,
             Region = Region.LOCAL,
-            Photos = new MediaPhotoItemDto[1],
-            Videos = new MediaVideoItemDto[1],
+            Photos = new(),
+            Videos = new(),
             Source = new FeedSourceDto()
             {
                 PlaceHolder = "foo",
             },
-            Status = "DONE",
+            Status = Status.DONE,
             Title = "title",
             ApprovalStatus = "APPROVED",
             ContactDetails = new List<ContactDto>(),
@@ -40,7 +40,7 @@ public static class DtoBuilder
                 Street = "foo",
                 Zip = "5087BB",
             },
-            ProdutionDate = DateTime.Now,
+            ProductionDate = DateTime.Now,
         };
     }
     public static UpdateNewsItemRequest BuildUpdateNewsItemRequest()
@@ -48,21 +48,21 @@ public static class DtoBuilder
         return new UpdateNewsItemRequest()
         {
             Author = "Author1",
-            Audio = new MediaAudioItemDto[1],
+            Audio = new UpdateMediaAudioItemRequest[1],
             Body = "foo1",
             Category = Category.NEWS,
             Region = Region.LOCAL,
-            Photos = new MediaPhotoItemDto[1],
-            Videos = new MediaVideoItemDto[1],
+            Photos = new UpdateMediaPhotoItemRequest[1],
+            Videos = new UpdateMediaVideoItemRequest[1],
             Source = new FeedSourceDto()
             {
                 PlaceHolder = "foo1",
             },
             Status = Status.DONE,
             Title = "title1",
-            ContactDetails = new List<ContactDto>(),
+            ContactDetails = new List<UpdateContactRequest>(),
             EndDate = DateTime.Now,
-            LocationDetails = new LocationDto()
+            LocationDetails = new UpdateLocationRequest()
             {
                 City = "foo1",
                 Latitude = 51,
