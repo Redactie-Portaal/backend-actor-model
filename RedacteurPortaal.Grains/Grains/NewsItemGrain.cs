@@ -186,8 +186,8 @@ public class NewsItemGrain : Grain, INewsItemGrain
         this.newsItem.State.SetVideos(videoList);
         this.newsItem.State.SetAudio(audioList);
         this.newsItem.State.SetPhotos(photoList);
-        
+
         await this.newsItem.WriteStateAsync();
-        return this.newsItem.State;
+        return await this.Get();
     }
 }

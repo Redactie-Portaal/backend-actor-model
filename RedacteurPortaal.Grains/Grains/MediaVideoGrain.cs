@@ -23,7 +23,9 @@ public class MediaVideoGrain : Grain, IMediaVideoGrain
 
     public Task<MediaVideoItem> Get() 
     {
-        return Task.FromResult(this.videoItem.State);
+        var state = this.videoItem.State;
+        state.Id = this.GetGrainIdentity().PrimaryKey;
+        return Task.FromResult(state);
     }
 
     public async Task Delete() 
@@ -35,6 +37,6 @@ public class MediaVideoGrain : Grain, IMediaVideoGrain
     {
         this.videoItem.State = videoItem;
         await this.videoItem.WriteStateAsync();
-        return this.videoItem.State;
+        return await this.Get();
     }
 }
