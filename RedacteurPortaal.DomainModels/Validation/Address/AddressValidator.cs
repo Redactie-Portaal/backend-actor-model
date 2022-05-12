@@ -18,11 +18,17 @@ namespace RedacteurPortaal.DomainModels.Validation.Address
 
             // Postal code regex
             this.RuleFor(x => x.PostalCode).Matches(new Regex(
-               @"^[0234567]\d{5}$"));
+               @"^[1-9][0-9]{3}\s?[a-zA-Z]{2}$"));
 
             // Email address regex
             this.RuleFor(x => x.EmailAddress).Matches(new Regex(
-                @"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([azA-Z]{2,4}|[0-9]{1,3})(\]?)$"));
+                @"^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$"));
         }
     }
 }
+
+
+
+/*POSTALCODE EXAMPLES
+ * 
+ * @"^[0234567]\d{5}$*/

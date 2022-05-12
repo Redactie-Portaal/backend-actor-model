@@ -30,7 +30,7 @@ public class AddressGrainTests
     {   
         var guid = Guid.NewGuid();
 
-        var toSaveAddress = new AddressModel(guid, "Company", "Address", "PostalCode", "Phone number", "Email", "Webpage");
+        var toSaveAddress = new AddressModel(guid, "Company", "Address", "5050BB", "Phone number", "hans@gmail.com", "Webpage");
 
         var addressGrain = this._cluster.GrainFactory.GetGrain<IAddressGrain>(guid);
 
@@ -41,9 +41,9 @@ public class AddressGrainTests
         Assert.Equal(guid, address.Id);
         Assert.Equal("Company", address.CompanyName);
         Assert.Equal("Address", address.Address);
-        Assert.Equal("PostalCode", address.PostalCode);
+        Assert.Equal("5050BB", address.PostalCode);
         Assert.Equal("Phone number", address.PhoneNumber);
-        Assert.Equal("Email", address.EmailAddress);
+        Assert.Equal("hans@gmail.com", address.EmailAddress);
         Assert.Equal("Webpage", address.Webpage);
     }
 
@@ -52,7 +52,7 @@ public class AddressGrainTests
     {
         var guid = Guid.NewGuid();
 
-        var toSaveAddress = new AddressModel(guid, "Company", "Address", "PostalCode", "Phone", "Email", "Webpage");
+        var toSaveAddress = new AddressModel(guid, "Company", "Address", "5050AA", "Phone", "hans@gmail.com", "Webpage");
 
         var addressGrain = this._cluster.GrainFactory.GetGrain<IAddressGrain>(guid);
 
@@ -71,13 +71,13 @@ public class AddressGrainTests
     {
         var guid = Guid.NewGuid();
 
-        var toSaveAddress = new AddressModel(guid, "Company", "Address", "PostalCode", "Phone", "Email", "Webpage");
+        var toSaveAddress = new AddressModel(guid, "Company", "Address", "5050AA", "Phone", "hans@gmail.com", "Webpage");
 
         var addressGrain = this._cluster.GrainFactory.GetGrain<IAddressGrain>(guid);
 
         await addressGrain.UpdateAddress(toSaveAddress);
 
-        var updateAddres = new AddressModel(guid, "Sony", "beethovenlaan 20", "5049 AA", "06-12345678", "Email", "Webpage");
+        var updateAddres = new AddressModel(guid, "Sony", "beethovenlaan 20", "5050AA", "06-12345678", "hans@gmail.com", "Webpage");
         
         await addressGrain.UpdateAddress(updateAddres);
 
@@ -95,7 +95,7 @@ public class AddressGrainTests
         var guid = Guid.NewGuid();
 
         Assert.Throws<ValidationException>(() => {
-            var updateAddres = new AddressModel(guid, "", "", "5049 AA", "06-12345678", "Email", "Webpage");
+            var updateAddres = new AddressModel(guid, "", "", "5050AA", "06-12345678", "hans@gmail.com", "Webpage");
         });
     }
 
@@ -104,7 +104,7 @@ public class AddressGrainTests
     {
         var guid = Guid.NewGuid();
 
-        var toSaveAddress = new AddressModel(guid, "Company", "Address", "PostalCode", "Phone", "Email", "Webpage");
+        var toSaveAddress = new AddressModel(guid, "Company", "Address", "5050AA", "Phone", "hans@gmail.com", "Webpage");
 
         var addressGrain = this._cluster.GrainFactory.GetGrain<IAddressGrain>(guid);
 
