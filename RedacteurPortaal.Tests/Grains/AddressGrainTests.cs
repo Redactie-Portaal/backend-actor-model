@@ -117,8 +117,6 @@ public class AddressGrainTests
         Assert.Null(deletedAddress.CompanyName);
         Assert.Null(deletedAddress.PhoneNumber);
         Assert.Null(deletedAddress.Webpage);
-        /*Assert.Equal(Guid.Empty, deletedAddress.Id);  GUID IS NOT REMOVING WITH DE DELETE FUNCTION */   
-
     }
 }
 
