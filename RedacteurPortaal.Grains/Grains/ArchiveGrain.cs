@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using Orleans;
+﻿using Orleans;
 using Orleans.Runtime;
 using RedacteurPortaal.DomainModels.Archive;
 using RedacteurPortaal.DomainModels.Media;

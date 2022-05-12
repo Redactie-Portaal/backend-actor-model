@@ -1,10 +1,8 @@
-﻿using Orleans;
-using RedacteurPortaal.DomainModels.Adress;
+﻿using RedacteurPortaal.DomainModels.Adress;
 
-namespace RedacteurPortaal.Grains.GrainInterfaces
+namespace RedacteurPortaal.Grains.GrainInterfaces;
+
+public interface IAddressGrain : IManageableGrain<AddressModel>
 {
-    public interface IAddressGrain : IManageableGrain<AddressModel>
-    {
-        Task<AddressModel> UpdateAddress(AddressModel address);
-    }
+    Task<AddressModel> UpdateAddress(AddressModel address);
 }

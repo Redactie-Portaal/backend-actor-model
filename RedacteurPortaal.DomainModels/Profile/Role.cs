@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace RedacteurPortaal.DomainModels.Profile;
 
-namespace RedacteurPortaal.DomainModels.Profile
+public enum Role
 {
-    public enum Role
-    {
-        EDITOR,
-        ADMIN
-    }
+    EDITOR,
+    ADMIN
 }

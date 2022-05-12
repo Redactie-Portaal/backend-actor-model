@@ -1,7 +1,4 @@
-﻿using RedacteurPortaal.DomainModels.NewsItem;
-using RedacteurPortaal.DomainModels.Shared;
-
-namespace RedacteurPortaal.Api.DTOs
+﻿namespace RedacteurPortaal.Api.DTOs
 {
     public abstract class MediaItemDto
     { 

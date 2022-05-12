@@ -25,12 +25,17 @@
         </PackageReference>
         <PackageReference Include="Microsoft.Orleans.Persistence.AdoNet" Version="3.6.0" />
         <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.15.0" />
+        <PackageReference Include="NEST" Version="7.17.1" />
         <PackageReference Include="Npgsql" Version="6.0.3" />
         <PackageReference Include="Orleans.Clustering.Kubernetes" Version="2.1.0" />
         <PackageReference Include="Orleans.Clustering.Redis" Version="3.2.1" />
         <PackageReference Include="Polly" Version="7.2.3" />
         <PackageReference Include="Microsoft.Orleans.OrleansRuntime" Version="3.6.0" />
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
+        <PackageReference Include="Serilog.AspNetCore" Version="5.0.0" />
+        <PackageReference Include="Serilog.Enrichers.Environment" Version="2.2.0" />
+        <PackageReference Include="Serilog.Exceptions" Version="8.1.0" />
+        <PackageReference Include="Serilog.Sinks.Elasticsearch" Version="8.4.1" />
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -56,7 +61,11 @@
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
 	</ItemGroup>
+    <ItemGroup>
+        <InternalsVisibleTo Include="RedacteurPortaal.Tests" />
+        <InternalsVisibleTo Include="RedacteurPortaal.Helpers" />
 
+    </ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\RedacteurPortaal.Grains\RedacteurPortaal.Grains.csproj" />
 	  <ProjectReference Include="..\RedacteurPortaal.Helpers\RedacteurPortaal.Helpers.csproj" />

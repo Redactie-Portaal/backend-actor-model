@@ -1,6 +1,5 @@
 ﻿using Mapster;
 using Microsoft.AspNetCore.Mvc;
-using Orleans;
 using RedacteurPortaal.Api.DTOs;
 using RedacteurPortaal.Api.Models.Request;
 using RedacteurPortaal.DomainModels.Profile;
@@ -14,14 +13,16 @@ namespace RedacteurPortaal.Api.Controllers
     public class ProfileController : ControllerBase
     {
         private readonly IGrainManagementService<IProfileGrain> grainService;
+        private readonly ILogger<ProfileController> logger;
 
-        public ProfileController(IGrainManagementService<IProfileGrain> grainService)
+        public ProfileController(IGrainManagementService<IProfileGrain> grainService, ILogger<ProfileController> logger)
         {
             this.grainService = grainService;
+            this.logger = logger;
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateProfile([FromBody] AddProfileRequest profile)
+        public async Task<ActionResult<ProfileDto>> CreateProfile([FromBody] AddProfileRequest profile)
         {
             var guid = Guid.NewGuid();
             var grain = await this.grainService.CreateGrain(guid);
@@ -31,7 +32,7 @@ namespace RedacteurPortaal.Api.Controllers
                 .Map(dest => dest.FullName, src => src.FullName)
                 .Map(dest => dest.ProfilePicture, src => src.ProfilePicture)
                 .Map(dest => dest.ContactDetails, src => new ContactDetails(src.ContactDetails.Email,
-                                                                            src.ContactDetails.Phone,
+                                                                            src.ContactDetails.PhoneNumber,
                                                                             src.ContactDetails.Address,
                                                                             src.ContactDetails.Province,
                                                                             src.ContactDetails.City,
@@ -39,27 +40,27 @@ namespace RedacteurPortaal.Api.Controllers
 
             var updateProfile = profile.Adapt<Profile>();
             updateProfile.Id = guid;
-            await grain.Update(updateProfile);
-            return this.CreatedAtRoute("GetProfile", new { id = guid }, updateProfile);
+            var returnProfile = await grain.Update(updateProfile);
+            return this.CreatedAtRoute("GetProfile", new { id = guid }, returnProfile.Adapt<ProfileDto>());
         }
 
-        // Get list of profiles
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<ActionResult<List<ProfileDto>>> Get()
         {
             var profile = await this.grainService.GetGrains();
-            return this.Ok(profile);
+            return this.Ok(profile.AsQueryable().ProjectToType<ProfileDto>().ToList());
         }
 
         [HttpGet("{id}", Name = "GetProfile")]
-        public async Task<IActionResult> Get(Guid id)
+        public async Task<ActionResult<ProfileDto>> Get(Guid id)
         {
             var profile = await this.grainService.GetGrain(id);
-            return this.Ok(await profile.Get());
+            var profileItem = await profile.Get();
+            return this.Ok(profileItem.Adapt<ProfileDto>());
         }
 
         [HttpPatch("{id}")]
-        public async Task<IActionResult> Patch(Guid id, PatchProfileRequest patch)
+        public async Task<IActionResult> Patch(Guid id, [FromBody] PatchProfileRequest patch)
         {
             var profile = await this.grainService.GetGrain(id);
 
@@ -68,7 +69,7 @@ namespace RedacteurPortaal.Api.Controllers
                 .Map(dest => dest.FullName, src => src.Name)
                 .Map(dest => dest.ProfilePicture, src => src.ProfilePicture)
                 .Map(dest => dest.ContactDetails.Email, src => src.ContactDetails.Email)
-                .Map(dest => dest.ContactDetails.PhoneNumber, src => src.ContactDetails.Phone)
+                .Map(dest => dest.ContactDetails.PhoneNumber, src => src.ContactDetails.PhoneNumber)
                 .Map(dest => dest.ContactDetails.Address, src => src.ContactDetails.Address)
                 .Map(dest => dest.ContactDetails.Province, src => src.ContactDetails.Province)
                 .Map(dest => dest.ContactDetails.City, src => src.ContactDetails.City)
@@ -77,9 +78,9 @@ namespace RedacteurPortaal.Api.Controllers
             var profileUpdate = patch.Adapt<Profile>();
             profileUpdate.Id = id;
 
-            await profile.Update(profileUpdate);
+            var updatedProfile = await profile.Update(profileUpdate);
 
-            return this.Ok(await profile.Get());
+            return this.Ok(updatedProfile.Adapt<ProfileDto>());
         }
     }
 }

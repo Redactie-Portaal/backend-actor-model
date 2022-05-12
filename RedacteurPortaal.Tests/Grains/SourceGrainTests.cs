@@ -1,11 +1,7 @@
 ﻿using Orleans.TestingHost;
 using RedacteurPortaal.DomainModels.NewsItem;
 using RedacteurPortaal.Grains.GrainInterfaces;
-using RedacteurPortaal.Tests;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -18,7 +14,7 @@ public class SourceGrainTests
 
     public SourceGrainTests(ClusterFixture fixture)
     {
-        _cluster = fixture.Cluster;
+        this._cluster = fixture.Cluster;
     }
 
     [Fact]
