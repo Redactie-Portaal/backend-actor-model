@@ -26,9 +26,3 @@ namespace RedacteurPortaal.DomainModels.Validation.Address
         }
     }
 }
-
-
-
-/*POSTALCODE EXAMPLES
- * 
- * @"^[0234567]\d{5}$*/
