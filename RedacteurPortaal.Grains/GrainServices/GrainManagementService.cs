@@ -31,6 +31,18 @@ namespace RedacteurPortaal.Grains.GrainServices
             return grain;
         }
 
+        public bool GrainExists(Guid id)
+        {
+            if (!this.DbContext.GrainReferences.Any(x => x.GrainId == id))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
         public async Task<T> GetGrain(Guid id)
         {
             var grain = await Task.FromResult(this.client.GetGrain<T>(id));

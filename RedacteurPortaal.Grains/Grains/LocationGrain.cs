@@ -1,5 +1,6 @@
 ﻿using Orleans;
 using Orleans.Runtime;
+using RedacteurPortaal.DomainModels;
 using RedacteurPortaal.DomainModels.Shared;
 using RedacteurPortaal.Grains.GrainInterfaces;
 
@@ -25,10 +26,11 @@ public class LocationGrain : Grain, ILocationGrain
         return Task.FromResult(this.location.State);
     }
 
-    public async Task Update(Location location)
+    public async Task<Location> Update(Location location)
     {
         this.location.State = location;
         await this.location.WriteStateAsync();
+        return this.location.State;
     }
 
     public async Task Delete()

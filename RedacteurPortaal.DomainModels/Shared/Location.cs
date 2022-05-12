@@ -8,7 +8,7 @@ using RedacteurPortaal.DomainModels.Validation.Shared;
 
 namespace RedacteurPortaal.DomainModels.Shared;
 
-public class Location
+public class Location : IBaseEntity
 {
     public Location()
     {    

@@ -27,7 +27,7 @@ public class NewsItemController : Controller
     }
 
     [HttpPost]
-    public async Task<ActionResult<NewsItemDto>> SaveNewsItem([FromBody] NewsItemDto newsitem)
+    public async Task<ActionResult<NewsItemDto>> SaveNewsItem([FromBody] UpdateNewsItemRequest newsitem)
     {
         Guid newguid = Guid.NewGuid();
 
@@ -68,62 +68,39 @@ public class NewsItemController : Controller
         return this.Ok(response);
     }
 
-    [HttpGet]
-    [Route("sortByDate/{startDate}/{endDate}", Name = "SortNewsItemByDateTime")]
-    public async Task<ActionResult<List<NewsItemDto>>> SortNewsItemByDateTime(DateTime startDate, DateTime endDate)
-    {
-        var grain = await this.grainService.GetGrains();
+    //[HttpGet]
+    //public async Task<ActionResult<List<NewsItemDto>>> FilterNewsItem(DateTime startDate, DateTime endDate, string employee, string dossier, string status)
+    //{
+    //    var grain = await this.grainService.GetGrains();
+
+    //    var list = (await grain.SelectAsync(async x => await
+    //    x.Get())).AsQueryable().ProjectToType<NewsItemDto>(null).ToList();
+
+    //    List <NewsItemDto> response = new List<NewsItemDto>();
         
-        var list = (await grain.SelectAsync(async x => await
-        x.Get())).AsQueryable().ProjectToType<NewsItemDto>(null).ToList();
+    //    if(startDate != DateTime.MinValue || endDate != DateTime.MinValue)
+    //    {
+    //        response = list.Where(x => x.ProductionDate >= startDate && x.ProductionDate <= endDate).ToList();
+    //    }
 
-        var response = list.Where(x => x.ProductionDate >= startDate && x.ProductionDate <= endDate).ToList();
+    //    if(string.IsNullOrEmpty(employee))
+    //    {
+    //        response = list.Where(x => x.Author == employee).ToList();
+    //    }
 
-        return this.Ok(response);
-    }
+    //    if(string.IsNullOrEmpty(dossier))
+    //    {
+    //        response = list.Where(x => x.Author == employee).ToList();
+    //    }
 
-    // TODO: Change object to employee
-    [HttpGet]
-    [Route("sortByEmployee/{employeeId}", Name = "SortNewsItemByEmployee")]
-    public async Task<ActionResult<List<NewsItemDto>>> SortNewsItemByEmployee(string employeeId)
-    {
-        var grain = await this.grainService.GetGrains();
-
-        var list = (await grain.SelectAsync(async x => await
-        x.Get())).AsQueryable().ProjectToType<NewsItemDto>(null).ToList();
-        var response = list.Where(x => x.Author == employeeId).ToList();
-
-        return this.Ok(response);
-    }
-
-    [HttpGet]
-    [Route("sortByStatus/{status}", Name = "SortNewsItemByStatus")]
-    public async Task<ActionResult<List<NewsItemDto>>> SortNewsItemByStatus(string status)
-    {
-        var grain = await this.grainService.GetGrains();
-
-        var list = (await grain.SelectAsync(async x => await
-        x.Get())).AsQueryable().ProjectToType<NewsItemDto>(null).ToList();
-        Status parseStatus = (Status) Enum.Parse(typeof(Status), status);
-        var response = list.Where(x => x.Status == parseStatus).ToList();
-       
-        return this.Ok(response);
-    }
-
-    [HttpGet]
-    [Route("sortByDossier/{dossier}", Name = "SortNewsItemByDossier")]
-    public async Task<ActionResult<List<NewsItemDto>>> SortNewsItemByDossier(string dossier)
-    {
-        var grain = await this.grainService.GetGrains();
-
-        var list = (await grain.SelectAsync(async x => await
-        x.Get())).AsQueryable().ProjectToType<NewsItemDto>(null).ToList();
-
-        var response = list.Where(x => x.Dossier == dossier).ToList();
-
-        return this.Ok(response);
-    }
-
+    //    if (string.IsNullOrEmpty(status))
+    //    {
+    //        Status parseStatus = (Status)Enum.Parse(typeof(Status), status);
+    //        response = list.Where(x => x.Status == parseStatus).ToList();
+    //    }
+        
+    //    return this.Ok(response);
+    //}
     [HttpDelete]
     [Route("{id}")]
     public async Task<IActionResult> DeleteNewsItem(Guid id)

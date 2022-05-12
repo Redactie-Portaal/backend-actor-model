@@ -32,9 +32,10 @@ public class MediaPhotoGrain : Grain, IMediaPhotoGrain
         await this.photoItem.ClearStateAsync();
     }
 
-    public async Task Update(MediaPhotoItem mediaItem)
+    public async Task<MediaPhotoItem> Update(MediaPhotoItem mediaItem)
     {
         this.photoItem.State = mediaItem;
         await this.photoItem.WriteStateAsync();
+        return this.photoItem.State;
     }
 }
