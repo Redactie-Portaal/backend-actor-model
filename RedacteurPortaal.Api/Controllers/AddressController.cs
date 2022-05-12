@@ -34,19 +34,19 @@ namespace RedacteurPortaal.Api.Controllers
 
         [HttpGet]
         [Route("{id}", Name = "GetAddress")]
-        public async Task<AddressDTO> GetAddress(Guid id)
+        public async Task<ActionResult<AddressDTO>> GetAddress(Guid id)
         {
             var grain = await this.grainService.GetGrain(id);
             var response = await grain.Get();
-            return response.Adapt<AddressDTO>();
+            return this.Ok(response.Adapt<AddressDTO>());
         }
 
         [HttpGet]
-        public async Task<List<AddressDTO>> Get()
+        public async Task<ActionResult<List<AddressDTO>>> Get()
         {
             var grain = await this.grainService.GetGrains();
             var addresses = await grain.SelectAsync(async x => await x.Get());
-            return addresses.AsQueryable().ProjectToType<AddressDTO>().ToList();
+            return this.Ok(addresses.AsQueryable().ProjectToType<AddressDTO>().ToList());
         }
 
         [HttpDelete]

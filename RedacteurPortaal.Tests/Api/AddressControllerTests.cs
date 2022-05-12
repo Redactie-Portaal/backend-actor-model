@@ -27,7 +27,7 @@ public class AddressControllerTests
     {
         var application = new RedacteurPortaalApplication();
         var client = application.CreateClient();
-        var addresses = await client.GetFromJsonAsync<List<ProfileDto>>("/api/Address");
+        var addresses = await client.GetFromJsonAsync<List<AddressDTO>>("/api/Address");
 
         Assert.NotNull(addresses);
         Assert.True(addresses?.Count == 0);
@@ -103,5 +103,46 @@ public class AddressControllerTests
 
         var newAddress = await client.GetFromJsonAsync<List<AddressDTO>>("/api/Address");
         Assert.Empty(newAddress);
+    }
+
+    [Fact]
+    public async Task CanGetAddressByGuid()
+    {
+        var application = new RedacteurPortaalApplication();
+        var client = application.CreateClient();
+
+        var addAddressRequest = DtoBuilder.BuildAddAddressRequest();
+        var addressResult = await client.PostAsJsonAsync("/api/Address", addAddressRequest);
+        var addResult = JsonSerializer.Deserialize<AddressDTO>(await addressResult.Content.ReadAsStringAsync(), new JsonSerializerOptions() {PropertyNameCaseInsensitive = true});
+
+        var get = await client.GetAsync($"/api/Address/{addResult?.Id}");
+        var getResult = JsonSerializer.Deserialize<AddressDTO>(await addressResult.Content.ReadAsStringAsync(), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+
+        Assert.Equal(HttpStatusCode.OK, get.StatusCode);
+        Assert.Equal(addResult?.Id, getResult?.Id);
+        Assert.Equal(addResult?.PostalCode, getResult?.PostalCode);
+        Assert.Equal(addResult?.PhoneNumber, getResult?.PhoneNumber);
+        Assert.Equal(addResult?.CompanyName, getResult?.CompanyName);
+        Assert.Equal(addResult?.EmailAddress, getResult?.EmailAddress);
+    }
+
+    [Fact]
+    public async Task CanGetAll()
+    {
+        var application = new RedacteurPortaalApplication();
+        var client = application.CreateClient();
+
+        var addAddressRequest = DtoBuilder.BuildAddAddressRequest();
+        var addressResult = await client.PostAsJsonAsync("/api/Address", addAddressRequest);
+        var addResult = JsonSerializer.Deserialize<AddressDTO>(await addressResult.Content.ReadAsStringAsync(), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+
+        var addListRessresult = await client.GetAsync($"/api/Address");
+        var listResult = JsonSerializer.Deserialize<List<AddressDTO>>(await addListRessresult.Content.ReadAsStringAsync(), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+
+
+        Assert.Equal(HttpStatusCode.OK, addListRessresult.StatusCode);
+        Assert.NotEmpty(listResult);
+
+
     }
 }
