@@ -139,10 +139,7 @@ public class AddressControllerTests
         var addListRessresult = await client.GetAsync($"/api/Address");
         var listResult = JsonSerializer.Deserialize<List<AddressDTO>>(await addListRessresult.Content.ReadAsStringAsync(), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
 
-
         Assert.Equal(HttpStatusCode.OK, addListRessresult.StatusCode);
         Assert.NotEmpty(listResult);
-
-
     }
 }
