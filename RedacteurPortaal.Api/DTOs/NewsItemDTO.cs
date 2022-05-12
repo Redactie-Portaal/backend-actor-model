@@ -10,7 +10,7 @@ public class NewsItemDto
 
     public string? Title { get; set; }
     
-    public Status? Status { get; set; }
+    public string Status { get; set; }
 
     public string ApprovalStatus { get; set; }
   

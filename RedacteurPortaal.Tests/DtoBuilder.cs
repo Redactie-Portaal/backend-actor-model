@@ -40,7 +40,7 @@ public static class DtoBuilder
                 Street = "foo",
                 Zip = "5087BB",
             },
-            ProdutionDate = DateTime.Now,
+            ProductionDate = DateTime.Now,
         };
     }
     public static UpdateNewsItemRequest BuildUpdateNewsItemRequest()
