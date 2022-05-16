@@ -231,7 +231,7 @@ public class ArchiveController : Controller
     }
 
     [HttpDelete]
-    [Route("{archiveId}/")]
+    [Route("{archiveId}")]
     public async Task<IActionResult> DeleteArchive(Guid archiveId)
     {
         await this.grainService.DeleteGrain(archiveId);
