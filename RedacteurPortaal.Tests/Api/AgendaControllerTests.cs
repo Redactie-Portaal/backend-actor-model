@@ -1,5 +1,5 @@
-}
-﻿using System.Collections.Generic;
+using System.Net.Http.Json;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -56,8 +56,8 @@ public class AgendaControllerTests
         var application = new RedacteurPortaalApplication();
         var client = application.CreateClient();
 
-        var addAgendaRequest = DtoBuilder.BuildPatchAgendaRequest();
-        var agendaResult = await client.PostAsJsonAsync("/api/Agenda", addAgendaRequest);
+        var addAgendaRequest = DtoBuilder.BuildAgendaRequest();
+        var agendaResult = await client.PostAsJsonAsync($"/api/Agenda", addAgendaRequest);
         var resultString = await agendaResult.Content.ReadAsStreamAsync();
         var result = JsonSerializer.Deserialize<AgendaDto>(resultString, new JsonSerializerOptions() {
             PropertyNameCaseInsensitive = true

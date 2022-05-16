@@ -1,13 +1,8 @@
-﻿using Orleans.TestingHost;
-using RedacteurPortaal.DomainModels.Adress;
-using RedacteurPortaal.DomainModels.NewsItem;
-using RedacteurPortaal.Grains.GrainInterfaces;
-using RedacteurPortaal.Tests;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System;
 using System.Threading.Tasks;
+using Orleans.TestingHost;
+using RedacteurPortaal.DomainModels.Adress;
+using RedacteurPortaal.Grains.GrainInterfaces;
 using Xunit;
 
 namespace RedacteurPortaal.Tests.Grains.Test;
@@ -19,12 +14,12 @@ public class AddressGrainTests
 
     public AddressGrainTests(ClusterFixture fixture)
     {
-        _cluster = fixture.Cluster;
+        this._cluster = fixture.Cluster;
     }
 
     [Fact]
     public async Task CanAddAddressCorrectly()
-    {   
+    {
         var guid = Guid.NewGuid();
 
         var toSaveAddress = new AddressModel(guid, "Company", "Address", "PostalCode", "Phone", "Email", "Webpage");
@@ -39,4 +34,3 @@ public class AddressGrainTests
         Assert.Equal(guid, address.Id);
     }
 }
-
