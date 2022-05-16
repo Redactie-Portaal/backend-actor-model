@@ -11,6 +11,8 @@ public class UpdateNewsItemRequest
 
     public ApprovalState? ApprovalState { get; set; }
 
+    public string? ApprovalState { get; set; }
+
     public string? Author { get; set; }
 
     public FeedSourceDto Source { get; set; }

@@ -50,6 +50,8 @@ public class NewsItemModel : IBaseEntity
     public string Title { get; private set; }
 
     public Status Status { get; private set; }
+    
+    public ApprovalState ApprovalState { get; private set; }
 
     public ApprovalState ApprovalState { get; private set; }
 

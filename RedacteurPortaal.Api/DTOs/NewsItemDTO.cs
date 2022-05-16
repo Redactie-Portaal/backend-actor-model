@@ -8,6 +8,8 @@ public class NewsItemDto
 {
     public Guid Id { get; set; }
 
+    public string ApprovalStatus { get; set; }
+
     public string? Title { get; set; }
     
     public Status? Status { get; set; }
