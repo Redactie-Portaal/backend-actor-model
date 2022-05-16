@@ -89,7 +89,7 @@ public class ArchiveController : Controller
     }
 
     [HttpGet]
-    [Route("{archiveId}/", Name = nameof(GetArchiveById))]
+    [Route("{archiveId}", Name = nameof(GetArchiveById))]
     public async Task<ActionResult<ArchiveModel>> GetArchiveById(Guid archiveId)
     {
         var archive = await this.grainService.GetGrain(archiveId);
