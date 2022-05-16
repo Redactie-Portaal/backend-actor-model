@@ -45,45 +45,34 @@ public class NewsItemGrain : Grain, INewsItemGrain
     {
         var locationGrain = await this.locationGrainService.GetGrainOrCreate(this.GetPrimaryKey());
 
-        var contactDetails = await this.newsItem.State.ContactDetails.SelectAsync(async x => {
-            if (!this.contactGrainService.GrainExists(x))
-            {
-                this.newsItem.State.ContactDetails.Remove(x);
-                throw new KeyNotFoundException($"Contact grain {x} not found!");
-            }
-
+        var contactDetails = await this.newsItem.State.ContactDetails
+            .Where(x => x != Guid.Empty)
+            .SelectAsync(async x =>
+        {
             var contactGrain = await this.contactGrainService.GetGrain(x);
             return await contactGrain.Get();
         });
 
-        var videos = await this.newsItem.State.Videos.SelectAsync(async x => {
-            if (!this.videoGrainService.GrainExists(x))
-            {
-                this.newsItem.State.Videos.Remove(x);
-                throw new KeyNotFoundException($"Video grain {x} not found!");
-            }
-
+        var videos = await this.newsItem.State.Videos
+            .Where(x => x != Guid.Empty)
+            .SelectAsync(async x =>
+        {
             var videoGrain = await this.videoGrainService.GetGrain(x);
             return await videoGrain.Get();
         });
 
-        var audio = await this.newsItem.State.Audio.SelectAsync(async x => {
-            if (!this.audioGrainService.GrainExists(x))
-            {
-                this.newsItem.State.Audio.Remove(x);
-                throw new KeyNotFoundException($"Audio grain {x} not found!");
-            }
+        var audio = await this.newsItem.State.Audio
+            .Where(x => x != Guid.Empty)
+            .SelectAsync(async x =>
+        {
             var grain = await this.audioGrainService.GetGrain(x);
             return await grain.Get();
         });
 
-        var photos = await this.newsItem.State.Photos.SelectAsync(async x => {
-            if (!this.photoGrainService.GrainExists(x))
-            {
-                this.newsItem.State.Photos.Remove(x);
-                throw new KeyNotFoundException($"News item grain {x} not found!");
-            }
-
+        var photos = await this.newsItem.State.Photos
+            .Where(x => x != Guid.Empty)
+            .SelectAsync(async x =>
+        {
             var grain = await this.photoGrainService.GetGrain(x);
             return await grain.Get();
         });

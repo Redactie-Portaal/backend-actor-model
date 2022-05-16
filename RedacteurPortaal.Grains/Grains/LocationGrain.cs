@@ -21,11 +21,12 @@ public class LocationGrain : Grain, ILocationGrain
         return Task.FromResult(this.location.RecordExists);
     }
 
-    public Task<Location> Get()
+    public async Task<Location> Get()
     {
+        await this.location.ReadStateAsync();
         var state = this.location.State;
         state.Id = this.GetGrainIdentity().PrimaryKey;
-        return Task.FromResult(state);
+        return state;
     }
 
     public async Task<Location> Update(Location location)

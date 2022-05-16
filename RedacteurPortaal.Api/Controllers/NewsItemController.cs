@@ -96,9 +96,14 @@ public class NewsItemController : ControllerBase
 
         var list = await grain.SelectAsync(async x => await x.Get());
 
-        if (query.StartDate != default || query.EndDate != default)
+        if (query.StartDate != default)
         {
-            list = list.Where(x => x.ProductionDate >= query.StartDate && x.ProductionDate <= query.EndDate);
+            list = list.Where(x => x.ProductionDate >= query.StartDate);
+        }
+
+        if (query.EndDate != default)
+        {
+            list = list.Where(x => x.EndDate <= query.EndDate);
         }
 
         if (!string.IsNullOrEmpty(query.Author))
@@ -106,7 +111,7 @@ public class NewsItemController : ControllerBase
             list = list.Where(x => x.Author == query.Author).ToList();
         }
 
-        if (string.IsNullOrEmpty(query.Status))
+        if (!string.IsNullOrEmpty(query.Status))
         {
             list = list.Where(x => x.Status == Enum.Parse<Status>(query.Status)).ToList();
         }
