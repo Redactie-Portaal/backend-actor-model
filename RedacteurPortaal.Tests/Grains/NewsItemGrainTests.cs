@@ -40,7 +40,6 @@ public class NewsItemGrainTests
                                          DateTime.UtcNow,
                                          Category.STORY,
                                          Region.LOCAL,
-                                         "dossier",
                                          new(),
                                          new(),
                                          new());

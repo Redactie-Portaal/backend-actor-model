@@ -33,7 +33,7 @@ public class SourceGrain : Grain, ISourceGrain
         await this.source.ClearStateAsync();
     }
 
-    public async Task Update(Source source)
+    public async Task<Source> Update(Source source)
     {
         this.source.State = source;
         await this.source.WriteStateAsync();

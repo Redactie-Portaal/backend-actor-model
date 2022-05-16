@@ -23,7 +23,6 @@ public class NewsItemModel : IBaseEntity
         DateTime endDate,
         Category category,
         Region region,
-        string dossier,
         List<MediaVideoItem> videos,
         List<MediaAudioItem> audio,
         List<MediaPhotoItem> photos)
@@ -41,7 +40,6 @@ public class NewsItemModel : IBaseEntity
         this.EndDate = endDate;
         this.Category = category;
         this.Region = region;
-        this.Dossier = dossier ?? throw new ArgumentNullException(nameof(dossier));
         this.Videos = videos ?? throw new ArgumentNullException(nameof(videos));
         this.Audio = audio ?? throw new ArgumentNullException(nameof(audio));
         this.Photos = photos ?? throw new ArgumentNullException(nameof(photos));
@@ -72,8 +70,6 @@ public class NewsItemModel : IBaseEntity
     public Category Category { get; private set; }
 
     public Region Region { get; private set; }
-
-    public string Dossier { get; private set; }
 
     public List<MediaVideoItem> Videos { get; private set; }
 

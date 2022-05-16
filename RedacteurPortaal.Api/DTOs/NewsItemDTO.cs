@@ -32,8 +32,6 @@ public class NewsItemDto
 
     public Region? Region { get; set; }
 
-    public string? Dossier { get; set; }
-
     public List<MediaVideoItemDto> Videos { get; set; }
 
     public List<MediaAudioItemDto> Audio { get; set; }

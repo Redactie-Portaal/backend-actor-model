@@ -37,14 +37,7 @@ namespace RedacteurPortaal.Grains.GrainServices
 
         public bool GrainExists(Guid id)
         {
-            if (!this.DbContext.GrainReferences.Any(x => x.GrainId == id))
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            return this.DbContext.GrainReferences.Any(x => x.GrainId == id);
         }
 
         public async Task<T> GetGrain(Guid id)
@@ -94,6 +87,16 @@ namespace RedacteurPortaal.Grains.GrainServices
             {
                 throw new KeyNotFoundException($"Grain {id} not found");
             }
+        }
+
+        public async Task<T> GetGrainOrCreate(Guid id)
+        {
+            if (this.GrainExists(id))
+            {
+                return await this.GetGrain(id);
+            }
+
+            return await this.CreateGrain(id);
         }
     }
 }

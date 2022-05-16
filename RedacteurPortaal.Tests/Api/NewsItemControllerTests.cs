@@ -130,4 +130,46 @@ public class NewsItemControllerTests
         var delete = await client.DeleteAsync($"/api/Profile/{Guid.NewGuid()}");
         Assert.Equal(HttpStatusCode.MethodNotAllowed, delete.StatusCode);
     }
+
+    [Fact]
+    public async Task CanFilterOnDate()
+    {
+        var application = new RedacteurPortaalApplication();
+        var client = application.CreateClient();
+
+        var requests = this.GetFilterableNewsItems();
+        foreach (var item in requests)
+        {
+            var newsItem = await client.PostAsJsonAsync("/api/NewsItem", item);
+        }
+
+        var newItems = await client.GetFromJsonAsync<List<NewsItemDto>>("/api/NewsItem");
+        Assert.NotNull(newItems);
+        Assert.Equal(requests.Count, newItems.Count);
+
+        var filtered = await client.GetFromJsonAsync<List<NewsItemDto>>($"/api/NewsItem?endDate={DateTime.MaxValue - TimeSpan.FromSeconds(1)}");
+        Assert.NotNull(filtered);
+        Assert.Equal(1, filtered.Count);
+
+    }
+
+    private List<NewsItemDto> GetFilterableNewsItems()
+    {
+        var toReturn = new List<NewsItemDto>();
+
+        var dto1 = DtoBuilder.BuildAddNewsItemRequest();
+        dto1.ProductionDate = DateTime.MaxValue;
+        toReturn.Add(dto1);
+
+        var dto2 = DtoBuilder.BuildAddNewsItemRequest();
+        dto2.ProductionDate = DateTime.Now;
+        toReturn.Add(dto2);
+
+        var dto3 = DtoBuilder.BuildAddNewsItemRequest();
+        dto3.ProductionDate = DateTime.Now - TimeSpan.FromDays(1);
+        toReturn.Add(dto3);
+
+        return toReturn;
+    }
+
 }

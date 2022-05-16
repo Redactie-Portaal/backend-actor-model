@@ -5,6 +5,8 @@ using RedacteurPortaal.DomainModels.NewsItem;
 using RedacteurPortaal.DomainModels.Shared;
 using RedacteurPortaal.Grains.GrainInterfaces;
 using RedacteurPortaal.Grains.GrainServices;
+using RedacteurPortaal.Grains.GrainState;
+using RedacteurPortaal.Helpers;
 
 namespace RedacteurPortaal.Grains.Grains;
 
@@ -15,7 +17,7 @@ public class NewsItemGrain : Grain, INewsItemGrain
     private readonly IGrainManagementService<IMediaVideoGrain> videoGrainService;
     private readonly IGrainManagementService<IMediaAudioGrain> audioGrainService;
     private readonly IGrainManagementService<IMediaPhotoGrain> photoGrainService;
-    private readonly IPersistentState<NewsItemModel> newsItem;
+    private readonly IPersistentState<NewsItemGrainState> newsItem;
   
     public Task<bool> HasState()
     {
@@ -24,7 +26,7 @@ public class NewsItemGrain : Grain, INewsItemGrain
     
     public NewsItemGrain(
     [PersistentState("newsitem", "OrleansStorage")]
-    IPersistentState<NewsItemModel> newsItem,
+    IPersistentState<NewsItemGrainState> newsItem,
     IGrainManagementService<ILocationGrain> locationGrainService,
     IGrainManagementService<IContactGrain> contactGrainService,
     IGrainManagementService<IMediaVideoGrain> videoGrainService,
@@ -41,69 +43,97 @@ public class NewsItemGrain : Grain, INewsItemGrain
 
     public async Task<NewsItemModel> Get()
     {
-        var location = await this.locationGrainService.GetGrain(this.newsItem.State.Id);
-        this.newsItem.State.SetLocationDetails(await location.Get());
+        var locationGrain = await this.locationGrainService.GetGrainOrCreate(this.GetPrimaryKey());
 
-        List<Contact> contactList = new List<Contact>();
-        List<MediaAudioItem> audioList = new List<MediaAudioItem>();
-        List<MediaVideoItem> videoList = new List<MediaVideoItem>();
-        List<MediaPhotoItem> photoList = new List<MediaPhotoItem>();
+        var contactDetails = await this.newsItem.State.ContactDetails.SelectAsync(async x => {
+            if (!this.contactGrainService.GrainExists(x))
+            {
+                this.newsItem.State.ContactDetails.Remove(x);
+                throw new KeyNotFoundException($"Contact grain {x} not found!");
+            }
 
-        foreach (var contact in this.newsItem.State.ContactDetails)
-        {
-            var contactGrain = await this.contactGrainService.GetGrain(contact.Id);
-            contactList.Add(await contactGrain.Get());
-        }
-        
-        foreach (var video in this.newsItem.State.Videos)
-        {
-            var videoGrain = await this.videoGrainService.GetGrain(video.Id);
-            videoList.Add(await videoGrain.Get());
-        }
-        
-        foreach (var audio in this.newsItem.State.Audio)
-        {
-            var audioGrain = await this.audioGrainService.GetGrain(audio.Id);
-            audioList.Add(await audioGrain.Get());
-        }
-        
-        foreach (var photo in this.newsItem.State.Photos)
-        {
-            var photoGrain = await this.photoGrainService.GetGrain(photo.Id);
-            photoList.Add(await photoGrain.Get());
-        }
+            var contactGrain = await this.contactGrainService.GetGrain(x);
+            return await contactGrain.Get();
+        });
 
-        this.newsItem.State.SetContactDetails(contactList);
-        this.newsItem.State.SetVideos(videoList);
-        this.newsItem.State.SetAudio(audioList);
-        this.newsItem.State.SetPhotos(photoList);
+        var videos = await this.newsItem.State.Videos.SelectAsync(async x => {
+            if (!this.videoGrainService.GrainExists(x))
+            {
+                this.newsItem.State.Videos.Remove(x);
+                throw new KeyNotFoundException($"Video grain {x} not found!");
+            }
 
-        return await Task.FromResult(this.newsItem.State);
+            var videoGrain = await this.videoGrainService.GetGrain(x);
+            return await videoGrain.Get();
+        });
+
+        var audio = await this.newsItem.State.Audio.SelectAsync(async x => {
+            if (!this.audioGrainService.GrainExists(x))
+            {
+                this.newsItem.State.Audio.Remove(x);
+                throw new KeyNotFoundException($"Audio grain {x} not found!");
+            }
+            var grain = await this.audioGrainService.GetGrain(x);
+            return await grain.Get();
+        });
+
+        var photos = await this.newsItem.State.Photos.SelectAsync(async x => {
+            if (!this.photoGrainService.GrainExists(x))
+            {
+                this.newsItem.State.Photos.Remove(x);
+                throw new KeyNotFoundException($"News item grain {x} not found!");
+            }
+
+            var grain = await this.photoGrainService.GetGrain(x);
+            return await grain.Get();
+        });
+
+        await this.newsItem.WriteStateAsync();
+
+        return await Task.FromResult(
+            new NewsItemModel(
+                this.GetPrimaryKey(),
+                this.newsItem.State.Title,
+                this.newsItem.State.Status,
+                this.newsItem.State.ApprovalState,
+                this.newsItem.State.Author,
+                this.newsItem.State.Source,
+                this.newsItem.State.Body,
+                contactDetails.ToList(),
+                await locationGrain.Get(),
+                this.newsItem.State.ProductionDate,
+                this.newsItem.State.EndDate,
+                this.newsItem.State.Category,
+                this.newsItem.State.Region,
+                videos.ToList(),
+                audio.ToList(),
+                photos.ToList())
+            );
     }
 
     public async Task Delete()
     {
         foreach (var contact in this.newsItem.State.ContactDetails)
         {
-            var contactGrain = await this.contactGrainService.GetGrain(contact.Id);
+            var contactGrain = await this.contactGrainService.GetGrain(contact);
             await contactGrain.Delete();
         }
 
         foreach (var video in this.newsItem.State.Videos)
         {
-            var videoGrain = await this.videoGrainService.GetGrain(video.Id);
+            var videoGrain = await this.videoGrainService.GetGrain(video);
             await videoGrain.Delete();
         }
 
         foreach (var audio in this.newsItem.State.Audio)
         {
-            var audioGrain = await this.audioGrainService.GetGrain(audio.Id);
+            var audioGrain = await this.audioGrainService.GetGrain(audio);
             await audioGrain.Delete();
         }
 
         foreach (var photo in this.newsItem.State.Photos)
         {
-            var photoGrain = await this.photoGrainService.GetGrain(photo.Id);
+            var photoGrain = await this.photoGrainService.GetGrain(photo);
             await photoGrain.Delete();
         }
         
@@ -112,80 +142,21 @@ public class NewsItemGrain : Grain, INewsItemGrain
 
     public async Task<NewsItemModel> Update(NewsItemModel newsItem)
     {
-        this.newsItem.State = newsItem;
-        List<Contact> contactList = new List<Contact>();
-        List<MediaAudioItem> audioList = new List<MediaAudioItem>();
-        List<MediaVideoItem> videoList = new List<MediaVideoItem>();
-        List<MediaPhotoItem> photoList = new List<MediaPhotoItem>();
-        
-        foreach (var contact in this.newsItem.State.ContactDetails)
-        {
-            var result = this.contactGrainService.GrainExists(contact.Id);
-            if(result)
-            {
-                var contactGrain = await this.contactGrainService.GetGrain(contact.Id);
-                await contactGrain.Update(contact);
-            }
-            else
-            {
-                var newGrain = await this.contactGrainService.CreateGrain(Guid.NewGuid());
-                var updatedGrain = await newGrain.Update(contact);
-                contactList.Add(updatedGrain);
-            }
-        }
-        
-        foreach (var video in this.newsItem.State.Videos)
-        {
-            var result = this.videoGrainService.GrainExists(video.Id);
-            if (result)
-            {
-                var videoGrain = await this.videoGrainService.GetGrain(video.Id);
-                await videoGrain.Update(video);
-            }
-            else
-            {
-                var newGrain = await this.videoGrainService.CreateGrain(Guid.NewGuid());
-                var updatedGrain = await newGrain.Update(video);
-                videoList.Add(updatedGrain);
-            }
-        }
-        
-        foreach (var audio in this.newsItem.State.Audio)
-        {
-            var result = this.audioGrainService.GrainExists(audio.Id);
-            if (result)
-            {
-                var audioGrain = await this.audioGrainService.GetGrain(audio.Id);
-                await audioGrain.Update(audio);
-            }
-            else
-            {
-                var newGrain = await this.audioGrainService.CreateGrain(Guid.NewGuid());
-                var updatedGrain = await newGrain.Update(audio);
-                audioList.Add(updatedGrain);
-            }
-        }
-        
-        foreach (var photo in this.newsItem.State.Photos)
-        {
-            var result = this.photoGrainService.GrainExists(photo.Id);
-            if (result)
-            {
-                var photoGrain = await this.photoGrainService.GetGrain(photo.Id);
-                await photoGrain.Update(photo);
-            }
-            else
-            {
-                var newGrain = await this.photoGrainService.CreateGrain(Guid.NewGuid());
-                var updatedGrain = await newGrain.Update(photo);
-                photoList.Add(updatedGrain);
-            }
-        }
-        
-        this.newsItem.State.SetContactDetails(contactList);
-        this.newsItem.State.SetVideos(videoList);
-        this.newsItem.State.SetAudio(audioList);
-        this.newsItem.State.SetPhotos(photoList);
+        this.newsItem.State.Title = newsItem.Title;
+        this.newsItem.State.Status = newsItem.Status;
+        this.newsItem.State.ApprovalState = newsItem.ApprovalState;
+        this.newsItem.State.Author = newsItem.Author;
+        this.newsItem.State.Source = newsItem.Source;
+        this.newsItem.State.Body = newsItem.Body;
+        this.newsItem.State.ContactDetails = newsItem.ContactDetails.Select(x => x.Id).ToList();
+        this.newsItem.State.ProductionDate = newsItem.ProductionDate;
+        this.newsItem.State.EndDate = newsItem.EndDate;
+        this.newsItem.State.Category = newsItem.Category;
+        this.newsItem.State.Region = newsItem.Region;
+
+        this.newsItem.State.Videos = newsItem.Videos.DiscardNullValues().Select(x => x.Id).ToList();
+        this.newsItem.State.Audio = newsItem.Audio.DiscardNullValues().Select(x => x.Id).ToList();
+        this.newsItem.State.Photos = newsItem.Photos.DiscardNullValues().Select(x => x.Id).ToList();
 
         await this.newsItem.WriteStateAsync();
         return await this.Get();

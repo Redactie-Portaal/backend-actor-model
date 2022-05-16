@@ -77,11 +77,11 @@ await Host.CreateDefaultBuilder(args)
         services.AddScoped<IGrainManagementService<INewsItemGrain>, GrainManagementService<INewsItemGrain, NewsItemModel>>();
         services.AddScoped<IGrainManagementService<IProfileGrain>, GrainManagementService<IProfileGrain, Profile>>();
         services.AddScoped<IGrainManagementService<IAddressGrain>, GrainManagementService<IAddressGrain, AddressModel>>();
-        services.AddScoped<IGrainManagementService<ILocationGrain>, GrainManagementService<ILocationGrain, Location>>();
         services.AddScoped<IGrainManagementService<IContactGrain>, GrainManagementService<IContactGrain, Contact>>();
         services.AddScoped<IGrainManagementService<IMediaAudioGrain>, GrainManagementService<IMediaAudioGrain, MediaAudioItem>>();
         services.AddScoped<IGrainManagementService<IMediaVideoGrain>, GrainManagementService<IMediaVideoGrain, MediaVideoItem>>();
         services.AddScoped<IGrainManagementService<IMediaPhotoGrain>, GrainManagementService<IMediaPhotoGrain, MediaPhotoItem>>();
+        services.AddScoped<IGrainManagementService<ILocationGrain>, GrainManagementService<ILocationGrain, Location>>();
 
         services.AddDbContext<DataContext>(options => 
         {
