@@ -1,9 +1,9 @@
 ﻿using RedacteurPortaal.DomainModels.Media;
 
-namespace RedacteurPortaal.Api.DTOs
+namespace RedacteurPortaal.Api.Models.Request
 {
-    public class MediaVideoItemDto : MediaItemDto
-    {   
+    public class UpdateMediaVideoItemRequest : UpdateMediaItemRequest
+    {
         public string Reporter { get; set; }
 
         public string Sound { get; set; }

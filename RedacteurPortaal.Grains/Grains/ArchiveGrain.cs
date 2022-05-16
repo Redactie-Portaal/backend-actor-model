@@ -40,15 +40,18 @@ public class ArchiveGrain : Grain, IArchiveGrain
         await this.archive.WriteStateAsync();
     }
 
-    public async Task Update(ArchiveModel archive)
+    public async Task<ArchiveModel> Update(ArchiveModel archive)
     {
         this.archive.State = archive;
         await this.archive.WriteStateAsync();
+        return await this.Get();
     }
 
-    public async Task<ArchiveModel> Get()
+    public Task<ArchiveModel> Get()
     {
-        return await Task.FromResult(this.archive.State);
+        var state = this.archive.State;
+        state.Id = this.GetGrainIdentity().PrimaryKey;
+        return Task.FromResult(state);
     }
 
     public Task<bool> HasState()

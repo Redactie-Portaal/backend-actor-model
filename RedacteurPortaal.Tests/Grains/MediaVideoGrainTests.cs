@@ -37,13 +37,13 @@ public class MediaVideoGrainTests
                                                       "Lastwords",
                                                       "Proxyfile",
                                                       "Presentation",
-                                                      new Location { },
+                                                      new Location(),
                                                       "Format",
                                                       "Reporter",
                                                       "Sound",
                                                       "Editor",
                                                       "Lastpicture",
-                                                      new List<string> { },
+                                                      new List<string>(),
                                                       "Voiceover",
                                                       "Description",
                                                       DateTime.UtcNow,
@@ -54,7 +54,7 @@ public class MediaVideoGrainTests
                                                       Weather.SUNNY,
                                                       "Producer",
                                                       "Director",
-                                                      new List<string> { },
+                                                      new List<string>(),
                                                       "Firstpicture",
                                                       "Programname",
                                                       "Firstwords",
@@ -71,4 +71,3 @@ public class MediaVideoGrainTests
     }
 
 }
-

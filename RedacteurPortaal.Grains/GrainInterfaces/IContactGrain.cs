@@ -4,5 +4,5 @@ namespace RedacteurPortaal.Grains.GrainInterfaces;
 
 public interface IContactGrain : IManageableGrain<Contact>
 {
-    Task Update(Contact contact);
+    Task<Contact> Update(Contact contact);   
 }

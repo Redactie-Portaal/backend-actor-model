@@ -23,7 +23,9 @@ public class ContactGrain : Grain, IContactGrain
 
     public Task<Contact> Get()
     {
-        return Task.FromResult(this.contactState.State);
+        var state = this.contactState.State;
+        state.Id = this.GetGrainIdentity().PrimaryKey;
+        return Task.FromResult(state);
     }
 
     public async Task Delete()
@@ -31,9 +33,10 @@ public class ContactGrain : Grain, IContactGrain
         await this.contactState.ClearStateAsync();
     }
 
-    public async Task Update(Contact contact)
+    public async Task<Contact> Update(Contact contact)
     {
         this.contactState.State = contact;
         await this.contactState.WriteStateAsync();
+        return await this.Get();
     }
 }
