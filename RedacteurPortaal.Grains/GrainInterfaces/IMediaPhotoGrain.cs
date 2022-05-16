@@ -5,5 +5,5 @@ namespace RedacteurPortaal.Grains.GrainInterfaces;
 
 public interface IMediaPhotoGrain : IManageableGrain<MediaPhotoItem>
 {
-    Task Update(MediaPhotoItem mediaItem);
+    Task<MediaPhotoItem> Update(MediaPhotoItem mediaItem);
 }

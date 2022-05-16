@@ -23,7 +23,9 @@ public class MediaPhotoGrain : Grain, IMediaPhotoGrain
 
     public Task<MediaPhotoItem> Get()
     {
-        return Task.FromResult(this.photoItem.State);
+        var state = this.photoItem.State;
+        state.Id = this.GetGrainIdentity().PrimaryKey;
+        return Task.FromResult(state);
     }
 
     public async Task Delete()
@@ -31,9 +33,10 @@ public class MediaPhotoGrain : Grain, IMediaPhotoGrain
         await this.photoItem.ClearStateAsync();
     }
 
-    public async Task Update(MediaPhotoItem mediaItem)
+    public async Task<MediaPhotoItem> Update(MediaPhotoItem mediaItem)
     {
         this.photoItem.State = mediaItem;
         await this.photoItem.WriteStateAsync();
+        return await this.Get();
     }
 }

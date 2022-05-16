@@ -23,10 +23,9 @@ public class NewsItemModel : IBaseEntity
         DateTime endDate,
         Category category,
         Region region,
-        string dossier,
-        MediaVideoItem[] videos,
-        MediaAudioItem[] audio,
-        MediaPhotoItem[] photos)
+        List<MediaVideoItem> videos,
+        List<MediaAudioItem> audio,
+        List<MediaPhotoItem> photos)
     {
         this.Id = id;
         this.Title = title ?? throw new ArgumentNullException(nameof(title));
@@ -52,12 +51,12 @@ public class NewsItemModel : IBaseEntity
     public string Title { get; private set; }
 
     public Status Status { get; private set; }
-    
+
     public ApprovalState ApprovalState { get; private set; }
 
     public string Author { get; private set; }
 
-    public FeedSource Source { get; private  set; }
+    public FeedSource Source { get; private set; }
 
     public string Body { get; private set; }
 
@@ -73,11 +72,34 @@ public class NewsItemModel : IBaseEntity
 
     public Region Region { get; private set; }
 
-    public string Dossier { get; private set; }
+    public List<MediaVideoItem> Videos { get; private set; }
 
-    public MediaVideoItem[] Videos { get; private set; }
+    public List<MediaAudioItem> Audio { get; private set; }
 
-    public MediaAudioItem[] Audio { get; private set; }
+    public List<MediaPhotoItem> Photos { get; private set; }
 
-    public MediaPhotoItem[] Photos { get; private set; }
+    public void SetLocationDetails(Location location)
+    {
+        this.LocationDetails = location;
+    }
+
+    public void SetContactDetails(List<Contact> contactDetails)
+    {
+        this.ContactDetails = contactDetails;
+    }
+
+    public void SetVideos(List<MediaVideoItem> videos)
+    {
+        this.Videos = videos;
+    }
+
+    public void SetAudio(List<MediaAudioItem> audio)
+    {
+        this.Audio = audio;
+    }
+
+    public void SetPhotos(List<MediaPhotoItem> photos)
+    {
+        this.Photos = photos;
+    }
 }

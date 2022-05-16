@@ -19,17 +19,17 @@ public static class DtoBuilder
         return new NewsItemDto()
         {
             Author = "Author",
-            Audio = new MediaAudioItemDto[1],
+            Audio = new(),
             Body = "foo",
             Category = Category.NEWS,
             Region = Region.LOCAL,
-            Photos = new MediaPhotoItemDto[1],
-            Videos = new MediaVideoItemDto[1],
+            Photos = new(),
+            Videos = new(),
             Source = new FeedSourceDto()
             {
                 PlaceHolder = "foo",
             },
-            Status = "DONE",
+            Status = Status.DONE,
             Title = "title",
             ApprovalStatus = "APPROVED",
             ContactDetails = new List<ContactDto>(),
@@ -52,21 +52,21 @@ public static class DtoBuilder
         return new UpdateNewsItemRequest()
         {
             Author = "Author1",
-            Audio = new MediaAudioItemDto[1],
+            Audio = new UpdateMediaAudioItemRequest[1],
             Body = "foo1",
             Category = Category.NEWS,
             Region = Region.LOCAL,
-            Photos = new MediaPhotoItemDto[1],
-            Videos = new MediaVideoItemDto[1],
+            Photos = new UpdateMediaPhotoItemRequest[1],
+            Videos = new UpdateMediaVideoItemRequest[1],
             Source = new FeedSourceDto()
             {
                 PlaceHolder = "foo1",
             },
             Status = Status.DONE,
             Title = "title1",
-            ContactDetails = new List<ContactDto>(),
+            ContactDetails = new List<UpdateContactRequest>(),
             EndDate = DateTime.Now,
-            LocationDetails = new LocationDto()
+            LocationDetails = new UpdateLocationRequest()
             {
                 City = "foo1",
                 Latitude = 51,
@@ -95,6 +95,19 @@ public static class DtoBuilder
             },
             LastOnline = DateTime.Now,
             ProfilePicture = "base64"
+        };
+    }
+
+    public static AddressDTO BuildGetAddressRequest()
+    {
+        return new AddressDTO() {
+            Id = Guid.NewGuid(),
+            Address = "FooStreet",
+            Webpage = "www.foo.nl",
+            CompanyName = "FooBar",
+            EmailAddress = "foo@gmail.com",
+            PhoneNumber = "0640778812",
+            PostalCode = "5087BB"
         };
     }
 

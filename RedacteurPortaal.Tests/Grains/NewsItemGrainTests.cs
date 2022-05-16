@@ -32,18 +32,17 @@ public class NewsItemGrainTests
                                          Status.DONE,
                                          ApprovalState.PENDING,
                                          "Newsitem Author",
-                                         new FeedSource { },
+                                         new FeedSource(),
                                          "body",
                                          new List<Contact>(),
-                                         new Location { },
+                                         new Location(),
                                          DateTime.UtcNow,
                                          DateTime.UtcNow,
                                          Category.STORY,
                                          Region.LOCAL,
-                                         "dossier",
-                                         Array.Empty<MediaVideoItem>(),
-                                         Array.Empty<MediaAudioItem>(),
-                                         Array.Empty<MediaPhotoItem>());
+                                         new(),
+                                         new(),
+                                         new());
 
 
         var newsitemgrain = this._cluster.GrainFactory.GetGrain<INewsItemGrain>(guid);

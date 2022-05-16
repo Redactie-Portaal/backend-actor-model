@@ -38,5 +38,6 @@
     <ItemGroup>
         <ProjectReference Include="..\RedacteurPortaal.Data\RedacteurPortaal.Data.csproj" />
         <ProjectReference Include="..\RedacteurPortaal.DomainModels\RedacteurPortaal.DomainModels.csproj" />
+        <ProjectReference Include="..\RedacteurPortaal.Helpers\RedacteurPortaal.Helpers.csproj" />
     </ItemGroup>
 </Project>

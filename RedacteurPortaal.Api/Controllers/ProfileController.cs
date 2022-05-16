@@ -13,12 +13,10 @@ namespace RedacteurPortaal.Api.Controllers
     public class ProfileController : ControllerBase
     {
         private readonly IGrainManagementService<IProfileGrain> grainService;
-        private readonly ILogger<ProfileController> logger;
 
-        public ProfileController(IGrainManagementService<IProfileGrain> grainService, ILogger<ProfileController> logger)
+        public ProfileController(IGrainManagementService<IProfileGrain> grainService)
         {
             this.grainService = grainService;
-            this.logger = logger;
         }
 
         [HttpPost]
