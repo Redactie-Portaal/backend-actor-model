@@ -136,7 +136,7 @@ public class NewsItemControllerTests
 
         var newItems = await client.GetFromJsonAsync<List<NewsItemDto>>("/api/NewsItem");
         Assert.NotNull(newItems);
-        Assert.Equal(requests.Count, newItems.Count);
+        Assert.Equal(requests.Count, newItems?.Count);
 
         var filtered = await client.GetFromJsonAsync<List<NewsItemDto>>($"/api/NewsItem?StartDate={(DateTime.MaxValue - TimeSpan.FromMinutes(1)).ToString("s")}");
         Assert.NotNull(filtered);

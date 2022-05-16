@@ -9,7 +9,6 @@ using RedacteurPortaal.Grains.GrainInterfaces;
 using RedacteurPortaal.Grains.GrainServices;
 using RedacteurPortaal.Helpers;
 
-
 namespace RedacteurPortaal.Api.Controllers;
 
 [Route("api/[controller]")]
@@ -63,7 +62,8 @@ public class NewsItemController : ControllerBase
     .Map(dest => dest.Source,
         src => new FeedSourceDto() { PlaceHolder = src.Source.PlaceHolder })
     .Map(dest => dest.LocationDetails,
-        src => new LocationDto() {
+        src => new LocationDto()
+        {
             City = src.LocationDetails.City,
             Id = src.LocationDetails.Id,
             Latitude = src.LocationDetails.Latitude,
@@ -75,7 +75,8 @@ public class NewsItemController : ControllerBase
         })
     .Map(dest => dest.ContactDetails,
         src => src.ContactDetails.Select(x =>
-            new ContactDto() {
+            new ContactDto()
+            {
                 Id = x.Id,
                 Name = x.Name,
                 TelephoneNumber = x.TelephoneNumber,

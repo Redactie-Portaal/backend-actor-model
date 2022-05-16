@@ -3,7 +3,7 @@
 namespace RedacteurPortaal.DomainModels.Media;
 
 [Serializable]
-public class MediaVideoItem : MediaItem, IBaseEntity
+public class MediaVideoItem : MediaItem
 {
     public MediaVideoItem()
     {
