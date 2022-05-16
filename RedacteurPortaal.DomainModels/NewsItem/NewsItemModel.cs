@@ -40,7 +40,6 @@ public class NewsItemModel : IBaseEntity
         this.EndDate = endDate;
         this.Category = category;
         this.Region = region;
-        this.Dossier = dossier ?? throw new ArgumentNullException(nameof(dossier));
         this.Videos = videos ?? throw new ArgumentNullException(nameof(videos));
         this.Audio = audio ?? throw new ArgumentNullException(nameof(audio));
         this.Photos = photos ?? throw new ArgumentNullException(nameof(photos));
