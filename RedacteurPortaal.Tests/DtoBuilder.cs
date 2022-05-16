@@ -94,6 +94,19 @@ public static class DtoBuilder
         };
     }
 
+    public static AddressDTO BuildGetAddressRequest()
+    {
+        return new AddressDTO() {
+            Id = Guid.NewGuid(),
+            Address = "FooStreet",
+            Webpage = "www.foo.nl",
+            CompanyName = "FooBar",
+            EmailAddress = "foo@gmail.com",
+            PhoneNumber = "0640778812",
+            PostalCode = "5087BB"
+        };
+    }
+
     public static AddAddressRequest BuildAddAddressRequest()
     {
         return new AddAddressRequest()
