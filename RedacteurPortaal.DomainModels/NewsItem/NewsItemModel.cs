@@ -52,9 +52,7 @@ public class NewsItemModel : IBaseEntity
     public Status Status { get; private set; }
     
     public ApprovalState ApprovalState { get; private set; }
-
-    public ApprovalState ApprovalState { get; private set; }
-
+    
     public string Author { get; private set; }
 
     public FeedSource Source { get; private set; }
