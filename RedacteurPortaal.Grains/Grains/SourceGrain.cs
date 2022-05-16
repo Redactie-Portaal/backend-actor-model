@@ -1,21 +1,17 @@
-﻿using Orleans.Runtime;
+﻿using Orleans;
+using Orleans.Runtime;
 using RedacteurPortaal.DomainModels.NewsItem;
 using RedacteurPortaal.Grains.GrainInterfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RedacteurPortaal.Grains.Grains;
 
-public class SourceGrain : ISourceGrain
+public class SourceGrain : Grain, ISourceGrain
 {
     private readonly IPersistentState<Source> source;
 
     public SourceGrain(
-        [PersistentState("source", "OrleansStorage")]
-        IPersistentState<Source> source)
+    [PersistentState("source", "OrleansStorage")]
+    IPersistentState<Source> source)
     {
         this.source = source;
     }
@@ -27,7 +23,9 @@ public class SourceGrain : ISourceGrain
 
     public Task<Source> Get()
     {
-        return Task.FromResult(this.source.State);
+        var state = this.source.State;
+        state.Id = this.GetGrainIdentity().PrimaryKey;
+        return Task.FromResult(state);
     }
 
     public async Task Delete()
@@ -35,10 +33,10 @@ public class SourceGrain : ISourceGrain
         await this.source.ClearStateAsync();
     }
 
-    public async Task Update(Source source)
+    public async Task<Source> Update(Source source)
     {
         this.source.State = source;
-
         await this.source.WriteStateAsync();
+        return await this.Get();
     }
 }

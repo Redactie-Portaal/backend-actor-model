@@ -4,10 +4,7 @@ using RedacteurPortaal.Api.Models;
 using RedacteurPortaal.Api.Models.Request;
 using RedacteurPortaal.Data.Context;
 using RedacteurPortaal.DomainModels;
-using RedacteurPortaal.DomainModels.Media;
-using RedacteurPortaal.DomainModels.NewsItem;
 using RedacteurPortaal.Grains.GrainInterfaces;
-using RedacteurPortaal.Grains.Grains;
 
 namespace RedacteurPortaal.Api.Controllers;
 
@@ -19,9 +16,6 @@ public class ExportDestinationController : Controller
     private readonly IClusterClient clusterClient;
     private readonly DataContext context;
 
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="NewsItemController" /> class.
-    /// </summary>
     public ExportDestinationController(IExportPluginService pluginService, IClusterClient clusterClient, DataContext context)
     {
         this.pluginService = pluginService;
@@ -30,17 +24,17 @@ public class ExportDestinationController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Get()
+    public ActionResult<List<ExportPluginDto>> Get()
     {
-        var plugins = await this.pluginService.GetPlugins();
+        var plugins = this.pluginService.GetPlugins();
 
         return this.Ok(plugins);
     }
 
     [HttpGet("{guid}")]
-    public async Task<IActionResult> GetById(Guid guid)
+    public ActionResult<ExportPluginDto> GetById(Guid guid)
     {
-        var plugin = (await this.pluginService.GetPlugins())
+        var plugin = this.pluginService.GetPlugins()
             .Single(x => x.Id == guid);
 
         return this.Ok(plugin);
@@ -49,10 +43,10 @@ public class ExportDestinationController : Controller
     [HttpPost("{guid}/Actions.Publish")]
     public async Task<IActionResult> Publish(Guid guid, [FromBody]PublishItemRequest request)
     {
-        var plugin = (await this.pluginService.GetPlugins())
+        var plugin =  this.pluginService.GetPlugins()
            .Single(x => x.Id == guid);
         _ = plugin ?? throw new KeyNotFoundException();
-
+        
         var story = await this.clusterClient.GetGrain<INewsItemGrain>(request.StoryId).Get();
         var apiKey = this.context.PluginSettings.Single(x => x.PluginId == guid).ApiKey;
 
@@ -64,8 +58,7 @@ public class ExportDestinationController : Controller
             AudioUri = story.Audio.Select(v => v.MediaLocation).ToArray(),
             Images = story.Photos.Select(x => x.Image).ToArray(),
             Name = story.Title,
-            ShortText = story.Body.ShortDescription,
-            TextContent = story.Body.Description,
+            TextContent = plugin.TruncateForSocialMedia(story.Body, 140),
             VideoUri = story.Videos.Select(v => v.MediaLocation).ToArray(),
         }, apiKey);
 #pragma warning restore CS8602 // Dereference of a possibly null reference.

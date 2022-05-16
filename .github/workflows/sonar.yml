@@ -42,6 +42,9 @@ jobs:
         shell: powershell
         run: |
           dotnet nuget add source --username joepvand --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/Redactie-Portaal/index.json"
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"Redactie-Portaal_backend-actor-model" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}"
+          dotnet tool update dotnet-reportgenerator-globaltool -g --version 4.8.7
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"Redactie-Portaal_backend-actor-model" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}" /d:sonar.coverageReportPaths=".\sonarqubecoverage\SonarQube.xml"
           dotnet build
+          dotnet test --no-build --collect:"XPlat Code Coverage"
+          reportgenerator "-reports:*\TestResults\*\coverage.cobertura.xml" "-targetdir:sonarqubecoverage" "-reporttypes:SonarQube"
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"

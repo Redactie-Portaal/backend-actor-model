@@ -1,8 +1,9 @@
-﻿using RedacteurPortaal.DomainModels.Media;
+﻿using RedacteurPortaal.Api.DTOs;
+using RedacteurPortaal.DomainModels.Media;
 
 namespace RedacteurPortaal.Api.Models
 {
-    public class MediaAudioItemDto
+    public class MediaAudioItemDto : MediaItemDto
     {
         public int DurationSeconds { get; set; }
 

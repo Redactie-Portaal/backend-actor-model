@@ -2,46 +2,41 @@
 using Orleans.Runtime;
 using RedacteurPortaal.DomainModels.Profile;
 using RedacteurPortaal.Grains.GrainInterfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace RedacteurPortaal.Grains.Grains
+namespace RedacteurPortaal.Grains.Grains;
+
+public class ProfileGrain : Grain, IProfileGrain
 {
-    public class ProfileGrain : Grain, IProfileGrain
+    private readonly IPersistentState<Profile> profile;
+
+    public ProfileGrain(
+    [PersistentState("profile", "OrleansStorage")]
+    IPersistentState<Profile> profile)
     {
-        private readonly IPersistentState<Profile> profile;
+        this.profile = profile;
+    }
 
-        public ProfileGrain([PersistentState("profile", "OrleansStorage")]
-        IPersistentState<Profile> profile)
-        {
-            this.profile = profile;
-        }
+    public Task<bool> HasState()
+    {
+        return Task.FromResult(this.profile.RecordExists);
+    }
 
-        public Task<bool> HasState()
-        {
-            return Task.FromResult(this.profile.RecordExists);
-        }
+    public async Task Delete()
+    {
+        await this.profile.ClearStateAsync();
+    }
 
-        public async Task Delete()
-        {
-            await this.profile.ClearStateAsync();
-        }
+    public Task<Profile> Get()
+    {
+        var state = this.profile.State;
+        state.Id = this.GetGrainIdentity().PrimaryKey;
+        return Task.FromResult(state);
+    }
 
-        public Task<Profile> Get()
-        {
-            return Task.FromResult(this.profile.State);
-        }
-
-        public Task<Profile> Update(ProfileUpdate profile)
-        {
-            this.profile.State.ProfilePicture = profile.ProfilePicture;
-            this.profile.State.FullName = profile.Name;
-            this.profile.State.ContactDetails = profile.ContactDetails;
-
-            return Task.FromResult(this.profile.State);
-        }
+    public async Task<Profile> Update(Profile profile)
+    {
+        this.profile.State = profile;
+        await this.profile.WriteStateAsync();
+        return await this.Get();
     }
 }

@@ -1,11 +1,9 @@
 ﻿using RedacteurPortaal.DomainModels.Media;
-using RedacteurPortaal.DomainModels.NewsItem;
-using RedacteurPortaal.DomainModels.Shared;
 
 namespace RedacteurPortaal.Api.DTOs
 {
     public class MediaVideoItemDto : MediaItemDto
-    {
+    {   
         public string Reporter { get; set; }
 
         public string Sound { get; set; }

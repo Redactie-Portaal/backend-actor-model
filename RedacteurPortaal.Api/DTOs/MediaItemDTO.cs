@@ -1,7 +1,4 @@
-﻿using RedacteurPortaal.DomainModels.NewsItem;
-using RedacteurPortaal.DomainModels.Shared;
-
-namespace RedacteurPortaal.Api.DTOs
+﻿namespace RedacteurPortaal.Api.DTOs
 {
     public abstract class MediaItemDto
     { 
@@ -23,7 +20,7 @@ namespace RedacteurPortaal.Api.DTOs
 
         public string Presentation { get; set; }
 
-        public Location Location { get; set; }
+        public LocationDto Location { get; set; }
 
         public string Format { get; set; }
 

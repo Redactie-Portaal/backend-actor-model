@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using Orleans;
+﻿using Orleans;
 using Orleans.Runtime;
 using RedacteurPortaal.DomainModels.Archive;
 using RedacteurPortaal.DomainModels.Media;
@@ -12,8 +11,8 @@ public class ArchiveGrain : Grain, IArchiveGrain
     private readonly IPersistentState<ArchiveModel> archive;
 
     public ArchiveGrain(
-        [PersistentState("archive", "OrleansStorage")]
-        IPersistentState<ArchiveModel> archive)
+    [PersistentState("archive", "OrleansStorage")]
+    IPersistentState<ArchiveModel> archive)
     {
         this.archive = archive;
     }
@@ -41,9 +40,18 @@ public class ArchiveGrain : Grain, IArchiveGrain
         await this.archive.WriteStateAsync();
     }
 
-    public async Task<ArchiveModel> Get()
+    public async Task<ArchiveModel> Update(ArchiveModel archive)
     {
-        return await Task.FromResult(this.archive.State);
+        this.archive.State = archive;
+        await this.archive.WriteStateAsync();
+        return await this.Get();
+    }
+
+    public Task<ArchiveModel> Get()
+    {
+        var state = this.archive.State;
+        state.Id = this.GetGrainIdentity().PrimaryKey;
+        return Task.FromResult(state);
     }
 
     public Task<bool> HasState()

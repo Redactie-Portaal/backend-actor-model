@@ -1,5 +1,4 @@
-﻿using RedacteurPortaal.DomainModels.NewsItem;
-using RedacteurPortaal.DomainModels.Shared;
+﻿using RedacteurPortaal.DomainModels.Shared;
 
 namespace RedacteurPortaal.DomainModels.Media;
 

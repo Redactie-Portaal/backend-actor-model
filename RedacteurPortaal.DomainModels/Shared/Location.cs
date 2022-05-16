@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FluentValidation;
+﻿using FluentValidation;
 using RedacteurPortaal.DomainModels.Validation.Shared;
 
 namespace RedacteurPortaal.DomainModels.Shared;
 
-public class Location
+public class Location : IBaseEntity
 {
     public Location()
     {    
     }
     
-    public Location(string name, string city, string province, string street, string zip, decimal latitude, decimal longitude)
+    public Location(Guid id, string name, string city, string province, string street, string zip, decimal latitude, decimal longitude)
     {
+        this.Id = id;
         this.Name = name ?? throw new ArgumentNullException(nameof(name));
         this.City = city ?? throw new ArgumentNullException(nameof(city));
         this.Province = province ?? throw new ArgumentNullException(nameof(province));

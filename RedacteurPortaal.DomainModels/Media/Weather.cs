@@ -2,4 +2,7 @@
 
 public enum Weather
 {
+    SUNNY,
+    RAIN,
+    CLOUDY
 }

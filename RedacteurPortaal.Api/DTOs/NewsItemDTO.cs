@@ -1,30 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using RedacteurPortaal.Api.DTOs;
+using RedacteurPortaal.DomainModels.NewsItem;
 
 namespace RedacteurPortaal.Api.Models;
 
+[Serializable]
 public class NewsItemDto
 {
-    public Guid? Id { get; set; }
-
-    public string ApprovalStatus { get; set; }
+    public Guid Id { get; set; }
 
     public string? Title { get; set; }
+    
+    public Status? Status { get; set; }
 
-    public string? Status { get; set; }
-
+    public string ApprovalStatus { get; set; }
+  
     public string? Author { get; set; }
 
-    public string? ContactDetails { get; set; }
+    public FeedSourceDto? Source { get; set; }
 
-    public string? LocationDetails { get; set; }
+    public string Body { get; set; }
 
-    public string? ProdutionDate { get; set; }
+    public List<ContactDto> ContactDetails { get; set; }
 
-    public string? Category { get; set; }
+    public LocationDto LocationDetails { get; set;  }
 
-    public string? Region { get; set; }
+    public DateTime? ProductionDate { get; set; }
+
+    public DateTime? EndDate { get; set; }
+
+    public Category? Category { get; set; }
+
+    public Region? Region { get; set; }
+
+    public List<MediaVideoItemDto> Videos { get; set; }
+
+    public List<MediaAudioItemDto> Audio { get; set; }
+
+    public List<MediaPhotoItemDto> Photos { get; set; }
 }
