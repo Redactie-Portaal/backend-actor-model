@@ -30,13 +30,15 @@ public class ArchiveController : Controller
         TypeAdapterConfig<ArchiveModel, ArchiveDto>
      .NewConfig()
      .Map(dest => dest.MediaAudioItems,
-         src => src.MediaAudioItems.Select(x => new MediaAudioItemDto {
+         src => src.MediaAudioItems.Select(x => new MediaAudioItemDto 
+         {
              DurationSeconds = Convert.ToInt32(x.Duration.TotalSeconds),
              FirstWords = x.FirstWords,
              ProgramName = x.ProgramName,
              Weather = x.Weather,
          }).ToList()
-         ).Map(dest => dest.MediaPhotoItems, src => src.MediaPhotoItems.Select(x => new MediaPhotoItemDto {
+         ).Map(dest => dest.MediaPhotoItems, src => src.MediaPhotoItems.Select(x => new MediaPhotoItemDto 
+         {
              Camera = x.Camera,
              Folder = x.Folder,
              Image = x.Image,
@@ -49,7 +51,8 @@ public class ArchiveController : Controller
              RepublishDate = x.RepublishDate,
              Title = x.Title
          }).ToList()
-         ).Map(dest => dest.MediaVideoItems, src => src.MediaVideoItems.Select(x => new MediaVideoItemDto {
+         ).Map(dest => dest.MediaVideoItems, src => src.MediaVideoItems.Select(x => new MediaVideoItemDto 
+         {
              Camera = x.Camera,
              ProgramDate = x.ProgramDate,
              ProgramName = x.ProgramName,
@@ -57,7 +60,8 @@ public class ArchiveController : Controller
              RepublishDate = x.RepublishDate,
              Title = x.Title,
              Weather = x.Weather
-         }).ToList()).Map(dest => dest.NewsItems, src => src.NewsItems.Select(x => new NewsItemDto {
+         }).ToList()).Map(dest => dest.NewsItems, src => src.NewsItems.Select(x => new NewsItemDto 
+         {
              Id = x.Id,
              ApprovalStatus = x.ApprovalState.ToString(),
              Author = x.Author,

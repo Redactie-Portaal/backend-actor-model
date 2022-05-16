@@ -30,28 +30,56 @@ public class ArchiveGrain : Grain, IArchiveGrain
     {
         var videoItems = this.archive.State.MediaVideoItems;
         var videoItem = videoItems.Find(x => x.Id.Equals(guid));
-        return await Task.FromResult(videoItem);
+        if (videoItem == null)
+        {
+            throw new KeyNotFoundException();
+        }
+        else
+        {
+            return await Task.FromResult(videoItem);
+        }
     }
 
     public async Task<MediaPhotoItem> GetPhotoItem(Guid guid)
     {
         var photoItems = this.archive.State.MediaPhotoItems;
         var photoItem = photoItems.Find(x => x.Id.Equals(guid));
-        return await Task.FromResult(photoItem);
+        if (photoItem == null)
+        {
+            throw new KeyNotFoundException();
+        }
+        else
+        {
+            return await Task.FromResult(photoItem);
+        }
     }
 
     public async Task<MediaAudioItem> GetAudioItem(Guid guid)
     {
         var audioItems = this.archive.State.MediaAudioItems;
         var audioItem = audioItems.Find(x => x.Id.Equals(guid));
-        return await Task.FromResult(audioItem);
+        if (audioItem == null)
+        {
+            throw new KeyNotFoundException();
+        }
+        else
+        {
+            return await Task.FromResult(audioItem);
+        }
     }
 
     public async Task<NewsItemModel> GetNewsItem(Guid guid)
     {
         var newsItems = this.archive.State.NewsItems;
         var newsItem = newsItems.Find(x => x.Id.Equals(guid));
-        return await Task.FromResult(newsItem);
+        if (newsItem == null)
+        {
+            throw new KeyNotFoundException();
+        }
+        else
+        {
+            return await Task.FromResult(newsItem);
+        }
     }
 
     public async Task<ArchiveModel> CreateArchive(ArchiveModel archive)
