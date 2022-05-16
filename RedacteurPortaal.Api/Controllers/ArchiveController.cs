@@ -275,7 +275,7 @@ public class ArchiveController : Controller
     }
 
     [HttpPatch]
-    [Route("{archiveId}/")]
+    [Route("{archiveId}")]
     public async Task<IActionResult> UpdateArchive(Guid archiveId, UpdateArchiveRequest updateArchiveRequest)
     {
         TypeAdapterConfig<UpdateArchiveRequest, ArchiveModel>
