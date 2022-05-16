@@ -23,9 +23,9 @@ public class NewsItemModel : IBaseEntity
         DateTime endDate,
         Category category,
         Region region,
-        MediaVideoItem[] videos,
-        MediaAudioItem[] audio,
-        MediaPhotoItem[] photos)
+        List<MediaVideoItem> videos,
+        List<MediaAudioItem> audio,
+        List<MediaPhotoItem> photos)
     {
         this.Id = id;
         this.Title = title ?? throw new ArgumentNullException(nameof(title));
@@ -71,9 +71,9 @@ public class NewsItemModel : IBaseEntity
 
     public Region Region { get; private set; }
 
-    public MediaVideoItem[] Videos { get; private set; }
+    public List<MediaVideoItem> Videos { get; private set; }
 
-    public MediaAudioItem[] Audio { get; private set; }
+    public List<MediaAudioItem> Audio { get; private set; }
 
-    public MediaPhotoItem[] Photos { get; private set; }
+    public List<MediaPhotoItem> Photos { get; private set; }
 }

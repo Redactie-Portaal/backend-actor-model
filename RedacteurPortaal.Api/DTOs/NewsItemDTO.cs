@@ -32,9 +32,9 @@ public class NewsItemDto
 
     public Region? Region { get; set; }
 
-    public MediaVideoItemDto[] Videos { get; set; }
+    public List<MediaVideoItemDto> Videos { get; set; }
 
-    public MediaAudioItemDto[] Audio { get; set; }
+    public List<MediaAudioItemDto> Audio { get; set; }
 
-    public MediaPhotoItemDto[] Photos { get; set; }
+    public List<MediaPhotoItemDto> Photos { get; set; }
 }

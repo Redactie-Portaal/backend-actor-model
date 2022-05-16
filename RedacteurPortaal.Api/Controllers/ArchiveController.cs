@@ -25,13 +25,62 @@ public class ArchiveController : Controller
     }
 
     [HttpGet]
-    [Route("Archive/")]
     public async Task<ActionResult<ArchiveModel>> GetAllArchives()
     {
+        TypeAdapterConfig<ArchiveModel, ArchiveDto>
+     .NewConfig()
+     .Map(dest => dest.MediaAudioItems,
+         src => src.MediaAudioItems.Select(x => new MediaAudioItemDto {
+             DurationSeconds = Convert.ToInt32(x.Duration.TotalSeconds),
+             FirstWords = x.FirstWords,
+             ProgramName = x.ProgramName,
+             Weather = x.Weather,
+         }).ToList()
+         ).Map(dest => dest.MediaPhotoItems, src => src.MediaPhotoItems.Select(x => new MediaPhotoItemDto {
+             Camera = x.Camera,
+             Folder = x.Folder,
+             Image = x.Image,
+             Format = x.Format,
+             Id = x.Id,
+             LastWords = x.LastWords,
+             Location = new LocationDto { City = x.Location.City, Latitude = x.Location.Latitude, Longitude = x.Location.Longitude, Street = x.Location.Street },
+             Presentation = x.Presentation,
+             ProxyFile = x.ProxyFile,
+             RepublishDate = x.RepublishDate,
+             Title = x.Title
+         }).ToList()
+         ).Map(dest => dest.MediaVideoItems, src => src.MediaVideoItems.Select(x => new MediaVideoItemDto {
+             Camera = x.Camera,
+             ProgramDate = x.ProgramDate,
+             ProgramName = x.ProgramName,
+             ProxyFile = x.ProxyFile,
+             RepublishDate = x.RepublishDate,
+             Title = x.Title,
+             Weather = x.Weather
+         }).ToList()).Map(dest => dest.NewsItems, src => src.NewsItems.Select(x => new NewsItemDto {
+             Id = x.Id,
+             ApprovalStatus = x.ApprovalState.ToString(),
+             Author = x.Author,
+             Category = x.Category,
+             Audio = new(),
+             Photos = new(),
+             Videos = new(),
+             Title = x.Title,
+             Body = x.Body,
+             ContactDetails = new List<ContactDto>(),
+             EndDate = x.EndDate,
+             LocationDetails = new LocationDto { City = x.LocationDetails.City, Latitude = x.LocationDetails.Latitude, Longitude = x.LocationDetails.Longitude, Street = x.LocationDetails.Street },
+             ProdutionDate = new DateTime(),
+             Region = x.Region,
+             Source = new FeedSourceDto { PlaceHolder = x.Source.PlaceHolder  },
+             Status = x.Status.ToString()
+         }).ToList());
+
         var grain = await this.grainService.GetGrains();
-        
-        var response = (await grain.SelectAsync(async x => await 
+
+        var response = (await grain.SelectAsync(async x => await
         x.Get())).AsQueryable().ProjectToType<ArchiveDto>(null).ToList();
+        
         return this.Ok(response);
     }
 
@@ -126,7 +175,6 @@ public class ArchiveController : Controller
     }
 
     [HttpPost]
-    [Route("Archive/")]
     public async Task<ActionResult<ArchiveModel>> CreateArchive([FromBody] ArchiveDto archiveDTO)
     {
         var newguid = Guid.NewGuid();

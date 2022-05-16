@@ -10,19 +10,46 @@ namespace RedacteurPortaal.Tests;
 
 public static class DtoBuilder
 {
+    public static ArchiveDto BuildAddArchiveRequest()
+    {
+        return new ArchiveDto() {
+            Id = Guid.NewGuid(),
+            Title = "Title",
+            Label = "Label",
+            MediaPhotoItems = new(),
+            MediaVideoItems = new(),
+            MediaAudioItems = new(),
+            NewsItems = new(),
+            ArchivedDate = DateTime.Now,
+            Scripts = new(),
+        };
+    }
+
+    public static ArchiveDto BuildUpdateArchiveRequest()
+    {
+        return new ArchiveDto() {
+            Id = Guid.NewGuid(),
+            Title = "New Title1",
+            Label = "New Label1",
+            MediaPhotoItems = new(),
+            MediaVideoItems = new(),
+            MediaAudioItems = new(),
+            NewsItems = new(),
+            ArchivedDate = DateTime.Now,
+            Scripts = new(),
+        };
+    }
     public static NewsItemDto BuildAddNewsItemRequest()
     {
-        return new NewsItemDto()
-        {
+        return new NewsItemDto() {
             Author = "Author",
-            Audio = new MediaAudioItemDto[1],
+            Audio = new(),
             Body = "foo",
             Category = Category.NEWS,
             Region = Region.LOCAL,
-            Photos = new MediaPhotoItemDto[1],
-            Videos = new MediaVideoItemDto[1],
-            Source = new FeedSourceDto()
-            {
+            Photos = new(),
+            Videos = new(),
+            Source = new FeedSourceDto() {
                 PlaceHolder = "foo",
             },
             Status = "DONE",
@@ -30,8 +57,7 @@ public static class DtoBuilder
             ApprovalStatus = "APPROVED",
             ContactDetails = new List<ContactDto>(),
             EndDate = DateTime.Now,
-            LocationDetails = new LocationDto()
-            {
+            LocationDetails = new LocationDto() {
                 City = "foo",
                 Latitude = 50,
                 Longitude = 50,
@@ -45,25 +71,22 @@ public static class DtoBuilder
     }
     public static UpdateNewsItemRequest BuildUpdateNewsItemRequest()
     {
-        return new UpdateNewsItemRequest()
-        {
+        return new UpdateNewsItemRequest() {
             Author = "Author1",
-            Audio = new MediaAudioItemDto[1],
+            Audio = new(),
             Body = "foo1",
             Category = Category.NEWS,
             Region = Region.LOCAL,
-            Photos = new MediaPhotoItemDto[1],
-            Videos = new MediaVideoItemDto[1],
-            Source = new FeedSourceDto()
-            {
+            Photos = new(),
+            Videos = new(),
+            Source = new FeedSourceDto() {
                 PlaceHolder = "foo1",
             },
             Status = Status.DONE,
             Title = "title1",
             ContactDetails = new List<ContactDto>(),
             EndDate = DateTime.Now,
-            LocationDetails = new LocationDto()
-            {
+            LocationDetails = new LocationDto() {
                 City = "foo1",
                 Latitude = 51,
                 Longitude = 51,
@@ -76,12 +99,10 @@ public static class DtoBuilder
     }
     public static AddProfileRequest BuildAddProfileRequest()
     {
-        return new AddProfileRequest()
-        {
+        return new AddProfileRequest() {
             Role = Role.ADMIN,
             FullName = "John Doe",
-            ContactDetails = new RedacteurPortaal.Api.Models.Profile.ContactDetails()
-            {
+            ContactDetails = new RedacteurPortaal.Api.Models.Profile.ContactDetails() {
                 Address = "foo",
                 City = "bar",
                 Email = "foo@bar.nl",
@@ -96,8 +117,7 @@ public static class DtoBuilder
 
     public static AddAddressRequest BuildAddAddressRequest()
     {
-        return new AddAddressRequest()
-        {
+        return new AddAddressRequest() {
             Address = "FooStreet",
             Webpage = "www.foo.nl",
             CompanyName = "FooBar",
@@ -109,8 +129,7 @@ public static class DtoBuilder
 
     public static UpdateAddressRequest BuildPatchAddressRequest()
     {
-        return new UpdateAddressRequest()
-        {
+        return new UpdateAddressRequest() {
             Address = "FooStreet1",
             Webpage = "www.foo1.nl",
             CompanyName = "FooBa1r",
@@ -121,11 +140,9 @@ public static class DtoBuilder
     }
     public static PatchProfileRequest BuildPatchProfileRequest()
     {
-        return new PatchProfileRequest()
-        {
+        return new PatchProfileRequest() {
             Name = "Jane Doe",
-            ContactDetails = new RedacteurPortaal.Api.Models.Profile.ContactDetails()
-            {
+            ContactDetails = new RedacteurPortaal.Api.Models.Profile.ContactDetails() {
                 Address = "foo1",
                 City = "bar1",
                 Email = "foo1@bar.nl",

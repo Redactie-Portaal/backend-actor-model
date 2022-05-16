@@ -40,9 +40,9 @@ public class NewsItemGrainTests
                                          DateTime.UtcNow,
                                          Category.STORY,
                                          Region.LOCAL,
-                                         Array.Empty<MediaVideoItem>(),
-                                         Array.Empty<MediaAudioItem>(),
-                                         Array.Empty<MediaPhotoItem>());
+                                         new List<MediaVideoItem>(),
+                                         new List<MediaAudioItem>(),
+                                         new List<MediaPhotoItem>());
 
 
         var newsitemgrain = this._cluster.GrainFactory.GetGrain<INewsItemGrain>(guid);

@@ -1,5 +1,6 @@
 ﻿using RedacteurPortaal.DomainModels.Media;
 using RedacteurPortaal.DomainModels.NewsItem;
+using RedacteurPortaal.Api.Models;
 
 namespace RedacteurPortaal.Api.DTOs
 {
@@ -11,13 +12,13 @@ namespace RedacteurPortaal.Api.DTOs
 
         public string Label { get; set; }
 
-        public List<MediaPhotoItem>? MediaPhotoItems { get; set; }
+        public List<MediaPhotoItemDto>? MediaPhotoItems { get; set; }
 
-        public List<MediaVideoItem>? MediaVideoItems { get; set; }
+        public List<MediaVideoItemDto>? MediaVideoItems { get; set; }
+    
+        public List<MediaAudioItemDto>? MediaAudioItems { get; set; }
 
-        public List<MediaAudioItem>? MediaAudioItems { get; set; }
-
-        public List<NewsItemModel>? NewsItems { get; set; }
+        public List<NewsItemDto>? NewsItems { get; set; }
 
         public DateTime ArchivedDate { get; set; }
 
