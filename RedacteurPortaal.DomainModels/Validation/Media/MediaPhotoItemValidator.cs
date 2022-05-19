@@ -13,7 +13,8 @@ namespace RedacteurPortaal.DomainModels.Validation.Media
         public MediaPhotoItemValidator()
         {
             this.RuleFor(x => x.Image).NotEmpty().WithMessage("Image is required");
-            this.RuleFor(x => x.Location).NotNull().DependentRules(() => {
+            this.RuleFor(x => x.Location).NotNull().DependentRules(() =>
+            {
                 this.RuleFor(x => x.Location.Latitude).NotNull().WithMessage("Latitude is required");
                 this.RuleFor(x => x.Location.Longitude).NotNull().WithMessage("Longitude is required");
                 this.RuleFor(x => x.Location.Name).NotEmpty().WithMessage("LocationName is required");

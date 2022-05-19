@@ -13,7 +13,8 @@ public class ProfileValidator : AbstractValidator<RedacteurPortaal.DomainModels.
     {
         this.RuleFor(x => x.FullName).NotEmpty().WithMessage("Full Name is required");
         this.RuleFor(x => x.ProfilePicture).NotEmpty().WithMessage("Profile picture is required");
-        this.RuleFor(x => x.ContactDetails).NotNull().DependentRules(() => {
+        this.RuleFor(x => x.ContactDetails).NotNull().DependentRules(() =>
+        {
             this.RuleFor(x => x.ContactDetails.Email).NotEmpty().WithMessage("Email is required");
             this.RuleFor(x => x.ContactDetails.PhoneNumber).NotEmpty().WithMessage("Phone number is required");
             this.RuleFor(x => x.ContactDetails.Address).NotEmpty().WithMessage("Address is required");
