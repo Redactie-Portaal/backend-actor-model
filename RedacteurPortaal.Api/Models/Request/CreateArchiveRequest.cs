@@ -4,7 +4,7 @@ using RedacteurPortaal.DomainModels.NewsItem;
 
 namespace RedacteurPortaal.Api.Models.Request
 {
-    public class UpdateArchiveRequest
+    public class CreateArchiveRequest
     {
         public string Title { get; set; }
 
@@ -17,6 +17,8 @@ namespace RedacteurPortaal.Api.Models.Request
         public List<MediaAudioItemDto> MediaAudioItems { get; set; }
 
         public List<NewsItemDto> NewsItems { get; set; }
+
+        public DateTime ArchivedDate {get;set;}
 
         public List<string> Scripts { get; set; }
     }

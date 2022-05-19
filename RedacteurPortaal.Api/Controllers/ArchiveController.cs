@@ -196,38 +196,77 @@ public class ArchiveController : Controller
 
     [HttpPost]
     [Route("{archiveId}/VideoItems")]
-    public async Task<IActionResult> AddVideoItem(Guid archiveId, MediaVideoItem videoItem)
+    public async Task<IActionResult> AddVideoItem(Guid archiveId, MediaVideoItemDto videoItem)
     {
+        var newguid = Guid.NewGuid();
+        TypeAdapterConfig<MediaVideoItemDto, MediaVideoItem>
+            .NewConfig()
+            .Map(dest => dest.Id,
+                src => newguid);
+        
+        var archivedVideoItem = videoItem.Adapt<MediaVideoItem>();
+        
         var grain = await this.grainService.GetGrain(archiveId);
-        await grain.AddVideoItem(videoItem);
-        return this.Ok(grain.Get());
+        await grain.AddVideoItem(archivedVideoItem);
+        return this.Ok(await grain.Get());
     }
 
     [HttpPost]
     [Route("{archiveId}/AudioItems")]
-    public async Task<IActionResult> AddAudioItems(Guid archiveId, MediaAudioItem audioItem)
+    public async Task<IActionResult> AddAudioItems(Guid archiveId, MediaAudioItemDto audioItem)
     {
+        var newguid = Guid.NewGuid();
+        TypeAdapterConfig<MediaAudioItemDto, MediaAudioItem>
+            .NewConfig()
+            .Map(dest => dest.Id,
+                src => newguid);
+
+        var archivedAudioItem = audioItem.Adapt<MediaAudioItem>();
+
         var grain = await this.grainService.GetGrain(archiveId);
-        await grain.AddAudioItem(audioItem);
-        return this.Ok(grain.Get());
+        await grain.AddAudioItem(archivedAudioItem);
+        return this.Ok(await grain.Get());
     }
 
     [HttpPost]
     [Route("{archiveId}/PhotoItems")]
-    public async Task<IActionResult> AddPhotoItem(Guid archiveId, MediaPhotoItem photoItem)
+    public async Task<IActionResult> AddPhotoItem(Guid archiveId, MediaPhotoItemDto photoItem)
     {
+        var newguid = Guid.NewGuid();
+        TypeAdapterConfig<MediaPhotoItemDto, MediaPhotoItem>
+            .NewConfig()
+            .Map(dest => dest.Id,
+                src => newguid);
+
+        var archivedPhotoItem = photoItem.Adapt<MediaPhotoItem>();
+
         var grain = await this.grainService.GetGrain(archiveId);
-        await grain.AddPhotoItem(photoItem);
-        return this.Ok(grain.Get());
+        await grain.AddPhotoItem(archivedPhotoItem);
+        return this.Ok(await grain.Get());
     }
 
     [HttpPost]
     [Route("{archiveId}/NewsItems")]
-    public async Task<IActionResult> AddNewsItems(Guid archiveId, NewsItemModel newsItem)
+    public async Task<IActionResult> AddNewsItems(Guid archiveId, NewsItemDto newsItem)
     {
+
+        Guid newguid = Guid.NewGuid();
+
+        TypeAdapterConfig<NewsItemDto, NewsItemModel>
+            .NewConfig()
+            .Map(dest => dest.Id,
+                src => newguid);
+
+        TypeAdapterConfig<MediaVideoItemDto, MediaVideoItem>
+            .NewConfig()
+            .Map(dest => dest.Duration,
+                  src => TimeSpan.FromSeconds(src.DurationSeconds));
+
         var grain = await this.grainService.GetGrain(archiveId);
-        await grain.AddNewsItem(newsItem);
-        return this.Ok(grain.Get());
+        var update = newsItem.Adapt<NewsItemModel>();
+        var createdGrain = await grain.AddNewsItem(update);
+        var response = createdGrain.Adapt<NewsItemDto>();
+        return this.Ok(await grain.Get());
     }
 
     [HttpDelete]
