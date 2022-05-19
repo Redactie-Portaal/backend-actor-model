@@ -1,4 +1,6 @@
-﻿using RedacteurPortaal.DomainModels.Media;
+﻿using FluentValidation;
+using RedacteurPortaal.DomainModels.Media;
+using RedacteurPortaal.DomainModels.Validation.Archive;
 
 namespace RedacteurPortaal.DomainModels.Archive;
 
@@ -26,6 +28,8 @@ public class ArchiveModel : IBaseEntity
         this.MediaAudioItems = mediaAudioItems ?? throw new ArgumentNullException(nameof(mediaAudioItems));
         this.ArchivedDate = archivedDate;
         this.Scripts = scripts ?? throw new ArgumentNullException(nameof(scripts));
+
+        new ArchiveModelValidator().ValidateAndThrow(this);
     }
 
     public Guid Id { get; set; }

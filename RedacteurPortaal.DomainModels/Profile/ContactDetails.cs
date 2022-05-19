@@ -7,7 +7,6 @@ public class ContactDetails
 {
     public ContactDetails()
     {
-        new ContactDetailsValidator().ValidateAndThrow(this);
     }
 
     public ContactDetails(string email, string phoneNumber, string address, string province, string city, string postalCode)

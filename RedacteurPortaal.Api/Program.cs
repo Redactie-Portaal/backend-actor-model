@@ -1,3 +1,4 @@
+using Mapster;
 using Microsoft.EntityFrameworkCore;
 using Orleans;
 using Orleans.Hosting;
@@ -100,6 +101,9 @@ await Host.CreateDefaultBuilder(args)
                 context.Database.Migrate();
             }
         }
+
+        TypeAdapterConfig.GlobalSettings.Default.MapToConstructor(true);
+
 #pragma warning restore ASP0000 // Do not call 'IServiceCollection.BuildServiceProvider' in 'ConfigureServices'
     })
       .UseSerilog((context, configuration) =>

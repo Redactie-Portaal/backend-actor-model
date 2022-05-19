@@ -28,7 +28,7 @@ public class ProfileGrainTests
     {
         var guid = Guid.NewGuid();
 
-        var toSaveProfile = new Profile(guid, "Joep Struikrover", new ContactDetails(), "Picture", Role.ADMIN, DateTime.UtcNow);
+        var toSaveProfile = new Profile(guid, "Joep Struikrover", new ContactDetails("email@email.com", "0612345678", "address", "province", "city", "1000AB"), "Picture", Role.ADMIN, DateTime.UtcNow);
 
         var profilegrain = this._cluster.GrainFactory.GetGrain<IProfileGrain>(guid);
 

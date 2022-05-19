@@ -1,4 +1,7 @@
-﻿namespace RedacteurPortaal.DomainModels.Profile;
+﻿using FluentValidation;
+using RedacteurPortaal.DomainModels.Validation.Profile;
+
+namespace RedacteurPortaal.DomainModels.Profile;
 
 public class Profile : IBaseEntity
 {
@@ -14,6 +17,8 @@ public class Profile : IBaseEntity
         this.ProfilePicture = profilePicture ?? throw new ArgumentNullException(nameof(profilePicture));
         this.Role = role;
         this.LastOnline = lastOnline;
+        
+        new ProfileValidator().ValidateAndThrow(this);
     }
 
     public Guid Id { get; set; }

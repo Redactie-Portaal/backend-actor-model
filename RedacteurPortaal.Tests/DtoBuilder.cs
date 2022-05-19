@@ -28,7 +28,13 @@ public static class DtoBuilder
             Status = Status.DONE,
             Title = "title",
             ApprovalStatus = "APPROVED",
-            ContactDetails = new List<ContactDto>(),
+            ContactDetails = new List<ContactDto>() {
+                new ContactDto() {
+                    Name = "foo",
+                    Email = "email@email.com",
+                    TelephoneNumber = "0612345678"
+                }
+            },
             EndDate = DateTime.Now,
             LocationDetails = new LocationDto()
             {
@@ -38,7 +44,7 @@ public static class DtoBuilder
                 Name = "foo",
                 Province = "foo",
                 Street = "foo",
-                Zip = "5087BB",
+                Zip = "1000AB",
             },
             ProductionDate = DateTime.Now,
         };
@@ -70,7 +76,7 @@ public static class DtoBuilder
                 Name = "foo1",
                 Province = "foo1",
                 Street = "foo1",
-                Zip = "5087BB1",
+                Zip = "5087BB",
             },
         };
     }

@@ -27,7 +27,7 @@ public class ArchiveGrainTests
     {
         var guid = Guid.NewGuid();
 
-        var toSaveArchive = new ArchiveModel(guid, "Title", "Label", new List<MediaPhotoItem>(), new List<MediaVideoItem>(), new List<MediaAudioItem>(), DateTime.UtcNow, new List<string>());
+        var toSaveArchive = new ArchiveModel(guid, "Title", "Label", new List<MediaPhotoItem>(), new List<MediaVideoItem>(), new List<MediaAudioItem>(), DateTime.UtcNow, new List<string> { "scripts" });
 
         var archiveGrain = this._cluster.GrainFactory.GetGrain<IArchiveGrain>(guid);
         await archiveGrain.Update(toSaveArchive);
@@ -41,10 +41,6 @@ public class ArchiveGrainTests
         Assert.Equal(toSaveArchive.MediaVideoItems, updatedArchive.MediaVideoItems);
         Assert.Equal(toSaveArchive.MediaPhotoItems, updatedArchive.MediaPhotoItems);
         Assert.Equal(toSaveArchive.Scripts, updatedArchive.Scripts);
-
-
-
-
     }
 
 }

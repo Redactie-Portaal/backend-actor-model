@@ -26,7 +26,7 @@ public class ContactGrainTests
     {   
         var guid = Guid.NewGuid();
 
-        var toSaveContact = new Contact(guid, "Name", "Email", "00");
+        var toSaveContact = new Contact(guid, "name", "email@email.com", "0612345678");
 
         var contactGrain = this._cluster.GrainFactory.GetGrain<IContactGrain>(guid);
 
@@ -34,7 +34,7 @@ public class ContactGrainTests
 
         var contact = await contactGrain.Get();
 
-        Assert.Equal("Name", contact.Name);
+        Assert.Equal("name", contact.Name);
         Assert.Equal(guid, contact.Id);
     }
 
