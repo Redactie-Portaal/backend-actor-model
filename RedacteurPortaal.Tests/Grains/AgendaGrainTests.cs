@@ -24,8 +24,8 @@ public class AgendaGrainTests
 
         var toSaveAgendaItem = new AgendaModel {
             Id = guid,
-            StartDate = DateTime.Now,
-            EndDate = new DateTime(2022, 05, 12, 15, 00, 00),
+            StartDate = new DateTime(2022, 05, 12, 15, 00, 00),
+            EndDate = new DateTime(2022, 05, 12, 18, 00, 00),
             Title = "foo1",
             Description = "boo1",
             UserId = "string"
@@ -36,8 +36,12 @@ public class AgendaGrainTests
         await agendaGrain.UpdateAgenda(toSaveAgendaItem);
 
         var agenda = await agendaGrain.Get();
-
-        Assert.Equal("foo1", agenda.Title);
+        
         Assert.Equal(guid, agenda.Id);
-    }
+        Assert.Equal("foo1", agenda.Title);
+        Assert.Equal("boo1", agenda.Description);
+        Assert.Equal(new DateTime(2022, 05, 12, 15, 00, 00), agenda.StartDate);
+        Assert.Equal(new DateTime(2022, 05, 12, 18, 00, 00), agenda.EndDate);
+        Assert.Equal("string", agenda.UserId);
+        }
 }

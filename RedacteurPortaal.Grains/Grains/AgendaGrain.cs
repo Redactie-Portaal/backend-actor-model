@@ -7,33 +7,33 @@ namespace RedacteurPortaal.Grains.Grains
 {
     public class AgendaGrain : Grain, IAgendaGrain
     {
-        private readonly IPersistentState<AgendaModel> Agenda;
+        private readonly IPersistentState<AgendaModel> agenda;
 
         public AgendaGrain([PersistentState("agenda", "OrleansStorage")] IPersistentState<AgendaModel> agenda)
         {
-            this.Agenda = agenda;
+            this.agenda = agenda;
         }
 
         public async Task Delete()
         {
-            await this.Agenda.ClearStateAsync();
+            await this.agenda.ClearStateAsync();
         }
 
         public Task<AgendaModel> Get()
         {
-            return Task.FromResult(this.Agenda.State);
+            return Task.FromResult(this.agenda.State);
         }
 
         public Task<bool> HasState()
         {
-            return Task.FromResult(this.Agenda.RecordExists);
+            return Task.FromResult(this.agenda.RecordExists);
         }
 
         public async Task<AgendaModel> UpdateAgenda(AgendaModel agenda)
         {
-            this.Agenda.State = agenda;
-            await this.Agenda.WriteStateAsync();
-            return this.Agenda.State;
+            this.agenda.State = agenda;
+            await this.agenda.WriteStateAsync();
+            return this.agenda.State;
         }
     }
 }

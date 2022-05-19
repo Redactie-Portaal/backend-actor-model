@@ -10,10 +10,6 @@ namespace RedacteurPortaal.Tests;
 
 public static class DtoBuilder
 {
-    static DtoBuilder()
-    {
-    }
-
     public static NewsItemDto BuildAddNewsItemRequest()
     {
         return new NewsItemDto()

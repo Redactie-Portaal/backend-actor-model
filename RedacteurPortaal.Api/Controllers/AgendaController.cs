@@ -66,15 +66,15 @@ namespace RedacteurPortaal.Api.Controllers
         // TODO: Get agenda items by userid
         // Can be used for most date sorting use-cases
         [HttpGet]
-        [Route("s/{startDate}/{endDate}")]
-        public async Task<ActionResult<List<AgendaDto>>> SortAgendaItemsByDate(DateTime startDate, DateTime endDate)
+        [Route("s/")]
+        public async Task<ActionResult<List<AgendaDto>>> SortAgendaItemsByDate([FromQuery] AgendaFilterParameters query)
         {
             var grain = await this.grainService.GetGrains();
 
             var list = (await grain.SelectAsync(async x => await
                 x.Get())).AsQueryable().ProjectToType<AgendaDto>(null).ToList();
 
-            var response = list.Where(x => x.StartDate >= startDate && x.EndDate <= endDate).OrderBy(dto => dto.StartDate).ToList();
+            var response = list.Where(x => x.StartDate >= query.StartDate && x.EndDate <= query.EndDate).OrderBy(dto => dto.StartDate).ToList();
             
             return this.Ok(response);
         }
