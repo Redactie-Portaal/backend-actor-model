@@ -32,6 +32,13 @@ public class NewsItemController : ControllerBase
             .Map(dest => dest.Id,
                 src => newguid);
 
+        //TypeAdapterConfig<UpdateNewsItemRequest, NewsItemModel>
+        //    .NewConfig()
+        //    .Map(dest => dest.Id,
+        //        src => Guid.NewGuid())
+        //    .Map(dest => dest.ContactDetails,
+        //        src => src.ContactDetails.ForEach();
+
         TypeAdapterConfig<MediaVideoItemDto, MediaVideoItem>
             .NewConfig()
             .Map(dest => dest.Duration,

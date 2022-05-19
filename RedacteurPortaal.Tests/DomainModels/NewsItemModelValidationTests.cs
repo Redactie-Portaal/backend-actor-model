@@ -27,9 +27,9 @@ public class NewsItemModelValidationTests
                                          DateTime.UtcNow,
                                          Category.STORY,
                                          Region.LOCAL,
-                                         Array.Empty<MediaVideoItem>(),
-                                         Array.Empty<MediaAudioItem>(),
-                                         Array.Empty<MediaPhotoItem>()));
+                                         new List<MediaVideoItem>(),
+                                         new List<MediaAudioItem>(),
+                                         new List<MediaPhotoItem>()));
 
         Assert.Null(exc);
     }
@@ -53,9 +53,9 @@ public class NewsItemModelValidationTests
                                          DateTime.UtcNow,
                                          Category.STORY,
                                          Region.LOCAL,
-                                         Array.Empty<MediaVideoItem>(),
-                                         Array.Empty<MediaAudioItem>(),
-                                         Array.Empty<MediaPhotoItem>());
+                                         new List<MediaVideoItem>(),
+                                         new List<MediaAudioItem>(),
+                                         new List<MediaPhotoItem>());
         });
     }
 
@@ -78,9 +78,9 @@ public class NewsItemModelValidationTests
                                          DateTime.UtcNow,
                                          Category.STORY,
                                          Region.LOCAL,
-                                         Array.Empty<MediaVideoItem>(),
-                                         Array.Empty<MediaAudioItem>(),
-                                         Array.Empty<MediaPhotoItem>());
+                                         new List<MediaVideoItem>(),
+                                         new List<MediaAudioItem>(),
+                                         new List<MediaPhotoItem>());
             ;
         });
     }
@@ -104,9 +104,9 @@ public class NewsItemModelValidationTests
                                          DateTime.UtcNow,
                                          Category.STORY,
                                          Region.LOCAL,
-                                         Array.Empty<MediaVideoItem>(),
-                                         Array.Empty<MediaAudioItem>(),
-                                         Array.Empty<MediaPhotoItem>());
+                                         new List<MediaVideoItem>(),
+                                         new List<MediaAudioItem>(),
+                                         new List<MediaPhotoItem>());
         });
     }
 
@@ -129,9 +129,9 @@ public class NewsItemModelValidationTests
                                          DateTime.UtcNow,
                                          Category.STORY,
                                          Region.LOCAL,
-                                         Array.Empty<MediaVideoItem>(),
-                                         Array.Empty<MediaAudioItem>(),
-                                         Array.Empty<MediaPhotoItem>());
+                                         new List<MediaVideoItem>(),
+                                         new List<MediaAudioItem>(),
+                                         new List<MediaPhotoItem>());
         });
     }
 
@@ -154,9 +154,9 @@ public class NewsItemModelValidationTests
                                          DateTime.UtcNow,
                                          Category.STORY,
                                          Region.LOCAL,
-                                         Array.Empty<MediaVideoItem>(),
-                                         Array.Empty<MediaAudioItem>(),
-                                         Array.Empty<MediaPhotoItem>());
+                                         new List<MediaVideoItem>(),
+                                         new List<MediaAudioItem>(),
+                                         new List<MediaPhotoItem>());
             ;
         });
         Assert.Throws<ValidationException>(() => {
@@ -173,9 +173,9 @@ public class NewsItemModelValidationTests
                                          DateTime.UtcNow,
                                          Category.STORY,
                                          Region.LOCAL,
-                                         Array.Empty<MediaVideoItem>(),
-                                         Array.Empty<MediaAudioItem>(),
-                                         Array.Empty<MediaPhotoItem>());
+                                         new List<MediaVideoItem>(),
+                                         new List<MediaAudioItem>(),
+                                         new List<MediaPhotoItem>());
             ;
         });
     }

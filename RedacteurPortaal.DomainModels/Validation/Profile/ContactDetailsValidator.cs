@@ -22,9 +22,5 @@ public class ContactDetailsValidator : AbstractValidator<ContactDetails>
         
         // Postal code regex ^[1-9][0-9]{3}[[:space:]]{0,1}(?!SA|SD|SS)[A-Z]{2}$
         this.RuleFor(x => x.PostalCode).Matches(new Regex(@"^[1-9][0-9]{3}[\S]{0,1}(?!SA|SD|SS)[A-Z]{2}$"));
-
-        // Phone number regex
-        //this.RuleFor(x => x.PhoneNumber).Matches(new Regex(
-        //    "^(?:(?:\\(?(?:00|\\+)([1-4]\\d\\d|[1-9]\\d+)\\)?)[\\-\\.\\ \\\\\\/]?)?((?:\\(?\\d{1,}\\)?[\\-\\.\\ \\\\\\/]?){0,})(?:[\\-\\.\\ \\\\\\/]?(?:#|ext\\.?|extension|x)[\\-\\.\\ \\\\\\/]?(\\d+))?$"));
     }
 }
