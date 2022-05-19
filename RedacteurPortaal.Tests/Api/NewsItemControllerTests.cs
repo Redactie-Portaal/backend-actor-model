@@ -70,9 +70,9 @@ public class NewsItemControllerTests
         Assert.Equal(newsItemRequest.Body, result?.Body);
         Assert.Equal(newsItemRequest.Category, result?.Category);
         Assert.Equal(newsItemRequest.Region, result?.Region);
-        Assert.Equal(newsItemRequest.ContactDetails, result?.ContactDetails);
+        //Assert.Equal(newsItemRequest.ContactDetails, result?.ContactDetails);
         Assert.Equal(newsItemRequest.EndDate, result?.EndDate);
-        for (var i = 0; i < result?.ContactDetails.Capacity; i++)
+        for (var i = 0; i < result?.ContactDetails.Count; i++)
         {
             Assert.Equal(newsItemRequest.ContactDetails[i].Email, result.ContactDetails[i].Email);
             Assert.Equal(newsItemRequest.ContactDetails[i].TelephoneNumber, result.ContactDetails[i].TelephoneNumber);

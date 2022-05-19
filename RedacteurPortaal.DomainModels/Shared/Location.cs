@@ -7,7 +7,7 @@ public class Location : IBaseEntity
 {
     public Location()
     {
-        new LocationValidator().ValidateAndThrow(this);
+
     }
     
     public Location(Guid id, string name, string city, string province, string street, string zip, decimal latitude, decimal longitude)

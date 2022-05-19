@@ -15,7 +15,7 @@ public class ProfileModelValidationTests
     public void ProfileModelValidatesCorrect()
     {
         var guid = Guid.NewGuid();
-        var exc = Record.Exception(() => new Profile(guid, "Fullname", new ContactDetails("email@email.com", "0612345678", "address", "province", "city", "1000AB"), "profile", Role.EDITOR, DateTime.UtcNow));
+        var exc = Record.Exception(() => DomainModelBuilder.CreateProfile());
         Assert.Null(exc);
     }
 
@@ -98,6 +98,15 @@ public class ProfileModelValidationTests
         var guid = Guid.NewGuid();
         Assert.Throws<ValidationException>(() => {
             var emptyAddress = new Profile(guid, "Fullname", new ContactDetails("email@email.com", "0612345678", "address", "province", "", "1000AB"), "profile", Role.EDITOR, DateTime.UtcNow);
+        });
+    }
+
+    [Fact]
+    public void ProfileModelThrowsIfProfilePhotoEmpty()
+    {
+        var guid = Guid.NewGuid();
+        Assert.Throws<ValidationException>(() => {
+            var emptyAddress = new Profile(guid, "Fullname", new ContactDetails("email@email.com", "0612345678", "address", "province", "city", "1000AB"), "", Role.EDITOR, DateTime.UtcNow);
         });
     }
 }

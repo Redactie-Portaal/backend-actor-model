@@ -9,6 +9,7 @@ public class NewsItemModel : IBaseEntity
 {
     public NewsItemModel()
     {
+
     }
 
     public NewsItemModel(

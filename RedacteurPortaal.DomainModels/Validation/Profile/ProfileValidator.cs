@@ -11,18 +11,15 @@ public class ProfileValidator : AbstractValidator<RedacteurPortaal.DomainModels.
 {
     public ProfileValidator()
     {
-        //this.RuleFor(x => x.FullName);
-        this.RuleFor(x => x.FullName).Must(this.CheckIfString);
-        //this.RuleFor(x => x.FullName).NotEqual(string.Empty);
-        //this.RuleFor(x => x.FullName).NotEqual();
-        //this.RuleFor(x => x.FullName).
+        this.RuleFor(x => x.FullName).NotEmpty().WithMessage("Full Name is required");
         this.RuleFor(x => x.ProfilePicture).NotEmpty().WithMessage("Profile picture is required");
-
+        this.RuleFor(x => x.ContactDetails).NotNull().DependentRules(() => {
+            this.RuleFor(x => x.ContactDetails.Email).NotEmpty().WithMessage("Email is required");
+            this.RuleFor(x => x.ContactDetails.PhoneNumber).NotEmpty().WithMessage("Phone number is required");
+            this.RuleFor(x => x.ContactDetails.Address).NotEmpty().WithMessage("Address is required");
+            this.RuleFor(x => x.ContactDetails.City).NotEmpty().WithMessage("City is required");
+            this.RuleFor(x => x.ContactDetails.Province).NotEmpty().WithMessage("Province is required");
+            this.RuleFor(x => x.ContactDetails.PostalCode).NotEmpty().WithMessage("Country is required");
+        });
     }
-    
-        private bool CheckIfString(string str)
-        {
-            if (string.IsNullOrWhiteSpace(str) || string.IsNullOrEmpty(str)) { return false; }
-            return true;
-        }
 }

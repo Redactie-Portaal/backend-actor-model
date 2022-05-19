@@ -4,9 +4,6 @@ using RedacteurPortaal.DomainModels.NewsItem;
 using RedacteurPortaal.DomainModels.Shared;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace RedacteurPortaal.Tests.DomainModels;
@@ -38,7 +35,7 @@ public class NewsItemModelValidationTests
     }
 
     [Fact]
-    public void ThrowsWithEmptyOrIncorrectContact()
+    public void ThrowsWithIncorrectContact()
     {
         var guid = Guid.NewGuid();
 
@@ -50,7 +47,7 @@ public class NewsItemModelValidationTests
                                          "Newsitem Author",
                                          new FeedSource { },
                                          "body",
-                                         new List<Contact> { new Contact(guid, "name", "Mail", "PHone") },
+                                         new List<Contact> { new Contact(guid, "name", "Mail", "Phone") },
                                          new Location(guid, "Name", "City", "Province", "Street", "1000AB", 0, 90),
                                          DateTime.UtcNow,
                                          DateTime.UtcNow,
@@ -60,25 +57,6 @@ public class NewsItemModelValidationTests
                                          Array.Empty<MediaAudioItem>(),
                                          Array.Empty<MediaPhotoItem>());
         });
-        Assert.Throws<ValidationException>(() => {
-            var model = new NewsItemModel(guid,
-                                         "Newsitem Title",
-                                         Status.DONE,
-                                         ApprovalState.PENDING,
-                                         "Newsitem Author",
-                                         new FeedSource { },
-                                         "body",
-                                         new List<Contact> { new Contact() },
-                                         new Location(guid, "Name", "City", "Province", "Street", "1000AB", 0, 90),
-                                         DateTime.UtcNow,
-                                         DateTime.UtcNow,
-                                         Category.STORY,
-                                         Region.LOCAL,
-                                         Array.Empty<MediaVideoItem>(),
-                                         Array.Empty<MediaAudioItem>(),
-                                         Array.Empty<MediaPhotoItem>());
-        });
-
     }
 
     [Fact]
@@ -169,7 +147,7 @@ public class NewsItemModelValidationTests
                                          ApprovalState.PENDING,
                                          "Author",
                                          new FeedSource { },
-                                         "",
+                                         "body",
                                          new List<Contact> { new Contact(guid, "name", "email@email.com", "0612345678") },
                                          new Location(),
                                          DateTime.UtcNow,
@@ -188,7 +166,7 @@ public class NewsItemModelValidationTests
                                          ApprovalState.PENDING,
                                          "Author",
                                          new FeedSource { },
-                                         "",
+                                         "body",
                                          new List<Contact> { new Contact(guid, "name", "email@email.com", "0612345678") },
                                          new Location(guid, "Name", "City", "Province", "Street", "postcode", 0, 90),
                                          DateTime.UtcNow,
@@ -199,6 +177,6 @@ public class NewsItemModelValidationTests
                                          Array.Empty<MediaAudioItem>(),
                                          Array.Empty<MediaPhotoItem>());
             ;
-        });        
+        });
     }
 }

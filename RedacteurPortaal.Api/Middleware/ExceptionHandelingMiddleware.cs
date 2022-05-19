@@ -1,4 +1,5 @@
-﻿using RedacteurPortaal.DomainModels;
+﻿using FluentValidation;
+using RedacteurPortaal.DomainModels;
 using System.Net;
 using System.Text.Json;
 
@@ -37,6 +38,10 @@ namespace RedacteurPortaal.Api.Middleware
                         // not found error
                         this.logger.LogError($"A not found exception occured: {e.Message} at {e.StackTrace}");
                         response.StatusCode = (int)HttpStatusCode.NotFound;
+                        break;
+                    case ValidationException e:
+                        this.logger.LogError($"A validation exception occured: {e.Message} at {e.StackTrace}");
+                        response.StatusCode = (int)HttpStatusCode.BadRequest;
                         break;
                     default:
                         // unhandled error

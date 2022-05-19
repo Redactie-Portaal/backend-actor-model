@@ -7,7 +7,7 @@ public class Contact : IBaseEntity
 {
     public Contact()
     {
-        new ContactValidator().ValidateAndThrow(this);
+
     }
 
     public Contact(Guid id, string name, string email, string telephoneNumber)
