@@ -1,4 +1,6 @@
-﻿using RedacteurPortaal.DomainModels.Shared;
+﻿using FluentValidation;
+using RedacteurPortaal.DomainModels.Shared;
+using RedacteurPortaal.DomainModels.Validation.Media;
 
 namespace RedacteurPortaal.DomainModels.Media;
 
@@ -34,6 +36,8 @@ public abstract class MediaItem : IBaseEntity
         this.Location = location ?? throw new ArgumentNullException(nameof(location));
         this.Format = format ?? throw new ArgumentNullException(nameof(format));
         this.MediaLocation = mediaLocation ?? throw new ArgumentNullException(nameof(mediaLocation));
+
+        new MediaItemValidator().ValidateAndThrow(this);
     }
 
     public Guid Id { get; set; }

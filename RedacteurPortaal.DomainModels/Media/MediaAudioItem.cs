@@ -1,4 +1,6 @@
-﻿using RedacteurPortaal.DomainModels.Shared;
+﻿using FluentValidation;
+using RedacteurPortaal.DomainModels.Shared;
+using RedacteurPortaal.DomainModels.Validation.Media;
 
 namespace RedacteurPortaal.DomainModels.Media;
 
@@ -43,6 +45,8 @@ public class MediaAudioItem : MediaItem
         this.Weather = weather;
         this.FirstWords = firstWords ?? throw new ArgumentNullException(nameof(firstWords));
         this.ProgramName = programName ?? throw new ArgumentNullException(nameof(programName));
+
+        new MediaAudioItemValidator().ValidateAndThrow(this);
     }
 
     // Delete deze comments als je deze class wilt gebruiken.

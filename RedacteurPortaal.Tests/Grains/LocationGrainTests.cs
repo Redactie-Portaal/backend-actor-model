@@ -27,7 +27,7 @@ public class LocationGrainTests
     {   
         var guid = Guid.NewGuid();
 
-        var toSaveLocation = new Location(guid, "Name", "City", "Province", "Street", "1020AB", 0, 0);
+        var toSaveLocation = new Location(guid, "Name", "City", "Province", "Street", "1000AB", 0, 90);
 
         var locationGrain = this._cluster.GrainFactory.GetGrain<ILocationGrain>(guid);
 

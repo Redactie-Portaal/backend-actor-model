@@ -37,7 +37,7 @@ public class MediaAudioGrainTests
                                                       "Lastwords",
                                                       "Proxyfile",
                                                       "Presentation",
-                                                      new Location(),
+                                                      new Location(guid, "Name", "City", "Province", "Street", "1000AB", 0, 90),
                                                       "Format",
                                                       new Uri("https://microsoft.com"),
                                                       TimeSpan.Zero,
