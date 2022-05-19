@@ -47,28 +47,32 @@ public class NewsItemGrain : Grain, INewsItemGrain
 
         var contactDetails = await this.newsItem.State.ContactDetails
             .Where(x => x != Guid.Empty)
-            .SelectAsync(async x => {
+            .SelectAsync(async x => 
+            {
                 var contactGrain = await this.contactGrainService.GetGrain(x);
                 return await contactGrain.Get();
             });
 
         var videos = await this.newsItem.State.Videos
             .Where(x => x != Guid.Empty)
-            .SelectAsync(async x => {
+            .SelectAsync(async x => 
+            {
                 var videoGrain = await this.videoGrainService.GetGrain(x);
                 return await videoGrain.Get();
             });
 
         var audio = await this.newsItem.State.Audio
             .Where(x => x != Guid.Empty)
-            .SelectAsync(async x => {
+            .SelectAsync(async x => 
+            {
                 var grain = await this.audioGrainService.GetGrain(x);
                 return await grain.Get();
             });
 
         var photos = await this.newsItem.State.Photos
             .Where(x => x != Guid.Empty)
-            .SelectAsync(async x => {
+            .SelectAsync(async x =>
+            {
                 var grain = await this.photoGrainService.GetGrain(x);
                 return await grain.Get();
             });
@@ -85,7 +89,6 @@ public class NewsItemGrain : Grain, INewsItemGrain
                 this.newsItem.State.Source,
                 this.newsItem.State.Body,
                 contactDetails.ToList(),
-                //await locationGrain.Get(),
                 this.newsItem.State.LocationDetails,
                 this.newsItem.State.ProductionDate,
                 this.newsItem.State.EndDate,
@@ -137,13 +140,16 @@ public class NewsItemGrain : Grain, INewsItemGrain
 
         foreach (var contact in newsItem.ContactDetails)
         {
-            if (contact.Id == Guid.Empty && contact is not null)
+            if(contact is not null)
             {
-                contact.Id = Guid.NewGuid();
-            }
+                if (contact.Id == Guid.Empty)
+                {
+                    contact.Id = Guid.NewGuid();
+                }
 
-            var contactGrain = await this.contactGrainService.GetGrainOrCreate(contact.Id);
-            await contactGrain.Update(contact);
+                var contactGrain = await this.contactGrainService.GetGrainOrCreate(contact.Id);
+                await contactGrain.Update(contact);
+            }
         }
 
         this.newsItem.State.ContactDetails = newsItem.ContactDetails.Select(x => x.Id).ToList();
@@ -151,6 +157,7 @@ public class NewsItemGrain : Grain, INewsItemGrain
         {
             newsItem.LocationDetails.Id = Guid.NewGuid();
         }
+
         this.newsItem.State.LocationDetails = newsItem.LocationDetails;
         this.newsItem.State.ProductionDate = newsItem.ProductionDate;
         this.newsItem.State.EndDate = newsItem.EndDate;
@@ -185,7 +192,6 @@ public class NewsItemGrain : Grain, INewsItemGrain
                 var audioGrain = await this.audioGrainService.CreateGrain(audio.Id);
                 await audioGrain.Update(audio);
             }
-
         }
 
         this.newsItem.State.Audio = newsItem.Audio.DiscardNullValues().Select(x => x.Id).ToList();

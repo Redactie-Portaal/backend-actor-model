@@ -29,7 +29,8 @@ namespace RedacteurPortaal.DomainModels.Validation.Media
             this.RuleFor(x => x.Guests).NotEmpty().WithMessage("Guests is required");
             this.RuleFor(x => x.FirstWords).NotEmpty().WithMessage("First words is required");
             this.RuleFor(x => x.ProgramName).NotEmpty().WithMessage("Program name is required");
-            this.RuleFor(x => x.Location).NotNull().DependentRules(() => {
+            this.RuleFor(x => x.Location).NotNull().DependentRules(() => 
+            {
                 this.RuleFor(x => x.Location.Latitude).NotNull().WithMessage("Latitude is required");
                 this.RuleFor(x => x.Location.Longitude).NotNull().WithMessage("Longitude is required");
                 this.RuleFor(x => x.Location.Name).NotEmpty().WithMessage("LocationName is required");
