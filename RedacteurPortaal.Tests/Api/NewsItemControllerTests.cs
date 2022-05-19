@@ -13,6 +13,7 @@ using RedacteurPortaal.Api.DTOs;
 using RedacteurPortaal.Api.Models;
 using RedacteurPortaal.Api.Models.Profile;
 using RedacteurPortaal.Api.Models.Request;
+using RedacteurPortaal.DomainModels.NewsItem;
 using RedacteurPortaal.DomainModels.Profile;
 using RedacteurPortaal.Helpers;
 using Xunit;
@@ -112,7 +113,6 @@ public class NewsItemControllerTests
         Assert.Equal(patchItem.Body, patchResult?.Body);
         Assert.Equal(patchItem.Category, patchResult?.Category);
         Assert.Equal(patchItem.Region, patchResult?.Region);
-        Assert.Equal(patchItem.ContactDetails, patchResult?.ContactDetails);
         Assert.Equal(patchItem.EndDate, patchResult?.EndDate);
         for (int i = 0; i < patchResult?.ContactDetails.Capacity; i++)
         {
@@ -123,12 +123,115 @@ public class NewsItemControllerTests
     }
 
     [Fact]
-    public async Task CantRemove()
+    public async Task CanFilterOnStartDate()
     {
         var application = new RedacteurPortaalApplication();
         var client = application.CreateClient();
 
-        var delete = await client.DeleteAsync($"/api/Profile/{Guid.NewGuid()}");
-        Assert.Equal(HttpStatusCode.MethodNotAllowed, delete.StatusCode);
+        var requests = this.GetFilterableNewsItems();
+        foreach (var item in requests)
+        {
+            _ = await client.PostAsJsonAsync("/api/NewsItem", item);
+        }
+
+        var newItems = await client.GetFromJsonAsync<List<NewsItemDto>>("/api/NewsItem");
+        Assert.NotNull(newItems);
+        Assert.Equal(requests.Count, newItems?.Count);
+
+        var filtered = await client.GetFromJsonAsync<List<NewsItemDto>>($"/api/NewsItem?StartDate={(DateTime.MaxValue - TimeSpan.FromMinutes(1)).ToString("s")}");
+        Assert.NotNull(filtered);
+        Assert.Single(filtered);
     }
+
+    [Fact]
+    public async Task CanFilterOnEndDate()
+    {
+        var application = new RedacteurPortaalApplication();
+        var client = application.CreateClient();
+
+        var requests = this.GetFilterableNewsItems();
+        foreach (var item in requests)
+        {
+            _ = await client.PostAsJsonAsync("/api/NewsItem", item);
+        }
+
+        var newItems = await client.GetFromJsonAsync<List<NewsItemDto>>("/api/NewsItem");
+        Assert.NotNull(newItems);
+        Assert.Equal(requests.Count, newItems?.Count);
+
+        var filtered = await client.GetFromJsonAsync<List<NewsItemDto>>($"/api/NewsItem?EndDate={(DateTime.Now + TimeSpan.FromMinutes(1)).ToString("s")}");
+        Assert.NotNull(filtered);
+        Assert.Single(filtered);
+    }
+
+    [Fact]
+    public async Task CanFilterOnAuthor()
+    {
+        var application = new RedacteurPortaalApplication();
+        var client = application.CreateClient();
+
+        var requests = this.GetFilterableNewsItems();
+        foreach (var item in requests)
+        {
+            _ = await client.PostAsJsonAsync("/api/NewsItem", item);
+        }
+
+        var newItems = await client.GetFromJsonAsync<List<NewsItemDto>>("/api/NewsItem");
+        Assert.NotNull(newItems);
+        Assert.Equal(requests.Count, newItems?.Count);
+
+        var filtered = await client.GetFromJsonAsync<List<NewsItemDto>>($"/api/NewsItem?Author={requests[0].Author}");
+        Assert.NotNull(filtered);
+        Assert.Single(filtered);
+    }
+
+    [Fact]
+    public async Task CanFilterOnStatus()
+    {
+        var application = new RedacteurPortaalApplication();
+        var client = application.CreateClient();
+
+        var requests = this.GetFilterableNewsItems();
+        foreach (var item in requests)
+        {
+            _ = await client.PostAsJsonAsync("/api/NewsItem", item);
+        }
+
+        var newItems = await client.GetFromJsonAsync<List<NewsItemDto>>("/api/NewsItem");
+        Assert.NotNull(newItems);
+        Assert.Equal(requests.Count, newItems?.Count);
+
+        var filtered = await client.GetFromJsonAsync<List<NewsItemDto>>($"/api/NewsItem?Status={requests[0].Status}");
+        Assert.NotNull(filtered);
+        Assert.Single(filtered);
+    }
+
+    private List<NewsItemDto> GetFilterableNewsItems()
+    {
+        var toReturn = new List<NewsItemDto>();
+
+        var dto1 = DtoBuilder.BuildAddNewsItemRequest();
+        dto1.ProductionDate = DateTime.MaxValue;
+        dto1.Author = "author1";
+        dto1.Status = Status.DONE;
+        dto1.EndDate = DateTime.Today;
+        toReturn.Add(dto1);
+
+        var dto2 = DtoBuilder.BuildAddNewsItemRequest();
+        dto2.ProductionDate = DateTime.Now;
+        dto2.Author = "author2";
+        dto2.Status = Status.DELETED;
+        dto2.EndDate = DateTime.MaxValue;
+        toReturn.Add(dto2);
+
+        var dto3 = DtoBuilder.BuildAddNewsItemRequest();
+        dto3.ProductionDate = DateTime.Now - TimeSpan.FromDays(1);
+        dto3.Author = "author3";
+        dto3.Status = Status.INPRODUCTION;
+        dto3.EndDate = DateTime.MaxValue;
+        toReturn.Add(dto3);
+
+        return toReturn;
+    }
+
 }

@@ -11,5 +11,5 @@ public interface IArchiveGrain : IManageableGrain<ArchiveModel>
 
     Task AddAudioItem(MediaAudioItem audioItem);
 
-    Task Update(ArchiveModel archive);
+    Task<ArchiveModel> Update(ArchiveModel archive);
 }

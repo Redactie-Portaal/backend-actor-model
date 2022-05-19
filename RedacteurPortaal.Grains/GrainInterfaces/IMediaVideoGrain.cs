@@ -5,5 +5,5 @@ namespace RedacteurPortaal.Grains.GrainInterfaces;
 
 public interface IMediaVideoGrain : IManageableGrain<MediaVideoItem>
 {
-    Task Update(MediaVideoItem videoItem);
+    Task<MediaVideoItem> Update(MediaVideoItem videoItem);
 }

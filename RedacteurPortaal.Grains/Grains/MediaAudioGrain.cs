@@ -24,7 +24,9 @@ public class MediaAudioGrain : Grain, IMediaAudioGrain
 
     public Task<MediaAudioItem> Get()
     {
-        return Task.FromResult(this.audioItem.State);
+        var state = this.audioItem.State;
+        state.Id = this.GetGrainIdentity().PrimaryKey;
+        return Task.FromResult(state);
     }
 
     public async Task Delete()
@@ -32,9 +34,10 @@ public class MediaAudioGrain : Grain, IMediaAudioGrain
         await this.audioItem.ClearStateAsync();
     }
 
-    public async Task Update(MediaAudioItem mediaItem)
+    public async Task<MediaAudioItem> Update(MediaAudioItem mediaItem)
     {
         this.audioItem.State = mediaItem;
         await this.audioItem.WriteStateAsync();
+        return await this.Get();
     }
 }

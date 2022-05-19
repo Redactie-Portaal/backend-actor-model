@@ -28,13 +28,15 @@ public class ProfileGrain : Grain, IProfileGrain
 
     public Task<Profile> Get()
     {
-        return Task.FromResult(this.profile.State);
+        var state = this.profile.State;
+        state.Id = this.GetGrainIdentity().PrimaryKey;
+        return Task.FromResult(state);
     }
 
     public async Task<Profile> Update(Profile profile)
     {
         this.profile.State = profile;
         await this.profile.WriteStateAsync();
-        return this.profile.State;
+        return await this.Get();
     }
 }

@@ -5,8 +5,10 @@ using RedacteurPortaal.Api;
 using RedacteurPortaal.Api.Middleware;
 using RedacteurPortaal.Data.Context;
 using RedacteurPortaal.DomainModels.Adress;
+using RedacteurPortaal.DomainModels.Media;
 using RedacteurPortaal.DomainModels.NewsItem;
 using RedacteurPortaal.DomainModels.Profile;
+using RedacteurPortaal.DomainModels.Shared;
 using RedacteurPortaal.Grains.GrainInterfaces;
 using RedacteurPortaal.Grains.GrainServices;
 using RedacteurPortaal.Helpers;
@@ -72,12 +74,14 @@ await Host.CreateDefaultBuilder(args)
     {
         services.AddSingleton<FileSystemProvider>();
         services.AddScoped<IExportPluginService, ExportPluginService>();
-        services
-            .AddScoped<IGrainManagementService<INewsItemGrain>,
-                GrainManagementService<INewsItemGrain, NewsItemModel>>();
+        services.AddScoped<IGrainManagementService<INewsItemGrain>, GrainManagementService<INewsItemGrain, NewsItemModel>>();
         services.AddScoped<IGrainManagementService<IProfileGrain>, GrainManagementService<IProfileGrain, Profile>>();
-        services
-            .AddScoped<IGrainManagementService<IAddressGrain>, GrainManagementService<IAddressGrain, AddressModel>>();
+        services.AddScoped<IGrainManagementService<IAddressGrain>, GrainManagementService<IAddressGrain, AddressModel>>();
+        services.AddScoped<IGrainManagementService<IContactGrain>, GrainManagementService<IContactGrain, Contact>>();
+        services.AddScoped<IGrainManagementService<IMediaAudioGrain>, GrainManagementService<IMediaAudioGrain, MediaAudioItem>>();
+        services.AddScoped<IGrainManagementService<IMediaVideoGrain>, GrainManagementService<IMediaVideoGrain, MediaVideoItem>>();
+        services.AddScoped<IGrainManagementService<IMediaPhotoGrain>, GrainManagementService<IMediaPhotoGrain, MediaPhotoItem>>();
+        services.AddScoped<IGrainManagementService<ILocationGrain>, GrainManagementService<ILocationGrain, Location>>();
 
         services.AddDbContext<DataContext>(options => 
         {

@@ -9,8 +9,8 @@ public class NewsItemDto
     public Guid Id { get; set; }
 
     public string? Title { get; set; }
-
-    public string? Status { get; set; }
+    
+    public Status? Status { get; set; }
 
     public string ApprovalStatus { get; set; }
   
@@ -24,7 +24,7 @@ public class NewsItemDto
 
     public LocationDto LocationDetails { get; set;  }
 
-    public DateTime? ProdutionDate { get; set; }
+    public DateTime? ProductionDate { get; set; }
 
     public DateTime? EndDate { get; set; }
 
@@ -32,9 +32,9 @@ public class NewsItemDto
 
     public Region? Region { get; set; }
 
-    public MediaVideoItemDto[] Videos { get; set; }
+    public List<MediaVideoItemDto> Videos { get; set; }
 
-    public MediaAudioItemDto[] Audio { get; set; }
+    public List<MediaAudioItemDto> Audio { get; set; }
 
-    public MediaPhotoItemDto[] Photos { get; set; }
+    public List<MediaPhotoItemDto> Photos { get; set; }
 }
