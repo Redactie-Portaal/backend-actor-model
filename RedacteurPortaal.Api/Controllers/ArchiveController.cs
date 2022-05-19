@@ -89,7 +89,7 @@ public class ArchiveController : Controller
     }
 
     [HttpGet]
-    [Route("{archiveId}/", Name = nameof(GetArchiveById))]
+    [Route("{archiveId}", Name = nameof(GetArchiveById))]
     public async Task<ActionResult<ArchiveModel>> GetArchiveById(Guid archiveId)
     {
         var archive = await this.grainService.GetGrain(archiveId);
@@ -270,7 +270,7 @@ public class ArchiveController : Controller
     }
 
     [HttpDelete]
-    [Route("{archiveId}/")]
+    [Route("{archiveId}")]
     public async Task<IActionResult> DeleteArchive(Guid archiveId)
     {
         await this.grainService.DeleteGrain(archiveId);
@@ -314,7 +314,7 @@ public class ArchiveController : Controller
     }
 
     [HttpPatch]
-    [Route("{archiveId}/")]
+    [Route("{archiveId}")]
     public async Task<IActionResult> UpdateArchive(Guid archiveId, UpdateArchiveRequest updateArchiveRequest)
     {
         TypeAdapterConfig<UpdateArchiveRequest, ArchiveModel>

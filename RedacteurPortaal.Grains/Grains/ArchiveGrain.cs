@@ -29,7 +29,9 @@ public class ArchiveGrain : Grain, IArchiveGrain
     public async Task<MediaVideoItem> GetVideoItem(Guid guid)
     {
         var videoItems = this.archive.State.MediaVideoItems;
-        var videoItem = videoItems.Find(x => x.Id.Equals(guid));
+        var videoItem = videoItems.Single(x => x.Id.Equals(guid));
+        
+        await return Task.FromResult(videoItem)
         if (videoItem == null)
         {
             throw new KeyNotFoundException();
