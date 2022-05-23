@@ -1,5 +1,7 @@
-﻿using Mapster;
+﻿using AutoMapper;
+using Mapster;
 using Microsoft.AspNetCore.Mvc;
+using RedacteurPortaal.Api.Converters;
 using RedacteurPortaal.Api.DTOs;
 using RedacteurPortaal.Api.Models;
 using RedacteurPortaal.Api.Models.Request;
@@ -26,20 +28,22 @@ public class NewsItemController : ControllerBase
     public async Task<ActionResult<NewsItemDto>> SaveNewsItem([FromBody] UpdateNewsItemRequest newsitem)
     {
         Guid newguid = Guid.NewGuid();
-
-        TypeAdapterConfig<NewsItemDto, NewsItemModel>
+        
+        TypeAdapterConfig<UpdateNewsItemRequest, NewsItemModel>
             .NewConfig()
             .Map(dest => dest.Id,
                 src => newguid);
-
-        TypeAdapterConfig<MediaVideoItemDto, MediaVideoItem>
+        TypeAdapterConfig<NewsItemModel, NewsItemDto>
             .NewConfig()
-            .Map(dest => dest.Duration,
-                  src => TimeSpan.FromSeconds(src.DurationSeconds));
+            .Map(dest => dest.ApprovalStatus,
+                src => src.ApprovalState.ToString());
 
         var grain = await this.grainService.CreateGrain(newguid);
-        var update = newsitem.Adapt<NewsItemModel>();
-        var createdGrain  = await grain.Update(update);
+        //var test = newsitem.Videos.Adapt<List<MediaVideoItem>>();
+        //var update = newsitem.Adapt<NewsItemModel>();
+
+        var update = newsitem.AsDomainModel(newguid);
+        var createdGrain = await grain.Update(update);
         var response = createdGrain.Adapt<NewsItemDto>();
         return new CreatedAtActionResult("GetNewsItem", "NewsItem", new { id = newguid }, response);
     }
@@ -138,7 +142,8 @@ public class NewsItemController : ControllerBase
             src => id);
 
         var grain = await this.grainService.GetGrain(id);
-        var update = request.Adapt<NewsItemModel>();
+        //var update = request.Adapt<NewsItemModel>();
+        var update = request.AsDomainModel(id);        
         var updatedGrain = await grain.Update(update);
         var response = updatedGrain.Adapt<NewsItemDto>();
         return response;
