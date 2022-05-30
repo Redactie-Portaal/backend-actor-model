@@ -36,11 +36,11 @@ namespace RedacteurPortaal.Api.Middleware
                         break;
                     case KeyNotFoundException e:
                         // not found error
-                        this.logger.LogError($"A not found exception occured: {e.Message} at {e.StackTrace}");
+                        this.logger.LogError($"An exception occured: {e.Message} at {e.StackTrace}");
                         response.StatusCode = (int)HttpStatusCode.NotFound;
                         break;
                     case ValidationException e:
-                        this.logger.LogError($"A validation exception occured: {e.Message} at {e.StackTrace}");
+                        this.logger.LogError($"An exception occured: {e.Message} at {e.StackTrace}");
                         response.StatusCode = (int)HttpStatusCode.BadRequest;
                         break;
                     default:
