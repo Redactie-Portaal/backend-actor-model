@@ -31,21 +31,29 @@ namespace RedacteurPortaal.Api.Middleware
                 {
                     case AppException e:
                         // custom application error
+#pragma warning disable CA2254 // Template should be a static expression
                         this.logger.LogError($"An exception occured: {e.Message} at {e.StackTrace}");
+#pragma warning restore CA2254 // Template should be a static expression
                         response.StatusCode = (int)e.StatusCode;
                         break;
                     case KeyNotFoundException e:
                         // not found error
-                        this.logger.LogError($"A not found exception occured: {e.Message} at {e.StackTrace}");
+#pragma warning disable CA2254 // Template should be a static expression
+                        this.logger.LogError($"An exception occured: {e.Message} at {e.StackTrace}");
+#pragma warning restore CA2254 // Template should be a static expression
                         response.StatusCode = (int)HttpStatusCode.NotFound;
                         break;
                     case ValidationException e:
-                        this.logger.LogError($"A validation exception occured: {e.Message} at {e.StackTrace}");
+#pragma warning disable CA2254 // Template should be a static expression
+                        this.logger.LogError($"An exception occured: {e.Message} at {e.StackTrace}");
+#pragma warning restore CA2254 // Template should be a static expression
                         response.StatusCode = (int)HttpStatusCode.BadRequest;
                         break;
                     default:
                         // unhandled error
+#pragma warning disable CA2254 // Template should be a static expression
                         this.logger.LogError($"An internal server error occurred: {error.Message} at {error.StackTrace}");
+#pragma warning restore CA2254 // Template should be a static expression
                         response.StatusCode = (int)HttpStatusCode.InternalServerError;
                         break;
                 }
