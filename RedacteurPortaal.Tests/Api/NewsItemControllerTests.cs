@@ -128,7 +128,7 @@ public class NewsItemControllerTests
         var application = new RedacteurPortaalApplication();
         var client = application.CreateClient();
 
-        var requests = this.GetFilterableNewsItems();
+        var requests = GetFilterableNewsItems();
         foreach (var item in requests)
         {
             _ = await client.PostAsJsonAsync("/api/NewsItem", item);
@@ -149,7 +149,7 @@ public class NewsItemControllerTests
         var application = new RedacteurPortaalApplication();
         var client = application.CreateClient();
 
-        var requests = this.GetFilterableNewsItems();
+        var requests = GetFilterableNewsItems();
         foreach (var item in requests)
         {
             _ = await client.PostAsJsonAsync("/api/NewsItem", item);
@@ -170,7 +170,7 @@ public class NewsItemControllerTests
         var application = new RedacteurPortaalApplication();
         var client = application.CreateClient();
 
-        var requests = this.GetFilterableNewsItems();
+        var requests = GetFilterableNewsItems();
         foreach (var item in requests)
         {
             _ = await client.PostAsJsonAsync("/api/NewsItem", item);
@@ -191,7 +191,7 @@ public class NewsItemControllerTests
         var application = new RedacteurPortaalApplication();
         var client = application.CreateClient();
 
-        var requests = this.GetFilterableNewsItems();
+        var requests = GetFilterableNewsItems();
         foreach (var item in requests)
         {
             _ = await client.PostAsJsonAsync("/api/NewsItem", item);
@@ -206,7 +206,7 @@ public class NewsItemControllerTests
         Assert.Single(filtered);
     }
 
-    private List<NewsItemDto> GetFilterableNewsItems()
+    private static List<NewsItemDto> GetFilterableNewsItems()
     {
         var toReturn = new List<NewsItemDto>();
 
