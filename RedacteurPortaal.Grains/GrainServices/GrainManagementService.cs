@@ -25,9 +25,7 @@ namespace RedacteurPortaal.Grains.GrainServices
         {
             if (this.DbContext.GrainReferences.Any(x => x.GrainId == id))
             {
-#pragma warning disable CA2254 // Template should be a static expression
                 this.logger.LogCritical($"Grain with ID: {id} already exists!");
-#pragma warning restore CA2254 // Template should be a static expression
                 throw new DuplicateNameException($"Grain with id {id} already exists!");
             }
 
@@ -66,9 +64,7 @@ namespace RedacteurPortaal.Grains.GrainServices
                 }
                 else
                 {
-#pragma warning disable CA2254 // Template should be a static expression
                     this.logger.LogWarning($"Grain with ID: {grain.GrainId} does not have a state. Removing Grain.");
-#pragma warning restore CA2254 // Template should be a static expression
                     this.DbContext.GrainReferences.Remove(grain);
                     await this.DbContext.SaveChangesAsync();
                 }
