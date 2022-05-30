@@ -28,11 +28,12 @@ public class NewsItemController : ControllerBase
     public async Task<ActionResult<NewsItemDto>> SaveNewsItem([FromBody] UpdateNewsItemRequest newsitem)
     {
         Guid newguid = Guid.NewGuid();
-        
+
         TypeAdapterConfig<UpdateNewsItemRequest, NewsItemModel>
             .NewConfig()
             .Map(dest => dest.Id,
                 src => newguid);
+
         TypeAdapterConfig<NewsItemModel, NewsItemDto>
             .NewConfig()
             .Map(dest => dest.ApprovalStatus,

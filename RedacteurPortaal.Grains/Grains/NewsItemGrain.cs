@@ -173,6 +173,7 @@ public class NewsItemGrain : Grain, INewsItemGrain
                     video.Id = Guid.NewGuid();
                 }
                 
+                video.Location.Id = Guid.NewGuid();
                 var videoGrain = await this.videoGrainService.CreateGrain(video.Id);
                 await videoGrain.Update(video);
             }
@@ -189,6 +190,7 @@ public class NewsItemGrain : Grain, INewsItemGrain
                     audio.Id = Guid.NewGuid();
                 }
 
+                audio.Location.Id = Guid.NewGuid();
                 var audioGrain = await this.audioGrainService.CreateGrain(audio.Id);
                 await audioGrain.Update(audio);
             }
@@ -205,6 +207,7 @@ public class NewsItemGrain : Grain, INewsItemGrain
                     photo.Id = Guid.NewGuid();
                 }
 
+                photo.Location.Id = Guid.NewGuid();
                 var photoGrain = await this.photoGrainService.CreateGrain(photo.Id);
                 await photoGrain.Update(photo);
             }

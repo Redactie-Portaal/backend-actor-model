@@ -62,7 +62,7 @@ public class NewsItemControllerTests
         var newsItem = await client.PostAsJsonAsync("/api/NewsItem", newsItemRequest);
         var resultString = await newsItem.Content.ReadAsStringAsync();
 
-        var result = JsonSerializer.Deserialize<NewsItemDto>(resultString, new JsonSerializerOptions() {PropertyNameCaseInsensitive = true});
+        var result = JsonSerializer.Deserialize<NewsItemDto>(resultString, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
 
         Assert.NotNull(result);
         Assert.Equal(newsItemRequest.Author, result?.Author);

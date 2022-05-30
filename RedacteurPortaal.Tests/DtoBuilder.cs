@@ -15,12 +15,12 @@ public static class DtoBuilder
         return new NewsItemDto()
         {
             Author = "Author",
-            Audio = new(),
+            //Audio = new(),
             Body = "foo",
             Category = Category.NEWS,
             Region = Region.LOCAL,
-            Photos = new(),
-            Videos = new(),
+            //Photos = new(),
+            //Videos = new(),
             Source = new FeedSourceDto()
             {
                 PlaceHolder = "foo",
@@ -39,8 +39,8 @@ public static class DtoBuilder
             LocationDetails = new LocationDto()
             {
                 City = "foo",
-                Latitude = 50,
-                Longitude = 50,
+                Latitude = 0,
+                Longitude = 0,
                 Name = "foo",
                 Province = "foo",
                 Street = "foo",
@@ -54,12 +54,12 @@ public static class DtoBuilder
         return new UpdateNewsItemRequest()
         {
             Author = "Author1",
-            Audio = new UpdateMediaAudioItemRequest[1],
+            //Audio = new UpdateMediaAudioItemRequest[1],
             Body = "foo1",
             Category = Category.NEWS,
             Region = Region.LOCAL,
-            Photos = new UpdateMediaPhotoItemRequest[1],
-            Videos = new UpdateMediaVideoItemRequest[1],
+            //Photos = new UpdateMediaPhotoItemRequest[1],
+            //Videos = new UpdateMediaVideoItemRequest[1],
             Source = new FeedSourceDto()
             {
                 PlaceHolder = "foo1",
