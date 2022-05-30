@@ -1,4 +1,5 @@
-﻿using Orleans.TestingHost;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Orleans.TestingHost;
 using RedacteurPortaal.DomainModels.Media;
 using RedacteurPortaal.DomainModels.NewsItem;
 using RedacteurPortaal.DomainModels.Shared;
@@ -9,21 +10,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Xunit;
 
-namespace RedacteurPortaal.Tests.Grains.Test;
+namespace RedacteurPortaal.Tests.Grains;
 
-[Collection("Col")]
+[TestClass]
 public class MediaPhotoGrainTests
 {
-    private readonly TestCluster _cluster;
+    private TestCluster _cluster;
 
-    public MediaPhotoGrainTests(ClusterFixture fixture)
+    [TestInitialize]
+    public void Initialize()
     {
-        _cluster = fixture.Cluster;
+        this._cluster = new ClusterFixture().Cluster;
     }
 
-    [Fact]
+
+    [TestMethod]
     public async Task CanAddMediaPhotoItemCorrectly()
     {   
         var guid = Guid.NewGuid();
@@ -48,8 +50,8 @@ public class MediaPhotoGrainTests
 
         var mediaPhotoItem = await mediaPhotoGrain.Get();
 
-        Assert.Equal("Title", mediaPhotoItem.Title);
-        Assert.Equal(guid, mediaPhotoItem.Id);
+        Assert.AreEqual("Title", mediaPhotoItem.Title);
+        Assert.AreEqual(guid, mediaPhotoItem.Id);
     }
 
 }

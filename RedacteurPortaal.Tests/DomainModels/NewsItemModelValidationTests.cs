@@ -1,20 +1,24 @@
 ﻿using FluentValidation;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RedacteurPortaal.DomainModels.Media;
 using RedacteurPortaal.DomainModels.NewsItem;
 using RedacteurPortaal.DomainModels.Shared;
 using System;
 using System.Collections.Generic;
-using Xunit;
 
 namespace RedacteurPortaal.Tests.DomainModels;
 
+[TestClass]
 public class NewsItemModelValidationTests
 {
-    [Fact]
+    [TestMethod]
     public void NewsItemModelCorrect()
     {
         var guid = Guid.NewGuid();
-        var exc = Record.Exception(() => new NewsItemModel(guid,
+        try
+        {
+
+        var exc = new NewsItemModel(guid,
                                          "Newsitem Title",
                                          Status.DONE,
                                          ApprovalState.PENDING,
@@ -29,17 +33,21 @@ public class NewsItemModelValidationTests
                                          Region.LOCAL,
                                          new List<MediaVideoItem>(),
                                          new List<MediaAudioItem>(),
-                                         new List<MediaPhotoItem>()));
+                                         new List<MediaPhotoItem>());
+        }
+        catch (Exception ex)
+        {
+            Assert.Fail("Expected no exception, but got: " + ex.Message);
+        }
 
-        Assert.Null(exc);
     }
 
-    [Fact]
+    [TestMethod]
     public void ThrowsWithIncorrectContact()
     {
         var guid = Guid.NewGuid();
 
-        Assert.Throws<ValidationException>(() => {
+        Assert.ThrowsException<ValidationException>(() => {
             var model = new NewsItemModel(guid,
                                          "Newsitem Title",
                                          Status.DONE,
@@ -59,12 +67,12 @@ public class NewsItemModelValidationTests
         });
     }
 
-    [Fact]
+    [TestMethod]
     public void ThrowsWithEmptyTitle()
     {
         var guid = Guid.NewGuid();
 
-        Assert.Throws<ValidationException>(() => {
+        Assert.ThrowsException<ValidationException>(() => {
             var model = new NewsItemModel(guid,
                                          "",
                                          Status.DONE,
@@ -85,12 +93,12 @@ public class NewsItemModelValidationTests
         });
     }
 
-    [Fact]
+    [TestMethod]
     public void ThrowsWithEmptyAuthor()
     {
         var guid = Guid.NewGuid();
 
-        Assert.Throws<ValidationException>(() => {
+        Assert.ThrowsException<ValidationException>(() => {
             var model = new NewsItemModel(guid,
                                          "Title",
                                          Status.DONE,
@@ -110,12 +118,12 @@ public class NewsItemModelValidationTests
         });
     }
 
-    [Fact]
+    [TestMethod]
     public void ThrowsWithEmptyBody()
     {
         var guid = Guid.NewGuid();
 
-        Assert.Throws<ValidationException>(() => {
+        Assert.ThrowsException<ValidationException>(() => {
             var model = new NewsItemModel(guid,
                                          "Title",
                                          Status.DONE,
@@ -135,12 +143,12 @@ public class NewsItemModelValidationTests
         });
     }
 
-    [Fact]
+    [TestMethod]
     public void ThrowsWithEmptyOrWrongLocation()
     {
         var guid = Guid.NewGuid();
 
-        Assert.Throws<ValidationException>(() => {
+        Assert.ThrowsException<ValidationException>(() => {
             var model = new NewsItemModel(guid,
                                          "Title",
                                          Status.DONE,
@@ -159,7 +167,7 @@ public class NewsItemModelValidationTests
                                          new List<MediaPhotoItem>());
             ;
         });
-        Assert.Throws<ValidationException>(() => {
+        Assert.ThrowsException<ValidationException>(() => {
             var model = new NewsItemModel(guid,
                                          "Title",
                                          Status.DONE,
