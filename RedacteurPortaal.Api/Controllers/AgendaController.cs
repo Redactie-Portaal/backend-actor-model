@@ -1,5 +1,4 @@
-﻿using System.Xml;
-using Mapster;
+﻿using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using RedacteurPortaal.Api.DTOs;
 using RedacteurPortaal.Api.Models.Request;
@@ -16,11 +15,8 @@ namespace RedacteurPortaal.Api.Controllers
     {
         private readonly IGrainManagementService<IAgendaGrain> grainService;
 
-        private readonly ILogger logger;
-
         public AgendaController(ILogger<AgendaController> logger, IGrainManagementService<IAgendaGrain> grainService)
         {
-            this.logger = logger;
             this.grainService = grainService;
         }
 
@@ -58,7 +54,7 @@ namespace RedacteurPortaal.Api.Controllers
         {
             var grain = await this.grainService.GetGrains();
 
-            var response = (await grain.SelectAsync(async x => 
+            var response = (await grain.SelectAsync(async x =>
                 await x.Get())).AsQueryable().ProjectToType<AgendaDto>(null).ToList();
             return this.Ok(response);
         }
@@ -74,8 +70,9 @@ namespace RedacteurPortaal.Api.Controllers
             var list = (await grain.SelectAsync(async x => await
                 x.Get())).AsQueryable().ProjectToType<AgendaDto>(null).ToList();
 
-            var response = list.Where(x => x.StartDate >= query.StartDate && x.EndDate <= query.EndDate).OrderBy(dto => dto.StartDate).ToList();
-            
+            var response = list.Where(x => x.StartDate >= query.StartDate && x.EndDate <= query.EndDate)
+                .OrderBy(dto => dto.StartDate).ToList();
+
             return this.Ok(response);
         }
 
@@ -94,7 +91,7 @@ namespace RedacteurPortaal.Api.Controllers
             TypeAdapterConfig<UpdateAgendaRequest, AgendaModel>
                 .NewConfig()
                 .Map(dest => dest.Id,
-                src => id);
+                    src => id);
 
             var grain = await this.grainService.GetGrain(id);
             var update = request.Adapt<AgendaModel>();

@@ -1,4 +1,8 @@
-﻿namespace RedacteurPortaal.DomainModels.Agenda
+﻿using FluentValidation;
+using RedacteurPortaal.DomainModels.Validation.Agenda;
+using RedacteurPortaal.DomainModels.Validation.Archive;
+
+namespace RedacteurPortaal.DomainModels.Agenda
 {
     public class AgendaModel : IBaseEntity
     {
@@ -11,9 +15,11 @@
             this.Id = id;
             this.StartDate = startDate;
             this.EndDate = endDate;
-            this.Title = title;
-            this.Description = description;
-            this.UserId = userId;
+            this.Title = title ?? throw new ArgumentNullException(nameof(title));;
+            this.Description = description ?? throw new ArgumentNullException(nameof(description));;
+            this.UserId = userId;;
+            
+            new AgendaValidator().ValidateAndThrow(this);
         }
 
         public Guid Id { get; set; }
