@@ -1,7 +1,6 @@
 using Mapster;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using Orleans;
 using Orleans.Hosting;
 using RedacteurPortaal.Api;
 using RedacteurPortaal.Api.Middleware;
@@ -18,8 +17,6 @@ using Serilog.Exceptions;
 using Serilog;
 using RedacteurPortaal.Helpers;
 using RedacteurPortaal.DomainModels.Agenda;
-using System.Runtime.Loader;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 
 await Host.CreateDefaultBuilder(args)
     .UseOrleans((ctx, siloBuilder) => 
@@ -109,7 +106,6 @@ await Host.CreateDefaultBuilder(args)
                 var context = scope.ServiceProvider.GetService<DataContext>();
                 _ = context ?? throw new Exception("Failed to retrieve Database context");
                 context.Database.Migrate();
-
             }
         }
 
