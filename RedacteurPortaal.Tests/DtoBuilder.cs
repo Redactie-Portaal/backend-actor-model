@@ -8,7 +8,7 @@ using RedacteurPortaal.DomainModels.Profile;
 
 namespace RedacteurPortaal.Tests;
 
-public class DtoBuilder
+public static class DtoBuilder
 {
     public static NewsItemDto BuildAddNewsItemRequest()
     {

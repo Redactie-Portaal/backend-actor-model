@@ -33,12 +33,11 @@ public class AgendaControllerTests
         var agendaItem = DtoBuilder.BuildAgendaRequest();
         var agendaResult = await client.PostAsJsonAsync("/api/Agenda", agendaItem);
         var resultString = await agendaResult.Content.ReadAsStreamAsync();
-        Thread.Sleep(100);
+        
         var result = JsonSerializer.Deserialize<AgendaDto>(resultString, new JsonSerializerOptions() {
             PropertyNameCaseInsensitive = true
         });
         
-        Thread.Sleep(100);
 
         Assert.NotNull(result);
         Assert.Equal(agendaItem.Title, result?.Title);
@@ -106,8 +105,7 @@ public class AgendaControllerTests
         
         var addAgendaRequest = DtoBuilder.BuildAgendaRequest();
         await client.PostAsJsonAsync("/api/Agenda", addAgendaRequest);
-
-        Thread.Sleep(100);
+        
         
         var sortByDate = await client.GetAsync($"/api/Agenda/s?StartDate=2022-05-12T00%3A00&EndDate=2022-05-12T23%3A00");
         var getResult = JsonSerializer.Deserialize<List<AgendaDto>>(await sortByDate.Content.ReadAsStringAsync(),
@@ -128,10 +126,7 @@ public class AgendaControllerTests
         var addAgendaRequest = DtoBuilder.BuildAgendaRequest();
         await client.PostAsJsonAsync("/api/Agenda", addAgendaRequest);
 
-        
-        Thread.Sleep(100);
-        
-        
+
         var sortByDate = await client.GetAsync($"/api/Agenda/s?StartDate=2022-05-13T00%3A00&EndDate=2022-05-15T23%3A00");
         var getResult = JsonSerializer.Deserialize<List<AgendaDto>>(await sortByDate.Content.ReadAsStringAsync(),
             new JsonSerializerOptions() {
