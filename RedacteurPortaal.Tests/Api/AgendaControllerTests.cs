@@ -81,7 +81,6 @@ public class AgendaControllerTests
         var addResult = JsonSerializer.Deserialize<AgendaDto>(await agendaResult.Content.ReadAsStringAsync(),
             new JsonSerializerOptions() {PropertyNameCaseInsensitive = true});
 
-        Thread.Sleep(100);
         var getByIdResult = await client.GetAsync($"/api/Agenda/{addResult?.Id}");
         var getResult = JsonSerializer.Deserialize<AgendaDto>(await getByIdResult.Content.ReadAsStringAsync(),
             new JsonSerializerOptions() {
