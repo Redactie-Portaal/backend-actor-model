@@ -1,4 +1,5 @@
-﻿using Orleans.TestingHost;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Orleans.TestingHost;
 using RedacteurPortaal.DomainModels.NewsItem;
 using RedacteurPortaal.Grains.GrainInterfaces;
 using RedacteurPortaal.Tests;
@@ -7,21 +8,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Xunit;
 
-namespace RedacteurPortaal.Tests.Grains.Test;
+namespace RedacteurPortaal.Tests.Grains;
 
-[Collection("Col")]
+[TestClass]
 public class ContactGrainTests
 {
-    private readonly TestCluster _cluster;
+    private TestCluster _cluster;
 
-    public ContactGrainTests(ClusterFixture fixture)
+    [TestInitialize]
+    public void Initialize()
     {
-        _cluster = fixture.Cluster;
+        this._cluster = new ClusterFixture().Cluster;
     }
 
-    [Fact]
+
+    [TestMethod]
     public async Task CanAddContactCorrectly()
     {   
         var guid = Guid.NewGuid();
@@ -34,8 +36,8 @@ public class ContactGrainTests
 
         var contact = await contactGrain.Get();
 
-        Assert.Equal("name", contact.Name);
-        Assert.Equal(guid, contact.Id);
+        Assert.AreEqual("name", contact.Name);
+        Assert.AreEqual(guid, contact.Id);
     }
 
 }
