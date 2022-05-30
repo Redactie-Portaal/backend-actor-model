@@ -6,25 +6,26 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RedacteurPortaal.Api.DTOs;
-using Xunit;
 
 namespace RedacteurPortaal.Tests.Api;
 
+[TestClass]
 public class AgendaControllerTests
 {
-    [Fact]
+    [TestMethod]
     public async Task DefaultIsEmpty()
     {
         var application = new RedacteurPortaalApplication();
         var client = application.CreateClient();
         var agenda = await client.GetFromJsonAsync<List<AgendaDto>>("/api/Agenda");
 
-        Assert.NotNull(agenda);
-        Assert.True(agenda?.Count == 0);
+        Assert.IsNotNull(agenda);
+        Assert.IsTrue(agenda?.Count == 0);
     }
 
-    [Fact]
+    [TestMethod]
     public async Task CanAdd()
     {
         var application = new RedacteurPortaalApplication();
@@ -33,25 +34,25 @@ public class AgendaControllerTests
         var agendaItem = DtoBuilder.BuildAgendaRequest();
         var agendaResult = await client.PostAsJsonAsync("/api/Agenda", agendaItem);
         var resultString = await agendaResult.Content.ReadAsStreamAsync();
-        
+
         var result = JsonSerializer.Deserialize<AgendaDto>(resultString, new JsonSerializerOptions() {
             PropertyNameCaseInsensitive = true
         });
-        
 
-        Assert.NotNull(result);
-        Assert.Equal(agendaItem.Title, result?.Title);
-        Assert.Equal(agendaItem.StartDate, result?.StartDate);
-        Assert.Equal(agendaItem.EndDate, result?.EndDate);
-        Assert.Equal(agendaItem.Description, result?.Description);
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(agendaItem.Title, result?.Title);
+        Assert.AreEqual(agendaItem.StartDate, result?.StartDate);
+        Assert.AreEqual(agendaItem.EndDate, result?.EndDate);
+        Assert.AreEqual(agendaItem.Description, result?.Description);
 
         var agenda = await client.GetFromJsonAsync<List<AgendaDto>>("api/Agenda");
 
-        Assert.NotNull(agenda);
-        Assert.True(agenda?.Count == 1);
+        Assert.IsNotNull(agenda);
+        Assert.IsTrue(agenda?.Count == 1);
     }
 
-    [Fact]
+    [TestMethod]
     public async Task CanGetAll()
     {
         var application = new RedacteurPortaalApplication();
@@ -66,11 +67,11 @@ public class AgendaControllerTests
                 PropertyNameCaseInsensitive = true
             });
 
-        Assert.Equal(HttpStatusCode.OK, result.StatusCode);
-        Assert.NotEmpty(listResult);
+        Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
+        CollectionAssert.AllItemsAreNotNull(listResult);
     }
 
-    [Fact]
+    [TestMethod]
     public async Task CanGetByGuid()
     {
         var application = new RedacteurPortaalApplication();
@@ -79,7 +80,7 @@ public class AgendaControllerTests
         var addAgendaRequest = DtoBuilder.BuildAgendaRequest();
         var agendaResult = await client.PostAsJsonAsync("/api/Agenda", addAgendaRequest);
         var addResult = JsonSerializer.Deserialize<AgendaDto>(await agendaResult.Content.ReadAsStringAsync(),
-            new JsonSerializerOptions() {PropertyNameCaseInsensitive = true});
+            new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
 
         var getByIdResult = await client.GetAsync($"/api/Agenda/{addResult?.Id}");
         var getResult = JsonSerializer.Deserialize<AgendaDto>(await getByIdResult.Content.ReadAsStringAsync(),
@@ -87,41 +88,41 @@ public class AgendaControllerTests
                 PropertyNameCaseInsensitive = true
             });
 
-        Assert.Equal(HttpStatusCode.OK, getByIdResult.StatusCode);
-        Assert.Equal(addResult?.Id, getResult?.Id);
-        Assert.Equal(addResult?.Title, getResult?.Title);
-        Assert.Equal(addResult?.Description, getResult?.Description);
-        Assert.Equal(addResult?.StartDate, getResult?.StartDate);
-        Assert.Equal(addResult?.EndDate, getResult?.EndDate);
-        Assert.Equal(addResult?.UserId, getResult?.UserId);
+        Assert.AreEqual(HttpStatusCode.OK, getByIdResult.StatusCode);
+        Assert.AreEqual(addResult?.Id, getResult?.Id);
+        Assert.AreEqual(addResult?.Title, getResult?.Title);
+        Assert.AreEqual(addResult?.Description, getResult?.Description);
+        Assert.AreEqual(addResult?.StartDate, getResult?.StartDate);
+        Assert.AreEqual(addResult?.EndDate, getResult?.EndDate);
+        Assert.AreEqual(addResult?.UserId, getResult?.UserId);
     }
-    
-    [Fact]
+
+    [TestMethod]
     public async Task CanFilterOnDateWithResult()
     {
         var application = new RedacteurPortaalApplication();
         var client = application.CreateClient();
-        
+
         var addAgendaRequest = DtoBuilder.BuildAgendaRequest();
         await client.PostAsJsonAsync("/api/Agenda", addAgendaRequest);
-        
-        
+
+
         var sortByDate = await client.GetAsync($"/api/Agenda/s?StartDate=2022-05-12T00%3A00&EndDate=2022-05-12T23%3A00");
         var getResult = JsonSerializer.Deserialize<List<AgendaDto>>(await sortByDate.Content.ReadAsStringAsync(),
             new JsonSerializerOptions() {
                 PropertyNameCaseInsensitive = true
             });
-        
-        Assert.Equal(HttpStatusCode.OK, sortByDate.StatusCode);
-        Assert.NotEmpty(getResult);
+
+        Assert.AreEqual(HttpStatusCode.OK, sortByDate.StatusCode);
+        CollectionAssert.AllItemsAreNotNull(getResult);
     }
-    
-    [Fact]
+
+    [TestMethod]
     public async Task CanFilterOnDateWithoutResult()
     {
         var application = new RedacteurPortaalApplication();
         var client = application.CreateClient();
-        
+
         var addAgendaRequest = DtoBuilder.BuildAgendaRequest();
         await client.PostAsJsonAsync("/api/Agenda", addAgendaRequest);
 
@@ -131,12 +132,12 @@ public class AgendaControllerTests
             new JsonSerializerOptions() {
                 PropertyNameCaseInsensitive = true
             });
-        
-        Assert.Equal(HttpStatusCode.OK, sortByDate.StatusCode);
-        Assert.Empty(getResult);
+
+        Assert.AreEqual(HttpStatusCode.OK, sortByDate.StatusCode);
+        CollectionAssert.AllItemsAreNotNull(getResult);
     }
 
-    [Fact]
+    [TestMethod]
     public async Task CanUpdate()
     {
         var application = new RedacteurPortaalApplication();
@@ -149,8 +150,8 @@ public class AgendaControllerTests
             PropertyNameCaseInsensitive = true
         });
 
-        Assert.NotNull(result);
-        Assert.Equal(addAgendaRequest.Title, result?.Title);
+        Assert.IsNotNull(result);
+        Assert.AreEqual(addAgendaRequest.Title, result?.Title);
 
         var patchAgendaRequest = DtoBuilder.BuildPatchAgendaRequest();
         var patchContent = new StringContent(JsonSerializer.Serialize(patchAgendaRequest), Encoding.UTF8,
@@ -162,14 +163,14 @@ public class AgendaControllerTests
                 PropertyNameCaseInsensitive = true
             });
 
-        Assert.Equal(HttpStatusCode.OK, newAgenda.StatusCode);
-        Assert.Equal(patchAgendaRequest.Title, patchResult?.Title);
-        Assert.Equal(patchAgendaRequest.StartDate, patchResult?.StartDate);
-        Assert.Equal(patchAgendaRequest.EndDate, patchResult?.EndDate);
-        Assert.Equal(patchAgendaRequest.Description, patchResult?.Description);
+        Assert.AreEqual(HttpStatusCode.OK, newAgenda.StatusCode);
+        Assert.AreEqual(patchAgendaRequest.Title, patchResult?.Title);
+        Assert.AreEqual(patchAgendaRequest.StartDate, patchResult?.StartDate);
+        Assert.AreEqual(patchAgendaRequest.EndDate, patchResult?.EndDate);
+        Assert.AreEqual(patchAgendaRequest.Description, patchResult?.Description);
     }
 
-    [Fact]
+    [TestMethod]
     public async Task CanDelete()
     {
         var application = new RedacteurPortaalApplication();
@@ -178,12 +179,12 @@ public class AgendaControllerTests
         var addAgendaRequest = DtoBuilder.BuildAgendaRequest();
         var agendaResult = await client.PostAsJsonAsync("/api/Agenda", addAgendaRequest);
         var result = JsonSerializer.Deserialize<AddressDTO>(await agendaResult.Content.ReadAsStringAsync(),
-            new JsonSerializerOptions() {PropertyNameCaseInsensitive = true});
+            new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
 
         var delete = await client.DeleteAsync($"/api/Agenda/{result?.Id}");
-        Assert.Equal(HttpStatusCode.NoContent, delete.StatusCode);
+        Assert.AreEqual(HttpStatusCode.NoContent, delete.StatusCode);
 
         var newAgenda = await client.GetFromJsonAsync<List<AgendaDto>>("/api/Agenda");
-        Assert.Empty(newAgenda);
+        CollectionAssert.AllItemsAreNotNull(newAgenda);
     }
 }

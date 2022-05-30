@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Orleans;
@@ -51,6 +52,9 @@ public class ClusterFixture
                 services.AddDbContext<DataContext>(options =>
                 {
                     options.UseInMemoryDatabase("bababoey");
+                    options.ConfigureWarnings(x => {
+                        x.Ignore(CoreEventId.ManyServiceProvidersCreatedWarning);
+                    });
                 });
 
                 services.AddSingleton<FileSystemProvider>();

@@ -1,23 +1,25 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Orleans.TestingHost;
 using RedacteurPortaal.DomainModels.Agenda;
 using RedacteurPortaal.Grains.GrainInterfaces;
-using Xunit;
 
 namespace RedacteurPortaal.Tests.Grains;
 
-[Collection("Col")]
+[TestClass]
 public class AgendaGrainTests
 {
-    private readonly TestCluster _cluster;
+    private TestCluster _cluster;
 
-    public AgendaGrainTests(ClusterFixture fixture)
+    [TestInitialize]
+    public void Initialize()
     {
-        this._cluster = fixture.Cluster;
+        this._cluster = new ClusterFixture().Cluster;
     }
 
-    [Fact]
+
+    [TestMethod]
     public async Task CanAddAgendaItemCorrectly()
     {
         var guid = Guid.NewGuid();
@@ -36,12 +38,12 @@ public class AgendaGrainTests
         await agendaGrain.UpdateAgenda(toSaveAgendaItem);
 
         var agenda = await agendaGrain.Get();
-        
-        Assert.Equal(guid, agenda.Id);
-        Assert.Equal("foo1", agenda.Title);
-        Assert.Equal("boo1", agenda.Description);
-        Assert.Equal(new DateTime(2022, 05, 12, 15, 00, 00), agenda.StartDate);
-        Assert.Equal(new DateTime(2022, 05, 12, 18, 00, 00), agenda.EndDate);
-        Assert.Equal("string", agenda.UserId);
-        }
+
+        Assert.AreEqual(guid, agenda.Id);
+        Assert.AreEqual("foo1", agenda.Title);
+        Assert.AreEqual("boo1", agenda.Description);
+        Assert.AreEqual(new DateTime(2022, 05, 12, 15, 00, 00), agenda.StartDate);
+        Assert.AreEqual(new DateTime(2022, 05, 12, 18, 00, 00), agenda.EndDate);
+        Assert.AreEqual("string", agenda.UserId);
+    }
 }

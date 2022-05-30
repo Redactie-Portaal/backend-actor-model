@@ -1,4 +1,5 @@
-﻿using Orleans.TestingHost;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Orleans.TestingHost;
 using RedacteurPortaal.DomainModels.Media;
 using RedacteurPortaal.DomainModels.NewsItem;
 using RedacteurPortaal.DomainModels.Profile;
@@ -9,21 +10,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Xunit;
 
-namespace RedacteurPortaal.Tests.Grains.Test;
+namespace RedacteurPortaal.Tests.Grains;
 
-[Collection("Col")]
+[TestClass]
 public class ProfileGrainTests
 {
-    private readonly TestCluster _cluster;
+    private TestCluster _cluster;
 
-    public ProfileGrainTests(ClusterFixture fixture)
+    [TestInitialize]
+    public void Initialize()
     {
-        _cluster = fixture.Cluster;
+        this._cluster = new ClusterFixture().Cluster;
     }
 
-    [Fact]
+
+    [TestMethod]
     public async Task CanAddProfileCorrectly()
     {
         var guid = Guid.NewGuid();
@@ -36,9 +38,9 @@ public class ProfileGrainTests
 
         var profile = await profilegrain.Get();
 
-        Assert.Equal("Joep Struikrover", profile.FullName);
-        Assert.Equal(Role.ADMIN, profile.Role);
-        Assert.Equal(guid, profile.Id);
+        Assert.AreEqual("Joep Struikrover", profile.FullName);
+        Assert.AreEqual(Role.ADMIN, profile.Role);
+        Assert.AreEqual(guid, profile.Id);
     }
 
 }

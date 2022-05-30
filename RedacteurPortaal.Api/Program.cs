@@ -18,6 +18,7 @@ using Serilog;
 using RedacteurPortaal.Helpers;
 using RedacteurPortaal.DomainModels.Agenda;
 using System.Runtime.Loader;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 await Host.CreateDefaultBuilder(args)
     .UseOrleans((ctx, siloBuilder) => 
@@ -92,6 +93,9 @@ await Host.CreateDefaultBuilder(args)
         {
             var connString = ctx.Configuration.GetConnectionString("DefaultConnection");
             options.UseNpgsql(connString);
+            options.ConfigureWarnings(x => {
+                x.Ignore(CoreEventId.ManyServiceProvidersCreatedWarning);
+            });
         });
 
         // migrate ef.
@@ -103,6 +107,7 @@ await Host.CreateDefaultBuilder(args)
                 var context = scope.ServiceProvider.GetService<DataContext>();
                 _ = context ?? throw new Exception("Failed to retrieve Database context");
                 context.Database.Migrate();
+
             }
         }
 

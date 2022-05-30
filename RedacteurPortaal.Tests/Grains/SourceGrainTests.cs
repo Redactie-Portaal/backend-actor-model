@@ -1,23 +1,25 @@
-﻿using Orleans.TestingHost;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Orleans.TestingHost;
 using RedacteurPortaal.DomainModels.NewsItem;
 using RedacteurPortaal.Grains.GrainInterfaces;
 using System;
 using System.Threading.Tasks;
-using Xunit;
 
-namespace RedacteurPortaal.Tests.Grains.Test;
+namespace RedacteurPortaal.Tests.Grains;
 
-[Collection("Col")]
+[TestClass]
 public class SourceGrainTests
 {
-    private readonly TestCluster _cluster;
+    private TestCluster _cluster;
 
-    public SourceGrainTests(ClusterFixture fixture)
+    [TestInitialize]
+    public void Initialize()
     {
-        this._cluster = fixture.Cluster;
+        this._cluster = new ClusterFixture().Cluster;
     }
 
-    [Fact]
+
+    [TestMethod]
     public async Task CanAddSourceCorrectly()
     {   
         var guid = Guid.NewGuid();
@@ -30,8 +32,8 @@ public class SourceGrainTests
 
         var source = await sourceGrain.Get();
 
-        Assert.Equal("SourceName", source.Name);
-        Assert.Equal(guid, source.Id);
+        Assert.AreEqual("SourceName", source.Name);
+        Assert.AreEqual(guid, source.Id);
     }
 
 }

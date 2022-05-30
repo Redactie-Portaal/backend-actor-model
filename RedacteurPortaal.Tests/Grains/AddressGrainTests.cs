@@ -1,25 +1,26 @@
 ﻿using System;
 using System.Threading.Tasks;
 using FluentValidation;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Orleans.TestingHost;
 using RedacteurPortaal.DomainModels.Adress;
 using RedacteurPortaal.Grains.GrainInterfaces;
-using Xunit;
 
-namespace RedacteurPortaal.Tests.Grains.Test;
+namespace RedacteurPortaal.Tests.Grains;
 
-[Collection("Col")]
+[TestClass]
 public class AddressGrainTests
 {
-    private readonly TestCluster _cluster;
+    private TestCluster _cluster;
 
-
-    public AddressGrainTests(ClusterFixture fixture)
+    [TestInitialize]
+    public void Initialize()
     {
-        this._cluster = fixture.Cluster;
+        this._cluster = new ClusterFixture().Cluster;
     }
 
-    [Fact]
+
+    [TestMethod]
     public async Task CanAddAddressCorrectly()
     {
         var guid = Guid.NewGuid();
@@ -32,16 +33,16 @@ public class AddressGrainTests
 
         var address = await addressGrain.Get();
 
-        Assert.Equal(guid, address.Id);
-        Assert.Equal("Company", address.CompanyName);
-        Assert.Equal("Address", address.Address);
-        Assert.Equal("5050BB", address.PostalCode);
-        Assert.Equal("0612345678", address.PhoneNumber);
-        Assert.Equal("hans@gmail.com", address.EmailAddress);
-        Assert.Equal("Webpage", address.Webpage);
+        Assert.AreEqual(guid, address.Id);
+        Assert.AreEqual("Company", address.CompanyName);
+        Assert.AreEqual("Address", address.Address);
+        Assert.AreEqual("5050BB", address.PostalCode);
+        Assert.AreEqual("0612345678", address.PhoneNumber);
+        Assert.AreEqual("hans@gmail.com", address.EmailAddress);
+        Assert.AreEqual("Webpage", address.Webpage);
     }
 
-  [Fact] 
+  [TestMethod] 
   public async Task GetAddressCorrect()
     {
         var guid = Guid.NewGuid();
@@ -54,13 +55,13 @@ public class AddressGrainTests
 
         var Getaddress = await addressGrain.Get();
 
-        Assert.Equal(Getaddress.Id, toSaveAddress.Id);
-        Assert.Equal(Getaddress.PhoneNumber, toSaveAddress.PhoneNumber);
-        Assert.Equal(Getaddress.CompanyName, toSaveAddress.CompanyName);
-        Assert.Equal(Getaddress.PostalCode, toSaveAddress.PostalCode);
+        Assert.AreEqual(Getaddress.Id, toSaveAddress.Id);
+        Assert.AreEqual(Getaddress.PhoneNumber, toSaveAddress.PhoneNumber);
+        Assert.AreEqual(Getaddress.CompanyName, toSaveAddress.CompanyName);
+        Assert.AreEqual(Getaddress.PostalCode, toSaveAddress.PostalCode);
     }
 
-    [Fact]
+    [TestMethod]
     public async Task CanUpdateAddressCorrect()
     {
         var guid = Guid.NewGuid();
@@ -77,23 +78,23 @@ public class AddressGrainTests
 
         var updatedAddress = await addressGrain.Get();
 
-        Assert.Equal("Sony", updatedAddress.CompanyName);
-        Assert.Equal(guid, updatedAddress.Id);
-        Assert.Equal("0612345678", updatedAddress.PhoneNumber);
-        Assert.NotEqual(toSaveAddress.CompanyName, updatedAddress.CompanyName);
+        Assert.AreEqual("Sony", updatedAddress.CompanyName);
+        Assert.AreEqual(guid, updatedAddress.Id);
+        Assert.AreEqual("0612345678", updatedAddress.PhoneNumber);
+        Assert.AreNotEqual(toSaveAddress.CompanyName, updatedAddress.CompanyName);
     }
   
-    [Fact]
+    [TestMethod]
     public void ThrowsWhenModelPropIsNull()
     {
         var guid = Guid.NewGuid();
 
-        Assert.Throws<ValidationException>(() => {
+        Assert.ThrowsException<ValidationException>(() => {
             var updateAddres = new AddressModel(guid, "", "", "5050AA", "0612345678", "hans@gmail.com", "Webpage");
         });
     }
 
-    [Fact] 
+    [TestMethod] 
      public async Task DeleteCorrect()
     {
         var guid = Guid.NewGuid();
@@ -108,8 +109,8 @@ public class AddressGrainTests
 
         var deletedAddress = await addressGrain.Get();
 
-        Assert.Null(deletedAddress.CompanyName);
-        Assert.Null(deletedAddress.PhoneNumber);
-        Assert.Null(deletedAddress.Webpage);
+        Assert.IsNull(deletedAddress.CompanyName);
+        Assert.IsNull(deletedAddress.PhoneNumber);
+        Assert.IsNull(deletedAddress.Webpage);
     }
 }
