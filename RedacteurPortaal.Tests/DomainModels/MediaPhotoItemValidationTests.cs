@@ -20,19 +20,19 @@ public class MediaPhotoItemValidationTests
         try
         {
 
-        var mediaAudioItem = new MediaPhotoItem(guid,
-                                                  "Title",
-                                                  "Folder",
-                                                  DateTime.UtcNow,
-                                                  "Rights",
-                                                  "Camera",
-                                                  "Lastwords",
-                                                  "Proxyfile",
-                                                  "Presentation",
-                                                  new Location(guid, "Name", "City", "Province", "Street", "1000AB", 0, 90),
-                                                  "Format",
-                                                  new Uri("https://microsoft.com"),
-                                                  "Image");
+            var mediaAudioItem = new MediaPhotoItem(guid,
+                                                      "Title",
+                                                      "Folder",
+                                                      DateTime.UtcNow,
+                                                      "Rights",
+                                                      "Camera",
+                                                      "Lastwords",
+                                                      "Proxyfile",
+                                                      "Presentation",
+                                                      new Location(guid, "Name", "City", "Province", "Street", "1000AB", 0, 90),
+                                                      "Format",
+                                                      new Uri("https://microsoft.com"),
+                                                      "Image");
         }
         catch (Exception ex)
         {
@@ -61,6 +61,7 @@ public class MediaPhotoItemValidationTests
                                            "Image");
         });
     }
+
     [TestMethod]
     public void ThrowsWithEmptyFolder()
     {
@@ -82,6 +83,7 @@ public class MediaPhotoItemValidationTests
                                            "Image");
         });
     }
+
     [TestMethod]
     public void ThrowsWithEmptyRights()
     {
@@ -103,6 +105,7 @@ public class MediaPhotoItemValidationTests
                                            "Image");
         });
     }
+
     [TestMethod]
     public void ThrowsWithEmptyCamera()
     {
@@ -124,6 +127,7 @@ public class MediaPhotoItemValidationTests
                                            "Image");
         });
     }
+
     [TestMethod]
     public void ThrowsWithEmptyLastwords()
     {
@@ -145,6 +149,7 @@ public class MediaPhotoItemValidationTests
                                            "Image");
         });
     }
+
     [TestMethod]
     public void ThrowsWithEmptyProxyfile()
     {
@@ -166,6 +171,7 @@ public class MediaPhotoItemValidationTests
                                            "Image");
         });
     }
+
     [TestMethod]
     public void ThrowsWithEmptyPresentation()
     {
@@ -187,6 +193,7 @@ public class MediaPhotoItemValidationTests
                                            "Image");
         });
     }
+
     [TestMethod]
     public void ThrowsWithEmptyLocation()
     {
@@ -208,6 +215,7 @@ public class MediaPhotoItemValidationTests
                                            "Image");
         });
     }
+
     [TestMethod]
     public void ThrowsWithEmptyFormat()
     {
@@ -228,7 +236,9 @@ public class MediaPhotoItemValidationTests
                                            new Uri("https://microsoft.com"),
                                            "Image");
         });
-    } [TestMethod]
+    }
+
+    [TestMethod]
     public void ThrowsWithEmptyImage()
     {
         var guid = Guid.NewGuid();

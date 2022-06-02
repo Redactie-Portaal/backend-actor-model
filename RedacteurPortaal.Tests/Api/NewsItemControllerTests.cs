@@ -63,7 +63,7 @@ public class NewsItemControllerTests
         var newsItem = await client.PostAsJsonAsync("/api/NewsItem", newsItemRequest);
         var resultString = await newsItem.Content.ReadAsStringAsync();
 
-        var result = JsonSerializer.Deserialize<NewsItemDto>(resultString, new JsonSerializerOptions() {PropertyNameCaseInsensitive = true});
+        var result = JsonSerializer.Deserialize<NewsItemDto>(resultString, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
 
         Assert.IsNotNull(result);
         Assert.AreEqual(newsItemRequest.Author, result?.Author);
@@ -140,8 +140,7 @@ public class NewsItemControllerTests
 
         var filtered = await client.GetFromJsonAsync<List<NewsItemDto>>($"/api/NewsItem?StartDate={(DateTime.MaxValue - TimeSpan.FromMinutes(1)).ToString("s")}");
         Assert.IsNotNull(filtered);
-        //Assert.Single(filtered);
-        
+        Assert.AreEqual(1, filtered.Count);
     }
 
     [TestMethod]
@@ -162,7 +161,7 @@ public class NewsItemControllerTests
 
         var filtered = await client.GetFromJsonAsync<List<NewsItemDto>>($"/api/NewsItem?EndDate={(DateTime.Now + TimeSpan.FromMinutes(1)).ToString("s")}");
         Assert.IsNotNull(filtered);
-        //Assert.Single(filtered);
+        Assert.AreEqual(1, filtered.Count);
     }
 
     [TestMethod]
@@ -183,7 +182,7 @@ public class NewsItemControllerTests
 
         var filtered = await client.GetFromJsonAsync<List<NewsItemDto>>($"/api/NewsItem?Author={requests[0].Author}");
         Assert.IsNotNull(filtered);
-        //Assert.Single(filtered);
+        Assert.AreEqual(1, filtered.Count);
     }
 
     [TestMethod]
@@ -204,7 +203,7 @@ public class NewsItemControllerTests
 
         var filtered = await client.GetFromJsonAsync<List<NewsItemDto>>($"/api/NewsItem?Status={requests[0].Status}");
         Assert.IsNotNull(filtered);
-        //Assert.Single(filtered);
+        Assert.AreEqual(1, filtered.Count);
     }
 
     private static List<NewsItemDto> GetFilterableNewsItems()
