@@ -175,7 +175,6 @@ public class ArchiveController : Controller
     [Route("{archiveId}/NewsItems")]
     public async Task<IActionResult> AddNewsItems([FromRoute] Guid archiveId, [FromBody] NewsItemDto newsItem)
     {
-
         Guid newguid = Guid.NewGuid();
 
         TypeAdapterConfig<NewsItemDto, NewsItemModel>

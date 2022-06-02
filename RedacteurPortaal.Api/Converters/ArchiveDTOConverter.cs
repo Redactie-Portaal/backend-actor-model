@@ -32,7 +32,7 @@ namespace RedacteurPortaal.Api.Converters
                                                new Location(Guid.Empty, i.Location.Name, i.Location.City, i.Location.Province, i.Location.Street, i.Location.Zip, i.Location.Latitude, i.Location.Longitude),
                                                i.Format,
                                                i.MediaLocation,
-                                               TimeSpan.FromSeconds(i.DurationSeconds),
+                                               i.DurationSeconds,
                                                i.Weather,
                                                i.FirstWords,
                                                i.ProgramName);

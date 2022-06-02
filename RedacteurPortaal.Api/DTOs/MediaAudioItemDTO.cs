@@ -5,7 +5,7 @@ namespace RedacteurPortaal.Api.DTOs
 {
     public class MediaAudioItemDto : MediaItemDto
     {
-        public int DurationSeconds { get; set; }
+        public TimeSpan DurationSeconds { get; set; }
 
         public Weather Weather { get; set; }
 
