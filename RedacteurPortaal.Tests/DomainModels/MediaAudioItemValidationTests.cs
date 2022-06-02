@@ -20,22 +20,22 @@ public class MediaAudioItemValidationTests
         try
         {
 
-        var mediaAudioItem =  new MediaAudioItem(guid,
-                                                 "Title",
-                                                 "Folder",
-                                                 DateTime.UtcNow,
-                                                 "Rights",
-                                                 "Camera",
-                                                 "Lastwords",
-                                                 "Proxyfile",
-                                                 "Presentation",
-                                                 new Location(guid, "Name", "City", "Province", "Street", "1000AB", 0, 90),
-                                                 "Format",
-                                                 new Uri("https://microsoft.com"),
-                                                 TimeSpan.Zero,
-                                                 Weather.SUNNY,
-                                                 "Firstwords",
-                                                 "Programname");
+            var mediaAudioItem = new MediaAudioItem(guid,
+                                                     "Title",
+                                                     "Folder",
+                                                     DateTime.UtcNow,
+                                                     "Rights",
+                                                     "Camera",
+                                                     "Lastwords",
+                                                     "Proxyfile",
+                                                     "Presentation",
+                                                     new Location(guid, "Name", "City", "Province", "Street", "1000AB", 0, 90),
+                                                     "Format",
+                                                     new Uri("https://microsoft.com"),
+                                                     TimeSpan.Zero,
+                                                     Weather.SUNNY,
+                                                     "Firstwords",
+                                                     "Programname");
         }
         catch (Exception ex)
         {
@@ -65,7 +65,7 @@ public class MediaAudioItemValidationTests
                                            Weather.SUNNY,
                                            "Firstwords",
                                            "Programname");
-            });
+        });
     }
 
     [TestMethod]
@@ -90,7 +90,7 @@ public class MediaAudioItemValidationTests
                                            Weather.SUNNY,
                                            "Firstwords",
                                            "Programname");
-            });
+        });
     }
 
     [TestMethod]
@@ -115,7 +115,7 @@ public class MediaAudioItemValidationTests
                                            Weather.SUNNY,
                                            "Firstwords",
                                            "Programname");
-            });
+        });
     }
 
     [TestMethod]
@@ -217,6 +217,7 @@ public class MediaAudioItemValidationTests
                                            "Programname");
         });
     }
+
     [TestMethod]
     public void ThrowsWithEmptyLocation()
     {

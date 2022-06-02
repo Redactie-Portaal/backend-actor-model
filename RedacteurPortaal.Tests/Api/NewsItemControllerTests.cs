@@ -205,6 +205,7 @@ public class NewsItemControllerTests
         var filtered = await client.GetFromJsonAsync<List<NewsItemDto>>($"/api/NewsItem?Status={requests[0].Status}");
         Assert.IsNotNull(filtered);
         //Assert.Single(filtered);
+        Assert.AreEqual(1, filtered.Count);
     }
 
     private static List<NewsItemDto> GetFilterableNewsItems()

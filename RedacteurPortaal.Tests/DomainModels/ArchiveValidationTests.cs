@@ -32,8 +32,6 @@ namespace RedacteurPortaal.Tests.DomainModels
             {
                 Assert.Fail("Expected no exception, but got: " + ex.Message);
             }
-
-            //Assert.(mediaAudioItem);
         }
 
         [TestMethod]
@@ -52,6 +50,7 @@ namespace RedacteurPortaal.Tests.DomainModels
                                              new List<string> { "scripts" });
             });
         }
+
         [TestMethod]
         public void ThrowsWithEmptyLabel()
         {
@@ -68,6 +67,7 @@ namespace RedacteurPortaal.Tests.DomainModels
                                              new List<string> { "scripts" });
             });
         }
+
         [TestMethod]
         public void ThrowsWithEmptyScripts()
         {
@@ -84,6 +84,5 @@ namespace RedacteurPortaal.Tests.DomainModels
                                              new List<string>());
             });
         }
-
     }
 }
