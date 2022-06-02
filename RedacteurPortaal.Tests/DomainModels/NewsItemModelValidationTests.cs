@@ -39,7 +39,6 @@ public class NewsItemModelValidationTests
         {
             Assert.Fail("Expected no exception, but got: " + ex.Message);
         }
-
     }
 
     [TestMethod]

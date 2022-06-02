@@ -20,37 +20,37 @@ public class MediaVideoItemValidationTests
         try
         {
 
-        var mediaAudioItem = new MediaVideoItem(guid,
-                                                                       "Title",
-                                                                       "Folder",
-                                                                       DateTime.UtcNow,
-                                                                       "Rights",
-                                                                       "Camera",
-                                                                       "Lastwords",
-                                                                       "Proxyfile",
-                                                                       "Presentation",
-                                                                       new Location(guid, "Name", "City", "Province", "Street", "1000AB", 0, 90),
-                                                                       "Format",
-                                                                       "Reporter",
-                                                                       "Sound",
-                                                                       "Editor",
-                                                                       "Lastpicture",
-                                                                       new List<string> { "keyword" },
-                                                                       "Voiceover",
-                                                                       "Description",
-                                                                       DateTime.UtcNow,
-                                                                       "Itemname",
-                                                                       "Epg",
-                                                                       TimeSpan.FromSeconds(10),
-                                                                       "Archivematerial",
-                                                                       Weather.SUNNY,
-                                                                       "Producer",
-                                                                       "Director",
-                                                                       new List<string> { "guest" },
-                                                                       "Firstpicture",
-                                                                       "Programname",
-                                                                       "Firstwords",
-                                                                       new Uri("https://microsoft.com"));
+            var mediaAudioItem = new MediaVideoItem(guid,
+                                                                           "Title",
+                                                                           "Folder",
+                                                                           DateTime.UtcNow,
+                                                                           "Rights",
+                                                                           "Camera",
+                                                                           "Lastwords",
+                                                                           "Proxyfile",
+                                                                           "Presentation",
+                                                                           new Location(guid, "Name", "City", "Province", "Street", "1000AB", 0, 90),
+                                                                           "Format",
+                                                                           "Reporter",
+                                                                           "Sound",
+                                                                           "Editor",
+                                                                           "Lastpicture",
+                                                                           new List<string> { "keyword" },
+                                                                           "Voiceover",
+                                                                           "Description",
+                                                                           DateTime.UtcNow,
+                                                                           "Itemname",
+                                                                           "Epg",
+                                                                           TimeSpan.FromSeconds(10),
+                                                                           "Archivematerial",
+                                                                           Weather.SUNNY,
+                                                                           "Producer",
+                                                                           "Director",
+                                                                           new List<string> { "guest" },
+                                                                           "Firstpicture",
+                                                                           "Programname",
+                                                                           "Firstwords",
+                                                                           new Uri("https://microsoft.com"));
         }
         catch (Exception ex)
         {
@@ -337,6 +337,7 @@ public class MediaVideoItemValidationTests
                                            new Uri("https://microsoft.com"));
         });
     }
+    
     [TestMethod]
     public void ThrowsWithEmptyLocation()
     {
@@ -1072,4 +1073,4 @@ public class MediaVideoItemValidationTests
 
     }
 
-}        
+}

@@ -12,8 +12,7 @@ public static class DtoBuilder
 {
     public static NewsItemDto BuildAddNewsItemRequest()
     {
-        return new NewsItemDto()
-        {
+        return new NewsItemDto() {
             Author = "Author",
             Audio = new(),
             Body = "foo",
@@ -21,8 +20,7 @@ public static class DtoBuilder
             Region = Region.LOCAL,
             Photos = new(),
             Videos = new(),
-            Source = new FeedSourceDto()
-            {
+            Source = new FeedSourceDto() {
                 PlaceHolder = "foo",
             },
             Status = Status.DONE,
@@ -36,11 +34,10 @@ public static class DtoBuilder
                 }
             },
             EndDate = DateTime.Now,
-            LocationDetails = new LocationDto()
-            {
+            LocationDetails = new LocationDto() {
                 City = "foo",
-                Latitude = 50,
-                Longitude = 50,
+                Latitude = 0,
+                Longitude = 0,
                 Name = "foo",
                 Province = "foo",
                 Street = "foo",
@@ -51,25 +48,22 @@ public static class DtoBuilder
     }
     public static UpdateNewsItemRequest BuildUpdateNewsItemRequest()
     {
-        return new UpdateNewsItemRequest()
-        {
+        return new UpdateNewsItemRequest() {
             Author = "Author1",
-            Audio = new UpdateMediaAudioItemRequest[1],
+            Audio = Array.Empty<UpdateMediaAudioItemRequest>(),
             Body = "foo1",
             Category = Category.NEWS,
             Region = Region.LOCAL,
-            Photos = new UpdateMediaPhotoItemRequest[1],
-            Videos = new UpdateMediaVideoItemRequest[1],
-            Source = new FeedSourceDto()
-            {
+            Photos = Array.Empty<UpdateMediaPhotoItemRequest>(),
+            Videos = Array.Empty<UpdateMediaVideoItemRequest>(),
+            Source = new FeedSourceDto() {
                 PlaceHolder = "foo1",
             },
             Status = Status.DONE,
             Title = "title1",
             ContactDetails = new List<UpdateContactRequest>(),
             EndDate = DateTime.Now,
-            LocationDetails = new UpdateLocationRequest()
-            {
+            LocationDetails = new UpdateLocationRequest() {
                 City = "foo1",
                 Latitude = 51,
                 Longitude = 51,
@@ -82,12 +76,10 @@ public static class DtoBuilder
     }
     public static AddProfileRequest BuildAddProfileRequest()
     {
-        return new AddProfileRequest()
-        {
+        return new AddProfileRequest() {
             Role = Role.ADMIN,
             FullName = "John Doe",
-            ContactDetails = new RedacteurPortaal.Api.Models.Profile.ContactDetails()
-            {
+            ContactDetails = new RedacteurPortaal.Api.Models.Profile.ContactDetails() {
                 Address = "foo",
                 City = "bar",
                 Email = "foo@bar.nl",
@@ -115,8 +107,7 @@ public static class DtoBuilder
 
     public static AddAddressRequest BuildAddAddressRequest()
     {
-        return new AddAddressRequest()
-        {
+        return new AddAddressRequest() {
             Address = "FooStreet",
             Webpage = "www.foo.nl",
             CompanyName = "FooBar",
@@ -128,8 +119,7 @@ public static class DtoBuilder
 
     public static UpdateAddressRequest BuildPatchAddressRequest()
     {
-        return new UpdateAddressRequest()
-        {
+        return new UpdateAddressRequest() {
             Address = "FooStreet1",
             Webpage = "www.foo1.nl",
             CompanyName = "FooBa1r",
@@ -140,11 +130,9 @@ public static class DtoBuilder
     }
     public static PatchProfileRequest BuildPatchProfileRequest()
     {
-        return new PatchProfileRequest()
-        {
+        return new PatchProfileRequest() {
             Name = "Jane Doe",
-            ContactDetails = new RedacteurPortaal.Api.Models.Profile.ContactDetails()
-            {
+            ContactDetails = new RedacteurPortaal.Api.Models.Profile.ContactDetails() {
                 Address = "foo1",
                 City = "bar1",
                 Email = "foo1@bar.nl",
