@@ -160,7 +160,7 @@ public static class ArchiveDtoBuilder
                 }
             },
             NewsItems = new(),
-            Scripts = new(),
+            Scripts = new() { "script1","script2"},
         };
     }
 
