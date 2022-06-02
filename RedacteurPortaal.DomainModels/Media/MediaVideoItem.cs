@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
 using RedacteurPortaal.DomainModels.Shared;
 using RedacteurPortaal.DomainModels.Validation.Media;
+using RedacteurPortaal.DomainModels.Validation.Shared;
 
 namespace RedacteurPortaal.DomainModels.Media;
 
-[Serializable]
 public class MediaVideoItem : MediaItem
 {
     public MediaVideoItem()
@@ -78,6 +78,7 @@ public class MediaVideoItem : MediaItem
         this.FirstWords = firstWords ?? throw new ArgumentNullException(nameof(firstWords));
 
         new MediaVideoItemValidator().ValidateAndThrow(this);
+        new LocationValidator().ValidateAndThrow(this.Location);
     }
 
     public string Reporter { get; private set; }

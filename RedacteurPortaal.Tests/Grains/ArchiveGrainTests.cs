@@ -1,4 +1,5 @@
-﻿using Orleans.TestingHost;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Orleans.TestingHost;
 using RedacteurPortaal.DomainModels.Archive;
 using RedacteurPortaal.DomainModels.Media;
 using RedacteurPortaal.Grains.GrainInterfaces;
@@ -8,21 +9,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Xunit;
 
-namespace RedacteurPortaal.Tests.Grains.Test;
+namespace RedacteurPortaal.Tests.Grains;
 
-[Collection("Col")]
+[TestClass]
 public class ArchiveGrainTests
 {
-    private readonly TestCluster _cluster;
+    private TestCluster _cluster;
 
-    public ArchiveGrainTests(ClusterFixture fixture)
+    [TestInitialize]
+    public void Initialize()
     {
-        _cluster = fixture.Cluster;
+        this._cluster = new ClusterFixture().Cluster;
     }
 
-    [Fact]
+
+    [TestMethod]
     public async Task CanAddArchiveCorrectly()
     {
         var guid = Guid.NewGuid();
@@ -34,13 +36,13 @@ public class ArchiveGrainTests
 
         var updatedArchive = await this._cluster.GrainFactory.GetGrain<IArchiveGrain>(guid).Get();
 
-        Assert.Equal(toSaveArchive.ArchivedDate, updatedArchive.ArchivedDate);
-        Assert.Equal(toSaveArchive.Title, updatedArchive.Title);
-        Assert.Equal(toSaveArchive.Label, updatedArchive.Label);
-        Assert.Equal(toSaveArchive.MediaAudioItems, updatedArchive.MediaAudioItems);
-        Assert.Equal(toSaveArchive.MediaVideoItems, updatedArchive.MediaVideoItems);
-        Assert.Equal(toSaveArchive.MediaPhotoItems, updatedArchive.MediaPhotoItems);
-        Assert.Equal(toSaveArchive.Scripts, updatedArchive.Scripts);
+        Assert.AreEqual(toSaveArchive.ArchivedDate, updatedArchive.ArchivedDate);
+        Assert.AreEqual(toSaveArchive.Title, updatedArchive.Title);
+        Assert.AreEqual(toSaveArchive.Label, updatedArchive.Label);
+        CollectionAssert.AreEqual(toSaveArchive.MediaAudioItems, updatedArchive.MediaAudioItems);
+        CollectionAssert.AreEqual(toSaveArchive.MediaVideoItems, updatedArchive.MediaVideoItems);
+        CollectionAssert.AreEqual(toSaveArchive.MediaPhotoItems, updatedArchive.MediaPhotoItems);
+        CollectionAssert.AreEqual(toSaveArchive.Scripts, updatedArchive.Scripts);
     }
 
 }

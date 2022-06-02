@@ -1,19 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.IO.Abstractions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using RedacteurPortaal.Api;
 using RedacteurPortaal.Data.Context;
 using RedacteurPortaal.Data.Models;
 using RedacteurPortaal.Helpers;
-using Xunit;
 
 namespace RedacteurPortaal.Tests.Api;
 
-[Collection("Col")]
+[TestClass]
 public class ExportPluginServiceTests
 {
-    [Fact]
+    [TestMethod]
     public void EmptyListWhenNoPlugins()
     {
         var dbContext = new Mock<DataContext>();
@@ -29,6 +29,6 @@ public class ExportPluginServiceTests
         // Verify that it was not added to the db.
         dbContext.Verify(x => x.PluginSettings.Add(It.IsAny<PluginSettings>()), Times.Never);
 
-        Assert.Empty(result);
+        CollectionAssert.AllItemsAreNotNull(result);
     }
 }

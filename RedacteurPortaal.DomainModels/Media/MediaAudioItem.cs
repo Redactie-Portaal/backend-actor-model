@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using RedacteurPortaal.DomainModels.Shared;
 using RedacteurPortaal.DomainModels.Validation.Media;
+using RedacteurPortaal.DomainModels.Validation.Shared;
 
 namespace RedacteurPortaal.DomainModels.Media;
 
@@ -47,6 +48,7 @@ public class MediaAudioItem : MediaItem
         this.ProgramName = programName ?? throw new ArgumentNullException(nameof(programName));
 
         new MediaAudioItemValidator().ValidateAndThrow(this);
+        new LocationValidator().ValidateAndThrow(this.Location);
     }
 
     // Delete deze comments als je deze class wilt gebruiken.

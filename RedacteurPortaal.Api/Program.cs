@@ -1,5 +1,6 @@
 using Mapster;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Orleans;
 using Orleans.Hosting;
 using RedacteurPortaal.Api;
@@ -88,6 +89,10 @@ await Host.CreateDefaultBuilder(args)
         {
             var connString = ctx.Configuration.GetConnectionString("DefaultConnection");
             options.UseNpgsql(connString);
+            options.ConfigureWarnings(x =>
+            {
+                x.Ignore(CoreEventId.ManyServiceProvidersCreatedWarning);
+            });
         });
 
         // migrate ef.
