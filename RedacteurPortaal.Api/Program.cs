@@ -1,4 +1,6 @@
+using Mapster;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Orleans;
 using Orleans.Hosting;
 using RedacteurPortaal.Api;
@@ -6,8 +8,10 @@ using RedacteurPortaal.Api.Middleware;
 using RedacteurPortaal.Data.Context;
 using RedacteurPortaal.DomainModels.Adress;
 using RedacteurPortaal.DomainModels.Archive;
+using RedacteurPortaal.DomainModels.Media;
 using RedacteurPortaal.DomainModels.NewsItem;
 using RedacteurPortaal.DomainModels.Profile;
+using RedacteurPortaal.DomainModels.Shared;
 using RedacteurPortaal.Grains.GrainInterfaces;
 using RedacteurPortaal.Grains.GrainServices;
 using RedacteurPortaal.Helpers;
@@ -74,15 +78,24 @@ await Host.CreateDefaultBuilder(args)
     {
         services.AddSingleton<FileSystemProvider>();
         services.AddScoped<IExportPluginService, ExportPluginService>();
-        services.AddScoped<IGrainManagementService<INewsItemGrain>,GrainManagementService<INewsItemGrain, NewsItemModel>>();
+        services.AddScoped<IGrainManagementService<INewsItemGrain>, GrainManagementService<INewsItemGrain, NewsItemModel>>();
         services.AddScoped<IGrainManagementService<IProfileGrain>, GrainManagementService<IProfileGrain, Profile>>();
         services.AddScoped<IGrainManagementService<IAddressGrain>, GrainManagementService<IAddressGrain, AddressModel>>();
+        services.AddScoped<IGrainManagementService<IContactGrain>, GrainManagementService<IContactGrain, Contact>>();
+        services.AddScoped<IGrainManagementService<IMediaAudioGrain>, GrainManagementService<IMediaAudioGrain, MediaAudioItem>>();
+        services.AddScoped<IGrainManagementService<IMediaVideoGrain>, GrainManagementService<IMediaVideoGrain, MediaVideoItem>>();
+        services.AddScoped<IGrainManagementService<IMediaPhotoGrain>, GrainManagementService<IMediaPhotoGrain, MediaPhotoItem>>();
+        services.AddScoped<IGrainManagementService<ILocationGrain>, GrainManagementService<ILocationGrain, Location>>();
         services.AddScoped<IGrainManagementService<IArchiveGrain>, GrainManagementService<IArchiveGrain, ArchiveModel>>();
 
         services.AddDbContext<DataContext>(options => 
         {
             var connString = ctx.Configuration.GetConnectionString("DefaultConnection");
             options.UseNpgsql(connString);
+            options.ConfigureWarnings(x =>
+            {
+                x.Ignore(CoreEventId.ManyServiceProvidersCreatedWarning);
+            });
         });
 
         // migrate ef.
@@ -96,6 +109,9 @@ await Host.CreateDefaultBuilder(args)
                 context.Database.Migrate();
             }
         }
+
+        TypeAdapterConfig.GlobalSettings.Default.MapToConstructor(true);
+
 #pragma warning restore ASP0000 // Do not call 'IServiceCollection.BuildServiceProvider' in 'ConfigureServices'
     })
       .UseSerilog((context, configuration) =>

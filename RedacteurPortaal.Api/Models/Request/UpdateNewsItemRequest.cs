@@ -17,9 +17,9 @@ public class UpdateNewsItemRequest
 
     public string Body { get; set; }
 
-    public List<ContactDto> ContactDetails { get; set; }
+    public List<UpdateContactRequest> ContactDetails { get; set; }
 
-    public LocationDto LocationDetails { get; set; }
+    public UpdateLocationRequest LocationDetails { get; set; }
 
     public DateTime ProductionDate { get; set; }
 
@@ -29,9 +29,9 @@ public class UpdateNewsItemRequest
 
     public Region Region { get; set; }
 
-    public List<MediaVideoItemDto> Videos { get; set; }
+    public UpdateMediaVideoItemRequest[] Videos { get; set; }
 
-    public List<MediaAudioItemDto> Audio { get; set; }
+    public UpdateMediaAudioItemRequest[] Audio { get; set; }
 
-    public List<MediaPhotoItemDto> Photos { get; set; }
+    public UpdateMediaPhotoItemRequest[] Photos { get; set; }
 }

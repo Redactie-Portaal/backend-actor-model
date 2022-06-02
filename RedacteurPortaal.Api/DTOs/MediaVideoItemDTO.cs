@@ -3,7 +3,7 @@
 namespace RedacteurPortaal.Api.DTOs
 {
     public class MediaVideoItemDto : MediaItemDto
-    {
+    {   
         public string Reporter { get; set; }
 
         public string Sound { get; set; }

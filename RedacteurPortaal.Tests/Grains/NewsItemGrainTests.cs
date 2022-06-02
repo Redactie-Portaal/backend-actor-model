@@ -1,4 +1,5 @@
-﻿using Orleans.TestingHost;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Orleans.TestingHost;
 using RedacteurPortaal.DomainModels.Media;
 using RedacteurPortaal.DomainModels.NewsItem;
 using RedacteurPortaal.DomainModels.Shared;
@@ -8,21 +9,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Xunit;
 
-namespace RedacteurPortaal.Tests.Grains.Test;
+namespace RedacteurPortaal.Tests.Grains;
 
-[Collection("Col")]
+[TestClass]
 public class NewsItemGrainTests
 {
-    private readonly TestCluster _cluster;
+    private TestCluster _cluster;
 
-    public NewsItemGrainTests(ClusterFixture fixture)
+    [TestInitialize]
+    public void Initialize()
     {
-        _cluster = fixture.Cluster;
+        this._cluster = new ClusterFixture().Cluster;
     }
 
-    [Fact]
+
+    [TestMethod]
     public async Task CanAddNewsItemCorrectly()
     {
         var guid = Guid.NewGuid();
@@ -32,17 +34,17 @@ public class NewsItemGrainTests
                                          Status.DONE,
                                          ApprovalState.PENDING,
                                          "Newsitem Author",
-                                         new FeedSource { },
+                                         new FeedSource(),
                                          "body",
-                                         new List<Contact>(),
-                                         new Location { },
+                                         new List<Contact> { new Contact(guid, "name", "email@email.com", "0612345678") },
+                                         new Location(guid, "Name", "City", "Province", "Street", "1000AB", 0, 90),
                                          DateTime.UtcNow,
                                          DateTime.UtcNow,
                                          Category.STORY,
                                          Region.LOCAL,
-                                         new List<MediaVideoItem>(),
-                                         new List<MediaAudioItem>(),
-                                         new List<MediaPhotoItem>());
+                                         new(),
+                                         new(),
+                                         new());
 
 
         var newsitemgrain = this._cluster.GrainFactory.GetGrain<INewsItemGrain>(guid);
@@ -51,8 +53,8 @@ public class NewsItemGrainTests
 
         var news = await newsitemgrain.Get();
 
-        Assert.Equal("Newsitem Title", news.Title);
-        Assert.Equal(Status.DONE, news.Status);
+        Assert.AreEqual("Newsitem Title", news.Title);
+        Assert.AreEqual(Status.DONE, news.Status);
     }
 
 }

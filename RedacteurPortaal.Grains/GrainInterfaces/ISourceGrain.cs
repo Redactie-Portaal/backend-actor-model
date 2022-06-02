@@ -4,5 +4,5 @@ namespace RedacteurPortaal.Grains.GrainInterfaces;
 
 public interface ISourceGrain : IManageableGrain<Source>
 {
-    Task Update(Source source);
+    Task<Source> Update(Source source);
 }

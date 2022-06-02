@@ -9,8 +9,8 @@ public class NewsItemDto
     public Guid Id { get; set; }
 
     public string? Title { get; set; }
-
-    public string? Status { get; set; }
+    
+    public Status? Status { get; set; }
 
     public string ApprovalStatus { get; set; }
   
@@ -24,7 +24,7 @@ public class NewsItemDto
 
     public LocationDto LocationDetails { get; set;  }
 
-    public DateTime? ProdutionDate { get; set; }
+    public DateTime? ProductionDate { get; set; }
 
     public DateTime? EndDate { get; set; }
 

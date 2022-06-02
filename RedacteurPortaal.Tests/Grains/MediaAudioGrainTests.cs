@@ -1,4 +1,5 @@
-﻿using Orleans.TestingHost;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Orleans.TestingHost;
 using RedacteurPortaal.DomainModels.Media;
 using RedacteurPortaal.DomainModels.NewsItem;
 using RedacteurPortaal.DomainModels.Shared;
@@ -9,21 +10,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Xunit;
 
-namespace RedacteurPortaal.Tests.Grains.Test;
+namespace RedacteurPortaal.Tests.Grains;
 
-[Collection("Col")]
+[TestClass]
 public class MediaAudioGrainTests
 {
-    private readonly TestCluster _cluster;
+    private TestCluster _cluster;
 
-    public MediaAudioGrainTests(ClusterFixture fixture)
+    [TestInitialize]
+    public void Initialize()
     {
-        _cluster = fixture.Cluster;
+        this._cluster = new ClusterFixture().Cluster;
     }
 
-    [Fact]
+
+    [TestMethod]
     public async Task CanAddMediaAudioItemCorrectly()
     {   
         var guid = Guid.NewGuid();
@@ -37,7 +39,7 @@ public class MediaAudioGrainTests
                                                       "Lastwords",
                                                       "Proxyfile",
                                                       "Presentation",
-                                                      new Location(),
+                                                      new Location(guid, "Name", "City", "Province", "Street", "1000AB", 0, 90),
                                                       "Format",
                                                       new Uri("https://microsoft.com"),
                                                       TimeSpan.Zero,
@@ -51,8 +53,8 @@ public class MediaAudioGrainTests
 
         var mediaAudioItem = await mediaAudioGrain.Get();
 
-        Assert.Equal("Title", mediaAudioItem.Title);
-        Assert.Equal(guid, mediaAudioItem.Id);
+        Assert.AreEqual("Title", mediaAudioItem.Title);
+        Assert.AreEqual(guid, mediaAudioItem.Id);
     }
 
 }

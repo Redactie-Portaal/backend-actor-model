@@ -1,4 +1,5 @@
-﻿using RedacteurPortaal.DomainModels.Media;
+﻿using RedacteurPortaal.Api.DTOs;
+using RedacteurPortaal.DomainModels.Media;
 
 namespace RedacteurPortaal.Api.DTOs
 {

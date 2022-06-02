@@ -7,4 +7,12 @@ public static class AsyncLinq
     {
         return await Task.WhenAll(source.Select(async s => await method(s)));
     }
+
+    public static IEnumerable<T> DiscardNullValues<T>(this IEnumerable<T?> nullable)
+    {
+        foreach (var item in nullable)
+        {
+            if (item is not null) yield return item;
+        }
+    }
 }

@@ -15,14 +15,12 @@ public class ExportDestinationController : Controller
     private readonly IExportPluginService pluginService;
     private readonly IClusterClient clusterClient;
     private readonly DataContext context;
-    private readonly ILogger logger;
 
-    public ExportDestinationController(IExportPluginService pluginService, IClusterClient clusterClient, DataContext context, ILogger<ExportDestinationController> logger)
+    public ExportDestinationController(IExportPluginService pluginService, IClusterClient clusterClient, DataContext context)
     {
         this.pluginService = pluginService;
         this.clusterClient = clusterClient;
         this.context = context;
-        this.logger = logger;
     }
 
     [HttpGet]

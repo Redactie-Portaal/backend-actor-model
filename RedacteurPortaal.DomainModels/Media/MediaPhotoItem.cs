@@ -1,4 +1,7 @@
-﻿using RedacteurPortaal.DomainModels.Shared;
+﻿using FluentValidation;
+using RedacteurPortaal.DomainModels.Shared;
+using RedacteurPortaal.DomainModels.Validation.Media;
+using RedacteurPortaal.DomainModels.Validation.Shared;
 
 namespace RedacteurPortaal.DomainModels.Media;
 
@@ -36,7 +39,9 @@ public class MediaPhotoItem : MediaItem
             format,
             mediaLocation)
     {
-        this.Image = image;
+        this.Image = image ?? throw new ArgumentNullException(nameof(image));
+        new MediaPhotoItemValidator().ValidateAndThrow(this);
+        new LocationValidator().ValidateAndThrow(this.Location);
     }
 
     public string Image { get; private set; }

@@ -23,7 +23,9 @@ public class SourceGrain : Grain, ISourceGrain
 
     public Task<Source> Get()
     {
-        return Task.FromResult(this.source.State);
+        var state = this.source.State;
+        state.Id = this.GetGrainIdentity().PrimaryKey;
+        return Task.FromResult(state);
     }
 
     public async Task Delete()
@@ -31,9 +33,10 @@ public class SourceGrain : Grain, ISourceGrain
         await this.source.ClearStateAsync();
     }
 
-    public async Task Update(Source source)
+    public async Task<Source> Update(Source source)
     {
         this.source.State = source;
         await this.source.WriteStateAsync();
+        return await this.Get();
     }
 }

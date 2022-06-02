@@ -13,7 +13,7 @@ namespace RedacteurPortaal.Data.Context
 
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
-
+            
         }
 
         public DataContext()

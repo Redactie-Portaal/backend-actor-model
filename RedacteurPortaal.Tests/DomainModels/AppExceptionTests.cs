@@ -4,37 +4,37 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RedacteurPortaal.DomainModels;
-using Xunit;
 
-namespace RedacteurPortaal.Tests.DomainModels
+namespace RedacteurPortaal.Tests.DomainModels;
+
+[TestClass]
+public class AppExceptionTests
 {
-    public class AppExceptionTests
+    [TestMethod]
+    public void EmptyCtorBadRequest()
     {
-        [Fact]
-        public void EmptyCtorBadRequest()
-        {
-            var exc = new AppException();
+        var exc = new AppException();
 
-            Assert.Equal(HttpStatusCode.BadRequest, exc.StatusCode);
-        }
+        Assert.AreEqual(HttpStatusCode.BadRequest, exc.StatusCode);
+    }
 
-        [Fact]
-        public void CtorSetsMessage()
-        {
-            var exc = new AppException("Foo");
+    [TestMethod]
+    public void CtorSetsMessage()
+    {
+        var exc = new AppException("Foo");
 
-            Assert.Equal(HttpStatusCode.BadRequest, exc.StatusCode);
-            Assert.Equal("Foo", exc.Message);
-        }
+        Assert.AreEqual(HttpStatusCode.BadRequest, exc.StatusCode);
+        Assert.AreEqual("Foo", exc.Message);
+    }
 
-        [Fact]
-        public void CtorSetsMessageAndCode()
-        {
-            var exc = new AppException("Foo", HttpStatusCode.Accepted);
+    [TestMethod]
+    public void CtorSetsMessageAndCode()
+    {
+        var exc = new AppException("Foo", HttpStatusCode.Accepted);
 
-            Assert.Equal(HttpStatusCode.Accepted, exc.StatusCode);
-            Assert.Equal("Foo", exc.Message);
-        }
+        Assert.AreEqual(HttpStatusCode.Accepted, exc.StatusCode);
+        Assert.AreEqual("Foo", exc.Message);
     }
 }
