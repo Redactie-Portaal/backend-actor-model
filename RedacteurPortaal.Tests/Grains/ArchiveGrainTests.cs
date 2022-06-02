@@ -35,6 +35,7 @@ public class ArchiveGrainTests
 
         var updatedArchive = await this._cluster.GrainFactory.GetGrain<IArchiveGrain>(guid).Get();
 
+        Assert.NotEqual("00000000-0000-0000-0000-000000000000", Convert.ToString(updatedArchive.Id));
         Assert.Equal(toSaveArchive.ArchivedDate, updatedArchive.ArchivedDate);
         Assert.Equal(toSaveArchive.Title, updatedArchive.Title);
         Assert.Equal(toSaveArchive.Label, updatedArchive.Label);
@@ -55,7 +56,14 @@ public class ArchiveGrainTests
 
         var archiveInGrain = await this._cluster.GrainFactory.GetGrain<IArchiveGrain>(guid).Get();
 
-        Assert.NotNull(archiveInGrain);
+        Assert.NotEqual("00000000-0000-0000-0000-000000000000", Convert.ToString(archiveInGrain.Id));
+        Assert.NotNull(archiveInGrain.Title);
+        Assert.NotNull(archiveInGrain.Label);
+        Assert.NotNull(archiveInGrain.NewsItems);
+        Assert.NotNull(archiveInGrain.Scripts);
+        Assert.NotNull(archiveInGrain.MediaAudioItems);
+        Assert.NotNull(archiveInGrain.MediaVideoItems);
+        Assert.NotNull(archiveInGrain.MediaPhotoItems);
     }
 
     [Fact]
@@ -71,11 +79,15 @@ public class ArchiveGrainTests
 
         await archiveGrain.Update(newerArchive);
 
-
         var archiveInGrain = await this._cluster.GrainFactory.GetGrain<IArchiveGrain>(guid).Get();
         Assert.NotEqual(toSaveArchive.Title, archiveInGrain.Title);
         Assert.NotEqual(toSaveArchive.Label, archiveInGrain.Label);
-
+        Assert.NotEqual(toSaveArchive.NewsItems, archiveInGrain.NewsItems);
+        Assert.NotEqual(toSaveArchive.Scripts, archiveInGrain.Scripts);
+        Assert.NotEqual(toSaveArchive.ArchivedDate, archiveInGrain.ArchivedDate);
+        Assert.NotEqual(toSaveArchive.MediaAudioItems, archiveInGrain.MediaAudioItems);
+        Assert.NotEqual(toSaveArchive.MediaVideoItems, archiveInGrain.MediaVideoItems);
+        Assert.NotEqual(toSaveArchive.MediaPhotoItems, archiveInGrain.MediaPhotoItems);
     }
 
     [Fact]
@@ -93,5 +105,10 @@ public class ArchiveGrainTests
         Assert.Equal("00000000-0000-0000-0000-000000000000", Convert.ToString(archiveInGrain.Id));
         Assert.Null(archiveInGrain.Title);
         Assert.Null(archiveInGrain.Label);
+        Assert.Null(archiveInGrain.NewsItems);
+        Assert.Null(archiveInGrain.Scripts);
+        Assert.Null(archiveInGrain.MediaAudioItems);
+        Assert.Null(archiveInGrain.MediaVideoItems);
+        Assert.Null(archiveInGrain.MediaPhotoItems);
     }
 }

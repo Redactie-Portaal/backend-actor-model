@@ -10,6 +10,7 @@ using RedacteurPortaal.Api.Models.Request;
 using Mapster;
 using RedacteurPortaal.DomainModels.NewsItem;
 using RedacteurPortaal.Helpers;
+using RedacteurPortaal.Api.Converters;
 
 namespace RedacteurPortaal.Api.Controllers;
 
@@ -18,7 +19,7 @@ namespace RedacteurPortaal.Api.Controllers;
 public class ArchiveController : Controller
 {
     private readonly IGrainManagementService<IArchiveGrain> grainService;
-
+    
     public ArchiveController(IGrainManagementService<IArchiveGrain> grainService)
     {
         this.grainService = grainService;
@@ -30,15 +31,13 @@ public class ArchiveController : Controller
         TypeAdapterConfig<ArchiveModel, ArchiveDto>
      .NewConfig()
      .Map(dest => dest.MediaAudioItems,
-         src => src.MediaAudioItems.Select(x => new MediaAudioItemDto 
-         {
+         src => src.MediaAudioItems.Select(x => new MediaAudioItemDto {
              DurationSeconds = Convert.ToInt32(x.Duration.TotalSeconds),
              FirstWords = x.FirstWords,
              ProgramName = x.ProgramName,
              Weather = x.Weather,
          }).ToList()
-         ).Map(dest => dest.MediaPhotoItems, src => src.MediaPhotoItems.Select(x => new MediaPhotoItemDto 
-         {
+         ).Map(dest => dest.MediaPhotoItems, src => src.MediaPhotoItems.Select(x => new MediaPhotoItemDto {
              Camera = x.Camera,
              Folder = x.Folder,
              Image = x.Image,
@@ -51,8 +50,7 @@ public class ArchiveController : Controller
              RepublishDate = x.RepublishDate,
              Title = x.Title
          }).ToList()
-         ).Map(dest => dest.MediaVideoItems, src => src.MediaVideoItems.Select(x => new MediaVideoItemDto 
-         {
+         ).Map(dest => dest.MediaVideoItems, src => src.MediaVideoItems.Select(x => new MediaVideoItemDto {
              Camera = x.Camera,
              ProgramDate = x.ProgramDate,
              ProgramName = x.ProgramName,
@@ -60,23 +58,23 @@ public class ArchiveController : Controller
              RepublishDate = x.RepublishDate,
              Title = x.Title,
              Weather = x.Weather
-         }).ToList()).Map(dest => dest.NewsItems, src => src.NewsItems.Select(x => new NewsItemDto 
-         {
+         }).ToList())
+         .Map(dest => dest.NewsItems, src => src.NewsItems.Select(x => new NewsItemDto {
              Id = x.Id,
              ApprovalStatus = x.ApprovalState.ToString(),
              Author = x.Author,
              Category = x.Category,
-             Audio = new(),
-             Photos = new(),
-             Videos = new(),
+             Audio = new List<MediaAudioItemDto> { x.Audio.Adapt<MediaAudioItemDto>() },
+             Photos = new List<MediaPhotoItemDto> { x.Audio.Adapt<MediaPhotoItemDto>() },
+             Videos = new List<MediaVideoItemDto> { x.Audio.Adapt<MediaVideoItemDto>() },
              Title = x.Title,
              Body = x.Body,
-             ContactDetails = new List<ContactDto>(),
+             ContactDetails = new List<ContactDto> { x.ContactDetails.Adapt<ContactDto>() },
              EndDate = x.EndDate,
              LocationDetails = new LocationDto { City = x.LocationDetails.City, Latitude = x.LocationDetails.Latitude, Longitude = x.LocationDetails.Longitude, Street = x.LocationDetails.Street },
-             ProdutionDate = new DateTime(),
+             ProdutionDate = x.ProductionDate,
              Region = x.Region,
-             Source = new FeedSourceDto { PlaceHolder = x.Source.PlaceHolder  },
+             Source = x.Source.Adapt<FeedSourceDto>(),
              Status = x.Status.ToString()
          }).ToList());
 
@@ -84,13 +82,13 @@ public class ArchiveController : Controller
 
         var response = (await grain.SelectAsync(async x => await
         x.Get())).AsQueryable().ProjectToType<ArchiveDto>(null).ToList();
-        
+
         return this.Ok(response);
     }
 
     [HttpGet]
     [Route("{archiveId}", Name = nameof(GetArchiveById))]
-    public async Task<ActionResult<ArchiveModel>> GetArchiveById(Guid archiveId)
+    public async Task<ActionResult<ArchiveModel>> GetArchiveById([FromRoute] Guid archiveId)
     {
         var archive = await this.grainService.GetGrain(archiveId);
         var response = await archive.Get();
@@ -185,7 +183,54 @@ public class ArchiveController : Controller
         TypeAdapterConfig<ArchiveDto, ArchiveModel>
             .NewConfig()
             .Map(dest => dest.Id,
-                src => newguid);
+                src => newguid)
+     .Map(dest => dest.MediaAudioItems,
+         src => src.MediaAudioItems.Select(x => new MediaAudioItemDto {
+             DurationSeconds = Convert.ToInt32(x.DurationSeconds),
+             FirstWords = x.FirstWords,
+             ProgramName = x.ProgramName,
+             Weather = x.Weather,
+         }).ToList()
+         ).Map(dest => dest.MediaPhotoItems, src => src.MediaPhotoItems.Select(x => new MediaPhotoItemDto {
+             Camera = x.Camera,
+             Folder = x.Folder,
+             Image = x.Image,
+             Format = x.Format,
+             Id = x.Id,
+             LastWords = x.LastWords,
+             Location = new LocationDto { City = x.Location.City, Latitude = x.Location.Latitude, Longitude = x.Location.Longitude, Street = x.Location.Street },
+             Presentation = x.Presentation,
+             ProxyFile = x.ProxyFile,
+             RepublishDate = x.RepublishDate,
+             Title = x.Title
+         }).ToList()
+         ).Map(dest => dest.MediaVideoItems, src => src.MediaVideoItems.Select(x => new MediaVideoItemDto {
+             Camera = x.Camera,
+             ProgramDate = x.ProgramDate,
+             ProgramName = x.ProgramName,
+             ProxyFile = x.ProxyFile,
+             RepublishDate = x.RepublishDate,
+             Title = x.Title,
+             Weather = x.Weather
+         }).ToList())
+         .Map(dest => dest.NewsItems, src => src.NewsItems.Select(x => new NewsItemDto {
+             Id = x.Id,
+             ApprovalStatus = x.ApprovalStatus,
+             Author = x.Author,
+             Category = x.Category,
+             Audio = new List<MediaAudioItemDto> { x.Audio.Adapt<MediaAudioItemDto>() },
+             Photos = new List<MediaPhotoItemDto> { x.Audio.Adapt<MediaPhotoItemDto>() },
+             Videos = new List<MediaVideoItemDto> { x.Audio.Adapt<MediaVideoItemDto>() },
+             Title = x.Title,
+             Body = x.Body,
+             ContactDetails = new List<ContactDto> { x.ContactDetails.Adapt<ContactDto>() },
+             EndDate = x.EndDate,
+             LocationDetails = new LocationDto { City = x.LocationDetails.City, Latitude = x.LocationDetails.Latitude, Longitude = x.LocationDetails.Longitude, Street = x.LocationDetails.Street },
+             ProdutionDate = x.ProdutionDate,
+             Region = x.Region,
+             Source = x.Source.Adapt<FeedSourceDto>(),
+             Status = x.Status.ToString()
+         }).ToList()); ;
 
         var archive = archiveDTO.Adapt<ArchiveModel>();
         archive.Id = newguid;
@@ -196,16 +241,12 @@ public class ArchiveController : Controller
 
     [HttpPost]
     [Route("{archiveId}/VideoItems")]
-    public async Task<IActionResult> AddVideoItem(Guid archiveId, MediaVideoItemDto videoItem)
+    public async Task<ActionResult<MediaVideoItemDto>> AddVideoItem([FromRoute] Guid archiveId, [FromBody] MediaVideoItemDto videoItem)
     {
         var newguid = Guid.NewGuid();
-        TypeAdapterConfig<MediaVideoItemDto, MediaVideoItem>
-            .NewConfig()
-            .Map(dest => dest.Id,
-                src => newguid);
-        
-        var archivedVideoItem = videoItem.Adapt<MediaVideoItem>();
-        
+
+        var archivedVideoItem = MediaItemDTOConverter.ConvertMediaVideoDTO(videoItem,new Guid());
+        archivedVideoItem.Id = newguid;
         var grain = await this.grainService.GetGrain(archiveId);
         await grain.AddVideoItem(archivedVideoItem);
         return this.Ok(await grain.Get());
@@ -213,7 +254,7 @@ public class ArchiveController : Controller
 
     [HttpPost]
     [Route("{archiveId}/AudioItems")]
-    public async Task<IActionResult> AddAudioItems(Guid archiveId, MediaAudioItemDto audioItem)
+    public async Task<IActionResult> AddAudioItems([FromRoute] Guid archiveId, [FromBody] MediaAudioItemDto audioItem)
     {
         var newguid = Guid.NewGuid();
         TypeAdapterConfig<MediaAudioItemDto, MediaAudioItem>
@@ -230,7 +271,7 @@ public class ArchiveController : Controller
 
     [HttpPost]
     [Route("{archiveId}/PhotoItems")]
-    public async Task<IActionResult> AddPhotoItem(Guid archiveId, MediaPhotoItemDto photoItem)
+    public async Task<IActionResult> AddPhotoItem([FromRoute] Guid archiveId, [FromBody] MediaPhotoItemDto photoItem)
     {
         var newguid = Guid.NewGuid();
         TypeAdapterConfig<MediaPhotoItemDto, MediaPhotoItem>
@@ -247,7 +288,7 @@ public class ArchiveController : Controller
 
     [HttpPost]
     [Route("{archiveId}/NewsItems")]
-    public async Task<IActionResult> AddNewsItems(Guid archiveId, NewsItemDto newsItem)
+    public async Task<IActionResult> AddNewsItems([FromRoute] Guid archiveId, [FromBody] NewsItemDto newsItem)
     {
 
         Guid newguid = Guid.NewGuid();
@@ -256,11 +297,6 @@ public class ArchiveController : Controller
             .NewConfig()
             .Map(dest => dest.Id,
                 src => newguid);
-
-        TypeAdapterConfig<MediaVideoItemDto, MediaVideoItem>
-            .NewConfig()
-            .Map(dest => dest.Duration,
-                  src => TimeSpan.FromSeconds(src.DurationSeconds));
 
         var grain = await this.grainService.GetGrain(archiveId);
         var update = newsItem.Adapt<NewsItemModel>();
@@ -279,7 +315,7 @@ public class ArchiveController : Controller
 
     [HttpDelete]
     [Route("{archiveId}/VideoItems/{videoItemGuid}")]
-    public async Task<IActionResult> DeleteVideoItem(Guid archiveId, Guid videoItemGuid)
+    public async Task<IActionResult> DeleteVideoItem([FromRoute] Guid archiveId, [FromRoute] Guid videoItemGuid)
     {
         var grain = await this.grainService.GetGrain(archiveId);
         await grain.DeleteVideoItem(videoItemGuid);
@@ -288,7 +324,7 @@ public class ArchiveController : Controller
 
     [HttpDelete]
     [Route("{archiveId}/AudioItems/{audioItemGuid}")]
-    public async Task<IActionResult> DeleteAudioItem(Guid archiveId, Guid audioItemGuid)
+    public async Task<IActionResult> DeleteAudioItem([FromRoute] Guid archiveId, [FromRoute] Guid audioItemGuid)
     {
         var grain = await this.grainService.GetGrain(archiveId);
         await grain.DeleteAudioItem(audioItemGuid);
@@ -297,7 +333,7 @@ public class ArchiveController : Controller
 
     [HttpDelete]
     [Route("{archiveId}/PhotoItems/{photoItemGuid}")]
-    public async Task<IActionResult> DeletePhotoItem(Guid archiveId, Guid photoItemGuid)
+    public async Task<IActionResult> DeletePhotoItem([FromRoute] Guid archiveId, [FromRoute] Guid photoItemGuid)
     {
         var grain = await this.grainService.GetGrain(archiveId);
         await grain.DeletePhotoItem(photoItemGuid);
@@ -306,7 +342,7 @@ public class ArchiveController : Controller
 
     [HttpDelete]
     [Route("{archiveId}/Stories/{newsItemGuid}")]
-    public async Task<IActionResult> DeleteNewsItem(Guid archiveId, Guid newsItemGuid)
+    public async Task<IActionResult> DeleteNewsItem([FromRoute] Guid archiveId, [FromRoute] Guid newsItemGuid)
     {
         var grain = await this.grainService.GetGrain(archiveId);
         await grain.DeleteNewsItem(newsItemGuid);
@@ -315,7 +351,7 @@ public class ArchiveController : Controller
 
     [HttpPatch]
     [Route("{archiveId}")]
-    public async Task<IActionResult> UpdateArchive(Guid archiveId, UpdateArchiveRequest updateArchiveRequest)
+    public async Task<IActionResult> UpdateArchive([FromRoute] Guid archiveId, [FromBody] UpdateArchiveRequest updateArchiveRequest)
     {
         TypeAdapterConfig<UpdateArchiveRequest, ArchiveModel>
        .NewConfig()
