@@ -46,9 +46,9 @@ namespace RedacteurPortaal.Api.Converters
             return x;
         }
 
-        public static MediaAudioItem ConvertMediaAudioDTO(this MediaVideoItemDto item)
+        public static MediaAudioItem ConvertMediaAudioDTO(this MediaAudioItemDto item, Guid id)
         {
-            var x = new MediaAudioItem(Guid.Empty,
+            var x = new MediaAudioItem(id,
                                            item.Title,
                                            item.Folder,
                                            item.RepublishDate,
@@ -68,9 +68,9 @@ namespace RedacteurPortaal.Api.Converters
             return x;
         }
 
-        public static MediaPhotoItem ConvertMediaPhotoDTO(this MediaPhotoItemDto item)
+        public static MediaPhotoItem ConvertMediaPhotoDTO(this MediaPhotoItemDto item, Guid id)
         {
-            var x = new MediaPhotoItem(Guid.Empty,
+            var x = new MediaPhotoItem(id,
                                        item.Title,
                                        item.Folder,
                                        item.RepublishDate,

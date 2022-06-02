@@ -19,7 +19,7 @@ namespace RedacteurPortaal.Api.Controllers;
 public class ArchiveController : Controller
 {
     private readonly IGrainManagementService<IArchiveGrain> grainService;
-    
+
     public ArchiveController(IGrainManagementService<IArchiveGrain> grainService)
     {
         this.grainService = grainService;
@@ -28,7 +28,7 @@ public class ArchiveController : Controller
     [HttpGet]
     public async Task<ActionResult<ArchiveModel>> GetAllArchives()
     {
-        var grain = await this.grainService.GetGrains();
+       var grain = await this.grainService.GetGrains();
 
         var response = (await grain.SelectAsync(async x => await
         x.Get())).AsQueryable().ProjectToType<ArchiveDto>(null).ToList();
@@ -130,13 +130,7 @@ public class ArchiveController : Controller
     public async Task<ActionResult<ArchiveModel>> CreateArchive([FromBody] ArchiveDto archiveDTO)
     {
         var newguid = Guid.NewGuid();
-        TypeAdapterConfig<ArchiveDto, ArchiveModel>
-            .NewConfig()
-            .Map(dest => dest.Id,
-                src => newguid);
-
-        var archive = archiveDTO.Adapt<ArchiveModel>();
-        archive.Id = newguid;
+        var archive = ArchiveDTOConverter.ConvertArchiveDTO(archiveDTO, newguid);
         var grain = await this.grainService.CreateGrain(archive.Id);
         await grain.CreateArchive(archive);
         return this.CreatedAtRoute(nameof(this.GetArchiveById), new { archiveId = newguid }, archive);
@@ -147,7 +141,6 @@ public class ArchiveController : Controller
     public async Task<ActionResult<MediaVideoItemDto>> AddVideoItem([FromRoute] Guid archiveId, [FromBody] MediaVideoItemDto videoItem)
     {
         var newguid = Guid.NewGuid();
-
         var archivedVideoItem = MediaItemDTOConverter.ConvertMediaVideoDTO(videoItem, newguid);
         var grain = await this.grainService.GetGrain(archiveId);
         await grain.AddVideoItem(archivedVideoItem);
@@ -159,12 +152,7 @@ public class ArchiveController : Controller
     public async Task<IActionResult> AddAudioItems([FromRoute] Guid archiveId, [FromBody] MediaAudioItemDto audioItem)
     {
         var newguid = Guid.NewGuid();
-        TypeAdapterConfig<MediaAudioItemDto, MediaAudioItem>
-            .NewConfig()
-            .Map(dest => dest.Id,
-                src => newguid);
-
-        var archivedAudioItem = audioItem.Adapt<MediaAudioItem>();
+        var archivedAudioItem = MediaItemDTOConverter.ConvertMediaAudioDTO(audioItem, newguid);
 
         var grain = await this.grainService.GetGrain(archiveId);
         await grain.AddAudioItem(archivedAudioItem);
@@ -176,12 +164,7 @@ public class ArchiveController : Controller
     public async Task<IActionResult> AddPhotoItem([FromRoute] Guid archiveId, [FromBody] MediaPhotoItemDto photoItem)
     {
         var newguid = Guid.NewGuid();
-        TypeAdapterConfig<MediaPhotoItemDto, MediaPhotoItem>
-            .NewConfig()
-            .Map(dest => dest.Id,
-                src => newguid);
-
-        var archivedPhotoItem = photoItem.Adapt<MediaPhotoItem>();
+        var archivedPhotoItem = MediaItemDTOConverter.ConvertMediaPhotoDTO(photoItem, newguid);
 
         var grain = await this.grainService.GetGrain(archiveId);
         await grain.AddPhotoItem(archivedPhotoItem);

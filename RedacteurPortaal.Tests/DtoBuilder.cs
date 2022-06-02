@@ -25,7 +25,7 @@ public static class DtoBuilder
                     LastWords = "Last Words 1",
                     ProxyFile = "ProxyFile 1",
                     Presentation = "Presentation 1",
-                    Location = new LocationDto() { Id = Guid.NewGuid(), Name = "Location 1", City = "City 1", Province = "Province 1", Latitude = 1, Longitude = 1, Street = "Street", Zip = "ZipCode" },
+                    Location = new LocationDto() { Id = Guid.NewGuid(), Name = "Location 1", City = "City 1", Province = "Province 1", Latitude = 1, Longitude = 1, Street = "Street", Zip = "5050AB" },
                     Format = "Format 1",
                     MediaLocation = new Uri("http://www.google.com"),
                     Image = "Image 1",
@@ -41,7 +41,7 @@ public static class DtoBuilder
                     LastWords = "Last Words 1",
                     ProxyFile = "ProxyFile 1",
                     Presentation = "Presentation 1",
-                    Location = new LocationDto() { Id = Guid.NewGuid(), Name = "Location 1", City = "City 1", Province = "Province 1", Latitude = 1, Longitude = 1, Street = "Street", Zip = "ZipCode" },
+                    Location = new LocationDto() { Id = Guid.NewGuid(), Name = "Location 1", City = "City 1", Province = "Province 1", Latitude = 1, Longitude = 1, Street = "Street", Zip = "5050AB" },
                     Format = "Format 1",
                     MediaLocation = new Uri("http://www.google.com"),
                     Reporter = "Reporter 1",
@@ -55,7 +55,7 @@ public static class DtoBuilder
                     ItemName = "Item Name 1",
                     EPG = "EPG 1",
                     DurationSeconds = 1,
-                    ArchiveMaterial = "",
+                    ArchiveMaterial = "archiveMaterials",
                     Weather = RedacteurPortaal.DomainModels.Media.Weather.SUNNY,
                     Producer = "Producer 1",
                     Director = "Director 1",
@@ -78,7 +78,7 @@ public static class DtoBuilder
                     LastWords = "Last Words 1",
                     ProxyFile = "ProxyFile 1",
                     Presentation = "Presentation 1",
-                    Location = new LocationDto() { Id = Guid.NewGuid(), Name = "Location 1", City = "City 1", Province = "Province 1", Latitude = 1, Longitude = 1, Street = "Street", Zip = "ZipCode" },
+                    Location = new LocationDto() { Id = Guid.NewGuid(), Name = "Location 1", City = "City 1", Province = "Province 1", Latitude = 1, Longitude = 1, Street = "Street", Zip = "5050AB" },
                     Format = "Format 1",
                     MediaLocation = new Uri("http://www.google.com"),
                     Weather = RedacteurPortaal.DomainModels.Media.Weather.SUNNY,
@@ -86,7 +86,7 @@ public static class DtoBuilder
             },
             NewsItems = new(),
             ArchivedDate = DateTime.Now,
-            Scripts = new() {"script 1", "script 2" },
+            Scripts = new() { "script 1", "script 2" },
         };
     }
 
@@ -105,7 +105,7 @@ public static class DtoBuilder
                     LastWords = "Last Words 1",
                     ProxyFile = "ProxyFile 1",
                     Presentation = "Presentation 1",
-                    Location = new LocationDto() { Id = Guid.NewGuid(), Name = "Location 1", City = "City 1", Province = "Province 1", Latitude = 1, Longitude = 1, Street = "Street", Zip = "ZipCode" },
+                    Location = new LocationDto() { Id = Guid.NewGuid(), Name = "Location 1", City = "City 1", Province = "Province 1", Latitude = 1, Longitude = 1, Street = "Street", Zip = "5050AB" },
                     Format = "Format 1",
                     MediaLocation = new Uri("http://www.google.com"),
                     Image = "Image 1",
@@ -121,7 +121,7 @@ public static class DtoBuilder
                     LastWords = "Last Words 1",
                     ProxyFile = "ProxyFile 1",
                     Presentation = "Presentation 1",
-                    Location = new LocationDto() { Id = Guid.NewGuid(), Name = "Location 1", City = "City 1", Province = "Province 1", Latitude = 1, Longitude = 1, Street = "Street", Zip = "ZipCode" },
+                    Location = new LocationDto() { Id = Guid.NewGuid(), Name = "Location 1", City = "City 1", Province = "Province 1", Latitude = 1, Longitude = 1, Street = "Street", Zip = "5050AB" },
                     Format = "Format 1",
                     MediaLocation = new Uri("http://www.google.com"),
                     Reporter = "Reporter 1",
@@ -135,7 +135,7 @@ public static class DtoBuilder
                     ItemName = "Item Name 1",
                     EPG = "EPG 1",
                     DurationSeconds = 1,
-                    ArchiveMaterial = "",
+                    ArchiveMaterial = "archivematerial",
                     Weather = RedacteurPortaal.DomainModels.Media.Weather.SUNNY,
                     Producer = "Producer 1",
                     Director = "Director 1",
@@ -158,7 +158,7 @@ public static class DtoBuilder
                     LastWords = "Last Words 1",
                     ProxyFile = "ProxyFile 1",
                     Presentation = "Presentation 1",
-                    Location = new LocationDto() { Id = Guid.NewGuid(), Name = "Location 1", City = "City 1", Province = "Province 1", Latitude = 1, Longitude = 1, Street = "Street", Zip = "ZipCode" },
+                    Location = new LocationDto() { Id = Guid.NewGuid(), Name = "Location 1", City = "City 1", Province = "Province 1", Latitude = 1, Longitude = 1, Street = "Street", Zip = "5050AB" },
                     Format = "Format 1",
                     MediaLocation = new Uri("http://www.google.com"),
                     Weather = RedacteurPortaal.DomainModels.Media.Weather.SUNNY,
@@ -178,8 +178,7 @@ public static class DtoBuilder
             Region = Region.LOCAL,
             Photos = new(),
             Videos = new(),
-            Source = new FeedSourceDto()
-            {
+            Source = new FeedSourceDto() {
                 PlaceHolder = "foo",
             },
             Status = Status.DONE,
@@ -200,7 +199,7 @@ public static class DtoBuilder
                 Name = "foo",
                 Province = "foo",
                 Street = "foo",
-                Zip = "1000AB",
+                Zip = "5087BB",
             },
             ProductionDate = DateTime.Now,
         };
@@ -209,22 +208,20 @@ public static class DtoBuilder
     {
         return new UpdateNewsItemRequest() {
             Author = "Author1",
-            Audio = new UpdateMediaAudioItemRequest[1],
+            Audio = Array.Empty<UpdateMediaAudioItemRequest>(),
             Body = "foo1",
             Category = Category.NEWS,
             Region = Region.LOCAL,
-            Photos = new UpdateMediaPhotoItemRequest[1],
-            Videos = new UpdateMediaVideoItemRequest[1],
-            Source = new FeedSourceDto()
-            {
+            Photos = Array.Empty<UpdateMediaPhotoItemRequest>(),
+            Videos = Array.Empty<UpdateMediaVideoItemRequest>(),
+            Source = new FeedSourceDto() {
                 PlaceHolder = "foo1",
             },
             Status = Status.DONE,
             Title = "title1",
             ContactDetails = new List<UpdateContactRequest>(),
             EndDate = DateTime.Now,
-            LocationDetails = new UpdateLocationRequest()
-            {
+            LocationDetails = new UpdateLocationRequest() {
                 City = "foo1",
                 Latitude = 51,
                 Longitude = 51,
@@ -250,19 +247,6 @@ public static class DtoBuilder
             },
             LastOnline = DateTime.Now,
             ProfilePicture = "base64"
-        };
-    }
-
-    public static AddressDTO BuildGetAddressRequest()
-    {
-        return new AddressDTO() {
-            Id = Guid.NewGuid(),
-            Address = "FooStreet",
-            Webpage = "www.foo.nl",
-            CompanyName = "FooBar",
-            EmailAddress = "foo@gmail.com",
-            PhoneNumber = "0640778812",
-            PostalCode = "5087BB"
         };
     }
 
@@ -316,7 +300,7 @@ public static class DtoBuilder
             LastWords = "Last Words 1",
             ProxyFile = "ProxyFile 1",
             Presentation = "Presentation 1",
-            Location = new LocationDto() { Id = Guid.NewGuid(), Name = "Location 1", City = "City 1", Province = "Province 1", Latitude = 1, Longitude = 1, Street = "Street", Zip = "ZipCode" },
+            Location = new LocationDto() { Id = Guid.NewGuid(), Name = "Location 1", City = "City 1", Province = "Province 1", Latitude = 1, Longitude = 1, Street = "Street", Zip = "5050AB" },
             Format = "Format 1",
             MediaLocation = new Uri("http://www.google.com"),
             Reporter = "Reporter 1",
@@ -343,7 +327,7 @@ public static class DtoBuilder
 
     public static MediaAudioItemDto CreateMediaAudioItemRequest()
     {
-        return new MediaAudioItemDto() { 
+        return new MediaAudioItemDto() {
             DurationSeconds = 1,
             FirstWords = "firstwords",
             ProgramName = "programname",
@@ -355,14 +339,15 @@ public static class DtoBuilder
             LastWords = "Last Words 1",
             ProxyFile = "ProxyFile 1",
             Presentation = "Presentation 1",
-            Location = new LocationDto() { Id = Guid.NewGuid(), Name = "Location 1", City = "City 1", Province = "Province 1", Latitude = 1, Longitude = 1, Street = "Street", Zip = "ZipCode" },
+            Location = new LocationDto() { Id = Guid.NewGuid(), Name = "Location 1", City = "City 1", Province = "Province 1", Latitude = 1, Longitude = 1, Street = "Street", Zip = "5050AB" },
             Format = "Format 1",
             MediaLocation = new Uri("http://www.google.com"),
             Weather = RedacteurPortaal.DomainModels.Media.Weather.SUNNY,
         };
     }
 
-    public static MediaPhotoItemDto CreateMediaPhotoItemRequest(){
+    public static MediaPhotoItemDto CreateMediaPhotoItemRequest()
+    {
         return new MediaPhotoItemDto() {
             Title = "Photo 1",
             Folder = "Folder 1",
@@ -372,7 +357,7 @@ public static class DtoBuilder
             LastWords = "Last Words 1",
             ProxyFile = "ProxyFile 1",
             Presentation = "Presentation 1",
-            Location = new LocationDto() { Id = Guid.NewGuid(), Name = "Location 1", City = "City 1", Province = "Province 1", Latitude = 1, Longitude = 1, Street = "Street", Zip = "ZipCode" },
+            Location = new LocationDto() { Id = Guid.NewGuid(), Name = "Location 1", City = "City 1", Province = "Province 1", Latitude = 1, Longitude = 1, Street = "Street", Zip = "5050AB" },
             Format = "Format 1",
             MediaLocation = new Uri("http://www.google.com"),
             Image = "Image 1",

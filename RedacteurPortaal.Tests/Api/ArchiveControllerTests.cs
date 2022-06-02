@@ -20,6 +20,7 @@ using JsonConverter = Newtonsoft.Json.JsonConverter;
 
 namespace RedacteurPortaal.Tests.Api;
 
+[TestClass]
 public class ArchiveControllerTests
 {
     [TestMethod]
@@ -52,7 +53,7 @@ public class ArchiveControllerTests
 
         var patchResult = JsonSerializer.Deserialize<ArchiveDto>(await newArchive.Content.ReadAsStringAsync(), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
         Assert.AreEqual(HttpStatusCode.OK, newArchive.StatusCode);
-        
+
         Assert.AreEqual(patchArchiveRequest.Title, patchResult?.Title);
         Assert.AreEqual(patchArchiveRequest.Label, patchResult?.Label);
         Assert.AreEqual(patchArchiveRequest.MediaPhotoItems, patchResult?.MediaPhotoItems);
@@ -98,7 +99,7 @@ public class ArchiveControllerTests
         Assert.IsTrue(newArchive?.ArchivedDate == addArchiveRequest?.ArchivedDate);
         Assert.AreEqual(newArchive?.Scripts, addArchiveRequest?.Scripts);
     }
-    
+
     [TestMethod]
     public async Task CanGetVideoItems()
     {
@@ -112,7 +113,7 @@ public class ArchiveControllerTests
         var result = JsonSerializer.Deserialize<ArchiveDto>(resultString, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
         var videoItem = DtoBuilder.CreateMediaVideoItemRequest();
         var updatedArchiveResult = await client.PostAsJsonAsync<MediaVideoItemDto>($"/api/Archive/{result?.Id}/VideoItems", videoItem);
-        
+
         var archiveWithVideos = await client.GetFromJsonAsync<ArchiveDto>($"/api/Archive/{result?.Id}");
         Assert.AreEqual(HttpStatusCode.Created, archiveResult.StatusCode);
         Assert.AreEqual(HttpStatusCode.OK, updatedArchiveResult.StatusCode);
@@ -192,7 +193,7 @@ public class ArchiveControllerTests
         Assert.AreEqual(HttpStatusCode.Created, archiveResult.StatusCode);
         Assert.AreEqual(HttpStatusCode.OK, archiveResultVideoSent.StatusCode);
         Assert.IsNotNull(updatedArchiveResult);
-        Assert.AreEqual(updatedArchiveResult?.Camera,archiveWithVideos?.MediaVideoItems?[0].Camera);
+        Assert.AreEqual(updatedArchiveResult?.Camera, archiveWithVideos?.MediaVideoItems?[0].Camera);
         Assert.AreEqual(updatedArchiveResult?.Description, archiveWithVideos?.MediaVideoItems?[0].Description);
         Assert.AreEqual(updatedArchiveResult?.EPG, archiveWithVideos?.MediaVideoItems?[0].EPG);
         Assert.AreEqual(updatedArchiveResult?.ItemName, archiveWithVideos?.MediaVideoItems?[0].ItemName);
@@ -270,7 +271,7 @@ public class ArchiveControllerTests
     {
 
     }
-    
+
     [TestMethod]
     public async Task CanCreateArchive()
     {
@@ -318,7 +319,7 @@ public class ArchiveControllerTests
         Assert.IsNotNull(archiveWithVideo);
         Assert.AreNotEqual(addArchiveRequest?.MediaVideoItems, archiveWithVideo?.MediaVideoItems);
     }
-    
+
     [TestMethod]
     public async Task CanAddAudioItemById()
     {
@@ -377,10 +378,10 @@ public class ArchiveControllerTests
         var delete = await client.DeleteAsync($"/api/Archive/{result?.Id}");
         Assert.AreEqual(HttpStatusCode.OK, delete.StatusCode);
 
-        var emptyArchive = await client.GetFromJsonAsync<List<AddressDTO>>("/api/Archive");
-        Assert.IsNull(emptyArchive);
+        var emptyArchive = await client.GetFromJsonAsync<List<ArchiveDto>>("/api/Archive");
+        Assert.IsTrue(emptyArchive.Count == 0);
     }
-    
+
     [TestMethod]
     public async Task CanDeleteVideoItemFromArchive()
     {
