@@ -29,11 +29,6 @@ public class NewsItemController : ControllerBase
     {
         Guid newguid = Guid.NewGuid();
 
-        TypeAdapterConfig<UpdateNewsItemRequest, NewsItemModel>
-            .NewConfig()
-            .Map(dest => dest.Id,
-                src => newguid);
-
         TypeAdapterConfig<NewsItemModel, NewsItemDto>
             .NewConfig()
             .Map(dest => dest.ApprovalStatus,
@@ -57,35 +52,35 @@ public class NewsItemController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<NewsItemDto>>> FilterNewsItem([FromQuery]NewsItemFilterParameters query )
+    public async Task<ActionResult<List<NewsItemDto>>> FilterNewsItem([FromQuery] NewsItemFilterParameters query)
     {
         TypeAdapterConfig<NewsItemModel, NewsItemDto>
-    .NewConfig()
-    .Map(dest => dest.Source,
-        src => new FeedSourceDto() { PlaceHolder = src.Source.PlaceHolder })
-    .Map(dest => dest.LocationDetails,
-        src => new LocationDto() 
-        {
-            City = src.LocationDetails.City,
-            Id = src.LocationDetails.Id,
-            Latitude = src.LocationDetails.Latitude,
-            Longitude = src.LocationDetails.Longitude,
-            Name = src.LocationDetails.Name,
-            Province = src.LocationDetails.Province,
-            Street = src.LocationDetails.Street,
-            Zip = src.LocationDetails.Zip
-        })
-    .Map(dest => dest.ContactDetails,
-        src => src.ContactDetails.Select(x =>
-            new ContactDto() 
-            {
-                Id = x.Id,
-                Name = x.Name,
-                TelephoneNumber = x.TelephoneNumber,
-                Email = x.Email
-            }
-        ).ToList());
-        
+            .NewConfig()
+            .Map(dest => dest.Source,
+                src => new FeedSourceDto() { PlaceHolder = src.Source.PlaceHolder })
+            .Map(dest => dest.LocationDetails,
+                src => new LocationDto() 
+                {
+                    City = src.LocationDetails.City,
+                    Id = src.LocationDetails.Id,
+                    Latitude = src.LocationDetails.Latitude,
+                    Longitude = src.LocationDetails.Longitude,
+                    Name = src.LocationDetails.Name,
+                    Province = src.LocationDetails.Province,
+                    Street = src.LocationDetails.Street,
+                    Zip = src.LocationDetails.Zip
+                })
+            .Map(dest => dest.ContactDetails,
+                src => src.ContactDetails.Select(x =>
+                    new ContactDto() 
+                    {
+                        Id = x.Id,
+                        Name = x.Name,
+                        TelephoneNumber = x.TelephoneNumber,
+                        Email = x.Email
+                    })
+            .ToList());
+
         var grain = await this.grainService.GetGrains();
 
         var list = await grain.SelectAsync(async x => await x.Get());
@@ -125,13 +120,8 @@ public class NewsItemController : ControllerBase
     [Route("{id}")]
     public async Task<ActionResult<NewsItemDto>> UpdateNewsItem(Guid id, [FromBody] UpdateNewsItemRequest request)
     {
-        TypeAdapterConfig<UpdateNewsItemRequest, NewsItemModel>
-        .NewConfig()
-        .Map(dest => dest.Id,
-            src => id);
-
         var grain = await this.grainService.GetGrain(id);
-        var update = request.AsDomainModel(id);        
+        var update = request.AsDomainModel(id);
         var updatedGrain = await grain.Update(update);
         var response = updatedGrain.Adapt<NewsItemDto>();
         return response;
