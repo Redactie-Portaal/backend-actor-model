@@ -30,87 +30,87 @@ public class ArchiveGrainTests
     {
         var guid = Guid.NewGuid();
 
-        var toSaveArchive = new ArchiveModel(guid, "Title", "Label", new List<MediaPhotoItem> { }, new List<MediaVideoItem> { }, new List<MediaAudioItem> { }, new List<NewsItemModel> { }, DateTime.UtcNow, new List<string> { });
+        var toSaveArchive = new ArchiveModel(guid, "Title", "Label", new List<MediaPhotoItem> { }, new List<MediaVideoItem> { }, new List<MediaAudioItem> { }, new List<NewsItemModel> { }, DateTime.UtcNow, new List<string> { "scripts" });
 
         var archiveGrain = this._cluster.GrainFactory.GetGrain<IArchiveGrain>(guid);
         await archiveGrain.CreateArchive(toSaveArchive);
 
         var updatedArchive = await this._cluster.GrainFactory.GetGrain<IArchiveGrain>(guid).Get();
 
-        Assert.NotEqual("00000000-0000-0000-0000-000000000000", Convert.ToString(updatedArchive.Id));
-        Assert.Equal(toSaveArchive.ArchivedDate, updatedArchive.ArchivedDate);
-        Assert.Equal(toSaveArchive.Title, updatedArchive.Title);
-        Assert.Equal(toSaveArchive.Label, updatedArchive.Label);
-        Assert.Equal(toSaveArchive.MediaAudioItems, updatedArchive.MediaAudioItems);
-        Assert.Equal(toSaveArchive.MediaVideoItems, updatedArchive.MediaVideoItems);
-        Assert.Equal(toSaveArchive.MediaPhotoItems, updatedArchive.MediaPhotoItems);
-        Assert.Equal(toSaveArchive.Scripts, updatedArchive.Scripts);
+        Assert.AreNotEqual("00000000-0000-0000-0000-000000000000", Convert.ToString(updatedArchive.Id));
+        Assert.AreEqual(toSaveArchive.ArchivedDate, updatedArchive.ArchivedDate);
+        Assert.AreEqual(toSaveArchive.Title, updatedArchive.Title);
+        Assert.AreEqual(toSaveArchive.Label, updatedArchive.Label);
+        CollectionAssert.AreEqual(toSaveArchive.MediaAudioItems, updatedArchive.MediaAudioItems);
+        CollectionAssert.AreEqual(toSaveArchive.MediaVideoItems, updatedArchive.MediaVideoItems);
+        CollectionAssert.AreEqual(toSaveArchive.MediaPhotoItems, updatedArchive.MediaPhotoItems);
+        CollectionAssert.AreEqual(toSaveArchive.Scripts, updatedArchive.Scripts);
     }
 
-    [Fact]
+    [TestMethod]
     public async Task CanGetASingularArchiveCorrectly()
     {
         var guid = Guid.NewGuid();
 
-        var toSaveArchive = new ArchiveModel(guid, "Title", "Label", new List<MediaPhotoItem> { }, new List<MediaVideoItem> { }, new List<MediaAudioItem> { }, new List<NewsItemModel> { }, DateTime.UtcNow, new List<string> { });
+        var toSaveArchive = new ArchiveModel(guid, "Title", "Label", new List<MediaPhotoItem> { }, new List<MediaVideoItem> { }, new List<MediaAudioItem> { }, new List<NewsItemModel> { }, DateTime.UtcNow, new List<string> { "scripts" });
         var archiveGrain = this._cluster.GrainFactory.GetGrain<IArchiveGrain>(guid);
         await archiveGrain.CreateArchive(toSaveArchive);
 
         var archiveInGrain = await this._cluster.GrainFactory.GetGrain<IArchiveGrain>(guid).Get();
 
-        Assert.NotEqual("00000000-0000-0000-0000-000000000000", Convert.ToString(archiveInGrain.Id));
-        Assert.NotNull(archiveInGrain.Title);
-        Assert.NotNull(archiveInGrain.Label);
-        Assert.NotNull(archiveInGrain.NewsItems);
-        Assert.NotNull(archiveInGrain.Scripts);
-        Assert.NotNull(archiveInGrain.MediaAudioItems);
-        Assert.NotNull(archiveInGrain.MediaVideoItems);
-        Assert.NotNull(archiveInGrain.MediaPhotoItems);
+        Assert.AreNotEqual("00000000-0000-0000-0000-000000000000", Convert.ToString(archiveInGrain.Id));
+        Assert.IsNotNull(archiveInGrain.Title);
+        Assert.IsNotNull(archiveInGrain.Label);
+        Assert.IsNotNull(archiveInGrain.NewsItems);
+        Assert.IsNotNull(archiveInGrain.Scripts);
+        Assert.IsNotNull(archiveInGrain.MediaAudioItems);
+        Assert.IsNotNull(archiveInGrain.MediaVideoItems);
+        Assert.IsNotNull(archiveInGrain.MediaPhotoItems);
     }
 
-    [Fact]
+    [TestMethod]
     public async Task UpdateArchiveCorrectly()
     {
         var guid = Guid.NewGuid();
 
-        var toSaveArchive = new ArchiveModel(guid, "Title", "Label", new List<MediaPhotoItem> { }, new List<MediaVideoItem> { }, new List<MediaAudioItem> { }, new List<NewsItemModel> { }, DateTime.UtcNow, new List<string> { });
+        var toSaveArchive = new ArchiveModel(guid, "Title", "Label", new List<MediaPhotoItem> { }, new List<MediaVideoItem> { }, new List<MediaAudioItem> { }, new List<NewsItemModel> { }, DateTime.UtcNow, new List<string> { "scripts" });
         var archiveGrain = this._cluster.GrainFactory.GetGrain<IArchiveGrain>(guid);
         await archiveGrain.CreateArchive(toSaveArchive);
 
-        var newerArchive = new ArchiveModel(guid, "Newer Title", "Newer Label", new List<MediaPhotoItem> { }, new List<MediaVideoItem> { }, new List<MediaAudioItem> { }, new List<NewsItemModel> { }, DateTime.UtcNow, new List<string> { });
+        var newerArchive = new ArchiveModel(guid, "Newer Title", "Newer Label", new List<MediaPhotoItem> { }, new List<MediaVideoItem> { }, new List<MediaAudioItem> { }, new List<NewsItemModel> { }, DateTime.UtcNow, new List<string> { "scripts" });
 
         await archiveGrain.Update(newerArchive);
 
         var archiveInGrain = await this._cluster.GrainFactory.GetGrain<IArchiveGrain>(guid).Get();
-        Assert.NotEqual(toSaveArchive.Title, archiveInGrain.Title);
-        Assert.NotEqual(toSaveArchive.Label, archiveInGrain.Label);
-        Assert.NotEqual(toSaveArchive.NewsItems, archiveInGrain.NewsItems);
-        Assert.NotEqual(toSaveArchive.Scripts, archiveInGrain.Scripts);
-        Assert.NotEqual(toSaveArchive.ArchivedDate, archiveInGrain.ArchivedDate);
-        Assert.NotEqual(toSaveArchive.MediaAudioItems, archiveInGrain.MediaAudioItems);
-        Assert.NotEqual(toSaveArchive.MediaVideoItems, archiveInGrain.MediaVideoItems);
-        Assert.NotEqual(toSaveArchive.MediaPhotoItems, archiveInGrain.MediaPhotoItems);
+        Assert.AreNotEqual(toSaveArchive.Title, archiveInGrain.Title);
+        Assert.AreNotEqual(toSaveArchive.Label, archiveInGrain.Label);
+        Assert.AreNotEqual(toSaveArchive.NewsItems, archiveInGrain.NewsItems);
+        Assert.AreNotEqual(toSaveArchive.Scripts, archiveInGrain.Scripts);
+        Assert.AreNotEqual(toSaveArchive.ArchivedDate, archiveInGrain.ArchivedDate);
+        Assert.AreNotEqual(toSaveArchive.MediaAudioItems, archiveInGrain.MediaAudioItems);
+        Assert.AreNotEqual(toSaveArchive.MediaVideoItems, archiveInGrain.MediaVideoItems);
+        Assert.AreNotEqual(toSaveArchive.MediaPhotoItems, archiveInGrain.MediaPhotoItems);
     }
 
-    [Fact]
+    [TestMethod]
     public async Task CanDeleteArchiveCorrectly()
     {
         var guid = Guid.NewGuid();
 
-        var toSaveArchive = new ArchiveModel(guid, "Title", "Label", new List<MediaPhotoItem> { }, new List<MediaVideoItem> { }, new List<MediaAudioItem> { }, new List<NewsItemModel> { }, DateTime.UtcNow, new List<string> { });
+        var toSaveArchive = new ArchiveModel(guid, "Title", "Label", new List<MediaPhotoItem> { }, new List<MediaVideoItem> { }, new List<MediaAudioItem> { }, new List<NewsItemModel> { }, DateTime.UtcNow, new List<string> { "scripts" });
         var archiveGrain = this._cluster.GrainFactory.GetGrain<IArchiveGrain>(guid);
         await archiveGrain.CreateArchive(toSaveArchive);
 
         await this._cluster.GrainFactory.GetGrain<IArchiveGrain>(guid).Delete();
         var archiveInGrain = await this._cluster.GrainFactory.GetGrain<IArchiveGrain>(guid).Get();
 
-        Assert.Equal("00000000-0000-0000-0000-000000000000", Convert.ToString(archiveInGrain.Id));
-        Assert.Null(archiveInGrain.Title);
-        Assert.Null(archiveInGrain.Label);
-        Assert.Null(archiveInGrain.NewsItems);
-        Assert.Null(archiveInGrain.Scripts);
-        Assert.Null(archiveInGrain.MediaAudioItems);
-        Assert.Null(archiveInGrain.MediaVideoItems);
-        Assert.Null(archiveInGrain.MediaPhotoItems);
+        Assert.AreEqual("00000000-0000-0000-0000-000000000000", Convert.ToString(archiveInGrain.Id));
+        Assert.IsNull(archiveInGrain.Title);
+        Assert.IsNull(archiveInGrain.Label);
+        Assert.IsNull(archiveInGrain.NewsItems);
+        Assert.IsNull(archiveInGrain.Scripts);
+        Assert.IsNull(archiveInGrain.MediaAudioItems);
+        Assert.IsNull(archiveInGrain.MediaVideoItems);
+        Assert.IsNull(archiveInGrain.MediaPhotoItems);
     }
 }

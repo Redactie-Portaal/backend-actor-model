@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RedacteurPortaal.DomainModels.Archive;
 using RedacteurPortaal.DomainModels.Media;
+using RedacteurPortaal.DomainModels.NewsItem;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,7 @@ namespace RedacteurPortaal.Tests.DomainModels
                                                       new List<MediaPhotoItem>(),
                                                       new List<MediaVideoItem>(),
                                                       new List<MediaAudioItem>(),
+                                                      new List<NewsItemModel>(),
                                                       DateTime.UtcNow,
                                                       new List<string> { "scripts" });
             }
@@ -48,6 +50,7 @@ namespace RedacteurPortaal.Tests.DomainModels
                                              new List<MediaPhotoItem>(),
                                              new List<MediaVideoItem>(),
                                              new List<MediaAudioItem>(),
+                                             new List<NewsItemModel>(),                                             
                                              DateTime.UtcNow,
                                              new List<string> { "scripts" });
             });
@@ -64,6 +67,7 @@ namespace RedacteurPortaal.Tests.DomainModels
                                              new List<MediaPhotoItem>(),
                                              new List<MediaVideoItem>(),
                                              new List<MediaAudioItem>(),
+                                             new List<NewsItemModel>(),
                                              DateTime.UtcNow,
                                              new List<string> { "scripts" });
             });
@@ -80,6 +84,7 @@ namespace RedacteurPortaal.Tests.DomainModels
                                              new List<MediaPhotoItem>(),
                                              new List<MediaVideoItem>(),
                                              new List<MediaAudioItem>(),
+                                             new List<NewsItemModel>(),
                                              DateTime.UtcNow,
                                              new List<string>());
             });

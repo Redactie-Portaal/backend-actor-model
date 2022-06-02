@@ -10,9 +10,9 @@ namespace RedacteurPortaal.Api.Converters
 {
     public static class MediaItemDTOConverter
     {
-        public static MediaVideoItem ConvertMediaVideoDTO(this MediaVideoItemDto item)
+        public static MediaVideoItem ConvertMediaVideoDTO(this MediaVideoItemDto item, Guid id)
         {
-            var x = new MediaVideoItem(Guid.Empty,
+            var x = new MediaVideoItem(id,
                                        item.Title,
                                        item.Folder,
                                        item.RepublishDate,

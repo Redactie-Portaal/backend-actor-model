@@ -28,56 +28,6 @@ public class ArchiveController : Controller
     [HttpGet]
     public async Task<ActionResult<ArchiveModel>> GetAllArchives()
     {
-        TypeAdapterConfig<ArchiveModel, ArchiveDto>
-     .NewConfig()
-     .Map(dest => dest.MediaAudioItems,
-         src => src.MediaAudioItems.Select(x => new MediaAudioItemDto {
-             DurationSeconds = Convert.ToInt32(x.Duration.TotalSeconds),
-             FirstWords = x.FirstWords,
-             ProgramName = x.ProgramName,
-             Weather = x.Weather,
-         }).ToList()
-         ).Map(dest => dest.MediaPhotoItems, src => src.MediaPhotoItems.Select(x => new MediaPhotoItemDto {
-             Camera = x.Camera,
-             Folder = x.Folder,
-             Image = x.Image,
-             Format = x.Format,
-             Id = x.Id,
-             LastWords = x.LastWords,
-             Location = new LocationDto { City = x.Location.City, Latitude = x.Location.Latitude, Longitude = x.Location.Longitude, Street = x.Location.Street },
-             Presentation = x.Presentation,
-             ProxyFile = x.ProxyFile,
-             RepublishDate = x.RepublishDate,
-             Title = x.Title
-         }).ToList()
-         ).Map(dest => dest.MediaVideoItems, src => src.MediaVideoItems.Select(x => new MediaVideoItemDto {
-             Camera = x.Camera,
-             ProgramDate = x.ProgramDate,
-             ProgramName = x.ProgramName,
-             ProxyFile = x.ProxyFile,
-             RepublishDate = x.RepublishDate,
-             Title = x.Title,
-             Weather = x.Weather
-         }).ToList())
-         .Map(dest => dest.NewsItems, src => src.NewsItems.Select(x => new NewsItemDto {
-             Id = x.Id,
-             ApprovalStatus = x.ApprovalState.ToString(),
-             Author = x.Author,
-             Category = x.Category,
-             Audio = new List<MediaAudioItemDto> { x.Audio.Adapt<MediaAudioItemDto>() },
-             Photos = new List<MediaPhotoItemDto> { x.Audio.Adapt<MediaPhotoItemDto>() },
-             Videos = new List<MediaVideoItemDto> { x.Audio.Adapt<MediaVideoItemDto>() },
-             Title = x.Title,
-             Body = x.Body,
-             ContactDetails = new List<ContactDto> { x.ContactDetails.Adapt<ContactDto>() },
-             EndDate = x.EndDate,
-             LocationDetails = new LocationDto { City = x.LocationDetails.City, Latitude = x.LocationDetails.Latitude, Longitude = x.LocationDetails.Longitude, Street = x.LocationDetails.Street },
-             ProdutionDate = x.ProductionDate,
-             Region = x.Region,
-             Source = x.Source.Adapt<FeedSourceDto>(),
-             Status = x.Status.ToString()
-         }).ToList());
-
         var grain = await this.grainService.GetGrains();
 
         var response = (await grain.SelectAsync(async x => await
@@ -183,54 +133,7 @@ public class ArchiveController : Controller
         TypeAdapterConfig<ArchiveDto, ArchiveModel>
             .NewConfig()
             .Map(dest => dest.Id,
-                src => newguid)
-     .Map(dest => dest.MediaAudioItems,
-         src => src.MediaAudioItems.Select(x => new MediaAudioItemDto {
-             DurationSeconds = Convert.ToInt32(x.DurationSeconds),
-             FirstWords = x.FirstWords,
-             ProgramName = x.ProgramName,
-             Weather = x.Weather,
-         }).ToList()
-         ).Map(dest => dest.MediaPhotoItems, src => src.MediaPhotoItems.Select(x => new MediaPhotoItemDto {
-             Camera = x.Camera,
-             Folder = x.Folder,
-             Image = x.Image,
-             Format = x.Format,
-             Id = x.Id,
-             LastWords = x.LastWords,
-             Location = new LocationDto { City = x.Location.City, Latitude = x.Location.Latitude, Longitude = x.Location.Longitude, Street = x.Location.Street },
-             Presentation = x.Presentation,
-             ProxyFile = x.ProxyFile,
-             RepublishDate = x.RepublishDate,
-             Title = x.Title
-         }).ToList()
-         ).Map(dest => dest.MediaVideoItems, src => src.MediaVideoItems.Select(x => new MediaVideoItemDto {
-             Camera = x.Camera,
-             ProgramDate = x.ProgramDate,
-             ProgramName = x.ProgramName,
-             ProxyFile = x.ProxyFile,
-             RepublishDate = x.RepublishDate,
-             Title = x.Title,
-             Weather = x.Weather
-         }).ToList())
-         .Map(dest => dest.NewsItems, src => src.NewsItems.Select(x => new NewsItemDto {
-             Id = x.Id,
-             ApprovalStatus = x.ApprovalStatus,
-             Author = x.Author,
-             Category = x.Category,
-             Audio = new List<MediaAudioItemDto> { x.Audio.Adapt<MediaAudioItemDto>() },
-             Photos = new List<MediaPhotoItemDto> { x.Audio.Adapt<MediaPhotoItemDto>() },
-             Videos = new List<MediaVideoItemDto> { x.Audio.Adapt<MediaVideoItemDto>() },
-             Title = x.Title,
-             Body = x.Body,
-             ContactDetails = new List<ContactDto> { x.ContactDetails.Adapt<ContactDto>() },
-             EndDate = x.EndDate,
-             LocationDetails = new LocationDto { City = x.LocationDetails.City, Latitude = x.LocationDetails.Latitude, Longitude = x.LocationDetails.Longitude, Street = x.LocationDetails.Street },
-             ProdutionDate = x.ProdutionDate,
-             Region = x.Region,
-             Source = x.Source.Adapt<FeedSourceDto>(),
-             Status = x.Status.ToString()
-         }).ToList()); ;
+                src => newguid);
 
         var archive = archiveDTO.Adapt<ArchiveModel>();
         archive.Id = newguid;
@@ -245,8 +148,7 @@ public class ArchiveController : Controller
     {
         var newguid = Guid.NewGuid();
 
-        var archivedVideoItem = MediaItemDTOConverter.ConvertMediaVideoDTO(videoItem,new Guid());
-        archivedVideoItem.Id = newguid;
+        var archivedVideoItem = MediaItemDTOConverter.ConvertMediaVideoDTO(videoItem, newguid);
         var grain = await this.grainService.GetGrain(archiveId);
         await grain.AddVideoItem(archivedVideoItem);
         return this.Ok(await grain.Get());
