@@ -4,85 +4,80 @@ using RedacteurPortaal.DomainModels.Archive;
 using RedacteurPortaal.DomainModels.Media;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace RedacteurPortaal.Tests.DomainModels
+namespace RedacteurPortaal.Tests.DomainModels;
+
+[TestClass]
+public class ArchiveValidationTests
 {
-    public class ArchiveValidationTests
+    [TestMethod]
+    public void CanCreateArchive()
     {
-        [TestMethod]
-        public void CanCreateArchive()
+        var guid = Guid.NewGuid();
+        try
         {
-            var guid = Guid.NewGuid();
-            try
-            {
-
-                var mediaAudioItem = new ArchiveModel(guid,
-                                                      "Title",
-                                                      "Label",
-                                                      new List<MediaPhotoItem>(),
-                                                      new List<MediaVideoItem>(),
-                                                      new List<MediaAudioItem>(),
-                                                      DateTime.UtcNow,
-                                                      new List<string> { "scripts" });
-            }
-            catch (Exception ex)
-            {
-                Assert.Fail("Expected no exception, but got: " + ex.Message);
-            }
+            var mediaAudioItem = new ArchiveModel(guid,
+                "Title",
+                "Label",
+                new List<MediaPhotoItem>(),
+                new List<MediaVideoItem>(),
+                new List<MediaAudioItem>(),
+                DateTime.UtcNow,
+                new List<string> {"scripts"});
         }
-
-        [TestMethod]
-        public void ThrowsWithEmptyTitle()
+        catch (Exception ex)
         {
-            var guid = Guid.NewGuid();
-
-            Assert.ThrowsException<ValidationException>(() => {
-                var model = new ArchiveModel(guid,
-                                             "",
-                                             "Label",
-                                             new List<MediaPhotoItem>(),
-                                             new List<MediaVideoItem>(),
-                                             new List<MediaAudioItem>(),
-                                             DateTime.UtcNow,
-                                             new List<string> { "scripts" });
-            });
+            Assert.Fail("Expected no exception, but got: " + ex.Message);
         }
+    }
+    
+    [TestMethod]
+    public void ThrowsWithEmptyTitle()
+    {
+        var guid = Guid.NewGuid();
+        Assert.ThrowsException<ValidationException>(() => {
+            var model = new ArchiveModel(guid,
+                "",
+                "Label",
+                new List<MediaPhotoItem>(),
+                new List<MediaVideoItem>(),
+                new List<MediaAudioItem>(),
+                DateTime.UtcNow,
+                new List<string> {"scripts"});
+        });
+    }
 
-        [TestMethod]
-        public void ThrowsWithEmptyLabel()
-        {
-            var guid = Guid.NewGuid();
+    [TestMethod]
+    public void ThrowsWithEmptyLabel()
+    {
+        var guid = Guid.NewGuid();
 
-            Assert.ThrowsException<ValidationException>(() => {
-                var model = new ArchiveModel(guid,
-                                             "Title",
-                                             "",
-                                             new List<MediaPhotoItem>(),
-                                             new List<MediaVideoItem>(),
-                                             new List<MediaAudioItem>(),
-                                             DateTime.UtcNow,
-                                             new List<string> { "scripts" });
-            });
-        }
+        Assert.ThrowsException<ValidationException>(() => {
+            var model = new ArchiveModel(guid,
+                "Title",
+                "",
+                new List<MediaPhotoItem>(),
+                new List<MediaVideoItem>(),
+                new List<MediaAudioItem>(),
+                DateTime.UtcNow,
+                new List<string> {"scripts"});
+        });
+    }
 
-        [TestMethod]
-        public void ThrowsWithEmptyScripts()
-        {
-            var guid = Guid.NewGuid();
+    [TestMethod]
+    public void ThrowsWithEmptyScripts()
+    {
+        var guid = Guid.NewGuid();
 
-            Assert.ThrowsException<ValidationException>(() => {
-                var model = new ArchiveModel(guid,
-                                             "Title",
-                                             "Label",
-                                             new List<MediaPhotoItem>(),
-                                             new List<MediaVideoItem>(),
-                                             new List<MediaAudioItem>(),
-                                             DateTime.UtcNow,
-                                             new List<string>());
-            });
-        }
+        Assert.ThrowsException<ValidationException>(() => {
+            var model = new ArchiveModel(guid,
+                "Title",
+                "Label",
+                new List<MediaPhotoItem>(),
+                new List<MediaVideoItem>(),
+                new List<MediaAudioItem>(),
+                DateTime.UtcNow,
+                new List<string>());
+        });
     }
 }

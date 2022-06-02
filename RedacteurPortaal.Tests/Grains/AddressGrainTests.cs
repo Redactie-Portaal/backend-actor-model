@@ -4,7 +4,6 @@ using FluentValidation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Orleans.TestingHost;
 using RedacteurPortaal.DomainModels.Adress;
-using RedacteurPortaal.DomainModels.NewsItem;
 using RedacteurPortaal.Grains.GrainInterfaces;
 
 namespace RedacteurPortaal.Tests.Grains;
@@ -23,7 +22,7 @@ public class AddressGrainTests
 
     [TestMethod]
     public async Task CanAddAddressCorrectly()
-    {   
+    {
         var guid = Guid.NewGuid();
 
         var toSaveAddress = new AddressModel(guid, "Company", "Address", "5050BB", "0612345678", "hans@gmail.com", "Webpage");
@@ -115,4 +114,3 @@ public class AddressGrainTests
         Assert.IsNull(deletedAddress.Webpage);
     }
 }
-
