@@ -10,15 +10,15 @@ namespace RedacteurPortaal.DomainModels.Agenda
         {
         }
 
-        public AgendaModel(Guid id, DateTime startDate, DateTime endDate,string title, string description, string userId)
+        public AgendaModel(Guid id, DateTime startDate, DateTime endDate,string title, string description, Guid userId)
         {
             this.Id = id;
             this.StartDate = startDate;
             this.EndDate = endDate;
             this.Title = title ?? throw new ArgumentNullException(nameof(title));;
             this.Description = description ?? throw new ArgumentNullException(nameof(description));;
-            this.UserId = userId;;
-            
+            this.UserId = userId;
+
             new AgendaValidator().ValidateAndThrow(this);
         }
 
@@ -32,6 +32,6 @@ namespace RedacteurPortaal.DomainModels.Agenda
 
         public string Description { get; set; }
 
-        public string UserId { get; set; }
+        public Guid UserId { get; set; } = Guid.NewGuid();
     }
 }

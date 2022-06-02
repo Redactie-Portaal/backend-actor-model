@@ -29,8 +29,7 @@ public class AgendaGrainTests
             StartDate = new DateTime(2022, 05, 12, 15, 00, 00),
             EndDate = new DateTime(2022, 05, 12, 18, 00, 00),
             Title = "foo1",
-            Description = "boo1",
-            UserId = "string"
+            Description = "boo1"
         };
 
         var agendaGrain = this._cluster.GrainFactory.GetGrain<IAgendaGrain>(guid);
@@ -44,6 +43,5 @@ public class AgendaGrainTests
         Assert.AreEqual("boo1", agenda.Description);
         Assert.AreEqual(new DateTime(2022, 05, 12, 15, 00, 00), agenda.StartDate);
         Assert.AreEqual(new DateTime(2022, 05, 12, 18, 00, 00), agenda.EndDate);
-        Assert.AreEqual("string", agenda.UserId);
     }
 }

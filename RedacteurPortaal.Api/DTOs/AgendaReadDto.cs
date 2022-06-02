@@ -1,7 +1,8 @@
 ﻿namespace RedacteurPortaal.Api.DTOs
 {
-    public class AgendaDto
+    public class AgendaReadDto
     {
+        public Guid Id { get; set; }
 
         public DateTime StartDate { get; set; }
         
@@ -11,5 +12,6 @@
 
         public string Description { get; set; }
         
+        public Guid UserId { get; set; }
     }
 }

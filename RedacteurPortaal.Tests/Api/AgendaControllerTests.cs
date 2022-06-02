@@ -77,13 +77,13 @@ public class AgendaControllerTests
         var application = new RedacteurPortaalApplication();
         var client = application.CreateClient();
 
-        var addAgendaRequest = DtoBuilder.BuildAgendaRequest();
+        var addAgendaRequest = DtoBuilder.ReadAgendaRequest();
         var agendaResult = await client.PostAsJsonAsync("/api/Agenda", addAgendaRequest);
-        var addResult = JsonSerializer.Deserialize<AgendaDto>(await agendaResult.Content.ReadAsStringAsync(),
+        var addResult = JsonSerializer.Deserialize<AgendaReadDto>(await agendaResult.Content.ReadAsStringAsync(),
             new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
 
         var getByIdResult = await client.GetAsync($"/api/Agenda/{addResult?.Id}");
-        var getResult = JsonSerializer.Deserialize<AgendaDto>(await getByIdResult.Content.ReadAsStringAsync(),
+        var getResult = JsonSerializer.Deserialize<AgendaReadDto>(await getByIdResult.Content.ReadAsStringAsync(),
             new JsonSerializerOptions() {
                 PropertyNameCaseInsensitive = true
             });
@@ -94,7 +94,6 @@ public class AgendaControllerTests
         Assert.AreEqual(addResult?.Description, getResult?.Description);
         Assert.AreEqual(addResult?.StartDate, getResult?.StartDate);
         Assert.AreEqual(addResult?.EndDate, getResult?.EndDate);
-        Assert.AreEqual(addResult?.UserId, getResult?.UserId);
     }
 
     [TestMethod]
@@ -143,22 +142,22 @@ public class AgendaControllerTests
         var application = new RedacteurPortaalApplication();
         var client = application.CreateClient();
 
-        var addAgendaRequest = DtoBuilder.BuildAgendaRequest();
+        var addAgendaRequest = DtoBuilder.ReadAgendaRequest();
         var agendaResult = await client.PostAsJsonAsync($"/api/Agenda", addAgendaRequest);
         var resultString = await agendaResult.Content.ReadAsStreamAsync();
-        var result = JsonSerializer.Deserialize<AgendaDto>(resultString, new JsonSerializerOptions() {
+        var result = JsonSerializer.Deserialize<AgendaReadDto>(resultString, new JsonSerializerOptions() {
             PropertyNameCaseInsensitive = true
         });
 
         Assert.IsNotNull(result);
         Assert.AreEqual(addAgendaRequest.Title, result?.Title);
 
-        var patchAgendaRequest = DtoBuilder.BuildPatchAgendaRequest();
+        var patchAgendaRequest = DtoBuilder.ReadAgendaRequest();
         var patchContent = new StringContent(JsonSerializer.Serialize(patchAgendaRequest), Encoding.UTF8,
             "application/json");
         var newAgenda = await client.PatchAsync($"/api/Agenda/{result?.Id}", patchContent);
 
-        var patchResult = JsonSerializer.Deserialize<AgendaDto>(await newAgenda.Content.ReadAsStringAsync(),
+        var patchResult = JsonSerializer.Deserialize<AgendaReadDto>(await newAgenda.Content.ReadAsStringAsync(),
             new JsonSerializerOptions() {
                 PropertyNameCaseInsensitive = true
             });

@@ -22,7 +22,7 @@ namespace RedacteurPortaal.Tests.DomainModels
                     new DateTime(2017, 1, 1, 12, 0, 0, DateTimeKind.Utc),
                     "Agenda Item",
                     "Agenda Item Description",
-                    "0"
+                    guid
                 );
             }
             catch (Exception ex)
@@ -43,7 +43,7 @@ namespace RedacteurPortaal.Tests.DomainModels
                     new DateTime(2017, 1, 1, 12, 0, 0, DateTimeKind.Utc),
                     "",
                     "Agenda Item Description",
-                    "0"
+                    guid
                 );
             });
         }
@@ -60,7 +60,7 @@ namespace RedacteurPortaal.Tests.DomainModels
                     new DateTime(2017, 1, 1, 12, 0, 0, DateTimeKind.Utc),
                     "Agenda Item",
                     "",
-                    "0"
+                    guid
                 );
             });
         }

@@ -39,23 +39,24 @@ namespace RedacteurPortaal.Api.Controllers
 
         [HttpGet]
         [Route("{id:Guid}", Name = nameof(GetAgendaItem))]
-        public async Task<ActionResult<AgendaDto>> GetAgendaItem([FromRoute] Guid id)
+        public async Task<ActionResult<AgendaReadDto>> GetAgendaItem([FromRoute] Guid id)
         {
             var grain = await this.grainService.GetGrain(id);
+            Console.WriteLine(id);
+            Console.WriteLine(grain.Get());
             var response = await grain.Get();
-            var dto = response.Adapt<AgendaDto>();
 
             return this.Ok(response);
         }
 
         // TODO: Delete after implementing auth - for testing only!
         [HttpGet]
-        public async Task<ActionResult<List<AgendaDto>>> GetAllAgendaItems()
+        public async Task<ActionResult<List<AgendaReadDto>>> GetAllAgendaItems()
         {
             var grain = await this.grainService.GetGrains();
 
             var response = (await grain.SelectAsync(async x =>
-                await x.Get())).AsQueryable().ProjectToType<AgendaDto>(null).ToList();
+                await x.Get())).AsQueryable().ProjectToType<AgendaReadDto>(null).ToList();
             return this.Ok(response);
         }
 
@@ -63,12 +64,12 @@ namespace RedacteurPortaal.Api.Controllers
         // Can be used for most date sorting use-cases
         [HttpGet]
         [Route("s/")]
-        public async Task<ActionResult<List<AgendaDto>>> SortAgendaItemsByDate([FromQuery] AgendaFilterParameters query)
+        public async Task<ActionResult<List<AgendaReadDto>>> SortAgendaItemsByDate([FromQuery] AgendaFilterParameters query)
         {
             var grain = await this.grainService.GetGrains();
 
             var list = (await grain.SelectAsync(async x => await
-                x.Get())).AsQueryable().ProjectToType<AgendaDto>(null).ToList();
+                x.Get())).AsQueryable().ProjectToType<AgendaReadDto>(null).ToList();
 
             var response = list.Where(x => x.StartDate >= query.StartDate && x.EndDate <= query.EndDate)
                 .OrderBy(dto => dto.StartDate).ToList();
@@ -86,7 +87,7 @@ namespace RedacteurPortaal.Api.Controllers
 
         [HttpPatch]
         [Route("{id}")]
-        public async Task<ActionResult<AgendaDto>> UpdateAgendaItem(Guid id, [FromBody] UpdateAgendaRequest request)
+        public async Task<ActionResult<AgendaReadDto>> UpdateAgendaItem(Guid id, [FromBody] UpdateAgendaRequest request)
         {
             TypeAdapterConfig<UpdateAgendaRequest, AgendaModel>
                 .NewConfig()
@@ -96,7 +97,7 @@ namespace RedacteurPortaal.Api.Controllers
             var grain = await this.grainService.GetGrain(id);
             var update = request.Adapt<AgendaModel>();
             var updatedGrain = await grain.UpdateAgenda(update);
-            var response = updatedGrain.Adapt<AgendaDto>();
+            var response = updatedGrain.Adapt<AgendaReadDto>();
             return this.Ok(response);
         }
     }

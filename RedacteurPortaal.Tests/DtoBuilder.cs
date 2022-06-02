@@ -173,7 +173,15 @@ public static class DtoBuilder
             EndDate = new DateTime(2022, 05, 12, 14, 00, 00),
             Title = "foo1",
             Description = "bar1",
-            UserId = "string"
+        };
+    }    
+    public static AgendaReadDto ReadAgendaRequest()
+    {
+        return new AgendaReadDto {
+            StartDate = new DateTime(2022, 05, 12, 12, 00, 00),
+            EndDate = new DateTime(2022, 05, 12, 14, 00, 00),
+            Title = "foo1",
+            Description = "bar1",
         };
     }
 }
