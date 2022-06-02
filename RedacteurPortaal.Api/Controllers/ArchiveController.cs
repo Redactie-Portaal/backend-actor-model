@@ -127,10 +127,10 @@ public class ArchiveController : Controller
     }
 
     [HttpPost]
-    public async Task<ActionResult<ArchiveModel>> CreateArchive([FromBody] ArchiveDto archiveDTO)
+    public async Task<ActionResult<ArchiveModel>> CreateArchive([FromBody] UpdateArchiveRequest archiveDTO)
     {
         var newguid = Guid.NewGuid();
-        var archive = ArchiveDTOConverter.ConvertArchiveDTO(archiveDTO, newguid);
+        var archive = archiveDTO.AsDomainModel(newguid);
         var grain = await this.grainService.CreateGrain(archive.Id);
         await grain.CreateArchive(archive);
         return this.CreatedAtRoute(nameof(this.GetArchiveById), new { archiveId = newguid }, archive);
@@ -243,7 +243,7 @@ public class ArchiveController : Controller
            src => archiveId);
 
         var grain = await this.grainService.GetGrain(archiveId);
-        var update = updateArchiveRequest.Adapt<ArchiveModel>();
+        var update = updateArchiveRequest.AsDomainModel(archiveId);
         var updatedGrain = await grain.Update(update);
         var response = updatedGrain.Adapt<ArchiveDto>();
         return this.Ok(response);

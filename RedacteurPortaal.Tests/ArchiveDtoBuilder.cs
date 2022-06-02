@@ -244,13 +244,12 @@ public static class ArchiveDtoBuilder
         };
     }
 
-    public static CreateArchiveRequest BuildSmallestArchive()
+    public static UpdateArchiveRequest BuildSmallestArchive()
     {
-        return new CreateArchiveRequest() {
+        return new UpdateArchiveRequest() {
 
             Title = "Title",
             Label = "Label",
-            ArchivedDate = DateTime.Now,
             Scripts = new List<string> { "Scripts"}
         };
     }

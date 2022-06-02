@@ -504,6 +504,7 @@ public class ArchiveControllerTests
         var photoItem = ArchiveDtoBuilder.CreateMediaPhotoItemRequest();
         var updatedArchiveResult = await client.PostAsJsonAsync<MediaPhotoItemDto>($"/api/Archive/{result?.Id}/PhotoItems", photoItem);
         var archiveWithPhoto = await client.GetFromJsonAsync<ArchiveDto>($"/api/Archive/{result?.Id}");
+        
         Assert.AreEqual(HttpStatusCode.Created, archiveResult.StatusCode);
         Assert.AreEqual(HttpStatusCode.OK, updatedArchiveResult.StatusCode);
         Assert.IsNotNull(archiveWithPhoto);

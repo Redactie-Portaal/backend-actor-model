@@ -133,7 +133,7 @@ public class NewsItemController : ControllerBase
             src => id);
 
         var grain = await this.grainService.GetGrain(id);
-        var update = request.Adapt<NewsItemModel>();
+        var update = request.AsDomainModel(id);
         var updatedGrain = await grain.Update(update);
         var response = updatedGrain.Adapt<NewsItemDto>();
         return response;

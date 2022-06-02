@@ -9,9 +9,9 @@ using System.Collections.Generic;
 
 namespace RedacteurPortaal.Api.Converters
 {
-    public static class ArchiveDTOConverter
+    public static class UpdateArchiveRequestConverter
     {
-        public static ArchiveModel ConvertArchiveDTO(this ArchiveDto item, Guid id)
+        public static ArchiveModel AsDomainModel(this UpdateArchiveRequest item, Guid id)
         {
             var photoItems = new List<MediaPhotoItem>();
             var videoItems = new List<MediaVideoItem>();
@@ -111,7 +111,7 @@ namespace RedacteurPortaal.Api.Converters
             videoItems,
             audioItems,
             new(),
-            item.ArchivedDate = DateTime.Now,
+            DateTime.UtcNow,
             item.Scripts);
             return x;
         }
