@@ -43,6 +43,10 @@ namespace RedacteurPortaal.Api.Middleware
                         this.logger.LogError($"A validation exception occured: {e.Message} at {e.StackTrace}");
                         response.StatusCode = (int)HttpStatusCode.BadRequest;
                         break;
+                    case NullReferenceException e:
+                        this.logger.LogError($"A null reference exception occured: {e.Message} at {e.StackTrace}");
+                        response.StatusCode = (int)HttpStatusCode.BadRequest;
+                        break;
                     default:
                         // unhandled error
                         this.logger.LogError($"An internal server error occurred: {error.Message} at {error.StackTrace}");

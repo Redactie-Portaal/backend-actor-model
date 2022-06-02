@@ -40,9 +40,6 @@ public class NewsItemController : ControllerBase
                 src => src.ApprovalState.ToString());
 
         var grain = await this.grainService.CreateGrain(newguid);
-        //var test = newsitem.Videos.Adapt<List<MediaVideoItem>>();
-        //var update = newsitem.Adapt<NewsItemModel>();
-
         var update = newsitem.AsDomainModel(newguid);
         var createdGrain = await grain.Update(update);
         var response = createdGrain.Adapt<NewsItemDto>();
@@ -67,7 +64,8 @@ public class NewsItemController : ControllerBase
     .Map(dest => dest.Source,
         src => new FeedSourceDto() { PlaceHolder = src.Source.PlaceHolder })
     .Map(dest => dest.LocationDetails,
-        src => new LocationDto() {
+        src => new LocationDto() 
+        {
             City = src.LocationDetails.City,
             Id = src.LocationDetails.Id,
             Latitude = src.LocationDetails.Latitude,
@@ -79,23 +77,15 @@ public class NewsItemController : ControllerBase
         })
     .Map(dest => dest.ContactDetails,
         src => src.ContactDetails.Select(x =>
-            new ContactDto() {
+            new ContactDto() 
+            {
                 Id = x.Id,
                 Name = x.Name,
                 TelephoneNumber = x.TelephoneNumber,
                 Email = x.Email
             }
         ).ToList());
-    //.Map(dest => dest.Audio,
-    //    src => src.Audio.Select(x =>
-    //        new MediaAudioItemDto()).ToList())
-    //.Map(dest => dest.Photos,
-    //    src => src.Photos.Select(x =>
-    //        new MediaPhotoItemDto()).ToList())
-    //.Map(dest => dest.Videos,
-    //    src => src.Videos.Select(x =>
-    //        new MediaVideoItemDto()).ToList());
-
+        
         var grain = await this.grainService.GetGrains();
 
         var list = await grain.SelectAsync(async x => await x.Get());
@@ -141,7 +131,6 @@ public class NewsItemController : ControllerBase
             src => id);
 
         var grain = await this.grainService.GetGrain(id);
-        //var update = request.Adapt<NewsItemModel>();
         var update = request.AsDomainModel(id);        
         var updatedGrain = await grain.Update(update);
         var response = updatedGrain.Adapt<NewsItemDto>();

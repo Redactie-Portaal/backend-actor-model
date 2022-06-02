@@ -60,7 +60,7 @@ namespace RedacteurPortaal.Api.Converters
                 var x = new Contact(Guid.Empty, item.Name, item.Email, item.TelephoneNumber);
                 contacts.Add(x);
             }
-            //var contacts = request.ContactDetails.Adapt<List<Contact>>();
+            
             var location = request.LocationDetails.Adapt<Location>();
             var audioItems = new List<MediaAudioItem>();
             if (request.Audio is not null)
