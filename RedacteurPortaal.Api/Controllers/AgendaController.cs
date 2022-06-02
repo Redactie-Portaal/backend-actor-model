@@ -15,7 +15,7 @@ namespace RedacteurPortaal.Api.Controllers
     {
         private readonly IGrainManagementService<IAgendaGrain> grainService;
 
-        public AgendaController(ILogger<AgendaController> logger, IGrainManagementService<IAgendaGrain> grainService)
+        public AgendaController(IGrainManagementService<IAgendaGrain> grainService)
         {
             this.grainService = grainService;
         }
