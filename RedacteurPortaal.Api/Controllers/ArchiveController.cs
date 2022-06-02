@@ -117,7 +117,7 @@ public class ArchiveController : Controller
     }
 
     [HttpGet]
-    [Route("{archiveId}/Stories/{newsItemGuid}")]
+    [Route("{archiveId}/NewsItems/{newsItemGuid}")]
     public async Task<IActionResult> GetNewsItem([FromRoute] Guid archiveId, [FromRoute] Guid newsItemGuid)
     {
         var grain = await this.grainService.GetGrain(archiveId);
@@ -173,19 +173,19 @@ public class ArchiveController : Controller
 
     [HttpPost]
     [Route("{archiveId}/NewsItems")]
-    public async Task<IActionResult> AddNewsItems([FromRoute] Guid archiveId, [FromBody] NewsItemDto newsItem)
+    public async Task<IActionResult> AddNewsItems([FromRoute] Guid archiveId, [FromBody] UpdateNewsItemRequest newsItem)
     {
         Guid newguid = Guid.NewGuid();
 
+        TypeAdapterConfig<MediaAudioItem, MediaAudioItemDto>.NewConfig().Map(dest => dest.DurationSeconds, src => src.Duration);
+        TypeAdapterConfig<MediaVideoItem, MediaVideoItemDto>.NewConfig().Map(dest => dest.DurationSeconds, src => src.Duration);
         TypeAdapterConfig<NewsItemDto, NewsItemModel>
             .NewConfig()
             .Map(dest => dest.Id,
                 src => newguid);
-
+        var update = newsItem.AsDomainModel(newguid);
         var grain = await this.grainService.GetGrain(archiveId);
-        var update = newsItem.Adapt<NewsItemModel>();
         var createdGrain = await grain.AddNewsItem(update);
-        var response = createdGrain.Adapt<NewsItemDto>();
         return this.Ok(await grain.Get());
     }
 

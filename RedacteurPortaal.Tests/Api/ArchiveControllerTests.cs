@@ -244,6 +244,26 @@ public class ArchiveControllerTests
     [TestMethod]
     public async Task CanGetNewsItems()
     {
+        var application = new RedacteurPortaalApplication();
+        var client = application.CreateClient();
+
+        var addArchiveRequest = ArchiveDtoBuilder.BuildAddArchiveRequest();
+        var archiveResult = await client.PostAsJsonAsync("/api/Archive", addArchiveRequest);
+        var resultString = await archiveResult.Content.ReadAsStringAsync();
+
+        var result = JsonSerializer.Deserialize<ArchiveDto>(resultString, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+
+        var newsItemRequest = DtoBuilder.BuildAddNewsItemRequest();
+        var addNewsitem = await client.PostAsJsonAsync<NewsItemDto>($"/api/Archive/{result?.Id}/NewsItems", newsItemRequest);
+        var archiveWithNewsitem = await client.GetFromJsonAsync<ArchiveDto>($"/api/Archive/{result?.Id}");
+        Assert.AreEqual(HttpStatusCode.Created, archiveResult.StatusCode);
+        Assert.AreEqual(HttpStatusCode.OK, addNewsitem.StatusCode);
+        Assert.IsNotNull(result);
+        Assert.IsNotNull(archiveWithNewsitem);
+        Assert.IsNotNull(archiveWithNewsitem);
+        Assert.IsNotNull(archiveWithNewsitem?.NewsItems);
+        Assert.AreEqual(1, archiveWithNewsitem?.NewsItems?.Count);
+        Assert.IsNotNull(archiveWithNewsitem?.NewsItems?[0]);
     }
 
     [TestMethod]
@@ -342,6 +362,36 @@ public class ArchiveControllerTests
     public async Task CanGetNewsItemById()
     {
 
+        var application = new RedacteurPortaalApplication();
+        var client = application.CreateClient();
+
+        var addArchiveRequest = ArchiveDtoBuilder.BuildAddArchiveRequest();
+        var archiveResult = await client.PostAsJsonAsync("/api/Archive", addArchiveRequest);
+        var resultString = await archiveResult.Content.ReadAsStringAsync();
+
+        var result = JsonSerializer.Deserialize<ArchiveDto>(resultString, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+        
+        var newsItemRequest = DtoBuilder.BuildAddNewsItemRequest();
+        var addNewsitem = await client.PostAsJsonAsync<NewsItemDto>($"/api/Archive/{result?.Id}/NewsItems", newsItemRequest);
+        var archiveWithNewsitem = await client.GetFromJsonAsync<ArchiveDto>($"/api/Archive/{result?.Id}");
+        var updatedArchiveResult = await client.GetFromJsonAsync<NewsItemDto>($"/api/Archive/{result?.Id}/NewsItems/{archiveWithNewsitem?.NewsItems?[0].Id}");
+        Assert.AreEqual(HttpStatusCode.Created, archiveResult.StatusCode);
+        Assert.AreEqual(HttpStatusCode.OK, addNewsitem.StatusCode);
+        Assert.IsNotNull(result);
+        Assert.IsNotNull(archiveWithNewsitem);
+        Assert.IsNotNull(updatedArchiveResult);
+        Assert.AreEqual(newsItemRequest.Author, updatedArchiveResult?.Author);
+        Assert.AreEqual(newsItemRequest.Title, updatedArchiveResult?.Title);
+        Assert.AreEqual(newsItemRequest.Body, updatedArchiveResult?.Body);
+        Assert.AreEqual(newsItemRequest.Category, updatedArchiveResult?.Category);
+        Assert.AreEqual(newsItemRequest.Region, updatedArchiveResult?.Region);
+        Assert.AreEqual(newsItemRequest.EndDate, updatedArchiveResult?.EndDate);
+        for (var i = 0; i < updatedArchiveResult?.ContactDetails.Count; i++)
+        {
+            Assert.AreEqual(newsItemRequest.ContactDetails[i].Email, updatedArchiveResult.ContactDetails[i].Email);
+            Assert.AreEqual(newsItemRequest.ContactDetails[i].TelephoneNumber, updatedArchiveResult.ContactDetails[i].TelephoneNumber);
+            Assert.AreEqual(newsItemRequest.ContactDetails[i].Name, updatedArchiveResult.ContactDetails[i].Name);
+        }
     }
 
     [TestMethod]
@@ -514,6 +564,22 @@ public class ArchiveControllerTests
     [TestMethod]
     public async Task CanAddNewsItemById()
     {
+        var application = new RedacteurPortaalApplication();
+        var client = application.CreateClient();
+
+        var addArchiveRequest = ArchiveDtoBuilder.BuildSmallestArchive();
+        var archiveResult = await client.PostAsJsonAsync("/api/Archive", addArchiveRequest);
+        var resultString = await archiveResult.Content.ReadAsStringAsync();
+
+        var result = JsonSerializer.Deserialize<ArchiveDto>(resultString, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+        
+        var newsItemRequest = DtoBuilder.BuildAddNewsItemRequest();
+        var updatedArchiveResult = await client.PostAsJsonAsync<NewsItemDto>($"/api/Archive/{result?.Id}/NewsItems", newsItemRequest);
+        var archiveWithNewsitem = await client.GetFromJsonAsync<ArchiveDto>($"/api/Archive/{result?.Id}");
+        Assert.AreEqual(HttpStatusCode.Created, archiveResult.StatusCode);
+        Assert.AreEqual(HttpStatusCode.OK, updatedArchiveResult.StatusCode);
+        Assert.IsNotNull(archiveWithNewsitem);
+        Assert.AreNotEqual(addArchiveRequest?.NewsItems?[0], archiveWithNewsitem?.NewsItems?[0]);
     }
 
     [TestMethod]
