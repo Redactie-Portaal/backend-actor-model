@@ -15,10 +15,10 @@ public class ArchiveModel : IBaseEntity
         Guid id,
         string title,
         string label,
-        List<MediaPhotoItem> mediaPhotoItems,
-        List<MediaVideoItem> mediaVideoItems,
-        List<MediaAudioItem> mediaAudioItems,
-        List<NewsItemModel> newsItems,
+        List<Guid> mediaPhotoItems,
+        List<Guid> mediaVideoItems,
+        List<Guid> mediaAudioItems,
+        List<Guid> newsItems,
         DateTime archivedDate,
         List<string> scripts)
     {
@@ -41,13 +41,13 @@ public class ArchiveModel : IBaseEntity
 
     public string Label { get; private set; }
 
-    public List<MediaPhotoItem> MediaPhotoItems { get; private set; }
+    public List<Guid> MediaPhotoItems { get; private set; }
 
-    public List<MediaVideoItem> MediaVideoItems { get; private set; }
+    public List<Guid> MediaVideoItems { get; private set; }
 
-    public List<MediaAudioItem> MediaAudioItems { get; private set; }
+    public List<Guid> MediaAudioItems { get; private set; }
     
-    public List<NewsItemModel> NewsItems { get; private set; }
+    public List<Guid> NewsItems { get; private set; }
 
     public DateTime ArchivedDate { get; private set; }
 

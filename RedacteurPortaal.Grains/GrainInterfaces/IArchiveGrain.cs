@@ -16,13 +16,13 @@ public interface IArchiveGrain : IManageableGrain<ArchiveModel>
 
     Task<ArchiveModel> CreateArchive(ArchiveModel archive);
 
-    Task<MediaVideoItem> AddVideoItem(MediaVideoItem videoItem);
+    Task<Guid> AddVideoItem(Guid videoItemId);
 
-    Task<MediaPhotoItem> AddPhotoItem(MediaPhotoItem photoItem);
+    Task<Guid> AddPhotoItem(Guid photoItemId);
 
-    Task<MediaAudioItem> AddAudioItem(MediaAudioItem audioItem);
+    Task<Guid> AddAudioItem(Guid audioItemId);
 
-    Task<NewsItemModel> AddNewsItem(NewsItemModel newsItem);
+    Task<Guid> AddNewsItem(Guid newsItemId);
 
     Task DeleteVideoItem(Guid videoItemId);
 

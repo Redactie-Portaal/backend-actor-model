@@ -6,80 +6,105 @@ using RedacteurPortaal.DomainModels.NewsItem;
 using RedacteurPortaal.Grains.GrainInterfaces;
 using System.Runtime;
 using System.Collections.Generic;
+using RedacteurPortaal.Grains.GrainServices;
+using RedacteurPortaal.Helpers;
 
 namespace RedacteurPortaal.Grains.Grains;
 
 public class ArchiveGrain : Grain, IArchiveGrain
 {
+    private readonly IGrainManagementService<IMediaVideoGrain> videoGrainService;
+    private readonly IGrainManagementService<IMediaAudioGrain> audioGrainService;
+    private readonly IGrainManagementService<IMediaPhotoGrain> photoGrainService;
+    private readonly IGrainManagementService<INewsItemGrain> newsItemGrainService;
     private readonly IPersistentState<ArchiveModel> archive;
 
     public ArchiveGrain(
     [PersistentState("archive", "OrleansStorage")]
-    IPersistentState<ArchiveModel> archive)
+    IPersistentState<ArchiveModel> archive,
+    IGrainManagementService<IMediaVideoGrain> videoGrainService,
+    IGrainManagementService<IMediaAudioGrain> audioGrainService,
+    IGrainManagementService<IMediaPhotoGrain> photoGrainService,
+    IGrainManagementService<INewsItemGrain> newsItemGrainService)
     {
         this.archive = archive;
+        this.videoGrainService = videoGrainService;
+        this.audioGrainService = audioGrainService;
+        this.photoGrainService = photoGrainService;
+        this.newsItemGrainService = newsItemGrainService;
     }
 
-    public Task<ArchiveModel> Get()
+    public async Task<ArchiveModel> Get()
     {
-        var state = this.archive.State;
-        return Task.FromResult(state);
+        return await Task.FromResult(
+            new ArchiveModel(
+                this.archive.State.Id,
+                this.archive.State.Title,
+                this.archive.State.Label,
+                this.archive.State.MediaPhotoItems,
+                this.archive.State.MediaVideoItems,
+                this.archive.State.MediaAudioItems,
+                this.archive.State.NewsItems,
+                this.archive.State.ArchivedDate,
+                this.archive.State.Scripts)
+            );
     }
 
     public async Task<MediaVideoItem> GetVideoItem(Guid guid)
     {
-        var videoItems = this.archive.State.MediaVideoItems;
-        var videoItem = videoItems.Single(x => x.Id.Equals(guid));
-        
-        if (videoItem == null)
+        var grain = await this.videoGrainService.GetGrain(guid);
+        var item = await grain.Get();
+
+        if (item == null)
         {
             throw new KeyNotFoundException();
         }
         else
         {
-            return await Task.FromResult(videoItem);
+            return await Task.FromResult(item);
         }
     }
 
     public async Task<MediaPhotoItem> GetPhotoItem(Guid guid)
     {
-        var photoItems = this.archive.State.MediaPhotoItems;
-        var photoItem = photoItems.Find(x => x.Id.Equals(guid));
-        if (photoItem == null)
+        var grain = await this.photoGrainService.GetGrain(guid);
+        var item = await grain.Get();
+        
+        if (item == null)
         {
             throw new KeyNotFoundException();
         }
         else
         {
-            return await Task.FromResult(photoItem);
+            return await Task.FromResult(item);
         }
     }
 
     public async Task<MediaAudioItem> GetAudioItem(Guid guid)
     {
-        var audioItems = this.archive.State.MediaAudioItems;
-        var audioItem = audioItems.Find(x => x.Id.Equals(guid));
-        if (audioItem == null)
+        var grain = await this.audioGrainService.GetGrain(guid);
+        var item = await grain.Get();
+        if (item == null)
         {
             throw new KeyNotFoundException();
         }
         else
         {
-            return await Task.FromResult(audioItem);
+            return await Task.FromResult(item);
         }
     }
 
     public async Task<NewsItemModel> GetNewsItem(Guid guid)
     {
-        var newsItems = this.archive.State.NewsItems;
-        var newsItem = newsItems.Find(x => x.Id.Equals(guid));
-        if (newsItem == null)
+        var grain = await this.newsItemGrainService.GetGrain(guid);
+        var item = await grain.Get();
+        if (item == null)
         {
             throw new KeyNotFoundException();
         }
         else
         {
-            return await Task.FromResult(newsItem);
+            return await Task.FromResult(item);
         }
     }
 
@@ -90,32 +115,60 @@ public class ArchiveGrain : Grain, IArchiveGrain
         return await Task.FromResult(this.archive.State);
     }
 
-    public async Task<MediaVideoItem> AddVideoItem(MediaVideoItem videoItem)
+    public async Task<Guid> AddVideoItem(Guid videoItemId)
     {
-        this.archive.State.MediaVideoItems.Add(videoItem);
-        await this.archive.WriteStateAsync();
-        return await Task.FromResult(videoItem);
+        if (videoItemId != Guid.Empty)
+        {
+            this.archive.State.MediaVideoItems.Add(videoItemId);
+            await this.archive.WriteStateAsync();
+            return await Task.FromResult(videoItemId);
+        }
+        else
+        {
+            throw new KeyNotFoundException();
+        }
     }
 
-    public async Task<MediaPhotoItem> AddPhotoItem(MediaPhotoItem photoItem)
+    public async Task<Guid> AddPhotoItem(Guid photoItemId)
     {
-        this.archive.State.MediaPhotoItems.Add(photoItem);
-        await this.archive.WriteStateAsync();
-        return await Task.FromResult(photoItem);
+        if (photoItemId != Guid.Empty)
+        {
+            this.archive.State.MediaPhotoItems.Add(photoItemId);
+            await this.archive.WriteStateAsync();
+            return await Task.FromResult(photoItemId);
+        }
+        else
+        {
+            throw new KeyNotFoundException();
+        }
     }
 
-    public async Task<MediaAudioItem> AddAudioItem(MediaAudioItem audioItem)
+    public async Task<Guid> AddAudioItem(Guid audioItemId)
     {
-        this.archive.State.MediaAudioItems.Add(audioItem);
-        await this.archive.WriteStateAsync();
-        return await Task.FromResult(audioItem);
+        if (audioItemId != Guid.Empty)
+        {
+            this.archive.State.MediaAudioItems.Add(audioItemId);
+            await this.archive.WriteStateAsync();
+            return await Task.FromResult(audioItemId);
+        }
+        else
+        {
+            throw new KeyNotFoundException();
+        }
     }
 
-    public async Task<NewsItemModel> AddNewsItem(NewsItemModel newsItem)
+    public async Task<Guid> AddNewsItem(Guid newsItemId)
     {
-        this.archive.State.NewsItems.Add(newsItem);
-        await this.archive.WriteStateAsync();
-        return await Task.FromResult(newsItem);
+        if (newsItemId != Guid.Empty)
+        {
+            this.archive.State.NewsItems.Add(newsItemId);
+            await this.archive.WriteStateAsync();
+            return await Task.FromResult(newsItemId);
+        }
+        else
+        {
+            throw new KeyNotFoundException();
+        }
     }
 
     public async Task Delete()
@@ -128,15 +181,15 @@ public class ArchiveGrain : Grain, IArchiveGrain
         var videoItems = this.archive.State.MediaVideoItems;
         if (videoItems != null && videoItems.Count > 0)
         {
-            var videoItem = videoItems.Find(x => x.Id.Equals(videoItemId));
-            if (videoItem == null)
+            var videoItem = videoItems.Find(x => x.Equals(videoItemId));
+            if (videoItem == Guid.Empty)
             {
                 throw new KeyNotFoundException("Video item with id not found");
             }
             else
             {
-                this.archive.State.MediaVideoItems.Remove(videoItem);
-                await this.archive.WriteStateAsync();
+                var grain = await this.videoGrainService.GetGrain(videoItemId);
+                await grain.Delete();
             }
         }
         else
@@ -150,15 +203,15 @@ public class ArchiveGrain : Grain, IArchiveGrain
         var photoItems = this.archive.State.MediaPhotoItems;
         if (photoItems != null && photoItems.Count > 0)
         {
-            var photoItem = photoItems.Find(x => x.Id.Equals(photoItemId));
-            if (photoItem == null)
+            var photoItem = photoItems.Find(x => x.Equals(photoItemId));
+            if (photoItem == Guid.Empty)
             {
                 throw new KeyNotFoundException("Photo item with id not found");
             }
             else
             {
-                this.archive.State.MediaPhotoItems.Remove(photoItem);
-                await this.archive.WriteStateAsync();
+                var grain = await this.photoGrainService.GetGrain(photoItemId);
+                await grain.Delete();
             }
         }
         else
@@ -172,15 +225,15 @@ public class ArchiveGrain : Grain, IArchiveGrain
         var audioItems = this.archive.State.MediaAudioItems;
         if (audioItems != null && audioItems.Count > 0)
         {
-            var audioItem = audioItems.Find(x => x.Id.Equals(audioItemId));
-            if (audioItem == null)
+            var audioItem = audioItems.Find(x => x.Equals(audioItemId));
+            if (audioItem == Guid.Empty)
             {
                 throw new KeyNotFoundException("audio item with id not found");
             }
             else
             {
-                this.archive.State.MediaAudioItems.Remove(audioItem);
-                await this.archive.WriteStateAsync();
+                var grain = await this.audioGrainService.GetGrain(audioItemId);
+                await grain.Delete();
             }
         }
         else
@@ -194,15 +247,15 @@ public class ArchiveGrain : Grain, IArchiveGrain
         var newsItems = this.archive.State.NewsItems;
         if (newsItems != null && newsItems.Count > 0)
         {
-            var newsItem = newsItems.Find(x => x.Id.Equals(newsItemId));
-            if (newsItem == null)
+            var newsItem = newsItems.Find(x => x.Equals(newsItemId));
+            if (newsItem == Guid.Empty)
             {
                 throw new KeyNotFoundException("News item with id not found");
             }
             else
             {
-                this.archive.State.NewsItems.Remove(newsItem);
-                await this.archive.WriteStateAsync();
+                var grain = await this.newsItemGrainService.GetGrain(newsItemId);
+                await grain.Delete();
             }
         }
         else

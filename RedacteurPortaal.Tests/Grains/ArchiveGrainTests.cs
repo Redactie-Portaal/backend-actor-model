@@ -24,13 +24,12 @@ public class ArchiveGrainTests
         this._cluster = new ClusterFixture().Cluster;
     }
 
-
     [TestMethod]
     public async Task CanAddArchiveCorrectly()
     {
         var guid = Guid.NewGuid();
 
-        var toSaveArchive = new ArchiveModel(guid, "Title", "Label", new List<MediaPhotoItem> { }, new List<MediaVideoItem> { }, new List<MediaAudioItem> { }, new List<NewsItemModel> { }, DateTime.UtcNow, new List<string> { "scripts" });
+        var toSaveArchive = new ArchiveModel(guid, "Title", "Label", new List<Guid> { }, new List<Guid> { }, new List<Guid> { }, new List<Guid> { }, DateTime.UtcNow, new List<string> { "scripts" });
 
         var archiveGrain = this._cluster.GrainFactory.GetGrain<IArchiveGrain>(guid);
         await archiveGrain.CreateArchive(toSaveArchive);
@@ -52,7 +51,7 @@ public class ArchiveGrainTests
     {
         var guid = Guid.NewGuid();
 
-        var toSaveArchive = new ArchiveModel(guid, "Title", "Label", new List<MediaPhotoItem> { }, new List<MediaVideoItem> { }, new List<MediaAudioItem> { }, new List<NewsItemModel> { }, DateTime.UtcNow, new List<string> { "scripts" });
+        var toSaveArchive = new ArchiveModel(guid, "Title", "Label", new List<Guid> { }, new List<Guid> { }, new List<Guid> { }, new List<Guid> { }, DateTime.UtcNow, new List<string> { "scripts" });
         var archiveGrain = this._cluster.GrainFactory.GetGrain<IArchiveGrain>(guid);
         await archiveGrain.CreateArchive(toSaveArchive);
 
@@ -73,11 +72,11 @@ public class ArchiveGrainTests
     {
         var guid = Guid.NewGuid();
 
-        var toSaveArchive = new ArchiveModel(guid, "Title", "Label", new List<MediaPhotoItem> { }, new List<MediaVideoItem> { }, new List<MediaAudioItem> { }, new List<NewsItemModel> { }, DateTime.UtcNow, new List<string> { "scripts" });
+        var toSaveArchive = new ArchiveModel(guid, "Title", "Label", new List<Guid> { }, new List<Guid> { }, new List<Guid> { }, new List<Guid> { }, DateTime.UtcNow, new List<string> { "scripts" });
         var archiveGrain = this._cluster.GrainFactory.GetGrain<IArchiveGrain>(guid);
         await archiveGrain.CreateArchive(toSaveArchive);
 
-        var newerArchive = new ArchiveModel(guid, "Newer Title", "Newer Label", new List<MediaPhotoItem> { }, new List<MediaVideoItem> { }, new List<MediaAudioItem> { }, new List<NewsItemModel> { }, DateTime.UtcNow, new List<string> { "scripts" });
+        var newerArchive = new ArchiveModel(guid, "Newer Title", "Newer Label", new List<Guid> { }, new List<Guid> { }, new List<Guid> { }, new List<Guid> { }, DateTime.UtcNow, new List<string> { "scripts" });
 
         await archiveGrain.Update(newerArchive);
 
@@ -97,20 +96,12 @@ public class ArchiveGrainTests
     {
         var guid = Guid.NewGuid();
 
-        var toSaveArchive = new ArchiveModel(guid, "Title", "Label", new List<MediaPhotoItem> { }, new List<MediaVideoItem> { }, new List<MediaAudioItem> { }, new List<NewsItemModel> { }, DateTime.UtcNow, new List<string> { "scripts" });
+        var toSaveArchive = new ArchiveModel(guid, "Title", "Label", new List<Guid> { }, new List<Guid> { }, new List<Guid> { }, new List<Guid> { }, DateTime.UtcNow, new List<string> { "scripts" });
         var archiveGrain = this._cluster.GrainFactory.GetGrain<IArchiveGrain>(guid);
         await archiveGrain.CreateArchive(toSaveArchive);
 
-        await this._cluster.GrainFactory.GetGrain<IArchiveGrain>(guid).Delete();
-        var archiveInGrain = await this._cluster.GrainFactory.GetGrain<IArchiveGrain>(guid).Get();
+        await archiveGrain.Delete();
 
-        Assert.AreEqual("00000000-0000-0000-0000-000000000000", Convert.ToString(archiveInGrain.Id));
-        Assert.IsNull(archiveInGrain.Title);
-        Assert.IsNull(archiveInGrain.Label);
-        Assert.IsNull(archiveInGrain.NewsItems);
-        Assert.IsNull(archiveInGrain.Scripts);
-        Assert.IsNull(archiveInGrain.MediaAudioItems);
-        Assert.IsNull(archiveInGrain.MediaVideoItems);
-        Assert.IsNull(archiveInGrain.MediaPhotoItems);
+        Assert.IsFalse(await archiveGrain.HasState());
     }
 }

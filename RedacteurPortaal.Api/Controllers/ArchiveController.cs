@@ -138,54 +138,37 @@ public class ArchiveController : Controller
 
     [HttpPost]
     [Route("{archiveId}/VideoItems")]
-    public async Task<ActionResult<MediaVideoItemDto>> AddVideoItem([FromRoute] Guid archiveId, [FromBody] MediaVideoItemDto videoItem)
+    public async Task<ActionResult<Guid>> AddVideoItem([FromRoute] Guid archiveId, [FromBody] Guid videoItemId)
     {
-        var newguid = Guid.NewGuid();
-        var archivedVideoItem = MediaItemDTOConverter.ConvertMediaVideoDTO(videoItem, newguid);
         var grain = await this.grainService.GetGrain(archiveId);
-        await grain.AddVideoItem(archivedVideoItem);
+        await grain.AddVideoItem(videoItemId);
         return this.Ok(await grain.Get());
     }
 
     [HttpPost]
     [Route("{archiveId}/AudioItems")]
-    public async Task<IActionResult> AddAudioItems([FromRoute] Guid archiveId, [FromBody] MediaAudioItemDto audioItem)
+    public async Task<ActionResult<Guid>> AddAudioItems([FromRoute] Guid archiveId, [FromBody] Guid audioItemId)
     {
-        var newguid = Guid.NewGuid();
-        var archivedAudioItem = MediaItemDTOConverter.ConvertMediaAudioDTO(audioItem, newguid);
-
         var grain = await this.grainService.GetGrain(archiveId);
-        await grain.AddAudioItem(archivedAudioItem);
+        await grain.AddAudioItem(audioItemId);
         return this.Ok(await grain.Get());
     }
 
     [HttpPost]
     [Route("{archiveId}/PhotoItems")]
-    public async Task<IActionResult> AddPhotoItem([FromRoute] Guid archiveId, [FromBody] MediaPhotoItemDto photoItem)
+    public async Task<ActionResult<Guid>> AddPhotoItem([FromRoute] Guid archiveId, [FromBody] Guid photoItemId)
     {
-        var newguid = Guid.NewGuid();
-        var archivedPhotoItem = MediaItemDTOConverter.ConvertMediaPhotoDTO(photoItem, newguid);
-
         var grain = await this.grainService.GetGrain(archiveId);
-        await grain.AddPhotoItem(archivedPhotoItem);
+        await grain.AddPhotoItem(photoItemId);
         return this.Ok(await grain.Get());
     }
 
     [HttpPost]
     [Route("{archiveId}/NewsItems")]
-    public async Task<IActionResult> AddNewsItems([FromRoute] Guid archiveId, [FromBody] UpdateNewsItemRequest newsItem)
+    public async Task<ActionResult<Guid>> AddNewsItems([FromRoute] Guid archiveId, [FromBody] Guid newsItemId)
     {
-        Guid newguid = Guid.NewGuid();
-
-        TypeAdapterConfig<MediaAudioItem, MediaAudioItemDto>.NewConfig().Map(dest => dest.DurationSeconds, src => src.Duration);
-        TypeAdapterConfig<MediaVideoItem, MediaVideoItemDto>.NewConfig().Map(dest => dest.DurationSeconds, src => src.Duration);
-        TypeAdapterConfig<NewsItemDto, NewsItemModel>
-            .NewConfig()
-            .Map(dest => dest.Id,
-                src => newguid);
-        var update = newsItem.AsDomainModel(newguid);
         var grain = await this.grainService.GetGrain(archiveId);
-        var createdGrain = await grain.AddNewsItem(update);
+        var createdGrain = await grain.AddNewsItem(newsItemId);
         return this.Ok(await grain.Get());
     }
 

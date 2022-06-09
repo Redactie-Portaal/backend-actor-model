@@ -23,10 +23,10 @@ namespace RedacteurPortaal.Tests.DomainModels
                 var mediaAudioItem = new ArchiveModel(guid,
                                                       "Title",
                                                       "Label",
-                                                      new List<MediaPhotoItem>(),
-                                                      new List<MediaVideoItem>(),
-                                                      new List<MediaAudioItem>(),
-                                                      new List<NewsItemModel>(),
+                                                      new List<Guid>(),
+                                                      new List<Guid>(),
+                                                      new List<Guid>(),
+                                                      new List<Guid>(),
                                                       DateTime.UtcNow,
                                                       new List<string> { "scripts" });
             }
@@ -47,10 +47,10 @@ namespace RedacteurPortaal.Tests.DomainModels
                 var model = new ArchiveModel(guid,
                                              "",
                                              "Label",
-                                             new List<MediaPhotoItem>(),
-                                             new List<MediaVideoItem>(),
-                                             new List<MediaAudioItem>(),
-                                             new List<NewsItemModel>(),                                             
+                                             new List<Guid>(),
+                                             new List<Guid>(),
+                                             new List<Guid>(),
+                                             new List<Guid>(),                                             
                                              DateTime.UtcNow,
                                              new List<string> { "scripts" });
             });
@@ -64,10 +64,10 @@ namespace RedacteurPortaal.Tests.DomainModels
                 var model = new ArchiveModel(guid,
                                              "Title",
                                              "",
-                                             new List<MediaPhotoItem>(),
-                                             new List<MediaVideoItem>(),
-                                             new List<MediaAudioItem>(),
-                                             new List<NewsItemModel>(),
+                                             new List<Guid>(),
+                                             new List<Guid>(),
+                                             new List<Guid>(),
+                                             new List<Guid>(),
                                              DateTime.UtcNow,
                                              new List<string> { "scripts" });
             });
@@ -81,10 +81,10 @@ namespace RedacteurPortaal.Tests.DomainModels
                 var model = new ArchiveModel(guid,
                                              "Title",
                                              "Label",
-                                             new List<MediaPhotoItem>(),
-                                             new List<MediaVideoItem>(),
-                                             new List<MediaAudioItem>(),
-                                             new List<NewsItemModel>(),
+                                             new List<Guid>(),
+                                             new List<Guid>(),
+                                             new List<Guid>(),
+                                             new List<Guid>(),
                                              DateTime.UtcNow,
                                              new List<string>());
             });

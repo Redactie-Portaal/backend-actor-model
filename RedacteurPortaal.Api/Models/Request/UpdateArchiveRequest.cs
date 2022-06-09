@@ -10,13 +10,13 @@ namespace RedacteurPortaal.Api.Models.Request
 
         public string Label { get; set; }
 
-        public List<MediaPhotoItemDto>? MediaPhotoItems { get; set; }
+        public List<Guid>? MediaPhotoItems { get; set; }
 
-        public List<MediaVideoItemDto>? MediaVideoItems { get; set; }
+        public List<Guid>? MediaVideoItems { get; set; }
 
-        public List<MediaAudioItemDto>? MediaAudioItems { get; set; }
+        public List<Guid>? MediaAudioItems { get; set; }
 
-        public List<NewsItemDto>? NewsItems { get; set; }
+        public List<Guid>? NewsItems { get; set; }
 
         public List<string> Scripts { get; set; }
     }
