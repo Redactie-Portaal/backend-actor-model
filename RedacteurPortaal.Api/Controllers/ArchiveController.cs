@@ -212,7 +212,7 @@ public class ArchiveController : Controller
     {
         var grain = await this.grainService.GetGrain(archiveId);
         await grain.DeleteAudioItem(audioItemGuid);
-        return this.Ok();
+        return this.NoContent();
     }
 
     [HttpDelete]
