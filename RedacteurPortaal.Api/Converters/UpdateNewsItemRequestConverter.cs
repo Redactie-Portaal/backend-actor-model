@@ -13,88 +13,97 @@ namespace RedacteurPortaal.Api.Converters
         public static NewsItemModel AsDomainModel(this UpdateNewsItemRequest request, Guid id)
         {
             var videoItems = new List<MediaVideoItem>();
-            foreach (var item in request.Videos)
+            if (request.Videos is not null)
             {
-                var x = new MediaVideoItem(Guid.Empty,
-                                           item.Title,
-                                           item.Folder,
-                                           item.RepublishDate,
-                                           item.Rights,
-                                           item.Camera,
-                                           item.LastWords,
-                                           item.ProxyFile,
-                                           item.Presentation,
-                                           new Location(Guid.Empty, item.Location.Name, item.Location.City, item.Location.Province, item.Location.Street, item.Location.Zip, item.Location.Latitude, item.Location.Longitude),
-                                           item.Format,
-                                           item.Reporter,
-                                           item.Sound,
-                                           item.Editor,
-                                           item.LastPicture,
-                                           item.Keywords,
-                                           item.VoiceOver,
-                                           item.Description,
-                                           item.ProgramDate,
-                                           item.ItemName,
-                                           item.EPG,
-                                           TimeSpan.FromSeconds(item.DurationSeconds),
-                                           item.ArchiveMaterial,
-                                           item.Weather,
-                                           item.Producer,
-                                           item.Director,
-                                           item.Guests,
-                                           item.FirstPicture,
-                                           item.ProgramName,
-                                           item.FirstWords,
-                                           item.MediaLocation);
+                foreach (var item in request.Videos)
+                {
+                    var x = new MediaVideoItem(Guid.Empty,
+                                               item.Title,
+                                               item.Folder,
+                                               item.RepublishDate,
+                                               item.Rights,
+                                               item.Camera,
+                                               item.LastWords,
+                                               item.ProxyFile,
+                                               item.Presentation,
+                                               new Location(Guid.Empty, item.Location.Name, item.Location.City, item.Location.Province, item.Location.Street, item.Location.Zip, item.Location.Latitude, item.Location.Longitude),
+                                               item.Format,
+                                               item.Reporter,
+                                               item.Sound,
+                                               item.Editor,
+                                               item.LastPicture,
+                                               item.Keywords,
+                                               item.VoiceOver,
+                                               item.Description,
+                                               item.ProgramDate,
+                                               item.ItemName,
+                                               item.EPG,
+                                               TimeSpan.FromSeconds(item.DurationSeconds),
+                                               item.ArchiveMaterial,
+                                               item.Weather,
+                                               item.Producer,
+                                               item.Director,
+                                               item.Guests,
+                                               item.FirstPicture,
+                                               item.ProgramName,
+                                               item.FirstWords,
+                                               item.MediaLocation);
 
-                videoItems.Add(x);
+                    videoItems.Add(x);
+                }
             }
 
             var feedSource = request.Source.Adapt<FeedSource>();
             var contacts = request.ContactDetails.Adapt<List<Contact>>();
             var location = request.LocationDetails.Adapt<Location>();
             var audioItems = new List<MediaAudioItem>();
-            foreach (var item in request.Audio)
+            if (request.Audio is not null)
             {
-                var x = new MediaAudioItem(Guid.Empty,
-                                           item.Title,
-                                           item.Folder,
-                                           item.RepublishDate,
-                                           item.Rights,
-                                           item.Camera,
-                                           item.LastWords,
-                                           item.ProxyFile,
-                                           item.Presentation,
-                                           new Location(Guid.Empty, item.Location.Name, item.Location.City, item.Location.Province, item.Location.Street, item.Location.Zip, item.Location.Latitude, item.Location.Longitude),
-                                           item.Format,
-                                           item.MediaLocation,
-                                           TimeSpan.FromSeconds(item.DurationSeconds),
-                                           item.Weather,
-                                           item.FirstWords,
-                                           item.ProgramName);
+                foreach (var item in request.Audio)
+                {
+                    var x = new MediaAudioItem(Guid.Empty,
+                                               item.Title,
+                                               item.Folder,
+                                               item.RepublishDate,
+                                               item.Rights,
+                                               item.Camera,
+                                               item.LastWords,
+                                               item.ProxyFile,
+                                               item.Presentation,
+                                               new Location(Guid.Empty, item.Location.Name, item.Location.City, item.Location.Province, item.Location.Street, item.Location.Zip, item.Location.Latitude, item.Location.Longitude),
+                                               item.Format,
+                                               item.MediaLocation,
+                                               TimeSpan.FromSeconds(item.DurationSeconds),
+                                               item.Weather,
+                                               item.FirstWords,
+                                               item.ProgramName);
 
-                audioItems.Add(x);
+                    audioItems.Add(x);
+                }
             }
-
+            
             var photoItems = new List<MediaPhotoItem>();
 
-            foreach (var item in request.Photos)
+            if (request.Photos is not null)
             {
-                var x = new MediaPhotoItem(Guid.Empty,
-                                           item.Title,
-                                           item.Folder,
-                                           item.RepublishDate,
-                                           item.Rights,
-                                           item.Camera,
-                                           item.LastWords,
-                                           item.ProxyFile,
-                                           item.Presentation,
-                                           new Location(Guid.Empty, item.Location.Name, item.Location.City, item.Location.Province, item.Location.Street, item.Location.Zip, item.Location.Latitude, item.Location.Longitude),
-                                           item.Format,
-                                           item.MediaLocation,
-                                           item.Image);
+                foreach (var item in request.Photos)
+                {
+                    var x = new MediaPhotoItem(Guid.Empty,
+                                               item.Title,
+                                               item.Folder,
+                                               item.RepublishDate,
+                                               item.Rights,
+                                               item.Camera,
+                                               item.LastWords,
+                                               item.ProxyFile,
+                                               item.Presentation,
+                                               new Location(Guid.Empty, item.Location.Name, item.Location.City, item.Location.Province, item.Location.Street, item.Location.Zip, item.Location.Latitude, item.Location.Longitude),
+                                               item.Format,
+                                               item.MediaLocation,
+                                               item.Image);
 
-                photoItems.Add(x);
+                    photoItems.Add(x);
+                }
             }
 
 #pragma warning disable CS8604 // Possible null reference argument.

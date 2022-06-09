@@ -21,7 +21,8 @@ using System.Runtime.Loader;
 using RedacteurPortaal.DomainModels.Agenda;
 
 await Host.CreateDefaultBuilder(args)
-    .UseOrleans((ctx, siloBuilder) => {
+    .UseOrleans((ctx, siloBuilder) => 
+    {
         if (ctx.HostingEnvironment.IsDevelopment())
         {
             siloBuilder.UseLocalhostClustering();
