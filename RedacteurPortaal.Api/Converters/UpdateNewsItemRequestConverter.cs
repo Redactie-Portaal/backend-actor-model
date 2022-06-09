@@ -97,13 +97,15 @@ namespace RedacteurPortaal.Api.Converters
                 photoItems.Add(x);
             }
 
-            var approvalState = Enum.TryParse(request.ApprovalState, out ApprovalState state);
+#pragma warning disable CS8604 // Possible null reference argument.
+            ApprovalState approvalState = (ApprovalState)Enum.Parse(typeof(ApprovalState), request.ApprovalState);
+#pragma warning restore CS8604 // Possible null reference argument.
 
 #pragma warning disable CS8604 // Possible null reference argument.
             return new NewsItemModel(id,
                                      request.Title,
                                      request.Status,
-                                     state,
+                                     approvalState,
                                      request.Author,
                                      feedSource,
                                      request.Body,

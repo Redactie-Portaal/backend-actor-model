@@ -38,11 +38,11 @@ public class ArchiveController : Controller
 
     [HttpGet]
     [Route("{archiveId}", Name = nameof(GetArchiveById))]
-    public async Task<ActionResult<ArchiveModel>> GetArchiveById([FromRoute] Guid archiveId)
+    public async Task<ActionResult<ArchiveDto>> GetArchiveById([FromRoute] Guid archiveId)
     {
         var archive = await this.grainService.GetGrain(archiveId);
         var response = await archive.Get();
-        var dto = response.Adapt<ArchiveModel>();
+        var dto = response.Adapt<ArchiveDto>();
         return this.Ok(dto);
     }
 
@@ -88,11 +88,11 @@ public class ArchiveController : Controller
 
     [HttpGet]
     [Route("{archiveId}/VideoItems/{videoItemGuid}")]
-    public async Task<IActionResult> GetVideoItem([FromRoute] Guid archiveId, [FromRoute] Guid videoItemGuid)
+    public async Task<ActionResult<MediaVideoItemDto>> GetVideoItem([FromRoute] Guid archiveId, [FromRoute] Guid videoItemGuid)
     {
         var grain = await this.grainService.GetGrain(archiveId);
         var response = await grain.GetVideoItem(videoItemGuid);
-        var dto = response.Adapt<MediaVideoItem>();
+        var dto = response.Adapt<MediaVideoItemDto>();
         return this.Ok(dto);
     }
 
@@ -108,32 +108,33 @@ public class ArchiveController : Controller
 
     [HttpGet]
     [Route("{archiveId}/PhotoItems/{photoItemGuid}")]
-    public async Task<IActionResult> GetPhotoItem([FromRoute] Guid archiveId, [FromRoute] Guid photoItemGuid)
+    public async Task<ActionResult<MediaPhotoItemDto>> GetPhotoItem([FromRoute] Guid archiveId, [FromRoute] Guid photoItemGuid)
     {
         var grain = await this.grainService.GetGrain(archiveId);
         var response = await grain.GetPhotoItem(photoItemGuid);
-        var dto = response.Adapt<MediaPhotoItem>();
+        var dto = response.Adapt<MediaPhotoItemDto>();
         return this.Ok(dto);
     }
 
     [HttpGet]
     [Route("{archiveId}/NewsItems/{newsItemGuid}")]
-    public async Task<IActionResult> GetNewsItem([FromRoute] Guid archiveId, [FromRoute] Guid newsItemGuid)
+    public async Task<ActionResult<NewsItemDto>> GetNewsItem([FromRoute] Guid archiveId, [FromRoute] Guid newsItemGuid)
     {
         var grain = await this.grainService.GetGrain(archiveId);
         var response = await grain.GetNewsItem(newsItemGuid);
-        var dto = response.Adapt<NewsItemModel>();
+        var dto = response.Adapt<NewsItemDto>();
         return this.Ok(dto);
     }
 
     [HttpPost]
-    public async Task<ActionResult<ArchiveModel>> CreateArchive([FromBody] UpdateArchiveRequest archiveDTO)
+    public async Task<ActionResult<ArchiveDto>> CreateArchive([FromBody] UpdateArchiveRequest archiveDTO)
     {
         var newguid = Guid.NewGuid();
         var archive = archiveDTO.AsDomainModel(newguid);
         var grain = await this.grainService.CreateGrain(archive.Id);
-        await grain.CreateArchive(archive);
-        return this.CreatedAtRoute(nameof(this.GetArchiveById), new { archiveId = newguid }, archive);
+        var createdArchive  = await grain.CreateArchive(archive);
+        var response = createdArchive.Adapt<ArchiveDto>();
+        return this.CreatedAtRoute(nameof(this.GetArchiveById), new { archiveId = newguid }, response);
     }
 
     [HttpPost]
@@ -186,7 +187,8 @@ public class ArchiveController : Controller
         var update = newsItem.AsDomainModel(newguid);
         var grain = await this.grainService.GetGrain(archiveId);
         var createdGrain = await grain.AddNewsItem(update);
-        return this.Ok(await grain.Get());
+        var archivee = await grain.Get();
+        return this.Ok(archivee);
     }
 
     [HttpDelete]
@@ -237,15 +239,16 @@ public class ArchiveController : Controller
     [Route("{archiveId}")]
     public async Task<IActionResult> UpdateArchive([FromRoute] Guid archiveId, [FromBody] UpdateArchiveRequest updateArchiveRequest)
     {
-        TypeAdapterConfig<UpdateArchiveRequest, ArchiveModel>
-       .NewConfig()
-       .Map(dest => dest.Id,
-           src => archiveId);
+        var typeConfig = new TypeAdapterConfig();
+        typeConfig.NewConfig<ArchiveModel, ArchiveDto>().Map(dest => dest.Id, src => archiveId)
+            .Fork(config => config.ForType<MediaAudioItem, MediaAudioItemDto>()
+            .Map(dest => dest.DurationSeconds, src => src.Duration.TotalSeconds));
+        typeConfig.ForType<MediaVideoItem, MediaVideoItemDto>().Map(dest => dest.DurationSeconds, src => src.Duration.TotalSeconds);
 
         var grain = await this.grainService.GetGrain(archiveId);
         var update = updateArchiveRequest.AsDomainModel(archiveId);
         var updatedGrain = await grain.Update(update);
-        var response = updatedGrain.Adapt<ArchiveDto>();
+        var response = updatedGrain.Adapt<ArchiveDto>(typeConfig);
         return this.Ok(response);
     }
 }

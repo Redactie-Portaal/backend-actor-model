@@ -49,7 +49,7 @@ public static class ArchiveDtoBuilder
     public static MediaAudioItemDto CreateMediaAudioItemRequest()
     {
         return new MediaAudioItemDto() {
-            DurationSeconds = TimeSpan.FromSeconds(1),
+            DurationSeconds = 1,
             FirstWords = "firstwords",
             ProgramName = "programname",
             Title = "Video 1",
@@ -142,7 +142,7 @@ public static class ArchiveDtoBuilder
             },
             MediaAudioItems = new() {
                 new MediaAudioItemDto() {
-                    DurationSeconds = TimeSpan.FromSeconds(1),
+                    DurationSeconds = 1,
                     FirstWords = "firstwords",
                     ProgramName = "programname",
                     Title = "Video 1",
@@ -221,7 +221,7 @@ public static class ArchiveDtoBuilder
             },
             MediaAudioItems = new() {
                 new MediaAudioItemDto() {
-                    DurationSeconds = TimeSpan.FromSeconds(1),
+                    DurationSeconds = 1,
                     FirstWords = "firstwords",
                     ProgramName = "programname",
                     Title = "Video 1",

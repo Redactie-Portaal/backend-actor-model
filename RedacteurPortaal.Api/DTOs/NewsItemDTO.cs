@@ -10,9 +10,9 @@ public class NewsItemDto
 
     public string? Title { get; set; }
     
-    public Status? Status { get; set; }
+    public Status Status { get; set; }
 
-    public string ApprovalStatus { get; set; }
+    public string ApprovalState { get; set; }
   
     public string? Author { get; set; }
 
@@ -24,13 +24,13 @@ public class NewsItemDto
 
     public LocationDto LocationDetails { get; set;  }
 
-    public DateTime? ProductionDate { get; set; }
+    public DateTime ProductionDate { get; set; }
 
-    public DateTime? EndDate { get; set; }
+    public DateTime EndDate { get; set; }
 
-    public Category? Category { get; set; }
+    public Category Category { get; set; }
 
-    public Region? Region { get; set; }
+    public Region Region { get; set; }
 
     public List<MediaVideoItemDto> Videos { get; set; }
 

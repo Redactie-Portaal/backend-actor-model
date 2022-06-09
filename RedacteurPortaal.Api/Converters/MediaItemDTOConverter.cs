@@ -60,7 +60,7 @@ namespace RedacteurPortaal.Api.Converters
                                            new Location(Guid.Empty, item.Location.Name, item.Location.City, item.Location.Province, item.Location.Street, item.Location.Zip, item.Location.Latitude, item.Location.Longitude),
                                            item.Format,
                                            item.MediaLocation,
-                                           item.DurationSeconds,
+                                           TimeSpan.FromSeconds(item.DurationSeconds),
                                            item.Weather,
                                            item.FirstWords,
                                            item.ProgramName);

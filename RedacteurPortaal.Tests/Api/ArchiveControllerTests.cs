@@ -56,7 +56,7 @@ public class ArchiveControllerTests
 
         Assert.AreEqual(patchArchiveRequest.Title, patchResult?.Title);
         Assert.AreEqual(patchArchiveRequest.Label, patchResult?.Label);
-        for (int i = 0; i < patchArchiveRequest.MediaPhotoItems.Count; i++)
+        for (int i = 0; i < patchArchiveRequest.MediaPhotoItems?.Count; i++)
         {
             Assert.AreEqual(patchArchiveRequest.MediaPhotoItems[i].Id, patchResult?.MediaPhotoItems?[i].Id);
             Assert.AreEqual(patchArchiveRequest.MediaPhotoItems[i].Title, patchResult?.MediaPhotoItems?[i].Title);
@@ -78,7 +78,7 @@ public class ArchiveControllerTests
             Assert.AreEqual(patchArchiveRequest.MediaPhotoItems[i].Location.Street, patchResult?.MediaPhotoItems?[i].Location.Street);
             Assert.AreEqual(patchArchiveRequest.MediaPhotoItems[i].Location.Zip, patchResult?.MediaPhotoItems?[i].Location.Zip);
         }
-        for (int i = 0; i < patchArchiveRequest.MediaVideoItems.Count; i++)
+        for (int i = 0; i < patchArchiveRequest.MediaVideoItems?.Count; i++)
         {
             Assert.AreEqual(patchArchiveRequest.MediaVideoItems[i].Id, patchResult?.MediaVideoItems?[i].Id);
             Assert.AreEqual(patchArchiveRequest.MediaVideoItems[i].Title, patchResult?.MediaVideoItems?[i].Title);
@@ -97,7 +97,7 @@ public class ArchiveControllerTests
             Assert.AreEqual(patchArchiveRequest.MediaVideoItems[i].Description, patchResult?.MediaVideoItems?[i].Description);
             Assert.AreEqual(patchArchiveRequest.MediaVideoItems[i].EPG, patchResult?.MediaVideoItems?[i].EPG);
             Assert.AreEqual(patchArchiveRequest.MediaVideoItems[i].ArchiveMaterial, patchResult?.MediaVideoItems?[i].ArchiveMaterial);
-            //Assert.AreEqual(patchArchiveRequest.MediaVideoItems[i].DurationSeconds, result?.MediaVideoItems?[i].DurationSeconds);
+            Assert.AreEqual(patchArchiveRequest.MediaVideoItems[i].DurationSeconds, patchResult?.MediaVideoItems?[i].DurationSeconds);
             Assert.AreEqual(patchArchiveRequest.MediaVideoItems[i].FirstPicture, patchResult?.MediaVideoItems?[i].FirstPicture);
             Assert.AreEqual(patchArchiveRequest.MediaVideoItems[i].Director, patchResult?.MediaVideoItems?[i].Director);
             Assert.AreEqual(patchArchiveRequest.MediaVideoItems[i].ProgramDate, patchResult?.MediaVideoItems?[i].ProgramDate);
@@ -111,7 +111,7 @@ public class ArchiveControllerTests
             Assert.AreEqual(patchArchiveRequest.MediaVideoItems[i].Location.Street, patchResult?.MediaVideoItems?[i].Location.Street);
             Assert.AreEqual(patchArchiveRequest.MediaVideoItems[i].Location.Zip, patchResult?.MediaVideoItems?[i].Location.Zip);
         }
-        for (int i = 0; i < patchArchiveRequest.MediaAudioItems.Count; i++)
+        for (int i = 0; i < patchArchiveRequest.MediaAudioItems?.Count; i++)
         {
             Assert.AreEqual(patchArchiveRequest.MediaAudioItems[i].Id, patchResult?.MediaAudioItems?[i].Id);
             Assert.AreEqual(patchArchiveRequest.MediaAudioItems[i].Title, patchResult?.MediaAudioItems?[i].Title);
@@ -131,12 +131,11 @@ public class ArchiveControllerTests
             Assert.AreEqual(patchArchiveRequest.MediaAudioItems[i].Location.Zip, patchResult?.MediaAudioItems?[i].Location.Zip);
             Assert.AreEqual(patchArchiveRequest.MediaAudioItems[i].Format, patchResult?.MediaAudioItems?[i].Format);
             Assert.AreEqual(patchArchiveRequest.MediaAudioItems[i].MediaLocation, patchResult?.MediaAudioItems?[i].MediaLocation);
-            //Assert.AreEqual(patchArchiveRequest.MediaAudioItems[i].DurationSeconds, result?.MediaAudioItems?[i].DurationSeconds);
+            Assert.AreEqual(patchArchiveRequest.MediaAudioItems[i].DurationSeconds, patchResult?.MediaAudioItems?[i].DurationSeconds);
             Assert.AreEqual(patchArchiveRequest.MediaAudioItems[i].Weather, patchResult?.MediaAudioItems?[i].Weather);
             Assert.AreEqual(patchArchiveRequest.MediaAudioItems[i].FirstWords, patchResult?.MediaAudioItems?[i].FirstWords);
             Assert.AreEqual(patchArchiveRequest.MediaAudioItems[i].ProgramName, patchResult?.MediaAudioItems?[i].ProgramName);
         }
-        //Assert.AreEqual(patchArchiveRequest.NewsItems, patchResult?.NewsItems);
     }
 
     [TestMethod]
@@ -331,7 +330,7 @@ public class ArchiveControllerTests
         var application = new RedacteurPortaalApplication();
         var client = application.CreateClient();
 
-        var addArchiveRequest = ArchiveDtoBuilder.BuildAddArchiveRequest();
+        var addArchiveRequest = ArchiveDtoBuilder.BuildSmallestArchive();
         var archiveResult = await client.PostAsJsonAsync("/api/Archive", addArchiveRequest);
         var resultString = await archiveResult.Content.ReadAsStringAsync();
 
@@ -345,10 +344,9 @@ public class ArchiveControllerTests
         Assert.AreEqual(HttpStatusCode.OK, archiveResulsPhotoSent.StatusCode);
         Assert.IsNotNull(updatedArchiveResult);
         Assert.AreEqual(updatedArchiveResult?.Presentation, archiveWithPhotos?.MediaPhotoItems?[0].Presentation);
-        Assert.AreEqual(updatedArchiveResult?.Camera, archiveWithPhotos?.MediaPhotoItems?[0].Presentation);
+        Assert.AreEqual(updatedArchiveResult?.Camera, archiveWithPhotos?.MediaPhotoItems?[0].Camera);
         Assert.AreEqual(updatedArchiveResult?.RepublishDate, archiveWithPhotos?.MediaPhotoItems?[0].RepublishDate);
-        Assert.AreEqual(updatedArchiveResult?.Format, archiveWithPhotos?.MediaPhotoItems?[0].Format);
-        Assert.AreEqual(updatedArchiveResult?.Location, archiveWithPhotos?.MediaPhotoItems?[0].Location);
+        Assert.AreEqual(updatedArchiveResult?.Format, archiveWithPhotos?.MediaPhotoItems?[0].Format);         
         Assert.AreEqual(updatedArchiveResult?.MediaLocation, archiveWithPhotos?.MediaPhotoItems?[0].MediaLocation);
         Assert.AreEqual(updatedArchiveResult?.Folder, archiveWithPhotos?.MediaPhotoItems?[0].Folder);
         Assert.AreEqual(updatedArchiveResult?.Image, archiveWithPhotos?.MediaPhotoItems?[0].Image);
@@ -579,7 +577,7 @@ public class ArchiveControllerTests
         Assert.AreEqual(HttpStatusCode.Created, archiveResult.StatusCode);
         Assert.AreEqual(HttpStatusCode.OK, updatedArchiveResult.StatusCode);
         Assert.IsNotNull(archiveWithNewsitem);
-        Assert.AreNotEqual(addArchiveRequest?.NewsItems?[0], archiveWithNewsitem?.NewsItems?[0]);
+        Assert.AreNotEqual(newsItemRequest, archiveWithNewsitem?.NewsItems?[0]);
     }
 
     [TestMethod]

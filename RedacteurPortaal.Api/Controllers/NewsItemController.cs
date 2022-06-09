@@ -26,16 +26,18 @@ public class NewsItemController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<NewsItemDto>> SaveNewsItem([FromBody] UpdateNewsItemRequest newsitem)
     {
+        var typeConfig = new TypeAdapterConfig();
+        typeConfig.NewConfig<NewsItemModel, NewsItemDto>().Map(dest => dest.Id, src => src.Id)
+            .Fork(config => config.ForType<MediaAudioItem, MediaAudioItemDto>()
+            .Map(dest => dest.DurationSeconds, src => src.Duration.TotalSeconds)).Map(dest => dest.ApprovalState, src => src.ApprovalState);
+        typeConfig.ForType<MediaVideoItem, MediaVideoItemDto>().Map(dest => dest.DurationSeconds, src => src.Duration.TotalSeconds);
         Guid newguid = Guid.NewGuid();
-
-        TypeAdapterConfig<MediaAudioItem, MediaAudioItemDto>.NewConfig().Map(dest => dest.DurationSeconds, src => src.Duration);
-        TypeAdapterConfig<MediaVideoItem, MediaVideoItemDto>.NewConfig().Map(dest => dest.DurationSeconds, src => src.Duration);
 
         var grain = await this.grainService.CreateGrain(newguid);
         var update = newsitem.AsDomainModel(newguid);
-        var createdGrain  = await grain.Update(update);
-        
-        var response = createdGrain.Adapt<NewsItemDto>();
+        var createdGrain = await grain.Update(update);
+
+        var response = createdGrain.Adapt<NewsItemDto>(typeConfig);
         return new CreatedAtActionResult("GetNewsItem", "NewsItem", new { id = newguid }, response);
     }
 
@@ -43,22 +45,29 @@ public class NewsItemController : ControllerBase
     [Route("{id}", Name = "GetNewsItem")]
     public async Task<ActionResult<NewsItemDto>> GetNewsItem(Guid id)
     {
+        var typeConfig = new TypeAdapterConfig();
+        typeConfig.NewConfig<NewsItemModel, NewsItemDto>()
+            .Fork(config => config.ForType<MediaAudioItem, MediaAudioItemDto>()
+            .Map(dest => dest.DurationSeconds, src => src.Duration.TotalSeconds)).Map(dest => dest.ApprovalState, src => src.ApprovalState);
+        typeConfig.ForType<MediaVideoItem, MediaVideoItemDto>().Map(dest => dest.DurationSeconds, src => src.Duration.TotalSeconds);
+
         var grain = await this.grainService.GetGrain(id);
         var response = await grain.Get();
-        var dto = response.Adapt<NewsItemDto>();
+
+        var test = response.Audio.Adapt<List<MediaAudioItemDto>>();
+        var dto = response.Adapt<NewsItemDto>(typeConfig);
         return dto;
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<NewsItemDto>>> FilterNewsItem([FromQuery]NewsItemFilterParameters query )
+    public async Task<ActionResult<List<NewsItemDto>>> FilterNewsItem([FromQuery] NewsItemFilterParameters query)
     {
         TypeAdapterConfig<NewsItemModel, NewsItemDto>
     .NewConfig()
     .Map(dest => dest.Source,
         src => new FeedSourceDto() { PlaceHolder = src.Source.PlaceHolder })
     .Map(dest => dest.LocationDetails,
-        src => new LocationDto()
-        {
+        src => new LocationDto() {
             City = src.LocationDetails.City,
             Id = src.LocationDetails.Id,
             Latitude = src.LocationDetails.Latitude,
@@ -70,8 +79,7 @@ public class NewsItemController : ControllerBase
         })
     .Map(dest => dest.ContactDetails,
         src => src.ContactDetails.Select(x =>
-            new ContactDto()
-            {
+            new ContactDto() {
                 Id = x.Id,
                 Name = x.Name,
                 TelephoneNumber = x.TelephoneNumber,
@@ -86,7 +94,8 @@ public class NewsItemController : ControllerBase
             new MediaPhotoItemDto()).ToList())
     .Map(dest => dest.Videos,
         src => src.Videos.Select(x =>
-            new MediaVideoItemDto()).ToList());
+            new MediaVideoItemDto()).ToList())
+    .Map(dest => dest.ApprovalState, src => src.ApprovalState);
 
         var grain = await this.grainService.GetGrains();
 

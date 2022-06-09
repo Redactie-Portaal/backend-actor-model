@@ -25,7 +25,7 @@ public static class DtoBuilder
             },
             Status = Status.DONE,
             Title = "title",
-            ApprovalStatus = "APPROVED",
+            ApprovalState = "APPROVED",
             ContactDetails = new List<ContactDto>() {
                 new ContactDto() {
                     Name = "foo",
@@ -59,6 +59,7 @@ public static class DtoBuilder
             Source = new FeedSourceDto() {
                 PlaceHolder = "foo1",
             },
+            ApprovalState = "PENDING",
             Status = Status.DONE,
             Title = "title1",
             ContactDetails = new List<UpdateContactRequest>(),
