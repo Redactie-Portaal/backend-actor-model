@@ -194,7 +194,7 @@ public class ArchiveController : Controller
     public async Task<IActionResult> DeleteArchive(Guid archiveId)
     {
         await this.grainService.DeleteGrain(archiveId);
-        return this.Ok();
+        return this.NoContent();
     }
 
     [HttpDelete]
