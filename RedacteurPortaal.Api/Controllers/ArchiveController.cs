@@ -196,6 +196,9 @@ public class ArchiveController : Controller
     public async Task<IActionResult> DeleteAudioItem([FromRoute] Guid archiveId, [FromRoute] Guid audioItemGuid)
     {
         var grain = await this.grainService.GetGrain(archiveId);
+
+        var item = grain.Get();
+        
         await grain.DeleteAudioItem(audioItemGuid);
         return this.Ok();
     }

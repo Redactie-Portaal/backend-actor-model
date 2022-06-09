@@ -188,8 +188,8 @@ public class ArchiveGrain : Grain, IArchiveGrain
             }
             else
             {
-                var grain = await this.videoGrainService.GetGrain(videoItemId);
-                await grain.Delete();
+                videoItems.Remove(videoItemId);
+                await this.archive.WriteStateAsync();
             }
         }
         else
@@ -210,8 +210,8 @@ public class ArchiveGrain : Grain, IArchiveGrain
             }
             else
             {
-                var grain = await this.photoGrainService.GetGrain(photoItemId);
-                await grain.Delete();
+                photoItems.Remove(photoItemId);
+                await this.archive.WriteStateAsync();
             }
         }
         else
@@ -232,8 +232,8 @@ public class ArchiveGrain : Grain, IArchiveGrain
             }
             else
             {
-                var grain = await this.audioGrainService.GetGrain(audioItemId);
-                await grain.Delete();
+                audioItems.Remove(audioItemId);
+                await this.archive.WriteStateAsync();
             }
         }
         else
@@ -254,8 +254,8 @@ public class ArchiveGrain : Grain, IArchiveGrain
             }
             else
             {
-                var grain = await this.newsItemGrainService.GetGrain(newsItemId);
-                await grain.Delete();
+                newsItems.Remove(newsItemId);
+                await this.archive.WriteStateAsync();
             }
         }
         else
