@@ -692,6 +692,30 @@ public class ArchiveControllerTests
     [TestMethod]
     public async Task CanDeleteNewsItemFromArchive()
     {
+        var application = new RedacteurPortaalApplication();
+        var client = application.CreateClient();
 
+        var addArchiveRequest = ArchiveDtoBuilder.BuildAddArchiveRequest();
+        var archiveResult = await client.PostAsJsonAsync("/api/Archive", addArchiveRequest);
+        var resultString = await archiveResult.Content.ReadAsStringAsync();
+
+        var result = JsonSerializer.Deserialize<ArchiveDto>(resultString, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+
+
+        var newsItemRequest = DtoBuilder.BuildAddNewsItemRequest();
+        var archiveResultsPhotoSent = await client.PostAsJsonAsync<NewsItemDto>($"/api/Archive/{result?.Id}/NewsItems", newsItemRequest);
+
+        var archiveWithNewsItems = await client.GetFromJsonAsync<ArchiveDto>($"/api/Archive/{result?.Id}");
+        var updatedArchiveResult = archiveWithNewsItems?.NewsItems?[0];
+
+        Assert.AreEqual(HttpStatusCode.Created, archiveResult.StatusCode);
+        Assert.AreEqual(HttpStatusCode.OK, archiveResultsPhotoSent.StatusCode);
+        Assert.IsNotNull(updatedArchiveResult);
+        CollectionAssert.AllItemsAreNotNull(archiveWithNewsItems?.NewsItems);
+
+        var deleteNewsItem = await client.DeleteAsync($"/api/Archive/{result?.Id}/NewsItems/{updatedArchiveResult?.Id}");
+        var updatedArchiveResultAfterDeleting = await client.GetFromJsonAsync<ArchiveDto>($"/api/Archive/{result?.Id}");
+        Assert.AreEqual(HttpStatusCode.OK, deleteNewsItem.StatusCode);
+        Assert.AreEqual(0, updatedArchiveResultAfterDeleting?.NewsItems?.Count);
     }
 }

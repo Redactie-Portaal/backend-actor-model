@@ -194,7 +194,7 @@ public class ArchiveController : Controller
     public async Task<IActionResult> DeleteArchive(Guid archiveId)
     {
         await this.grainService.DeleteGrain(archiveId);
-        return this.NoContent();
+        return this.Ok();
     }
 
     [HttpDelete]
@@ -203,7 +203,7 @@ public class ArchiveController : Controller
     {
         var grain = await this.grainService.GetGrain(archiveId);
         await grain.DeleteVideoItem(videoItemGuid);
-        return this.NoContent();
+        return this.Ok();
     }
 
     [HttpDelete]
@@ -212,7 +212,7 @@ public class ArchiveController : Controller
     {
         var grain = await this.grainService.GetGrain(archiveId);
         await grain.DeleteAudioItem(audioItemGuid);
-        return this.NoContent();
+        return this.Ok();
     }
 
     [HttpDelete]
@@ -221,16 +221,16 @@ public class ArchiveController : Controller
     {
         var grain = await this.grainService.GetGrain(archiveId);
         await grain.DeletePhotoItem(photoItemGuid);
-        return this.NoContent();
+        return this.Ok();
     }
 
     [HttpDelete]
-    [Route("{archiveId}/Stories/{newsItemGuid}")]
+    [Route("{archiveId}/NewsItems/{newsItemGuid}")]
     public async Task<IActionResult> DeleteNewsItem([FromRoute] Guid archiveId, [FromRoute] Guid newsItemGuid)
     {
         var grain = await this.grainService.GetGrain(archiveId);
         await grain.DeleteNewsItem(newsItemGuid);
-        return this.NoContent();
+        return this.Ok();
     }
 
     [HttpPatch]
