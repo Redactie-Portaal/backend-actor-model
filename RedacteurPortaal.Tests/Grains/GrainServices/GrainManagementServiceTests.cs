@@ -46,7 +46,7 @@ public class GrainManagementServiceTests
         var clusterClient = new Mock<IClusterClient>();
 
         var logger = new Mock<ILogger<GrainManagementService<SourceGrain, Source>>>();
-        
+
         var service = new GrainManagementService<SourceGrain, Source>(dbContext.Object, clusterClient.Object, logger.Object);
 
         await Assert.ThrowsExceptionAsync<DuplicateNameException>(async () => {
@@ -66,12 +66,12 @@ public class GrainManagementServiceTests
 
         var clusterClient = new Mock<IClusterClient>();
 
-        var logger = new Mock<ILogger<GrainManagementService<SourceGrain, Source>>>();            
+        var logger = new Mock<ILogger<GrainManagementService<SourceGrain, Source>>>();
 
         var service = new GrainManagementService<SourceGrain, Source>(dbContext.Object, clusterClient.Object, logger.Object);
 
         await Assert.ThrowsExceptionAsync<KeyNotFoundException>(async () => {
-            _  = await service.GetGrain(id);
+            _ = await service.GetGrain(id);
         });
     }
 
@@ -102,7 +102,7 @@ public class GrainManagementServiceTests
     {
         var id = Guid.NewGuid();
         var dbContext = new Moq.Mock<DataContext>();
-        var gr = new GrainReference() {GrainId = id, TypeName = typeof(ContactGrain).Name};
+        var gr = new GrainReference() { GrainId = id, TypeName = typeof(ContactGrain).Name };
         var references = new List<GrainReference>();
 
         dbContext.Setup(x => x.GrainReferences).Returns(references.GetQueryableMockDbSet().Object);
@@ -116,7 +116,6 @@ public class GrainManagementServiceTests
         var foo = await (await service.CreateGrain(id)).Get();
 
         Assert.IsTrue(foo.Name == null);
-        //CollectionAssert.Contains(references, x => x.GrainId == gr.GrainId && x.TypeName == gr.TypeName);
 
         var t = new List<GrainReference>();
         t.Add(gr);

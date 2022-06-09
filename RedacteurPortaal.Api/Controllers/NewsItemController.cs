@@ -1,4 +1,5 @@
-﻿using Mapster;
+﻿using AutoMapper;
+using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using RedacteurPortaal.Api.Converters;
 using RedacteurPortaal.Api.DTOs;
@@ -136,11 +137,6 @@ public class NewsItemController : ControllerBase
     [Route("{id}")]
     public async Task<ActionResult<NewsItemDto>> UpdateNewsItem(Guid id, [FromBody] UpdateNewsItemRequest request)
     {
-        TypeAdapterConfig<UpdateNewsItemRequest, NewsItemModel>
-        .NewConfig()
-        .Map(dest => dest.Id,
-            src => id);
-
         var grain = await this.grainService.GetGrain(id);
         var update = request.AsDomainModel(id);
         var updatedGrain = await grain.Update(update);

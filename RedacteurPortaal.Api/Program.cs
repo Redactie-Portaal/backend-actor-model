@@ -1,7 +1,6 @@
 using Mapster;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using Orleans;
 using Orleans.Hosting;
 using RedacteurPortaal.Api;
 using RedacteurPortaal.Api.Middleware;
@@ -14,11 +13,15 @@ using RedacteurPortaal.DomainModels.Profile;
 using RedacteurPortaal.DomainModels.Shared;
 using RedacteurPortaal.Grains.GrainInterfaces;
 using RedacteurPortaal.Grains.GrainServices;
+using Serilog.Sinks.Elasticsearch;
+using Serilog.Exceptions;
+using Serilog;
 using RedacteurPortaal.Helpers;
 using Serilog;
 using Serilog.Exceptions;
 using Serilog.Sinks.Elasticsearch;
 using System.Runtime.Loader;
+using RedacteurPortaal.DomainModels.Agenda;
 
 await Host.CreateDefaultBuilder(args)
     .UseOrleans((ctx, siloBuilder) => 
@@ -78,9 +81,11 @@ await Host.CreateDefaultBuilder(args)
     {
         services.AddSingleton<FileSystemProvider>();
         services.AddScoped<IExportPluginService, ExportPluginService>();
+        services.AddScoped<FileSystemProvider>();
         services.AddScoped<IGrainManagementService<INewsItemGrain>, GrainManagementService<INewsItemGrain, NewsItemModel>>();
         services.AddScoped<IGrainManagementService<IProfileGrain>, GrainManagementService<IProfileGrain, Profile>>();
         services.AddScoped<IGrainManagementService<IAddressGrain>, GrainManagementService<IAddressGrain, AddressModel>>();
+        services.AddScoped<IGrainManagementService<IAgendaGrain>, GrainManagementService<IAgendaGrain, AgendaModel>>();
         services.AddScoped<IGrainManagementService<IContactGrain>, GrainManagementService<IContactGrain, Contact>>();
         services.AddScoped<IGrainManagementService<IMediaAudioGrain>, GrainManagementService<IMediaAudioGrain, MediaAudioItem>>();
         services.AddScoped<IGrainManagementService<IMediaVideoGrain>, GrainManagementService<IMediaVideoGrain, MediaVideoItem>>();
