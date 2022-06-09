@@ -40,7 +40,8 @@ await Host.CreateDefaultBuilder(args)
 
             siloBuilder.AddAdoNetGrainStorage(
                 "OrleansStorage",
-                options => {
+                options => 
+                {
                     options.Invariant = "Npgsql";
                     options.UseJsonFormat = true;
                     options.ConnectionString = postgresqlConnString;
@@ -49,10 +50,12 @@ await Host.CreateDefaultBuilder(args)
             siloBuilder.ConfigureLogging(logging => logging.AddConsole());
         }
     })
-    .ConfigureWebHostDefaults(webBuilder => {
+    .ConfigureWebHostDefaults(webBuilder => 
+    {
         webBuilder.ConfigureServices(services => services.AddControllers());
         webBuilder.ConfigureServices(services => services.AddSwaggerGen());
-        webBuilder.Configure((ctx, app) => {
+        webBuilder.Configure((ctx, app) => 
+        {
             if (ctx.HostingEnvironment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -86,7 +89,8 @@ await Host.CreateDefaultBuilder(args)
         services.AddScoped<IGrainManagementService<ILocationGrain>, GrainManagementService<ILocationGrain, Location>>();
         services.AddScoped<IGrainManagementService<IArchiveGrain>, GrainManagementService<IArchiveGrain, ArchiveModel>>();
 
-        services.AddDbContext<DataContext>(options => {
+        services.AddDbContext<DataContext>(options => 
+        {
             var connString = ctx.Configuration.GetConnectionString("DefaultConnection");
             options.UseNpgsql(connString);
             options.ConfigureWarnings(x => {
@@ -114,7 +118,8 @@ await Host.CreateDefaultBuilder(args)
           configuration.Enrich.FromLogContext()
           .Enrich.WithMachineName()
           .WriteTo.Console(restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Warning)
-          .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(context.Configuration["ElasticConfiguration:Uri"])) {
+          .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(context.Configuration["ElasticConfiguration:Uri"])) 
+          {
               IndexFormat = $"{context.Configuration["ApplicationName"]}-logs-{context.HostingEnvironment.EnvironmentName?.ToLower().Replace(".", "-")}-{DateTime.UtcNow:yyyy-MM}",
               AutoRegisterTemplate = true,
               NumberOfShards = 2,
