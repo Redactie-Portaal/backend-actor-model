@@ -203,7 +203,7 @@ public class ArchiveController : Controller
     {
         var grain = await this.grainService.GetGrain(archiveId);
         await grain.DeleteVideoItem(videoItemGuid);
-        return this.Ok();
+        return this.NoContent();
     }
 
     [HttpDelete]
