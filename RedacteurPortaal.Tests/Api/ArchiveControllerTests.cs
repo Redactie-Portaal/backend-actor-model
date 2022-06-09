@@ -266,7 +266,7 @@ public class ArchiveControllerTests
         var application = new RedacteurPortaalApplication();
         var client = application.CreateClient();
 
-        var addArchiveRequest = ArchiveDtoBuilder.BuildAddArchiveRequest();
+        var addArchiveRequest = ArchiveDtoBuilder.BuildSmallestArchive();
         var archiveResult = await client.PostAsJsonAsync("/api/Archive", addArchiveRequest);
         var resultString = await archiveResult.Content.ReadAsStringAsync();
 
@@ -450,7 +450,7 @@ public class ArchiveControllerTests
         Assert.AreEqual(HttpStatusCode.Created, archiveResult.StatusCode);
         Assert.AreEqual(HttpStatusCode.OK, updatedArchiveResult.StatusCode);
         Assert.IsNotNull(archiveWithNewsitem);
-        Assert.AreNotEqual(addArchiveRequest?.NewsItems?[0], archiveWithNewsitem?.NewsItems?[0]);
+        Assert.AreNotEqual(newsItemRequest, archiveWithNewsitem?.NewsItems?[0]);
     }
 
     [TestMethod]
