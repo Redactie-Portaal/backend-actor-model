@@ -230,7 +230,7 @@ public class ArchiveController : Controller
     {
         var grain = await this.grainService.GetGrain(archiveId);
         await grain.DeleteNewsItem(newsItemGuid);
-        return this.Ok();
+        return this.NoContent();
     }
 
     [HttpPatch]
