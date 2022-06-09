@@ -221,7 +221,7 @@ public class ArchiveController : Controller
     {
         var grain = await this.grainService.GetGrain(archiveId);
         await grain.DeletePhotoItem(photoItemGuid);
-        return this.Ok();
+        return this.NoContent();
     }
 
     [HttpDelete]
