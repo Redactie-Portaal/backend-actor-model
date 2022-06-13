@@ -6,6 +6,7 @@ using RedacteurPortaal.Api;
 using RedacteurPortaal.Api.Middleware;
 using RedacteurPortaal.Data.Context;
 using RedacteurPortaal.DomainModels.Adress;
+using RedacteurPortaal.DomainModels.Archive;
 using RedacteurPortaal.DomainModels.Media;
 using RedacteurPortaal.DomainModels.NewsItem;
 using RedacteurPortaal.DomainModels.Profile;
@@ -16,6 +17,7 @@ using Serilog.Sinks.Elasticsearch;
 using Serilog.Exceptions;
 using Serilog;
 using RedacteurPortaal.Helpers;
+using System.Runtime.Loader;
 using RedacteurPortaal.DomainModels.Agenda;
 
 await Host.CreateDefaultBuilder(args)
@@ -38,7 +40,7 @@ await Host.CreateDefaultBuilder(args)
 
             siloBuilder.AddAdoNetGrainStorage(
                 "OrleansStorage",
-                options =>
+                options => 
                 {
                     options.Invariant = "Npgsql";
                     options.UseJsonFormat = true;
@@ -48,7 +50,7 @@ await Host.CreateDefaultBuilder(args)
             siloBuilder.ConfigureLogging(logging => logging.AddConsole());
         }
     })
-    .ConfigureWebHostDefaults(webBuilder =>
+    .ConfigureWebHostDefaults(webBuilder => 
     {
         webBuilder.ConfigureServices(services => services.AddControllers());
         webBuilder.ConfigureServices(services => services.AddSwaggerGen());
@@ -72,7 +74,7 @@ await Host.CreateDefaultBuilder(args)
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         });
     })
-    .ConfigureServices((ctx, services) =>
+    .ConfigureServices((ctx, services) => 
     {
         services.AddSingleton<FileSystemProvider>();
         services.AddScoped<IExportPluginService, ExportPluginService>();
@@ -86,12 +88,13 @@ await Host.CreateDefaultBuilder(args)
         services.AddScoped<IGrainManagementService<IMediaVideoGrain>, GrainManagementService<IMediaVideoGrain, MediaVideoItem>>();
         services.AddScoped<IGrainManagementService<IMediaPhotoGrain>, GrainManagementService<IMediaPhotoGrain, MediaPhotoItem>>();
         services.AddScoped<IGrainManagementService<ILocationGrain>, GrainManagementService<ILocationGrain, Location>>();
+        services.AddScoped<IGrainManagementService<IArchiveGrain>, GrainManagementService<IArchiveGrain, ArchiveModel>>();
 
         services.AddDbContext<DataContext>(options => 
         {
             var connString = ctx.Configuration.GetConnectionString("DefaultConnection");
             options.UseNpgsql(connString);
-            options.ConfigureWarnings(x =>
+            options.ConfigureWarnings(x => 
             {
                 x.Ignore(CoreEventId.ManyServiceProvidersCreatedWarning);
             });
@@ -113,12 +116,12 @@ await Host.CreateDefaultBuilder(args)
 
 #pragma warning restore ASP0000 // Do not call 'IServiceCollection.BuildServiceProvider' in 'ConfigureServices'
     })
-      .UseSerilog((context, configuration) =>
+      .UseSerilog((context, configuration) => 
       {
           configuration.Enrich.FromLogContext()
           .Enrich.WithMachineName()
           .WriteTo.Console(restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Warning)
-          .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(context.Configuration["ElasticConfiguration:Uri"]))
+          .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(context.Configuration["ElasticConfiguration:Uri"])) 
           {
               IndexFormat = $"{context.Configuration["ApplicationName"]}-logs-{context.HostingEnvironment.EnvironmentName?.ToLower().Replace(".", "-")}-{DateTime.UtcNow:yyyy-MM}",
               AutoRegisterTemplate = true,

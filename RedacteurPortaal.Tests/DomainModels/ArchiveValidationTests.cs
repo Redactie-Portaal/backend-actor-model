@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RedacteurPortaal.DomainModels.Archive;
 using RedacteurPortaal.DomainModels.Media;
+using RedacteurPortaal.DomainModels.NewsItem;
 using System;
 using System.Collections.Generic;
 
@@ -16,54 +17,42 @@ public class ArchiveValidationTests
         var guid = Guid.NewGuid();
         try
         {
+
             var mediaAudioItem = new ArchiveModel(guid,
-                "Title",
-                "Label",
-                new List<MediaPhotoItem>(),
-                new List<MediaVideoItem>(),
-                new List<MediaAudioItem>(),
-                DateTime.UtcNow,
-                new List<string> {"scripts"});
+                                                  "Title",
+                                                  "Label",
+                                                  new List<Guid>(),
+                                                  new List<Guid>(),
+                                                  new List<Guid>(),
+                                                  new List<Guid>(),
+                                                  DateTime.UtcNow,
+                                                  new List<string> { "scripts" });
         }
         catch (Exception ex)
         {
             Assert.Fail("Expected no exception, but got: " + ex.Message);
         }
+
+        //Assert.(mediaAudioItem);
     }
-    
+
+
     [TestMethod]
     public void ThrowsWithEmptyTitle()
     {
         var guid = Guid.NewGuid();
         Assert.ThrowsException<ValidationException>(() => {
             var model = new ArchiveModel(guid,
-                "",
-                "Label",
-                new List<MediaPhotoItem>(),
-                new List<MediaVideoItem>(),
-                new List<MediaAudioItem>(),
-                DateTime.UtcNow,
-                new List<string> {"scripts"});
+                                         "Title",
+                                         "",
+                                         new List<Guid>(),
+                                         new List<Guid>(),
+                                         new List<Guid>(),
+                                         new List<Guid>(),
+                                         DateTime.UtcNow,
+                                         new List<string> { "scripts" });
         });
     }
-
-    [TestMethod]
-    public void ThrowsWithEmptyLabel()
-    {
-        var guid = Guid.NewGuid();
-
-        Assert.ThrowsException<ValidationException>(() => {
-            var model = new ArchiveModel(guid,
-                "Title",
-                "",
-                new List<MediaPhotoItem>(),
-                new List<MediaVideoItem>(),
-                new List<MediaAudioItem>(),
-                DateTime.UtcNow,
-                new List<string> {"scripts"});
-        });
-    }
-
     [TestMethod]
     public void ThrowsWithEmptyScripts()
     {
@@ -71,13 +60,14 @@ public class ArchiveValidationTests
 
         Assert.ThrowsException<ValidationException>(() => {
             var model = new ArchiveModel(guid,
-                "Title",
-                "Label",
-                new List<MediaPhotoItem>(),
-                new List<MediaVideoItem>(),
-                new List<MediaAudioItem>(),
-                DateTime.UtcNow,
-                new List<string>());
+                                         "Title",
+                                         "Label",
+                                         new List<Guid>(),
+                                         new List<Guid>(),
+                                         new List<Guid>(),
+                                         new List<Guid>(),
+                                         DateTime.UtcNow,
+                                         new List<string>());
         });
     }
 }

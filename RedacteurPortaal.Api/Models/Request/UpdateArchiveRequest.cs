@@ -1,13 +1,11 @@
-﻿using RedacteurPortaal.DomainModels.Media;
+﻿using RedacteurPortaal.Api.DTOs;
+using RedacteurPortaal.DomainModels.Media;
 using RedacteurPortaal.DomainModels.NewsItem;
-using RedacteurPortaal.Api.Models;
 
-namespace RedacteurPortaal.Api.DTOs
+namespace RedacteurPortaal.Api.Models.Request
 {
-    public class ArchiveDto
+    public class UpdateArchiveRequest
     {
-        public Guid Id { get; set; }
-
         public string Title { get; set; }
 
         public string Label { get; set; }
@@ -15,13 +13,11 @@ namespace RedacteurPortaal.Api.DTOs
         public List<Guid>? MediaPhotoItems { get; set; }
 
         public List<Guid>? MediaVideoItems { get; set; }
-    
+
         public List<Guid>? MediaAudioItems { get; set; }
 
         public List<Guid>? NewsItems { get; set; }
 
-        public DateTime ArchivedDate { get; set; }
-
-        public List<string>? Scripts { get; set; }
+        public List<string> Scripts { get; set; }
     }
 }

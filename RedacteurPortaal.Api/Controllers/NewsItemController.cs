@@ -27,17 +27,18 @@ public class NewsItemController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<NewsItemDto>> SaveNewsItem([FromBody] UpdateNewsItemRequest newsitem)
     {
+        var typeConfig = new TypeAdapterConfig();
+        typeConfig.NewConfig<NewsItemModel, NewsItemDto>().Map(dest => dest.Id, src => src.Id)
+            .Fork(config => config.ForType<MediaAudioItem, MediaAudioItemDto>()
+            .Map(dest => dest.DurationSeconds, src => src.Duration.TotalSeconds)).Map(dest => dest.ApprovalState, src => src.ApprovalState);
+        typeConfig.ForType<MediaVideoItem, MediaVideoItemDto>().Map(dest => dest.DurationSeconds, src => src.Duration.TotalSeconds);
         Guid newguid = Guid.NewGuid();
-
-        TypeAdapterConfig<NewsItemModel, NewsItemDto>
-            .NewConfig()
-            .Map(dest => dest.ApprovalStatus,
-                src => src.ApprovalState.ToString());
 
         var grain = await this.grainService.CreateGrain(newguid);
         var update = newsitem.AsDomainModel(newguid);
         var createdGrain = await grain.Update(update);
-        var response = createdGrain.Adapt<NewsItemDto>();
+
+        var response = createdGrain.Adapt<NewsItemDto>(typeConfig);
         return new CreatedAtActionResult("GetNewsItem", "NewsItem", new { id = newguid }, response);
     }
 
@@ -45,9 +46,17 @@ public class NewsItemController : ControllerBase
     [Route("{id}", Name = "GetNewsItem")]
     public async Task<ActionResult<NewsItemDto>> GetNewsItem(Guid id)
     {
+        var typeConfig = new TypeAdapterConfig();
+        typeConfig.NewConfig<NewsItemModel, NewsItemDto>()
+            .Fork(config => config.ForType<MediaAudioItem, MediaAudioItemDto>()
+            .Map(dest => dest.DurationSeconds, src => src.Duration.TotalSeconds)).Map(dest => dest.ApprovalState, src => src.ApprovalState);
+        typeConfig.ForType<MediaVideoItem, MediaVideoItemDto>().Map(dest => dest.DurationSeconds, src => src.Duration.TotalSeconds);
+
         var grain = await this.grainService.GetGrain(id);
         var response = await grain.Get();
-        var dto = response.Adapt<NewsItemDto>();
+
+        var test = response.Audio.Adapt<List<MediaAudioItemDto>>();
+        var dto = response.Adapt<NewsItemDto>(typeConfig);
         return dto;
     }
 
@@ -55,31 +64,41 @@ public class NewsItemController : ControllerBase
     public async Task<ActionResult<List<NewsItemDto>>> FilterNewsItem([FromQuery] NewsItemFilterParameters query)
     {
         TypeAdapterConfig<NewsItemModel, NewsItemDto>
-            .NewConfig()
-            .Map(dest => dest.Source,
-                src => new FeedSourceDto() { PlaceHolder = src.Source.PlaceHolder })
-            .Map(dest => dest.LocationDetails,
-                src => new LocationDto() 
-                {
-                    City = src.LocationDetails.City,
-                    Id = src.LocationDetails.Id,
-                    Latitude = src.LocationDetails.Latitude,
-                    Longitude = src.LocationDetails.Longitude,
-                    Name = src.LocationDetails.Name,
-                    Province = src.LocationDetails.Province,
-                    Street = src.LocationDetails.Street,
-                    Zip = src.LocationDetails.Zip
-                })
-            .Map(dest => dest.ContactDetails,
-                src => src.ContactDetails.Select(x =>
-                    new ContactDto() 
-                    {
-                        Id = x.Id,
-                        Name = x.Name,
-                        TelephoneNumber = x.TelephoneNumber,
-                        Email = x.Email
-                    })
-            .ToList());
+    .NewConfig()
+    .Map(dest => dest.Source,
+        src => new FeedSourceDto() { PlaceHolder = src.Source.PlaceHolder })
+    .Map(dest => dest.LocationDetails,
+        src => new LocationDto() 
+        {
+            City = src.LocationDetails.City,
+            Id = src.LocationDetails.Id,
+            Latitude = src.LocationDetails.Latitude,
+            Longitude = src.LocationDetails.Longitude,
+            Name = src.LocationDetails.Name,
+            Province = src.LocationDetails.Province,
+            Street = src.LocationDetails.Street,
+            Zip = src.LocationDetails.Zip
+        })
+    .Map(dest => dest.ContactDetails,
+        src => src.ContactDetails.Select(x =>
+            new ContactDto() 
+            {
+                Id = x.Id,
+                Name = x.Name,
+                TelephoneNumber = x.TelephoneNumber,
+                Email = x.Email
+            }
+        ).ToList())
+    .Map(dest => dest.Audio,
+        src => src.Audio.Select(x =>
+            new MediaAudioItemDto()).ToList())
+    .Map(dest => dest.Photos,
+        src => src.Photos.Select(x =>
+            new MediaPhotoItemDto()).ToList())
+    .Map(dest => dest.Videos,
+        src => src.Videos.Select(x =>
+            new MediaVideoItemDto()).ToList())
+    .Map(dest => dest.ApprovalState, src => src.ApprovalState);
 
         var grain = await this.grainService.GetGrains();
 

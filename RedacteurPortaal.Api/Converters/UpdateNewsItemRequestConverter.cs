@@ -54,13 +54,7 @@ namespace RedacteurPortaal.Api.Converters
             }
 
             var feedSource = request.Source.Adapt<FeedSource>();
-            var contacts = new List<Contact>();
-            foreach (var item in request.ContactDetails)
-            {
-                var x = new Contact(Guid.Empty, item.Name, item.Email, item.TelephoneNumber);
-                contacts.Add(x);
-            }
-            
+            var contacts = request.ContactDetails.Adapt<List<Contact>>();
             var location = request.LocationDetails.Adapt<Location>();
             var audioItems = new List<MediaAudioItem>();
             if (request.Audio is not null)
@@ -87,7 +81,7 @@ namespace RedacteurPortaal.Api.Converters
                     audioItems.Add(x);
                 }
             }
-
+            
             var photoItems = new List<MediaPhotoItem>();
 
             if (request.Photos is not null)
@@ -99,26 +93,28 @@ namespace RedacteurPortaal.Api.Converters
                                                item.Folder,
                                                item.RepublishDate,
                                                item.Rights,
-                                                       item.Camera,
-                                                       item.LastWords,
-                                                       item.ProxyFile,
-                                                       item.Presentation,
-                                                       new Location(Guid.Empty, item.Location.Name, item.Location.City, item.Location.Province, item.Location.Street, item.Location.Zip, item.Location.Latitude, item.Location.Longitude),
-                                                       item.Format,
-                                                       item.MediaLocation,
-                                                       item.Image);
+                                               item.Camera,
+                                               item.LastWords,
+                                               item.ProxyFile,
+                                               item.Presentation,
+                                               new Location(Guid.Empty, item.Location.Name, item.Location.City, item.Location.Province, item.Location.Street, item.Location.Zip, item.Location.Latitude, item.Location.Longitude),
+                                               item.Format,
+                                               item.MediaLocation,
+                                               item.Image);
 
                     photoItems.Add(x);
                 }
             }
 
-            var approvalState = Enum.TryParse(request.ApprovalState, out ApprovalState state);
+#pragma warning disable CS8604 // Possible null reference argument.
+            ApprovalState approvalState = (ApprovalState)Enum.Parse(typeof(ApprovalState), request.ApprovalState);
+#pragma warning restore CS8604 // Possible null reference argument.
 
 #pragma warning disable CS8604 // Possible null reference argument.
             return new NewsItemModel(id,
                                      request.Title,
                                      request.Status,
-                                     state,
+                                     approvalState,
                                      request.Author,
                                      feedSource,
                                      request.Body,

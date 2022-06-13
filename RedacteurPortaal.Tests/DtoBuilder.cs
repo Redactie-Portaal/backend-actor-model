@@ -25,7 +25,7 @@ public static class DtoBuilder
             },
             Status = Status.DONE,
             Title = "title",
-            ApprovalStatus = "APPROVED",
+            ApprovalState = "APPROVED",
             ContactDetails = new List<ContactDto>() {
                 new ContactDto() {
                     Name = "foo",
@@ -41,7 +41,7 @@ public static class DtoBuilder
                 Name = "foo",
                 Province = "foo",
                 Street = "foo",
-                Zip = "1000AB",
+                Zip = "5087BB",
             },
             ProductionDate = DateTime.Now,
         };
@@ -59,6 +59,7 @@ public static class DtoBuilder
             Source = new FeedSourceDto() {
                 PlaceHolder = "foo1",
             },
+            ApprovalState = "PENDING",
             Status = Status.DONE,
             Title = "title1",
             ContactDetails = new List<UpdateContactRequest>(),
@@ -89,19 +90,6 @@ public static class DtoBuilder
             },
             LastOnline = DateTime.Now,
             ProfilePicture = "base64"
-        };
-    }
-
-    public static AddressDTO BuildGetAddressRequest()
-    {
-        return new AddressDTO() {
-            Id = Guid.NewGuid(),
-            Address = "FooStreet",
-            Webpage = "www.foo.nl",
-            CompanyName = "FooBar",
-            EmailAddress = "foo@gmail.com",
-            PhoneNumber = "0640778812",
-            PostalCode = "5087BB"
         };
     }
 
