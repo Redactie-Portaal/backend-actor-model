@@ -23,7 +23,7 @@ public class NewsItemGrain : Grain, INewsItemGrain
     {
         return Task.FromResult(this.newsItem.RecordExists);
     }
-
+    
     public NewsItemGrain(
     [PersistentState("newsitem", "OrleansStorage")]
     IPersistentState<NewsItemGrainState> newsItem,

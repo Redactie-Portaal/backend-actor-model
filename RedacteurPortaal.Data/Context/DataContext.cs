@@ -21,6 +21,11 @@ namespace RedacteurPortaal.Data.Context
                 
         }
 
+        public DataContext()
+        {
+                
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<GrainReference>().Property(x => x.GrainId).HasConversion(v => v.ToString(), v => Guid.Parse(v));
