@@ -23,6 +23,8 @@ namespace RedacteurPortaal.Grains.GrainState
         public string Body { get; set; }
 
         public List<Guid> ContactDetails { get; set; }
+        
+        public Location LocationDetails { get; set; }
 
         public DateTime ProductionDate { get; set; }
 

@@ -22,9 +22,9 @@ public class AddressGrain : Grain, IAddressGrain
         return Task.FromResult(this.address.RecordExists);
     }
 
-    public async Task<AddressModel> UpdateAddress(AddressModel address)
+    public async Task<AddressModel> UpdateAddress(AddressModel addressModel)
     {
-        this.address.State = address;
+        this.address.State = addressModel;
         await this.address.WriteStateAsync();
         return await this.Get();
     }

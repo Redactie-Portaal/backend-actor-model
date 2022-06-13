@@ -1,8 +1,10 @@
-﻿using RedacteurPortaal.DomainModels.Shared;
+﻿using FluentValidation;
+using RedacteurPortaal.DomainModels.Shared;
+using RedacteurPortaal.DomainModels.Validation.Media;
+using RedacteurPortaal.DomainModels.Validation.Shared;
 
 namespace RedacteurPortaal.DomainModels.Media;
 
-[Serializable]
 public class MediaVideoItem : MediaItem
 {
     public MediaVideoItem()
@@ -55,25 +57,28 @@ public class MediaVideoItem : MediaItem
            format,
            mediaLocation)
     {
-        this.Reporter = reporter;
-        this.Sound = sound;
-        this.Editor = editor;
-        this.LastPicture = lastPicture;
-        this.Keywords = keywords;
-        this.VoiceOver = voiceOver;
-        this.Description = description;
+        this.Reporter = reporter ?? throw new ArgumentNullException(nameof(reporter));
+        this.Sound = sound ?? throw new ArgumentNullException(nameof(sound));
+        this.Editor = editor ?? throw new ArgumentNullException(nameof(editor));
+        this.LastPicture = lastPicture ?? throw new ArgumentNullException(nameof(lastPicture));
+        this.Keywords = keywords ?? throw new ArgumentNullException(nameof(keywords));
+        this.VoiceOver = voiceOver ?? throw new ArgumentNullException(nameof(voiceOver));
+        this.Description = description ?? throw new ArgumentNullException(nameof(description));
         this.ProgramDate = programDate;
-        this.ItemName = itemName;
-        this.EPG = ePG;
+        this.ItemName = itemName ?? throw new ArgumentNullException(nameof(itemName));
+        this.EPG = ePG ?? throw new ArgumentNullException(nameof(ePG));
         this.Duration = duration;
-        this.ArchiveMaterial = archiveMaterial;
+        this.ArchiveMaterial = archiveMaterial ?? throw new ArgumentNullException(nameof(archiveMaterial));
         this.Weather = weather;
-        this.Producer = producer;
-        this.Director = director;
-        this.Guests = guests;
-        this.FirstPicture = firstPicture;
-        this.ProgramName = programName;
-        this.FirstWords = firstWords;
+        this.Producer = producer ?? throw new ArgumentNullException(nameof(producer));
+        this.Director = director ?? throw new ArgumentNullException(nameof(director));
+        this.Guests = guests ?? throw new ArgumentNullException(nameof(guests));
+        this.FirstPicture = firstPicture ?? throw new ArgumentNullException(nameof(firstPicture));
+        this.ProgramName = programName ?? throw new ArgumentNullException(nameof(programName));
+        this.FirstWords = firstWords ?? throw new ArgumentNullException(nameof(firstWords));
+
+        new MediaVideoItemValidator().ValidateAndThrow(this);
+        new LocationValidator().ValidateAndThrow(this.Location);
     }
 
     public string Reporter { get; private set; }

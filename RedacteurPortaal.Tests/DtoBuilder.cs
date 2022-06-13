@@ -12,8 +12,7 @@ public static class DtoBuilder
 {
     public static NewsItemDto BuildAddNewsItemRequest()
     {
-        return new NewsItemDto()
-        {
+        return new NewsItemDto() {
             Author = "Author",
             Audio = new(),
             Body = "foo",
@@ -21,20 +20,24 @@ public static class DtoBuilder
             Region = Region.LOCAL,
             Photos = new(),
             Videos = new(),
-            Source = new FeedSourceDto()
-            {
+            Source = new FeedSourceDto() {
                 PlaceHolder = "foo",
             },
             Status = Status.DONE,
             Title = "title",
-            ApprovalStatus = "APPROVED",
-            ContactDetails = new List<ContactDto>(),
+            ApprovalState = "APPROVED",
+            ContactDetails = new List<ContactDto>() {
+                new ContactDto() {
+                    Name = "foo",
+                    Email = "email@email.com",
+                    TelephoneNumber = "0612345678"
+                }
+            },
             EndDate = DateTime.Now,
-            LocationDetails = new LocationDto()
-            {
+            LocationDetails = new LocationDto() {
                 City = "foo",
-                Latitude = 50,
-                Longitude = 50,
+                Latitude = 0,
+                Longitude = 0,
                 Name = "foo",
                 Province = "foo",
                 Street = "foo",
@@ -45,43 +48,39 @@ public static class DtoBuilder
     }
     public static UpdateNewsItemRequest BuildUpdateNewsItemRequest()
     {
-        return new UpdateNewsItemRequest()
-        {
+        return new UpdateNewsItemRequest() {
             Author = "Author1",
-            Audio = new UpdateMediaAudioItemRequest[1],
+            Audio = Array.Empty<UpdateMediaAudioItemRequest>(),
             Body = "foo1",
             Category = Category.NEWS,
             Region = Region.LOCAL,
-            Photos = new UpdateMediaPhotoItemRequest[1],
-            Videos = new UpdateMediaVideoItemRequest[1],
-            Source = new FeedSourceDto()
-            {
+            Photos = Array.Empty<UpdateMediaPhotoItemRequest>(),
+            Videos = Array.Empty<UpdateMediaVideoItemRequest>(),
+            Source = new FeedSourceDto() {
                 PlaceHolder = "foo1",
             },
+            ApprovalState = "PENDING",
             Status = Status.DONE,
             Title = "title1",
             ContactDetails = new List<UpdateContactRequest>(),
             EndDate = DateTime.Now,
-            LocationDetails = new UpdateLocationRequest()
-            {
+            LocationDetails = new UpdateLocationRequest() {
                 City = "foo1",
                 Latitude = 51,
                 Longitude = 51,
                 Name = "foo1",
                 Province = "foo1",
                 Street = "foo1",
-                Zip = "5087BB1",
+                Zip = "5087BB",
             },
         };
     }
     public static AddProfileRequest BuildAddProfileRequest()
     {
-        return new AddProfileRequest()
-        {
+        return new AddProfileRequest() {
             Role = Role.ADMIN,
             FullName = "John Doe",
-            ContactDetails = new RedacteurPortaal.Api.Models.Profile.ContactDetails()
-            {
+            ContactDetails = new RedacteurPortaal.Api.Models.Profile.ContactDetails() {
                 Address = "foo",
                 City = "bar",
                 Email = "foo@bar.nl",
@@ -94,23 +93,9 @@ public static class DtoBuilder
         };
     }
 
-    public static AddressDTO BuildGetAddressRequest()
-    {
-        return new AddressDTO() {
-            Id = Guid.NewGuid(),
-            Address = "FooStreet",
-            Webpage = "www.foo.nl",
-            CompanyName = "FooBar",
-            EmailAddress = "foo@gmail.com",
-            PhoneNumber = "0640778812",
-            PostalCode = "5087BB"
-        };
-    }
-
     public static AddAddressRequest BuildAddAddressRequest()
     {
-        return new AddAddressRequest()
-        {
+        return new AddAddressRequest() {
             Address = "FooStreet",
             Webpage = "www.foo.nl",
             CompanyName = "FooBar",
@@ -122,8 +107,7 @@ public static class DtoBuilder
 
     public static UpdateAddressRequest BuildPatchAddressRequest()
     {
-        return new UpdateAddressRequest()
-        {
+        return new UpdateAddressRequest() {
             Address = "FooStreet1",
             Webpage = "www.foo1.nl",
             CompanyName = "FooBa1r",
@@ -134,11 +118,9 @@ public static class DtoBuilder
     }
     public static PatchProfileRequest BuildPatchProfileRequest()
     {
-        return new PatchProfileRequest()
-        {
+        return new PatchProfileRequest() {
             Name = "Jane Doe",
-            ContactDetails = new RedacteurPortaal.Api.Models.Profile.ContactDetails()
-            {
+            ContactDetails = new RedacteurPortaal.Api.Models.Profile.ContactDetails() {
                 Address = "foo1",
                 City = "bar1",
                 Email = "foo1@bar.nl",
@@ -147,6 +129,35 @@ public static class DtoBuilder
                 PostalCode = "9999BB"
             },
             ProfilePicture = "base65"
+        };
+    }
+
+    public static UpdateAgendaRequest BuildPatchAgendaRequest()
+    {
+        return new UpdateAgendaRequest {
+            StartDate = new DateTime(2022, 05, 12, 12, 00, 00),
+            EndDate = new DateTime(2022, 05, 12, 14, 00, 00),
+            Title = "foo1",
+            Description = "bar1"
+        };
+    }
+
+    public static AgendaDto BuildAgendaRequest()
+    {
+        return new AgendaDto {
+            StartDate = new DateTime(2022, 05, 12, 12, 00, 00),
+            EndDate = new DateTime(2022, 05, 12, 14, 00, 00),
+            Title = "foo1",
+            Description = "bar1",
+        };
+    }    
+    public static AgendaReadDto ReadAgendaRequest()
+    {
+        return new AgendaReadDto {
+            StartDate = new DateTime(2022, 05, 12, 12, 00, 00),
+            EndDate = new DateTime(2022, 05, 12, 14, 00, 00),
+            Title = "foo1",
+            Description = "bar1",
         };
     }
 }

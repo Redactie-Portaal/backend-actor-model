@@ -29,9 +29,9 @@ public class UpdateNewsItemRequest
 
     public Region Region { get; set; }
 
-    public UpdateMediaVideoItemRequest[] Videos { get; set; }
+    public UpdateMediaVideoItemRequest[]? Videos { get; set; }
 
-    public UpdateMediaAudioItemRequest[] Audio { get; set; }
+    public UpdateMediaAudioItemRequest[]? Audio { get; set; }
 
-    public UpdateMediaPhotoItemRequest[] Photos { get; set; }
+    public UpdateMediaPhotoItemRequest[]? Photos { get; set; }
 }

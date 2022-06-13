@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using EntityFrameworkMock;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query.Internal;
 using Microsoft.Extensions.Logging;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Orleans;
 using Orleans.TestingHost;
@@ -18,154 +14,159 @@ using RedacteurPortaal.Grains.GrainInterfaces;
 using RedacteurPortaal.Grains.Grains;
 using RedacteurPortaal.Grains.GrainServices;
 using RedacteurPortaal.Helpers;
-using Xunit;
-namespace RedacteurPortaal.Tests.Grains.GrainServices
+
+namespace RedacteurPortaal.Tests.Grains.GrainServices;
+
+[TestClass]
+public class GrainManagementServiceTests
 {
-    [Collection("Col")]
-    public class GrainManagementServiceTests
+    private TestCluster testCluster;
+
+    [TestInitialize]
+    public void Initialize()
     {
-        private readonly TestCluster testCluster;
+        this.testCluster = new ClusterFixture().Cluster;
+    }
 
-        public GrainManagementServiceTests(ClusterFixture fixture)
-        {
-            this.testCluster = fixture.Cluster;
-        }
-        [Fact]
-        public async Task ThrowsWhenIdExists()
-        {
-            var id = Guid.NewGuid();
-            var dbContext = new Moq.Mock<DataContext>();
+    [TestMethod]
+    public async Task ThrowsWhenIdExists()
+    {
+        var id = Guid.NewGuid();
+        var dbContext = new Moq.Mock<DataContext>();
 
-            var references = new List<GrainReference>() {
-                new GrainReference() {
-                    GrainId = id,
-                    TypeName = typeof(SourceGrain).Name,
-                }
-            };
+        var references = new List<GrainReference>() {
+            new GrainReference() {
+                GrainId = id,
+                TypeName = typeof(SourceGrain).Name,
+            }
+        };
 
-            dbContext.Setup(x => x.GrainReferences).Returns(references.GetQueryableMockDbSet().Object);
+        dbContext.Setup(x => x.GrainReferences).Returns(references.GetQueryableMockDbSet().Object);
 
-            var clusterClient = new Mock<IClusterClient>();
+        var clusterClient = new Mock<IClusterClient>();
 
-            var logger = new Mock<ILogger<GrainManagementService<SourceGrain, Source>>>();
-            
-            var service = new GrainManagementService<SourceGrain, Source>(dbContext.Object, clusterClient.Object, logger.Object);
+        var logger = new Mock<ILogger<GrainManagementService<SourceGrain, Source>>>();
 
-            await Assert.ThrowsAsync<DuplicateNameException>(async () => {
-                _ = await service.CreateGrain(id);
-            });
-        }
+        var service = new GrainManagementService<SourceGrain, Source>(dbContext.Object, clusterClient.Object, logger.Object);
 
-        [Fact]
-        public async Task GetThrowsWhenIdNotExists()
-        {
-            var id = Guid.NewGuid();
-            var dbContext = new Moq.Mock<DataContext>();
+        await Assert.ThrowsExceptionAsync<DuplicateNameException>(async () => {
+            _ = await service.CreateGrain(id);
+        });
+    }
 
-            var references = new List<GrainReference>();
+    [TestMethod]
+    public async Task GetThrowsWhenIdNotExists()
+    {
+        var id = Guid.NewGuid();
+        var dbContext = new Moq.Mock<DataContext>();
 
-            dbContext.Setup(x => x.GrainReferences).Returns(references.GetQueryableMockDbSet().Object);
+        var references = new List<GrainReference>();
 
-            var clusterClient = new Mock<IClusterClient>();
+        dbContext.Setup(x => x.GrainReferences).Returns(references.GetQueryableMockDbSet().Object);
 
-            var logger = new Mock<ILogger<GrainManagementService<SourceGrain, Source>>>();            
+        var clusterClient = new Mock<IClusterClient>();
 
-            var service = new GrainManagementService<SourceGrain, Source>(dbContext.Object, clusterClient.Object, logger.Object);
+        var logger = new Mock<ILogger<GrainManagementService<SourceGrain, Source>>>();
 
-            await Assert.ThrowsAsync<KeyNotFoundException>(async () => {
-                _  = await service.GetGrain(id);
-            });
-        }
+        var service = new GrainManagementService<SourceGrain, Source>(dbContext.Object, clusterClient.Object, logger.Object);
 
-        [Fact]
-        public void GetReturns()
-        {
-            var id = Guid.NewGuid();
-            var dbContext = new Moq.Mock<DataContext>();
+        await Assert.ThrowsExceptionAsync<KeyNotFoundException>(async () => {
+            _ = await service.GetGrain(id);
+        });
+    }
 
-            var references = new List<GrainReference>() {
-                new GrainReference() {
-                    GrainId = id,
-                    TypeName = typeof(SourceGrain).Name,
-                }
-            };
+    [TestMethod]
+    public void GetReturns()
+    {
+        var id = Guid.NewGuid();
+        var dbContext = new Moq.Mock<DataContext>();
 
-            dbContext.Setup(x => x.GrainReferences).Returns(references.GetQueryableMockDbSet().Object);
+        var references = new List<GrainReference>() {
+            new GrainReference() {
+                GrainId = id,
+                TypeName = typeof(SourceGrain).Name,
+            }
+        };
 
-            var logger = new Mock<ILogger<GrainManagementService<SourceGrain, Source>>>();
+        dbContext.Setup(x => x.GrainReferences).Returns(references.GetQueryableMockDbSet().Object);
 
-            var service = new GrainManagementService<SourceGrain, Source>(dbContext.Object, this.testCluster.Client, logger.Object);
+        var logger = new Mock<ILogger<GrainManagementService<SourceGrain, Source>>>();
 
-            Assert.NotNull(service.GetGrain(id));
-        }
+        var service = new GrainManagementService<SourceGrain, Source>(dbContext.Object, this.testCluster.Client, logger.Object);
 
-        [Fact]
-        public async Task CreatedNewWhenIdNotTaken()
-        {
-            var id = Guid.NewGuid();
-            var dbContext = new Moq.Mock<DataContext>();
-            var gr = new GrainReference() {GrainId = id, TypeName = typeof(ContactGrain).Name};
-            var references = new List<GrainReference>();
+        Assert.IsNotNull(service.GetGrain(id));
+    }
 
-            dbContext.Setup(x => x.GrainReferences).Returns(references.GetQueryableMockDbSet().Object);
-            dbContext.Setup(x => x.GrainReferences.Add(It.IsAny<GrainReference>())).Callback(() =>
-                references.Add(new GrainReference() { GrainId = id, TypeName = typeof(ContactGrain).Name }));
+    [TestMethod]
+    public async Task CreatedNewWhenIdNotTaken()
+    {
+        var id = Guid.NewGuid();
+        var dbContext = new Moq.Mock<DataContext>();
+        var gr = new GrainReference() { GrainId = id, TypeName = typeof(ContactGrain).Name };
+        var references = new List<GrainReference>();
 
-            var logger = new Mock<ILogger<GrainManagementService<IContactGrain, Contact>>>();
+        dbContext.Setup(x => x.GrainReferences).Returns(references.GetQueryableMockDbSet().Object);
+        dbContext.Setup(x => x.GrainReferences.Add(It.IsAny<GrainReference>())).Callback(() =>
+            references.Add(new GrainReference() { GrainId = id, TypeName = typeof(ContactGrain).Name }));
 
-            var service = new GrainManagementService<IContactGrain, Contact>(dbContext.Object, this.testCluster.Client, logger.Object);
+        var logger = new Mock<ILogger<GrainManagementService<IContactGrain, Contact>>>();
 
-            var foo = await (await service.CreateGrain(id)).Get();
+        var service = new GrainManagementService<IContactGrain, Contact>(dbContext.Object, this.testCluster.Client, logger.Object);
 
-            Assert.True(foo.Name == null);
-            Assert.Contains(references, x => x.GrainId == gr.GrainId && x.TypeName == gr.TypeName);
-        }
+        var foo = await (await service.CreateGrain(id)).Get();
+
+        Assert.IsTrue(foo.Name == null);
+
+        var t = new List<GrainReference>();
+        t.Add(gr);
+
+        CollectionAssert.Equals(t, references);
+    }
 
 
-        [Fact]
-        public async Task DeleteDeletes()
-        {
-            var id = Guid.NewGuid();
-            var dbContext = new Moq.Mock<DataContext>();
+    [TestMethod]
+    public async Task DeleteDeletes()
+    {
+        var id = Guid.NewGuid();
+        var dbContext = new Moq.Mock<DataContext>();
 
-            var references = new List<GrainReference>() {
-                new GrainReference() {
-                    GrainId = id,
-                    TypeName = typeof(IContactGrain).Name,
-                }
-            };
-            var dbset = references.GetQueryableMockDbSet();
-            dbset.Setup(x => x.Remove(It.IsAny<GrainReference>())).Callback(() => references.RemoveAt(0));
+        var references = new List<GrainReference>() {
+            new GrainReference() {
+                GrainId = id,
+                TypeName = typeof(IContactGrain).Name,
+            }
+        };
+        var dbset = references.GetQueryableMockDbSet();
+        dbset.Setup(x => x.Remove(It.IsAny<GrainReference>())).Callback(() => references.RemoveAt(0));
 
-            var logger = new Mock<ILogger<GrainManagementService<IContactGrain, Contact>>>();
+        var logger = new Mock<ILogger<GrainManagementService<IContactGrain, Contact>>>();
 
-            var service = new GrainManagementService<IContactGrain, Contact>(dbContext.Object, this.testCluster.Client, logger.Object);
-            dbContext.Setup(x => x.GrainReferences).Returns(dbset.Object);
+        var service = new GrainManagementService<IContactGrain, Contact>(dbContext.Object, this.testCluster.Client, logger.Object);
+        dbContext.Setup(x => x.GrainReferences).Returns(dbset.Object);
 
+        await service.DeleteGrain(id);
+
+        await Assert.ThrowsExceptionAsync<KeyNotFoundException>(async () => {
+            _ = await service.GetGrain(id);
+        });
+    }
+
+    [TestMethod]
+    public async Task DeleteThrowsIfKeyNotExists()
+    {
+        var id = Guid.NewGuid();
+        var dbContext = new Moq.Mock<DataContext>();
+
+        var references = new List<GrainReference>();
+        dbContext.Setup(x => x.GrainReferences).Returns(references.GetQueryableMockDbSet().Object);
+
+        var logger = new Mock<ILogger<GrainManagementService<IContactGrain, Contact>>>();
+
+        var service = new GrainManagementService<IContactGrain, Contact>(dbContext.Object, this.testCluster.Client, logger.Object);
+
+
+        await Assert.ThrowsExceptionAsync<KeyNotFoundException>(async () => {
             await service.DeleteGrain(id);
-
-            await Assert.ThrowsAsync<KeyNotFoundException>(async () => {
-                _ = await service.GetGrain(id);
-            });
-        }
-
-        [Fact]
-        public async Task DeleteThrowsIfKeyNotExists()
-        {
-            var id = Guid.NewGuid();
-            var dbContext = new Moq.Mock<DataContext>();
-
-            var references = new List<GrainReference>();
-            dbContext.Setup(x => x.GrainReferences).Returns(references.GetQueryableMockDbSet().Object);
-
-            var logger = new Mock<ILogger<GrainManagementService<IContactGrain, Contact>>>();
-
-            var service = new GrainManagementService<IContactGrain, Contact>(dbContext.Object, this.testCluster.Client, logger.Object);
-
-
-            await Assert.ThrowsAsync<KeyNotFoundException>(async () => {
-                await service.DeleteGrain(id);
-            });
-        }
+        });
     }
 }

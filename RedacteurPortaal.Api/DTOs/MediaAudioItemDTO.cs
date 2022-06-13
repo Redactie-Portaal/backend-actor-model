@@ -1,7 +1,7 @@
 ﻿using RedacteurPortaal.Api.DTOs;
 using RedacteurPortaal.DomainModels.Media;
 
-namespace RedacteurPortaal.Api.Models
+namespace RedacteurPortaal.Api.DTOs
 {
     public class MediaAudioItemDto : MediaItemDto
     {

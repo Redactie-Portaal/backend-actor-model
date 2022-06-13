@@ -1,4 +1,5 @@
-﻿using Orleans.TestingHost;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Orleans.TestingHost;
 using RedacteurPortaal.DomainModels.Media;
 using RedacteurPortaal.DomainModels.NewsItem;
 using RedacteurPortaal.DomainModels.Shared;
@@ -9,21 +10,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Xunit;
 
-namespace RedacteurPortaal.Tests.Grains.Test;
+namespace RedacteurPortaal.Tests.Grains;
 
-[Collection("Col")]
+[TestClass]
 public class MediaVideoGrainTests
 {
-    private readonly TestCluster _cluster;
+    private TestCluster _cluster;
 
-    public MediaVideoGrainTests(ClusterFixture fixture)
+    [TestInitialize]
+    public void Initialize()
     {
-        _cluster = fixture.Cluster;
+        this._cluster = new ClusterFixture().Cluster;
     }
 
-    [Fact]
+
+    [TestMethod]
     public async Task CanAddVideoItemCorrectly()
     {
         var guid = Guid.NewGuid();
@@ -37,24 +39,24 @@ public class MediaVideoGrainTests
                                                       "Lastwords",
                                                       "Proxyfile",
                                                       "Presentation",
-                                                      new Location(),
+                                                      new Location(guid, "Name", "City", "Province", "Street", "1000AB", 0, 90),
                                                       "Format",
                                                       "Reporter",
                                                       "Sound",
                                                       "Editor",
                                                       "Lastpicture",
-                                                      new List<string>(),
+                                                      new List<string> { "keyword" },
                                                       "Voiceover",
                                                       "Description",
                                                       DateTime.UtcNow,
                                                       "Itemname",
                                                       "Epg",
-                                                      TimeSpan.Zero,
+                                                      TimeSpan.FromSeconds(10),
                                                       "Archivematerial",
                                                       Weather.SUNNY,
                                                       "Producer",
                                                       "Director",
-                                                      new List<string>(),
+                                                      new List<string> { "guest" },
                                                       "Firstpicture",
                                                       "Programname",
                                                       "Firstwords",
@@ -66,8 +68,8 @@ public class MediaVideoGrainTests
 
         var mediaVideoItem = await mediaVideoGrain.Get();
 
-        Assert.Equal("Title", mediaVideoItem.Title);
-        Assert.Equal(guid, mediaVideoItem.Id);
+        Assert.AreEqual("Title", mediaVideoItem.Title);
+        Assert.AreEqual(guid, mediaVideoItem.Id);
     }
 
 }

@@ -1,4 +1,7 @@
-﻿using RedacteurPortaal.DomainModels.Media;
+﻿using FluentValidation;
+using RedacteurPortaal.DomainModels.Media;
+using RedacteurPortaal.DomainModels.Validation.Archive;
+using RedacteurPortaal.DomainModels.NewsItem;
 
 namespace RedacteurPortaal.DomainModels.Archive;
 
@@ -12,9 +15,10 @@ public class ArchiveModel : IBaseEntity
         Guid id,
         string title,
         string label,
-        List<MediaPhotoItem> mediaPhotoItems,
-        List<MediaVideoItem> mediaVideoItems,
-        List<MediaAudioItem> mediaAudioItems,
+        List<Guid> mediaPhotoItems,
+        List<Guid> mediaVideoItems,
+        List<Guid> mediaAudioItems,
+        List<Guid> newsItems,
         DateTime archivedDate,
         List<string> scripts)
     {
@@ -24,8 +28,11 @@ public class ArchiveModel : IBaseEntity
         this.MediaPhotoItems = mediaPhotoItems ?? throw new ArgumentNullException(nameof(mediaPhotoItems));
         this.MediaVideoItems = mediaVideoItems ?? throw new ArgumentNullException(nameof(mediaVideoItems));
         this.MediaAudioItems = mediaAudioItems ?? throw new ArgumentNullException(nameof(mediaAudioItems));
+        this.NewsItems = newsItems ?? throw new ArgumentNullException(nameof(newsItems));
         this.ArchivedDate = archivedDate;
         this.Scripts = scripts ?? throw new ArgumentNullException(nameof(scripts));
+
+        new ArchiveModelValidator().ValidateAndThrow(this);
     }
 
     public Guid Id { get; set; }
@@ -34,11 +41,13 @@ public class ArchiveModel : IBaseEntity
 
     public string Label { get; private set; }
 
-    public List<MediaPhotoItem> MediaPhotoItems { get; private set; }
+    public List<Guid> MediaPhotoItems { get; private set; }
 
-    public List<MediaVideoItem> MediaVideoItems { get; private set; }
+    public List<Guid> MediaVideoItems { get; private set; }
 
-    public List<MediaAudioItem> MediaAudioItems { get; private set; }
+    public List<Guid> MediaAudioItems { get; private set; }
+    
+    public List<Guid> NewsItems { get; private set; }
 
     public DateTime ArchivedDate { get; private set; }
 

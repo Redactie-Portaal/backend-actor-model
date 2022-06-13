@@ -1,4 +1,5 @@
-﻿using RedacteurPortaal.DomainModels;
+﻿using FluentValidation;
+using RedacteurPortaal.DomainModels;
 using System.Net;
 using System.Text.Json;
 
@@ -35,8 +36,16 @@ namespace RedacteurPortaal.Api.Middleware
                         break;
                     case KeyNotFoundException e:
                         // not found error
-                        this.logger.LogError($"A not found exception occured: {e.Message} at {e.StackTrace}");
+                        this.logger.LogError($"An exception occured: {e.Message} at {e.StackTrace}");
                         response.StatusCode = (int)HttpStatusCode.NotFound;
+                        break;
+                    case ValidationException e:
+                        this.logger.LogError($"An exception occured: {e.Message} at {e.StackTrace}");
+                        response.StatusCode = (int)HttpStatusCode.BadRequest;
+                        break;
+                    case NullReferenceException e:
+                        this.logger.LogError($"A null reference exception occured: {e.Message} at {e.StackTrace}");
+                        response.StatusCode = (int)HttpStatusCode.BadRequest;
                         break;
                     default:
                         // unhandled error
