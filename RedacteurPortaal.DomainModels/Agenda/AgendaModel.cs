@@ -15,8 +15,8 @@ namespace RedacteurPortaal.DomainModels.Agenda
             this.Id = id;
             this.StartDate = startDate;
             this.EndDate = endDate;
-            this.Title = title ?? throw new ArgumentNullException(nameof(title));;
-            this.Description = description ?? throw new ArgumentNullException(nameof(description));;
+            this.Title = title ?? throw new ArgumentNullException(nameof(title));
+            this.Description = description ?? throw new ArgumentNullException(nameof(description));
             this.UserId = userId;
 
             new AgendaValidator().ValidateAndThrow(this);

@@ -140,8 +140,6 @@ public class NewsItemGrain : Grain, INewsItemGrain
 
         foreach (var contact in newsItem.ContactDetails)
         {
-            if(contact is not null)
-            {
                 if (contact.Id == Guid.Empty)
                 {
                     contact.Id = Guid.NewGuid();
@@ -149,7 +147,6 @@ public class NewsItemGrain : Grain, INewsItemGrain
 
                 var contactGrain = await this.contactGrainService.GetGrainOrCreate(contact.Id);
                 await contactGrain.Update(contact);
-            }
         }
 
         this.newsItem.State.ContactDetails = newsItem.ContactDetails.Select(x => x.Id).ToList();
@@ -166,9 +163,7 @@ public class NewsItemGrain : Grain, INewsItemGrain
 
         foreach (var video in newsItem.Videos)
         {
-            if(video is not null)
-            {
-                if (video.Id == Guid.Empty)
+            if (video.Id == Guid.Empty)
                 {
                     video.Id = Guid.NewGuid();
                 }
@@ -176,16 +171,13 @@ public class NewsItemGrain : Grain, INewsItemGrain
                 video.Location.Id = Guid.NewGuid();
                 var videoGrain = await this.videoGrainService.CreateGrain(video.Id);
                 await videoGrain.Update(video);
-            }
         }
 
         this.newsItem.State.Videos = newsItem.Videos.DiscardNullValues().Select(x => x.Id).ToList();
 
         foreach (var audio in newsItem.Audio)
         {
-            if(audio is not null)
-            {
-                if (audio.Id == Guid.Empty)
+            if (audio.Id == Guid.Empty)
                 {
                     audio.Id = Guid.NewGuid();
                 }
@@ -193,15 +185,12 @@ public class NewsItemGrain : Grain, INewsItemGrain
                 audio.Location.Id = Guid.NewGuid();
                 var audioGrain = await this.audioGrainService.CreateGrain(audio.Id);
                 await audioGrain.Update(audio);
-            }
         }
 
         this.newsItem.State.Audio = newsItem.Audio.DiscardNullValues().Select(x => x.Id).ToList();
 
         foreach (var photo in newsItem.Photos)
         {
-            if (photo is not null)
-            {
                 if (photo.Id == Guid.Empty)
                 {
                     photo.Id = Guid.NewGuid();
@@ -210,7 +199,6 @@ public class NewsItemGrain : Grain, INewsItemGrain
                 photo.Location.Id = Guid.NewGuid();
                 var photoGrain = await this.photoGrainService.CreateGrain(photo.Id);
                 await photoGrain.Update(photo);
-            }
         }
 
         this.newsItem.State.Photos = newsItem.Photos.DiscardNullValues().Select(x => x.Id).ToList();

@@ -18,12 +18,12 @@ public class NewsItemModelValidationTests
         try
         {
 
-        var exc = new NewsItemModel(guid,
+            _ = new NewsItemModel(guid,
                                          "Newsitem Title",
                                          Status.DONE,
                                          ApprovalState.PENDING,
                                          "Newsitem Author",
-                                         new FeedSource { },
+                                         new FeedSource(),
                                          "body",
                                          new List<Contact> { new Contact(guid, "name", "email@email.com", "0612345678") },
                                          new Location(guid, "Name", "City", "Province", "Street", "1000AB", 0, 90),
@@ -47,12 +47,12 @@ public class NewsItemModelValidationTests
         var guid = Guid.NewGuid();
 
         Assert.ThrowsException<ValidationException>(() => {
-            var model = new NewsItemModel(guid,
+            _ = new NewsItemModel(guid,
                                          "Newsitem Title",
                                          Status.DONE,
                                          ApprovalState.PENDING,
                                          "Newsitem Author",
-                                         new FeedSource { },
+                                         new FeedSource(),
                                          "body",
                                          new List<Contact> { new Contact(guid, "name", "Mail", "Phone") },
                                          new Location(guid, "Name", "City", "Province", "Street", "1000AB", 0, 90),
@@ -72,12 +72,12 @@ public class NewsItemModelValidationTests
         var guid = Guid.NewGuid();
 
         Assert.ThrowsException<ValidationException>(() => {
-            var model = new NewsItemModel(guid,
+            _ = new NewsItemModel(guid,
                                          "",
                                          Status.DONE,
                                          ApprovalState.PENDING,
                                          "Newsitem Author",
-                                         new FeedSource { },
+                                         new FeedSource(),
                                          "body",
                                          new List<Contact> { new Contact(guid, "name", "email@email.com", "0612345678") },
                                          new Location(guid, "Name", "City", "Province", "Street", "1000AB", 0, 90),
@@ -88,7 +88,6 @@ public class NewsItemModelValidationTests
                                          new List<MediaVideoItem>(),
                                          new List<MediaAudioItem>(),
                                          new List<MediaPhotoItem>());
-            ;
         });
     }
 
@@ -98,12 +97,12 @@ public class NewsItemModelValidationTests
         var guid = Guid.NewGuid();
 
         Assert.ThrowsException<ValidationException>(() => {
-            var model = new NewsItemModel(guid,
+            _ = new NewsItemModel(guid,
                                          "Title",
                                          Status.DONE,
                                          ApprovalState.PENDING,
                                          "",
-                                         new FeedSource { },
+                                         new FeedSource(),
                                          "body",
                                          new List<Contact> { new Contact(guid, "name", "email@email.com", "0612345678") },
                                          new Location(guid, "Name", "City", "Province", "Street", "1000AB", 0, 90),
@@ -123,12 +122,12 @@ public class NewsItemModelValidationTests
         var guid = Guid.NewGuid();
 
         Assert.ThrowsException<ValidationException>(() => {
-            var model = new NewsItemModel(guid,
+            _ = new NewsItemModel(guid,
                                          "Title",
                                          Status.DONE,
                                          ApprovalState.PENDING,
                                          "Author",
-                                         new FeedSource { },
+                                         new FeedSource(),
                                          "",
                                          new List<Contact> { new Contact(guid, "name", "email@email.com", "0612345678") },
                                          new Location(guid, "Name", "City", "Province", "Street", "1000AB", 0, 90),
@@ -148,12 +147,12 @@ public class NewsItemModelValidationTests
         var guid = Guid.NewGuid();
 
         Assert.ThrowsException<ValidationException>(() => {
-            var model = new NewsItemModel(guid,
+            _ = new NewsItemModel(guid,
                                          "Title",
                                          Status.DONE,
                                          ApprovalState.PENDING,
                                          "Author",
-                                         new FeedSource { },
+                                         new FeedSource(),
                                          "body",
                                          new List<Contact> { new Contact(guid, "name", "email@email.com", "0612345678") },
                                          new Location(),
@@ -164,15 +163,14 @@ public class NewsItemModelValidationTests
                                          new List<MediaVideoItem>(),
                                          new List<MediaAudioItem>(),
                                          new List<MediaPhotoItem>());
-            ;
         });
         Assert.ThrowsException<ValidationException>(() => {
-            var model = new NewsItemModel(guid,
+            _ = new NewsItemModel(guid,
                                          "Title",
                                          Status.DONE,
                                          ApprovalState.PENDING,
                                          "Author",
-                                         new FeedSource { },
+                                         new FeedSource(),
                                          "body",
                                          new List<Contact> { new Contact(guid, "name", "email@email.com", "0612345678") },
                                          new Location(guid, "Name", "City", "Province", "Street", "postcode", 0, 90),
@@ -183,7 +181,6 @@ public class NewsItemModelValidationTests
                                          new List<MediaVideoItem>(),
                                          new List<MediaAudioItem>(),
                                          new List<MediaPhotoItem>());
-            ;
         });
     }
 }
