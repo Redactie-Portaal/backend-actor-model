@@ -464,7 +464,7 @@ public class ArchiveControllerTests
         var result = JsonSerializer.Deserialize<ArchiveDto>(await archive.Content.ReadAsStringAsync(), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
 
         var delete = await client.DeleteAsync($"/api/Archive/{result?.Id}");
-        Assert.AreEqual(HttpStatusCode.OK, delete.StatusCode);
+        Assert.AreEqual(HttpStatusCode.NoContent, delete.StatusCode);
 
         var emptyArchive = await client.GetFromJsonAsync<List<ArchiveDto>>("/api/Archive");
         Assert.IsTrue(emptyArchive?.Count == 0);
@@ -496,7 +496,7 @@ public class ArchiveControllerTests
         
         var deleteVideo = await client.DeleteAsync($"/api/Archive/{result?.Id}/VideoItems/{updatedArchiveResult}");
         var updatedArchiveResultAfterDeleting = await client.GetFromJsonAsync<ArchiveDto>($"/api/Archive/{result?.Id}");
-        Assert.AreEqual(HttpStatusCode.OK, deleteVideo.StatusCode);
+        Assert.AreEqual(HttpStatusCode.NoContent, deleteVideo.StatusCode);
         Assert.AreEqual(0, updatedArchiveResultAfterDeleting?.MediaVideoItems?.Count);
     }
 
@@ -525,7 +525,7 @@ public class ArchiveControllerTests
 
         var deleteAudio = await client.DeleteAsync($"/api/Archive/{result?.Id}/AudioItems/{updatedArchiveResult}");
         var updatedArchiveResultAfterDeleting = await client.GetFromJsonAsync<ArchiveDto>($"/api/Archive/{result?.Id}");
-        Assert.AreEqual(HttpStatusCode.OK, deleteAudio.StatusCode);
+        Assert.AreEqual(HttpStatusCode.NoContent, deleteAudio.StatusCode);
         Assert.AreEqual(0, updatedArchiveResultAfterDeleting?.MediaAudioItems?.Count);
     }
 
@@ -554,7 +554,7 @@ public class ArchiveControllerTests
         
         var deletePhoto = await client.DeleteAsync($"/api/Archive/{result?.Id}/PhotoItems/{updatedArchiveResult}");
         var updatedArchiveResultAfterDeleting = await client.GetFromJsonAsync<ArchiveDto>($"/api/Archive/{result?.Id}");
-        Assert.AreEqual(HttpStatusCode.OK, deletePhoto.StatusCode);
+        Assert.AreEqual(HttpStatusCode.NoContent, deletePhoto.StatusCode);
         Assert.AreEqual(0, updatedArchiveResultAfterDeleting?.MediaPhotoItems?.Count);
     }
 
@@ -583,7 +583,7 @@ public class ArchiveControllerTests
 
         var deleteNewsItem = await client.DeleteAsync($"/api/Archive/{result?.Id}/NewsItems/{updatedArchiveResult}");
         var updatedArchiveResultAfterDeleting = await client.GetFromJsonAsync<ArchiveDto>($"/api/Archive/{result?.Id}");
-        Assert.AreEqual(HttpStatusCode.OK, deleteNewsItem.StatusCode);
+        Assert.AreEqual(HttpStatusCode.NoContent, deleteNewsItem.StatusCode);
         Assert.AreEqual(0, updatedArchiveResultAfterDeleting?.NewsItems?.Count);
     }
 }
