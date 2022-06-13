@@ -36,18 +36,7 @@ public class ArchiveGrain : Grain, IArchiveGrain
 
     public async Task<ArchiveModel> Get()
     {
-        return await Task.FromResult(
-            new ArchiveModel(
-                this.archive.State.Id,
-                this.archive.State.Title,
-                this.archive.State.Label,
-                this.archive.State.MediaPhotoItems,
-                this.archive.State.MediaVideoItems,
-                this.archive.State.MediaAudioItems,
-                this.archive.State.NewsItems,
-                this.archive.State.ArchivedDate,
-                this.archive.State.Scripts)
-            );
+        return await Task.FromResult(this.archive.State);
     }
 
     public async Task<MediaVideoItem> GetVideoItem(Guid guid)
@@ -57,7 +46,7 @@ public class ArchiveGrain : Grain, IArchiveGrain
 
         if (item == null)
         {
-            throw new KeyNotFoundException();
+            throw new KeyNotFoundException("VideoItem with ID ${guid} not found!");
         }
         else
         {
@@ -72,7 +61,7 @@ public class ArchiveGrain : Grain, IArchiveGrain
         
         if (item == null)
         {
-            throw new KeyNotFoundException();
+            throw new KeyNotFoundException("PhotoItem with ID ${guid} not found!");
         }
         else
         {
@@ -86,7 +75,7 @@ public class ArchiveGrain : Grain, IArchiveGrain
         var item = await grain.Get();
         if (item == null)
         {
-            throw new KeyNotFoundException();
+            throw new KeyNotFoundException("AudioItem with ID ${guid} not found!");
         }
         else
         {
@@ -100,7 +89,7 @@ public class ArchiveGrain : Grain, IArchiveGrain
         var item = await grain.Get();
         if (item == null)
         {
-            throw new KeyNotFoundException();
+            throw new KeyNotFoundException("NewsItem with ID ${guid} not found!");
         }
         else
         {
@@ -125,7 +114,7 @@ public class ArchiveGrain : Grain, IArchiveGrain
         }
         else
         {
-            throw new KeyNotFoundException();
+            throw new KeyNotFoundException("VideoItem with ID ${videoItemId} not found!");
         }
     }
 
@@ -139,7 +128,7 @@ public class ArchiveGrain : Grain, IArchiveGrain
         }
         else
         {
-            throw new KeyNotFoundException();
+            throw new KeyNotFoundException("PhotoItem with ID ${photoItemId} not found!");
         }
     }
 
@@ -153,7 +142,7 @@ public class ArchiveGrain : Grain, IArchiveGrain
         }
         else
         {
-            throw new KeyNotFoundException();
+            throw new KeyNotFoundException("AudioItem with ID ${audioItemId} not found!");
         }
     }
 
@@ -167,7 +156,7 @@ public class ArchiveGrain : Grain, IArchiveGrain
         }
         else
         {
-            throw new KeyNotFoundException();
+            throw new KeyNotFoundException("NewsItem with ID ${newsItemId} not found!");
         }
     }
 
@@ -184,7 +173,7 @@ public class ArchiveGrain : Grain, IArchiveGrain
             var videoItem = videoItems.Find(x => x.Equals(videoItemId));
             if (videoItem == Guid.Empty)
             {
-                throw new KeyNotFoundException("Video item with id not found");
+                throw new KeyNotFoundException("VideoItem with ID ${videoItemId} not found!");
             }
             else
             {
@@ -194,7 +183,7 @@ public class ArchiveGrain : Grain, IArchiveGrain
         }
         else
         {
-            throw new KeyNotFoundException("List of video items with given archive id not found");
+            throw new KeyNotFoundException("No VideoItems found in Archive ${this.archive.State.Id}!");
         }
     }
 
@@ -206,7 +195,7 @@ public class ArchiveGrain : Grain, IArchiveGrain
             var photoItem = photoItems.Find(x => x.Equals(photoItemId));
             if (photoItem == Guid.Empty)
             {
-                throw new KeyNotFoundException("Photo item with id not found");
+                throw new KeyNotFoundException("PhotoItem with ID ${videoItemId} not found!");
             }
             else
             {
@@ -216,7 +205,7 @@ public class ArchiveGrain : Grain, IArchiveGrain
         }
         else
         {
-            throw new KeyNotFoundException("List of photo items with given archive id not found");
+            throw new KeyNotFoundException("No PhotoItems found in Archive ${this.archive.State.Id}!");
         }
     }
 
@@ -228,7 +217,7 @@ public class ArchiveGrain : Grain, IArchiveGrain
             var audioItem = audioItems.Find(x => x.Equals(audioItemId));
             if (audioItem == Guid.Empty)
             {
-                throw new KeyNotFoundException("audio item with id not found");
+                throw new KeyNotFoundException("AudioItem with ID ${videoItemId} not found!");
             }
             else
             {
@@ -238,7 +227,7 @@ public class ArchiveGrain : Grain, IArchiveGrain
         }
         else
         {
-            throw new KeyNotFoundException("List of audio items with given archive id not found");
+            throw new KeyNotFoundException("No AudioItems found in Archive ${this.archive.State.Id}!");
         }
     }
 
@@ -250,7 +239,7 @@ public class ArchiveGrain : Grain, IArchiveGrain
             var newsItem = newsItems.Find(x => x.Equals(newsItemId));
             if (newsItem == Guid.Empty)
             {
-                throw new KeyNotFoundException("News item with id not found");
+                throw new KeyNotFoundException("NewsItem with ID ${videoItemId} not found!");
             }
             else
             {
@@ -260,7 +249,7 @@ public class ArchiveGrain : Grain, IArchiveGrain
         }
         else
         {
-            throw new KeyNotFoundException("List of news items with given archive id not found");
+            throw new KeyNotFoundException("No NewsItems found in Archive ${this.archive.State.Id}!");
         }
     }
 

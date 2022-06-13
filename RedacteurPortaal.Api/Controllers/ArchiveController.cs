@@ -26,7 +26,7 @@ public class ArchiveController : Controller
     }
 
     [HttpGet]
-    public async Task<ActionResult<ArchiveModel>> GetAllArchives()
+    public async Task<ActionResult<ArchiveDto>> GetAllArchives()
     {
        var grain = await this.grainService.GetGrains();
 
@@ -52,7 +52,7 @@ public class ArchiveController : Controller
     {
         var archive = await this.grainService.GetGrain(archiveId);
         var response = await archive.Get();
-        var dto = response.Adapt<ArchiveModel>();
+        var dto = response.Adapt<ArchiveDto>();
         return this.Ok(dto.MediaVideoItems);
     }
 
@@ -62,7 +62,7 @@ public class ArchiveController : Controller
     {
         var archive = await this.grainService.GetGrain(archiveId);
         var response = await archive.Get();
-        var dto = response.Adapt<ArchiveModel>();
+        var dto = response.Adapt<ArchiveDto>();
         return this.Ok(dto.MediaAudioItems);
     }
 
@@ -72,7 +72,7 @@ public class ArchiveController : Controller
     {
         var archive = await this.grainService.GetGrain(archiveId);
         var response = await archive.Get();
-        var dto = response.Adapt<ArchiveModel>();
+        var dto = response.Adapt<ArchiveDto>();
         return this.Ok(dto.MediaPhotoItems);
     }
 
@@ -82,7 +82,7 @@ public class ArchiveController : Controller
     {
         var archive = await this.grainService.GetGrain(archiveId);
         var response = await archive.Get();
-        var dto = response.Adapt<ArchiveModel>();
+        var dto = response.Adapt<ArchiveDto>();
         return this.Ok(dto.NewsItems);
     }
 
@@ -98,11 +98,11 @@ public class ArchiveController : Controller
 
     [HttpGet]
     [Route("{archiveId}/AudioItems/{audioItemGuid}")]
-    public async Task<IActionResult> GetAudioItem([FromRoute] Guid archiveId, [FromRoute] Guid audioItemGuid)
+    public async Task<ActionResult<MediaAudioItemDto>> GetAudioItem([FromRoute] Guid archiveId, [FromRoute] Guid audioItemGuid)
     {
         var grain = await this.grainService.GetGrain(archiveId);
         var response = await grain.GetAudioItem(audioItemGuid);
-        var dto = response.Adapt<MediaAudioItem>();
+        var dto = response.Adapt<MediaAudioItemDto>();
         return this.Ok(dto);
     }
 
@@ -179,7 +179,7 @@ public class ArchiveController : Controller
     public async Task<IActionResult> DeleteArchive(Guid archiveId)
     {
         await this.grainService.DeleteGrain(archiveId);
-        return this.Ok();
+        return this.NoContent();
     }
 
     [HttpDelete]
@@ -188,7 +188,7 @@ public class ArchiveController : Controller
     {
         var grain = await this.grainService.GetGrain(archiveId);
         await grain.DeleteVideoItem(videoItemGuid);
-        return this.Ok();
+        return this.NoContent();
     }
 
     [HttpDelete]
@@ -200,7 +200,7 @@ public class ArchiveController : Controller
         var item = grain.Get();
         
         await grain.DeleteAudioItem(audioItemGuid);
-        return this.Ok();
+        return this.NoContent();
     }
 
     [HttpDelete]
@@ -209,7 +209,7 @@ public class ArchiveController : Controller
     {
         var grain = await this.grainService.GetGrain(archiveId);
         await grain.DeletePhotoItem(photoItemGuid);
-        return this.Ok();
+        return this.NoContent();
     }
 
     [HttpDelete]
@@ -218,7 +218,7 @@ public class ArchiveController : Controller
     {
         var grain = await this.grainService.GetGrain(archiveId);
         await grain.DeleteNewsItem(newsItemGuid);
-        return this.Ok();
+        return this.NoContent();
     }
 
     [HttpPatch]
