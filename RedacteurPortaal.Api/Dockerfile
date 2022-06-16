@@ -18,7 +18,7 @@ COPY ["RedacteurPortaal.Tests/RedacteurPortaal.Tests.csproj", "RedacteurPortaal.
 ARG username=chast
 ARG password=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
 #RUN dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org
-RUN dotnet nuget add source https://nuget.pkg.github.com/Redactie-Portaal/index.json --name github --username ${username} --password ${password} --store-password-in-clear-text  
+#RUN dotnet nuget add source https://nuget.pkg.github.com/Redactie-Portaal/index.json --name github --username ${username} --password ${password} --store-password-in-clear-text  
 #RUN dotnet nuget add source "https://api.nuget.org/v3/index.json"
 
 #RUN dotnet restore "RedacteurPortaal.Api/RedacteurPortaal.Api.csproj"
