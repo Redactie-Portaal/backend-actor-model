@@ -15,7 +15,8 @@ ARG username=chasit
 ARG password=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
 RUN dotnet nuget add source --username ${username} --password ${password} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/Redactie-Portaal/index.json"
 
-RUN dotnet restore "RedacteurPortaal.Api/RedacteurPortaal.Api.csproj"
+#RUN dotnet restore "RedacteurPortaal.Api/RedacteurPortaal.Api.csproj"
+RUN dotnet restore "RedacteurPortaal.Api/RedacteurPortaal.Api.csproj" --source https://api.nuget.org/v3/index.json --source https://nuget.pkg.github.com/Redactie-Portaal/index.json
 COPY . .
 WORKDIR "/src/RedacteurPortaal.Api"
 RUN dotnet build "RedacteurPortaal.Api.csproj" -c Release -o /app/build
