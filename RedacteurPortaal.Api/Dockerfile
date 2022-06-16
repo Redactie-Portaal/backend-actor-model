@@ -15,15 +15,15 @@ COPY ["RedacteurPortaal.Data/RedacteurPortaal.Data.csproj", "RedacteurPortaal.Da
 COPY ["RedacteurPortaal.DomainModels/RedacteurPortaal.DomainModels.csproj", "RedacteurPortaal.DomainModels/"]
 COPY ["RedacteurPortaal.Tests/RedacteurPortaal.Tests.csproj", "RedacteurPortaal.Tests/"]
 
-ARG username=joepvand
-ARG password=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
+ARG username=chast
+ARG password=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
 #RUN dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org
 #RUN dotnet nuget add source https://nuget.pkg.github.com/Redactie-Portaal/index.json --name github --username ${username} --password ${password} --store-password-in-clear-text  
 #RUN dotnet nuget add source "https://api.nuget.org/v3/index.json"
 
 #RUN dotnet restore "RedacteurPortaal.Api/RedacteurPortaal.Api.csproj"
-RUN dotnet restore "RedacteurPortaal.Api/RedacteurPortaal.Api.csproj" --configfile "RedacteurPortaal.Api/Nuget.Config"
-#RUN dotnet restore "RedacteurPortaal.Api/RedacteurPortaal.Api.csproj" -s https://nuget.pkg.github.com/Redactie-Portaal/index.json -s https://api.nuget.org/v3/index.json
+#RUN dotnet restore "RedacteurPortaal.Api/RedacteurPortaal.Api.csproj" --configfile "RedacteurPortaal.Api/Nuget.Config"
+RUN dotnet restore "RedacteurPortaal.Api/RedacteurPortaal.Api.csproj" -s https://nuget.pkg.github.com/Redactie-Portaal/index.json -s https://api.nuget.org/v3/index.json
 COPY . .
 WORKDIR "/src/RedacteurPortaal.Api"
 RUN dotnet build "RedacteurPortaal.Api.csproj" -c Release -o /app/build
