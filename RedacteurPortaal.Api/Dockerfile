@@ -11,8 +11,8 @@ COPY ["RedacteurPortaal.Api/RedacteurPortaal.Api.csproj", "RedacteurPortaal.Api/
 COPY ["RedacteurPortaal.Grains/RedacteurPortaal.Grains.csproj", "RedacteurPortaal.Grains/"]
 COPY ["RedacteurPortaal.Helpers/RedacteurPortaal.Helpers.csproj", "RedacteurPortaal.Helpers/"]
 
-ARG username=joepvand
-ARG password=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
+ARG username=chasit
+ARG password=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
 RUN dotnet nuget add source --username ${username} --password ${password} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/Redactie-Portaal/index.json"
 
 RUN dotnet restore "RedacteurPortaal.Api/RedacteurPortaal.Api.csproj"
